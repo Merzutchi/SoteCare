@@ -132,15 +132,44 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Doctor.cs">
+      <DependentUpon>SoteCareData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Medication.cs">
+      <DependentUpon>SoteCareData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Nurse.cs">
+      <DependentUpon>SoteCareData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Patient.cs">
+      <DependentUpon>SoteCareData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PatientHistory.cs">
+      <DependentUpon>SoteCareData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SoteCareData.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SoteCareData.Context.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SoteCareData.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SoteCareData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SoteCareData.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SoteCareData.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Treatment.cs">
+      <DependentUpon>SoteCareData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\User.cs">
+      <DependentUpon>SoteCareData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\VitalFunction.cs">
+      <DependentUpon>SoteCareData.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -167,6 +196,12 @@
     <Content Include="Models\SoteCareData.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SoteCareData.Context.cs</LastGenOutput>
+      <DependentUpon>SoteCareData.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\SoteCareData.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SoteCareData.edmx</DependentUpon>
+      <LastGenOutput>SoteCareData.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -178,9 +213,9 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>SoteCareData.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="Models\SoteCareData.edmx.diagram">
+    <Content Include="Models\SoteCareData.edmx.diagram">
       <DependentUpon>SoteCareData.edmx</DependentUpon>
-    </None>
+    </Content>
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
