@@ -10,14 +10,17 @@
 namespace SoteCare.Models
 {
     using System;
+    using System.Configuration;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    
+    using System.Data.Entity.Migrations;
+
     public partial class PatientRecordDataEntities : DbContext
     {
         public PatientRecordDataEntities()
             : base("name=PatientRecordDataEntities")
         {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<PatientRecordDataEntities, Configuration>());
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -33,5 +36,30 @@ namespace SoteCare.Models
         public virtual DbSet<Treatment> Treatment { get; set; }
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<VitalFunctions> VitalFunctions { get; set; }
+    }
+    public class Configuration : DbMigrationsConfiguration<PatientRecordDataEntities>
+    {
+        public Configuration() 
+        { 
+            AutomaticMigrationsEnabled = true; //Tallentaa/päivittää automaattisesti tietokannan.
+        }
+
+        protected override void Seed(PatientRecordDataEntities context)
+        {
+            context.Medications.AddOrUpdate(
+                m => m.MedicationName,
+                new Medications { MedicationName = "Bisoprolol", Dosage = "2,5 mg", Frequency = "1x päivässä", RouteOfAdministration = "Suun kautta" },
+                new Medications { MedicationName = "Nitrosid", Dosage = "5 mg", Frequency = "2x päivässä", RouteOfAdministration = "s.c" },
+                new Medications { MedicationName = "Diformin retard", Dosage = "500 mg", Frequency = "3x päivässä", RouteOfAdministration = "Suun kautta" },
+                new Medications { MedicationName = "Jardiance", Dosage = "5 mg", Frequency = "2x päivässä" , RouteOfAdministration = "Suun kautta" },
+                new Medications { MedicationName = "Paratabs", Dosage = "500 mg", Frequency = "3x päivässä" , RouteOfAdministration = "Suun kautta" },
+                new Medications { MedicationName = "Disperin", Dosage = "100 mg", Frequency = "1x päivässä" , RouteOfAdministration = "Suun kautta" },
+                new Medications { MedicationName = "Essitalopram orion", Dosage = "5 mg", Frequency = "1x päivässä" , RouteOfAdministration = "Suun kautta" }
+                );
+
+            // Tähän voi lisätä lisää Seed dataa muille tauluille 
+
+            context.SaveChanges();
+        }
     }
 }
