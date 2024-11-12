@@ -4,15 +4,15 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="42d2eff9732a46c98afe5c30c7ae70c2" Name="Diagram1">
-        <EntityTypeShape EntityType="PatientRecordDataModel.Doctor" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PatientRecordDataModel.Medication" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="PatientRecordDataModel.Nurse" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+      <Diagram DiagramId="b66d62bbfcec45aca787deb3c826c069" Name="Diagram1">
+        <EntityTypeShape EntityType="PatientRecordDataModel.Doctors" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.Medications" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.Nurses" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordDataModel.PatientHistory" Width="1.5" PointX="3" PointY="6.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="PatientRecordDataModel.Patient" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.Patients" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordDataModel.Treatment" Width="1.5" PointX="5.25" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PatientRecordDataModel.User" Width="1.5" PointX="7.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PatientRecordDataModel.VitalFunction" Width="1.5" PointX="3" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.Users" Width="1.5" PointX="7.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.VitalFunctions" Width="1.5" PointX="3" PointY="9.5" IsExpanded="true" />
         <AssociationConnector Association="PatientRecordDataModel.FK__Medicatio__Patie__4222D4EF" ManuallyRouted="false" />
         <AssociationConnector Association="PatientRecordDataModel.FK__PatientHi__Patie__3F466844" ManuallyRouted="false" />
         <AssociationConnector Association="PatientRecordDataModel.FK__Treatment__Patie__3C69FB99" ManuallyRouted="false" />

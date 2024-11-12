@@ -12,7 +12,7 @@ namespace SoteCare.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Doctor
+    public partial class Doctors
     {
         public int DoctorID { get; set; }
         public string FirstName { get; set; }

@@ -12,15 +12,15 @@ namespace SoteCare.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Patient
+    public partial class Patients
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Patient()
+        public Patients()
         {
-            this.Medications = new HashSet<Medication>();
-            this.PatientHistories = new HashSet<PatientHistory>();
-            this.Treatments = new HashSet<Treatment>();
-            this.VitalFunctions = new HashSet<VitalFunction>();
+            this.Medications = new HashSet<Medications>();
+            this.PatientHistory = new HashSet<PatientHistory>();
+            this.Treatment = new HashSet<Treatment>();
+            this.VitalFunctions = new HashSet<VitalFunctions>();
         }
     
         public int PatientID { get; set; }
@@ -35,12 +35,12 @@ namespace SoteCare.Models
         public string EmergencyContactPhone { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Medication> Medications { get; set; }
+        public virtual ICollection<Medications> Medications { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PatientHistory> PatientHistories { get; set; }
+        public virtual ICollection<PatientHistory> PatientHistory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Treatment> Treatments { get; set; }
+        public virtual ICollection<Treatment> Treatment { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<VitalFunction> VitalFunctions { get; set; }
+        public virtual ICollection<VitalFunctions> VitalFunctions { get; set; }
     }
 }

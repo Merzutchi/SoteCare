@@ -17,7 +17,7 @@ namespace SoteCare.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Treatment()
         {
-            this.Medications = new HashSet<Medication>();
+            this.Medications = new HashSet<Medications>();
         }
     
         public int TreatmentID { get; set; }
@@ -28,8 +28,8 @@ namespace SoteCare.Models
         public string Dosage { get; set; }
         public string TreatmentType { get; set; }
     
-        public virtual Patient Patient { get; set; }
+        public virtual Patients Patients { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Medication> Medications { get; set; }
+        public virtual ICollection<Medications> Medications { get; set; }
     }
 }
