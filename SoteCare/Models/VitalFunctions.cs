@@ -12,7 +12,7 @@ namespace SoteCare.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class VitalFunction
+    public partial class VitalFunctions
     {
         public int VitalFunctionID { get; set; }
         public int PatientID { get; set; }
@@ -24,6 +24,6 @@ namespace SoteCare.Models
         public Nullable<decimal> Temperature { get; set; }
         public Nullable<decimal> OxygenSaturation { get; set; }
     
-        public virtual Patient Patient { get; set; }
+        public virtual Patients Patients { get; set; }
     }
 }
