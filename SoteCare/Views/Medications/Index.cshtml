@@ -1,97 +1,11 @@
 ﻿
 @model IEnumerable<SoteCare.Models.Medications>
-@ViewBag.Title = "Medications";
 
-
-@if (!Model.Any())
-{ 
-    <p>Ei näytettäviä lääkkeitä.</p>
-
+@{
+    ViewBag.Title = "Medications";
 }
 
-else
 
-{
-
-    foreach (var medication in Model)
-
-    {
-        <div class="medication-class">
-            <nav>
-                <ul>
-                    <li><a>@*navigation tähän*@</a></li>
-                </ul>
-            </nav>
-            
-            @*Main Content*@
-            <div class="content">
-                <h1>Lääketiedot</h1>
-
-                @*Medication info card*@
-
-                <div class="card medication-info">
-                    <h2>Lääkkeen tiedot</h2>
-                    <p>Nimi: @medication.MedicationName</p>
-                    <p>Annos: @medication.Dosage</p>
-                    <p>Antotiheys: @medication.Frequency</p>
-                    <p>Annostelutapa: @medication.RouteOfAdministration</p>
-                    <p>Tila: 
-                        <span class="status @(medication.MedicationStatus == "Active" ? "active" : "inactive")">
-                            @(medication.MedicationStatus == "Active" ? "Aktiivinen" : "Lopetettu")
-                        </span>
-                    </p>                    
-                </div>
-
-                <div class="card patient-info">
-                    <h2>Potilas Info</h2>
-                    <p>Nimi: @medication.Patients.FirstName</p>
-                    <p>ID: @medication.Patients.PatientID</p>
-                    @*<p>Tila: @medication.Patients.Condition</p> pitäisi lisätä condition patients luokkaan*@
-                </div>
-
-                @*buttons*@
-
-            <div class="action-buttons">
-                <button class="primary-btn">Muokkaa lääkitys</button>
-                <button class="secondary-btn">Lopeta lääkitys</button>
-                <button onclick="openModal()" class="add-button">Lisää lääke</button>
-            </div>              
-
-                @*modal for add medication*@
-
-                <div id="medicationModal" class="modal">
-                    <div class="modal-content">
-                        <span class="btn-close" onclick="closeModal()">&times;</span>
-                        <h2>Lisää uusi lääke</h2>
-
-                        <form>
-                            <label for="medName">Lääke Nimi: </label>
-                            <input type="text" id="medName" name="medName" required />
-
-                            <label for="dosage">Annos: </label>
-                            <input type="text" id="dosage" name="dosage" required />
-
-                            <label for="antotiheys">Antotiheys: </label>
-                            <input type="text" id="frequency" name="frequency" required />
-
-                            <label for="annostelutapa">Annostelutapa: </label>
-                            <input type="text" id="route" name="route" required />
-
-                            <button type="submit">Tallenna</button>
-                            <button type="button" onclick="closeModal()">Peruuta</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
-        ////muutoksii tulos 
-
-    }
-
-}
 
 
 
