@@ -12,8 +12,112 @@ namespace SoteCare.Controllers
         // GET: Medications
         public ActionResult Index()
         {
-            return View();
+            using (var context = new PatientRecordDataEntities()) 
+            {
+                var medications = context.Medications.ToList();
+                return View(medications);
+            }
+            
         }
+
+        public ActionResult MedicationDetails(int id)
+        {
+            using (var context = new PatientRecordDataEntities())
+            {
+                var medication = context.Medications.Find(id);
+
+                if (medication == null)
+                {
+                    return HttpNotFound();
+                }
+                
+                return View(medication);
+            }  
+        }
+
+        //Get UpdateMedication
+        public ActionResult UpdateMedication(int medicationId)
+        {
+            using (var context = new PatientRecordDataEntities()) 
+            {
+                var medication = context.Medications.Find(medicationId);
+
+                if(medication == null) 
+                { 
+                    return HttpNotFound();
+                }
+            }
+                return View(medicationId);
+        }
+
+        //Get DeleteMedication
+        public ActionResult DeleteMedication(int medicationId) 
+        { 
+            using (var context = new PatientRecordDataEntities()) 
+            {
+                var medication = context.Medications.Find(medicationId);
+
+                if (medication == null) 
+                {
+                    return HttpNotFound();
+                }
+
+                return View(medicationId);
+            }              
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateMedication(Medications updateMedication)
+        {
+            if (ModelState.IsValid) 
+            { 
+                using (var context = new PatientRecordDataEntities()) 
+                { 
+                    var medication = context.Medications.Find(updateMedication.MedicationID);
+                    if (medication == null) 
+                    { 
+                        return HttpNotFound(); 
+                    }  
+
+                    medication.MedicationName = updateMedication.MedicationName;
+                    medication.Dosage = updateMedication.Dosage;
+                    medication.Frequency = updateMedication.Frequency;
+                    medication.Instructions = updateMedication.Instructions;
+                    medication.RouteOfAdministration = updateMedication.RouteOfAdministration;
+                    medication.MedicationStatus = updateMedication.MedicationStatus;
+                    medication.StartDate = updateMedication.StartDate;
+                    medication.EndDate = updateMedication.EndDate;
+
+                    context.SaveChanges();
+                }
+
+              return RedirectToAction("Index"); 
+            }
+
+            return View(updateMedication);
+        }
+
+        [HttpPost, ActionName("DeleteMedication")]
+        [ValidateAntiForgeryToken]
+        public ActionResult ConfirmDeleteMedication(int medicationId)
+        {
+            using (var context = new PatientRecordDataEntities()) 
+            {
+                var medication = context.Medications.Find(medicationId);
+
+                if (medication == null) 
+                { 
+                    return HttpNotFound(); 
+                }
+
+                context.Medications.Remove(medication);
+                context.SaveChanges();
+
+            }
+            return RedirectToAction("Index");
+        }
+
 
         public ActionResult AddMedication() 
         {
