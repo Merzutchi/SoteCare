@@ -20,7 +20,6 @@ namespace SoteCare.Models
         public PatientRecordDataEntities()
             : base("name=PatientRecordDataEntities")
         {
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<PatientRecordDataEntities, Configuration>());
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -41,25 +40,11 @@ namespace SoteCare.Models
     {
         public Configuration() 
         { 
-            AutomaticMigrationsEnabled = true; //Tallentaa/päivittää automaattisesti tietokannan.
+            AutomaticMigrationsEnabled = true;
         }
 
-        protected override void Seed(PatientRecordDataEntities context)
-        {
-            context.Medications.AddOrUpdate(
-                m => m.MedicationName,
-                new Medications { MedicationName = "Bisoprolol", Dosage = "2,5 mg", Frequency = "1x päivässä", RouteOfAdministration = "Suun kautta" },
-                new Medications { MedicationName = "Nitrosid", Dosage = "5 mg", Frequency = "2x päivässä", RouteOfAdministration = "s.c" },
-                new Medications { MedicationName = "Diformin retard", Dosage = "500 mg", Frequency = "3x päivässä", RouteOfAdministration = "Suun kautta" },
-                new Medications { MedicationName = "Jardiance", Dosage = "5 mg", Frequency = "2x päivässä" , RouteOfAdministration = "Suun kautta" },
-                new Medications { MedicationName = "Paratabs", Dosage = "500 mg", Frequency = "3x päivässä" , RouteOfAdministration = "Suun kautta" },
-                new Medications { MedicationName = "Disperin", Dosage = "100 mg", Frequency = "1x päivässä" , RouteOfAdministration = "Suun kautta" },
-                new Medications { MedicationName = "Essitalopram orion", Dosage = "5 mg", Frequency = "1x päivässä" , RouteOfAdministration = "Suun kautta" }
-                );
-
-            // Tähän voi lisätä lisää Seed dataa muille tauluille 
-
-            context.SaveChanges();
-        }
+      
+      
+        
     }
 }
