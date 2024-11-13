@@ -1,10 +1,48 @@
 ﻿
 @model IEnumerable<SoteCare.Models.Medications>
-    ViewBag.Title = "Index";
-@foreach (var medication in Model)
-{
-    <h2>Index</h2>
+@ViewBag.Title = "Medication Index";
+
+
+@if (!Model.Any())
+{ 
+    <p>Ei näytettäviä lääkkeitä.</p>
+
 }
+
+else
+
+{
+
+    foreach (var medication in Model)
+
+    {
+        <div class="medication-card">
+            <h2>@medication.MedicationName</h2>
+            <p><strong>Annos:</strong> @medication.Dosage</p>
+            <p><strong>Antotiheys:</strong>@medication.Frequency</p>
+            <p><strong>Annostelutapa</strong>@medication.RouteOfAdministration</p>
+            <p><strong>Ohjeet:</strong>@medication.Instructions</p>
+            <p><strong>Aloituspäivämäärä:</strong>@medication.StartDate?.ToString("dd-MM-yyyy")</p>
+            <p><strong>Lopetuspäivämäärä:</strong>@medication.EndDate?.ToString("dd-MM-yyyy")</p>
+            <p><strong>Tila:</strong>@medication.MedicationStatus</p>
+
+
+            <button>
+                <a href="@Url.Action("UpdateMedication", "Medications", new { medicationId = medication.MedicationID })"> Muokkaa </a>
+            </button>
+
+            <form action="@Url.Action("ConfirmDeleteMedication", "Medications", new { medicationId = medication.MedicationID })" method="post" style="display:inline;">
+                <button type="submit">poista</button>
+            </form>
+        </div>
+
+    }
+
+}
+
+
+
+
 
 
 
