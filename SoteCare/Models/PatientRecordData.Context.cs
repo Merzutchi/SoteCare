@@ -10,11 +10,9 @@
 namespace SoteCare.Models
 {
     using System;
-    using System.Configuration;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    using System.Data.Entity.Migrations;
-
+    
     public partial class PatientRecordDataEntities : DbContext
     {
         public PatientRecordDataEntities()
@@ -35,16 +33,5 @@ namespace SoteCare.Models
         public virtual DbSet<Treatment> Treatment { get; set; }
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<VitalFunctions> VitalFunctions { get; set; }
-    }
-    public class Configuration : DbMigrationsConfiguration<PatientRecordDataEntities>
-    {
-        public Configuration() 
-        { 
-            AutomaticMigrationsEnabled = true;
-        }
-
-      
-      
-        
     }
 }
