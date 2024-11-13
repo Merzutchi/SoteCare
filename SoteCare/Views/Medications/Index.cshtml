@@ -16,23 +16,23 @@ else
     foreach (var medication in Model)
 
     {
-        <div class="medication-card">
-            <h2>@medication.MedicationName</h2>
-            <p><strong>Annos:</strong> @medication.Dosage</p>
-            <p><strong>Antotiheys:</strong>@medication.Frequency</p>
-            <p><strong>Annostelutapa</strong>@medication.RouteOfAdministration</p>
-            <p><strong>Ohjeet:</strong>@medication.Instructions</p>
-            <p><strong>Aloituspäivämäärä:</strong>@medication.StartDate?.ToString("dd-MM-yyyy")</p>
-            <p><strong>Lopetuspäivämäärä:</strong>@medication.EndDate?.ToString("dd-MM-yyyy")</p>
-            <p><strong>Tila:</strong>@medication.MedicationStatus</p>
+        <div id="Medications-Medication-card">
+            <h2 class="medication-name">@medication.MedicationName</h2>
+            <p class="medication-dosage"><strong>Annos:</strong> @medication.Dosage</p>
+            <p class="medication-frequency"><strong>Antotiheys:</strong>@medication.Frequency</p>
+            <p class="medication-route"><strong>Annostelutapa</strong>@medication.RouteOfAdministration</p>
+            <p class="medication-instruction"><strong>Ohjeet:</strong>@medication.Instructions</p>
+            <p class="medication-startdate"><strong>Aloituspäivämäärä:</strong>@medication.StartDate?.ToString("dd-MM-yyyy")</p>
+            <p class="medication-enddate"><strong>Lopetuspäivämäärä:</strong>@medication.EndDate?.ToString("dd-MM-yyyy")</p>
+            <p class="medication-status"><strong>Tila:</strong>@medication.MedicationStatus</p>
 
 
-            <button>
+            <button class="medication-edit-button">
                 <a href="@Url.Action("UpdateMedication", "Medications", new { medicationId = medication.MedicationID })"> Muokkaa </a>
             </button>
 
             <form action="@Url.Action("ConfirmDeleteMedication", "Medications", new { medicationId = medication.MedicationID })" method="post" style="display:inline;">
-                <button type="submit">poista</button>
+                <button type="submit" class="medication-delete-button">poista</button>
             </form>
         </div>
 
