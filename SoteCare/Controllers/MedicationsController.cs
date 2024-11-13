@@ -6,9 +6,9 @@ using System.Web.Mvc;
 
 namespace SoteCare.Controllers
 {
-    public class MedicationController : Controller
+    public class MedicationsController : Controller
     {
-        // GET: Medication
+        // GET: Medications
         public ActionResult Index()
         {
             return View();
