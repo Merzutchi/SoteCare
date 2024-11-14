@@ -1,0 +1,38 @@
+﻿@model SoteCare.Models.Medications
+
+@{
+    ViewBag.Title = "Medication Detail";  /*käännä/lisää joku titteli(?)*/
+}
+
+<h2>Medication Detail</h2>
+
+<div>
+    <h4>@Model.MedicationName</h4>
+    <hr/>
+    <dl class="row">
+        <dt class="col-sm-3"> Annos (mg)</dt>
+        <dd class="col-sm-9">@Model.Dosage</dd>
+
+        <dt class="col-sm-3"> Antotiheys</dt>
+        <dd class="col-sm-9">@Model.Frequency</dd>
+
+        <dt class="col-sm-3"> Aloituspäivä</dt>
+        <dd class="col-sm-9">@Model.StartDate?.ToShortDateString()</dd>
+
+        <dt class="col-sm-3"> Lopetuspäivä</dt>
+        <dd class="col-sm-9">@Model.EndDate?.ToShortDateString()</dd>
+
+        <dt class="col-sm-3"> Antotapa</dt>
+        <dd class="col-sm-9">@Model.RouteOfAdministration</dd>
+
+        <dt class="col-sm-3"> Ohjeet</dt>
+        <dd class="col-sm-9">@Model.Instructions</dd>
+
+        <dt class="col-sm-3"> Kommentit</dt>
+        <dd class="col-sm-9">@Model.Comments</dd>
+    </dl>
+</div>
+
+<p>
+    <a href="@Url.Action("MedicationsView", "Medications")" class="btn btn-primary">Takaisin Lääkkeet-sivulle</a>
+</p>

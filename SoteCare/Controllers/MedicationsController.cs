@@ -37,7 +37,7 @@ namespace SoteCare.Controllers
                     context.SaveChanges();
                 }
 
-                TempData["message"] = "Lääke Lisätty!";
+                TempData["message"] = "Lääke Lisätty.";
                 return RedirectToAction("MedicationsView");
             }
             return View(medication);
@@ -96,12 +96,12 @@ namespace SoteCare.Controllers
                         existingMedication.Comments = medication.Comments;
 
                         context.SaveChanges();
-
+                        TempData["message"] = "Tiedot päivitetty.";
                         return RedirectToAction("UpdateMedication");
                     }
                     else
                     {
-                        ModelState.AddModelError("", "");
+                        ModelState.AddModelError("", ""); /*lisää joku ilmotus juttu*/
                     }                       
                 }
             }
@@ -115,7 +115,7 @@ namespace SoteCare.Controllers
                 var medication = context.Medications.SingleOrDefault(x => x.MedicationID == id);
                 if (medication == null)
                 {
-                    TempData["error"] = "";
+                    TempData["error"] = "Ei näytettäviä tietoja.";
                     return RedirectToAction("MedicationView");
                 }
                 return View(medication);
@@ -136,17 +136,10 @@ namespace SoteCare.Controllers
                 }
                 else
                 {
-                    TempData["error"] = "Ei löytöjä.";
+                    TempData["error"] = "Ei osuvaa lääkettä.";
                 }
             }
             return RedirectToAction("MedicationsView");
         }
-
-
-
-
-
-
-
     }
 }

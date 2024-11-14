@@ -1,10 +1,46 @@
 ﻿@model IEnumerable<SoteCare.Models.Medications>
 @{
-    ViewBag.Title = "MedicationsView";
+    ViewBag.Title = "Lääkehallinta";
 }
 
-<h2>MedicationsView</h2>
+<h2>Lääkehallinta</h2>
 
+@if (TempData["message"] != null)
+ {
+    <div class="alert alert-success">@TempData["message"]</div>
+ }
+@if (TempData["error"] != null)
+ {
+    <div class="alert alert-danger">@TempData["error"]</div>
+ }
+
+<table class="medication-table">
+    <thead>
+        <tr>
+            <th>Nimi: </th>
+            <th>Annostus (mg): </th>
+            <th>Antotiheys: </th>
+            <th>Ohjeet: </th>
+            <th>Actions: </th>   @*käännä suomeks*@           
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var med in Model)
+            {
+                <tr>
+                    <td>@med.MedicationName</td>
+                    <td>@med.Dosage</td>
+                    <td>@med.Frequency</td>
+                    <td>@med.Instructions</td>
+                    <td>
+                        <a href="@Url.Action("MedicationsDetail", "Medications", new { id = med.MedicationID})" class="btn btn-info">Lisätiedot</a>
+                        <a href="@Url.Action("UpdateMedication", "Medications", new { MedicationID = med.MedicationID })" class="btn btn-warning">Muokkaa</a>
+                        <a href="@Url.Action("DeleteMedication", "Medications", new { id = med.MedicationID})" class="btn btn-danger" onclick="return confirm('Olet poistamassa tämän lääkkeen. Oletko varma?');">Poista</a>
+                    </td>
+                </tr>
+            }
+    </tbody>
+</table>
 
 
 
