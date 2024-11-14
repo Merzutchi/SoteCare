@@ -41,6 +41,14 @@
             <td>@Html.DisplayFor(modelItem => item.EmergencyContactName)</td>
             <td>@Html.DisplayFor(modelItem => item.EmergencyContactPhone)</td>
             <td>
+                @* NUO NAPPULAT NYT TOIMII ATM mut jos ei oo kirjattu jollekki potilaalle mtn ni tulee sit errorii viel *@
+
+                <a class="btn btn-outline-primary" href="~/VitalFunctions/Index/@item.PatientID">elintoiminto etusivu</a>
+                <a class="btn btn-outline-primary" href="~/VitalFunctions/Details/@item.PatientID">elintoiminto detail</a>
+
+                @* NUO NAPPULAT NYT TOIMII ATM mut jos ei oo kirjattu jollekki potilaalle mtn ni tulee sit errorii viel *@
+
+
                 <a class="btn btn-outline-secondary btn-sm" href="~/Patients/Edit/@item.PatientID">
                     Edit
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">

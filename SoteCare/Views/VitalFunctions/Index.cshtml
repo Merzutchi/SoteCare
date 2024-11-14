@@ -1,0 +1,75 @@
+﻿@model IEnumerable<SoteCare.Models.VitalFunction>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DateTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HeartRate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SystolicBloodPressure)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DiastolicBloodPressure)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RespiratoryRate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Temperature)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OxygenSaturation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Patient.FirstName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HeartRate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SystolicBloodPressure)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DiastolicBloodPressure)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RespiratoryRate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Temperature)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OxygenSaturation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Patient.FirstName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.VitalFunctionID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.VitalFunctionID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.VitalFunctionID })
+        </td>
+    </tr>
+}
+
+</table>

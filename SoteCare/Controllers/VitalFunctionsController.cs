@@ -10,121 +10,112 @@ using SoteCare.Models;
 
 namespace SoteCare.Controllers
 {
-    public class PatientsController : Controller
+    public class VitalFunctionsController : Controller
     {
         private PatientRecordDataEntities db = new PatientRecordDataEntities();
 
-        // GET: Patients
+        // GET: VitalFunctions
         public ActionResult Index()
         {
-            return View(db.Patients.ToList());
+            var vitalFunctions = db.VitalFunctions.Include(v => v.Patient);
+            return View(vitalFunctions.ToList());
         }
 
-        // GET: Patients/Details/5
+        // GET: VitalFunctions/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Patient patient = db.Patients.Find(id);
-            if (patient == null)
+            VitalFunction vitalFunction = db.VitalFunctions.Find(id);
+            if (vitalFunction == null)
             {
                 return HttpNotFound();
             }
-            return View(patient);
+            return View(vitalFunction);
         }
 
-        public ActionResult VitalFunctions(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            VitalFunction patient = db.VitalFunctions.Find(id);
-            if (patient == null)
-            {
-                return HttpNotFound();
-            }
-            return View(patient);
-        }
-
-        // GET: Patients/Create
+        // GET: VitalFunctions/Create
         public ActionResult Create()
         {
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName");
             return View();
         }
 
-        // POST: Patients/Create
+        // POST: VitalFunctions/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PatientID,FirstName,LastName,DateOfBirth,Gender,Address,PhoneNumber,Email,EmergencyContactName,EmergencyContactPhone")] Patient patient)
+        public ActionResult Create([Bind(Include = "VitalFunctionID,PatientID,DateTime,HeartRate,SystolicBloodPressure,DiastolicBloodPressure,RespiratoryRate,Temperature,OxygenSaturation")] VitalFunction vitalFunction)
         {
             if (ModelState.IsValid)
             {
-                db.Patients.Add(patient);
+                db.VitalFunctions.Add(vitalFunction);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(patient);
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", vitalFunction.PatientID);
+            return View(vitalFunction);
         }
 
-        // GET: Patients/Edit/5
+        // GET: VitalFunctions/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Patient patient = db.Patients.Find(id);
-            if (patient == null)
+            VitalFunction vitalFunction = db.VitalFunctions.Find(id);
+            if (vitalFunction == null)
             {
                 return HttpNotFound();
             }
-            return View(patient);
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", vitalFunction.PatientID);
+            return View(vitalFunction);
         }
 
-        // POST: Patients/Edit/5
+        // POST: VitalFunctions/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PatientID,FirstName,LastName,DateOfBirth,Gender,Address,PhoneNumber,Email,EmergencyContactName,EmergencyContactPhone")] Patient patient)
+        public ActionResult Edit([Bind(Include = "VitalFunctionID,PatientID,DateTime,HeartRate,SystolicBloodPressure,DiastolicBloodPressure,RespiratoryRate,Temperature,OxygenSaturation")] VitalFunction vitalFunction)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(patient).State = EntityState.Modified;
+                db.Entry(vitalFunction).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(patient);
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", vitalFunction.PatientID);
+            return View(vitalFunction);
         }
 
-        // GET: Patients/Delete/5
+        // GET: VitalFunctions/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Patient patient = db.Patients.Find(id);
-            if (patient == null)
+            VitalFunction vitalFunction = db.VitalFunctions.Find(id);
+            if (vitalFunction == null)
             {
                 return HttpNotFound();
             }
-            return View(patient);
+            return View(vitalFunction);
         }
 
-        // POST: Patients/Delete/5
+        // POST: VitalFunctions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Patient patient = db.Patients.Find(id);
-            db.Patients.Remove(patient);
+            VitalFunction vitalFunction = db.VitalFunctions.Find(id);
+            db.VitalFunctions.Remove(vitalFunction);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
