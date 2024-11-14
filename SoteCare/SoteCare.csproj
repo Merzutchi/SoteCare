@@ -121,6 +121,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PatientsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -149,10 +150,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SoteCareData.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SoteCareData.Designer.cs">
+    <Compile Include="Models\PatientRecordData.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SoteCareData.edmx</DependentUpon>
+      <DependentUpon>PatientRecordData.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Treatment.cs">
       <DependentUpon>SoteCareData.tt</DependentUpon>
@@ -188,19 +189,19 @@
     <Content Include="Models\SoteCareData.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SoteCareData.Context.cs</LastGenOutput>
-      <DependentUpon>SoteCareData.edmx</DependentUpon>
+      <DependentUpon>PatientRecordData.edmx</DependentUpon>
     </Content>
     <Content Include="Models\SoteCareData.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SoteCareData.edmx</DependentUpon>
+      <DependentUpon>PatientRecordData.edmx</DependentUpon>
       <LastGenOutput>SoteCareData.cs</LastGenOutput>
     </Content>
-    <EntityDeploy Include="Models\SoteCareData.edmx">
+    <EntityDeploy Include="Models\PatientRecordData.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>SoteCareData.Designer.cs</LastGenOutput>
+      <LastGenOutput>PatientRecordData.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\SoteCareData.edmx.diagram">
-      <DependentUpon>SoteCareData.edmx</DependentUpon>
+    <Content Include="Models\PatientRecordData.edmx.diagram">
+      <DependentUpon>PatientRecordData.edmx</DependentUpon>
     </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -233,7 +234,11 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\Contact2.cshtml" />
+    <Content Include="Views\Patients\Create.cshtml" />
+    <Content Include="Views\Patients\Delete.cshtml" />
+    <Content Include="Views\Patients\Details.cshtml" />
+    <Content Include="Views\Patients\Edit.cshtml" />
+    <Content Include="Views\Patients\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

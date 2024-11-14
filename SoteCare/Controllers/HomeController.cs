@@ -27,11 +27,11 @@ namespace SoteCare.Controllers
             return View();
         }
 
-        public ActionResult Contact2()
+        public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
 
-            return View(db.Patients.ToList());
+            return View();
         }
     }
 }
