@@ -43,6 +43,21 @@ namespace SoteCare.Controllers
             return View(medication);
         }
 
+        public ActionResult PatientMedication(int patientID)
+        {
+            using (var context = new PatientRecordDataEntities())
+            { 
+                var medications = context.Medications.Where(m => m.PatientID == patientID).ToList();
+
+                var patient = context.Patients.SingleOrDefault(p => p.PatientID == patientID);
+
+                ViewBag.PatientName = $"{patient?.FirstName} {patient?.LastName}";
+                ViewBag.PatientID = patientID;
+
+                return View(patient);
+            }
+        }
+
         [HttpGet]
         public ActionResult GetMedications()
         {
