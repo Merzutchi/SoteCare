@@ -22,23 +22,25 @@ namespace SoteCare.Controllers
 
         public ActionResult AddMedication()
         {
-            return View();
+            return View(new Medications());
         }
 
         [HttpPost]
-        public ActionResult AddMedication(Medications medications)
+        [ValidateAntiForgeryToken]
+        public ActionResult AddMedication(Medications medication)
         {
-            using (var context = new PatientRecordDataEntities())
+            if (ModelState.IsValid) 
             {
-                context.Medications.Add(medications);
+                using (var context = new PatientRecordDataEntities())
+                {
+                    context.Medications.Add(medication);
+                    context.SaveChanges();
+                }
 
-                context.SaveChanges();
+                TempData["message"] = "Lääke Lisätty!";
+                return RedirectToAction("MedicationsView");
             }
-            string message = "Created the record successfully";
-
-            ViewBag.Message = message;
-            return View();
-
+            return View(medication);
         }
 
         [HttpGet]
@@ -69,7 +71,7 @@ namespace SoteCare.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UpdateMedication(int MedicationID, Medications medication)
+        public ActionResult UpdateMedication(Medications medication)
         {
             if (ModelState.IsValid)
             {
@@ -99,12 +101,52 @@ namespace SoteCare.Controllers
                     }
                     else
                     {
-                        return View(medication);
+                        ModelState.AddModelError("", "");
                     }                       
                 }
             }
-            return View(medication);
+            return View(medication);            
         }
+
+        public ActionResult MedicationDetails(int id)
+        {
+            using (var context = new PatientRecordDataEntities())
+            {
+                var medication = context.Medications.SingleOrDefault(x => x.MedicationID == id);
+                if (medication == null)
+                {
+                    TempData["error"] = "";
+                    return RedirectToAction("MedicationView");
+                }
+                return View(medication);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult DeleteMedication(int id)
+        { 
+            using (var context = new PatientRecordDataEntities())
+            {
+                var medication = context.Medications.SingleOrDefault(x => x.MedicationID == id);
+                if (medication != null)
+                {
+                    context.Medications.Remove(medication);
+                    context.SaveChanges();
+                    TempData["message"] = "Lääke poistettu.";
+                }
+                else
+                {
+                    TempData["error"] = "Ei löytöjä.";
+                }
+            }
+            return RedirectToAction("MedicationsView");
+        }
+
+
+
+
+
+
 
     }
 }
