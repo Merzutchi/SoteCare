@@ -1,15 +1,25 @@
 ﻿@model IEnumerable<SoteCare.Models.Medications>
+
 @{
     ViewBag.Title = "MedicationsView";
 }
 
 <h2>MedicationsView</h2>
 
-@using(Html.BeginForm())
-            {
-                @Html.HiddenFor(model => model.MedicationID)
+@using (Html.BeginForm())
+{
+    foreach (var medication in Model)
+    {
+        @Html.HiddenFor(m => medication.MedicationID) 
 
-    <div>@Html.LabelForModel(model => model.MedicationName)</div>
+        <div>@Html.LabelFor(m => medication.MedicationName)</div> 
+        <div>@Html.EditorFor(m => medication.MedicationName)</div> 
+
+        
+    }
+
+    <button type="submit">Submit</button>
+}
 
 
 
@@ -22,4 +32,5 @@
 
 
 
-            }
+
+            
