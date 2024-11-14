@@ -20,13 +20,13 @@ namespace SoteCare.Controllers
             
         }
 
-        public ActionResult Create()
+        public ActionResult AddMedication()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult Create(Medications medications)
+        public ActionResult AddMedication(Medications medications)
         {
             using (var context = new PatientRecordDataEntities()) 
             {
@@ -39,10 +39,17 @@ namespace SoteCare.Controllers
             ViewBag.Message = message;
             return View();
 
-
-
         }
 
+        [HttpGet]
+        public ActionResult GetMedications() 
+        {
+            using (var context = new PatientRecordDataEntities()) 
+            {
+                List<Medications> data = context.Medications.ToList();
+                return View(data);
+            }
+        }
 
 
 
