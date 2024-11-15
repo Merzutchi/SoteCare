@@ -1,7 +1,4 @@
 ﻿@model IEnumerable<SoteCare.Models.Medications>
-@{
-    ViewBag.Title = "Lääkehallinta";
-}
 
 <h2>Lääkehallinta</h2>
 
@@ -46,15 +43,15 @@
             foreach (var medication in Model)
             {
                 <tr>
-                    <td>@medication.Patients.FirstName @medication.Patients.LastName</td> 
+                    <td>@medication.Patients.FirstName @medication.Patients.LastName</td>
                     <td>@medication.MedicationName</td>
                     <td>@medication.Dosage</td>
                     <td>@medication.Frequency</td>
                     <td>@medication.Instructions</td>
                     <td>
-                        <a href="@Url.Action("MedicationDetails", "Medications", new { id = medication.MedicationID })">View Details</a>
+                        <a href="@Url.Action("MedicationDetails", "Medications", new { id = medication.MedicationID })">View Medication Details</a>
                         <a href="@Url.Action("UpdateMedication", "Medications", new { MedicationID = medication.MedicationID })" class="btn btn-warning">Muokkaa</a>
-                        <a href="@Url.Action("DeleteMedication", "Medications", new { id = medication.MedicationID})" class="btn btn-danger" onclick="return confirm('Olet poistamassa tämän lääkkeen. Oletko varma?');">Poista</a>
+                        <a href="@Url.Action("DeleteMedications", "Medications", new { id = medication.MedicationID})" class="btn btn-danger" onclick="return confirm('Olet poistamassa tämän lääkkeen. Oletko varma?');">Poista</a>
                     </td>
                 </tr>
             }
