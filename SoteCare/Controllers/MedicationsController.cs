@@ -24,7 +24,7 @@ namespace SoteCare.Controllers
                         m.Frequency,
                         m.Instructions,
                         m.PatientID, // Add PatientID here
-                        PatientName = m.Patients.FirstName + " " + m.Patients.LastName // Assuming you have Patient table linked
+                        PatientName = m.Patients.FirstName + " " + m.Patients.LastName 
                     })
                     .ToList();
 
