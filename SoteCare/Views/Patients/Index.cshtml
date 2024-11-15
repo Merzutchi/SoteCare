@@ -43,8 +43,10 @@
             <td>
                 @* NUO NAPPULAT NYT TOIMII ATM mut jos ei oo kirjattu jollekki potilaalle mtn ni tulee sit errorii viel *@
 
-                <a class="btn btn-outline-primary" href="~/VitalFunctions/Index/@item.PatientID">elintoiminto etusivu</a>
-                <a class="btn btn-outline-primary" href="~/VitalFunctions/Details/@item.PatientID">elintoiminto detail</a>
+
+                <a class="btn btn-outline-primary btn-sm" href="~/VitalFunctions/Details/@item.PatientID">elintoiminto detail</a> @* <--- toho haluisin et näkyis viimeisin detail/kirjaus tapahtuma*@
+                <a class="btn btn-outline-primary btn-sm" href="~/VitalFunctions/Create/@item.PatientID">elintoiminto kirjaus</a>**
+                <a class="btn btn-outline-danger btn-sm" href="~/PatientHistories/Details/@item.PatientID">Potilaan kirjaushistoria</a>**
 
                 @* NUO NAPPULAT NYT TOIMII ATM mut jos ei oo kirjattu jollekki potilaalle mtn ni tulee sit errorii viel *@
 
