@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 using SoteCare.Models;
 
@@ -15,11 +16,38 @@ namespace SoteCare.Controllers
         private PatientRecordDataEntities db = new PatientRecordDataEntities();
 
         // GET: VitalFunctions
-        public ActionResult Index()
+        public ActionResult Index(string sortFunctions)
         {
+
+            ViewBag.CurrentSort = sortFunctions;
+            ViewBag.DateTimeSortParm = sortFunctions == "DateTime" ? "datetime_desc" : "DateTime";
+
+            
+
             var vitalFunctions = db.VitalFunctions.Include(v => v.Patient);
+
+            switch (sortFunctions)
+            {
+                case "DateTime":
+                    vitalFunctions = vitalFunctions.OrderBy(v => v.DateTime);
+                    break;
+
+                case "datetime_desc":
+                    vitalFunctions = vitalFunctions.OrderByDescending(v => v.DateTime);
+                    break;
+
+                default:
+                    vitalFunctions = vitalFunctions.OrderByDescending(v => v.DateTime);
+                    break;
+
+            }
+
+
+
             return View(vitalFunctions.ToList());
         }
+
+
 
         // GET: VitalFunctions/Details/5
         public ActionResult Details(int? id)
@@ -33,6 +61,10 @@ namespace SoteCare.Controllers
             {
                 return HttpNotFound();
             }
+
+            //var latestDate = db.VitalFunctions.OrderByDescending(v => v.DateTime).FirstOrDefault();
+            //ViewBag.LatestDate = latestDate?.PatientID;       EI TOIMI IHA VIEL AINAKAA KU KOITTAA SAADA UUSINTA DETAILII NÄKYY POTILASLISTAA
+
             return View(vitalFunction);
         }
 

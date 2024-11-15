@@ -17,7 +17,7 @@
 </p>
 <table class="table">
     <tr>
-        <th>@Html.DisplayNameFor(model => model.DateTime)</th>
+        <th>@Html.ActionLink("DateTime", "Index", new { sortFunctions = ViewBag.DateTimeSortParm })</th>
         <th>@Html.DisplayNameFor(model => model.HeartRate)</th>
         <th>@Html.DisplayNameFor(model => model.SystolicBloodPressure)</th>
         <th>@Html.DisplayNameFor(model => model.DiastolicBloodPressure)</th>
