@@ -14,10 +14,22 @@ namespace SoteCare.Controllers
         {
             using (var context = new PatientRecordDataEntities())
             {
-                var medications = context.Medications.Where(m => string.IsNullOrEmpty(searchTerm)|| m.MedicationName.Contains(searchTerm)).ToList();
+                var medications = context.Medications
+                    .Where(m => string.IsNullOrEmpty(searchTerm) || m.MedicationName.Contains(searchTerm))
+                    .Select(m => new
+                    {
+                        m.MedicationID,
+                        m.MedicationName,
+                        m.Dosage,
+                        m.Frequency,
+                        m.Instructions,
+                        m.PatientID, // Add PatientID here
+                        PatientName = m.Patients.FirstName + " " + m.Patients.LastName // Assuming you have Patient table linked
+                    })
+                    .ToList();
+
                 return View(medications);
             }
-
         }
 
         //public ActionResult PatientList()
@@ -27,47 +39,7 @@ namespace SoteCare.Controllers
         //        var patients = context.Patients.ToList();
         //        return View(patients);
         //    }
-        //}
-
-        //[HttpGet]
-        //public ActionResult AddPatientMedication(int patientID) //Lisää potilaalle lääkkeen
-        //{
-        //    using (var context = new PatientRecordDataEntities())
-        //    {
-        //        var patient = context.Patients.SingleOrDefault(p => p.PatientID == patientID);
-
-        //        if(patient == null)
-        //        {
-        //           return HttpNotFound();
-        //        }
-
-        //        var medication = new Medications { PatientID = patientID };
-
-        //        ViewBag.PatientID = patient.PatientID;
-        //        ViewBag.PatientName = $"{patient.FirstName} { patient.LastName}";
-
-        //        return View(medication);
-
-        //    }
-        //}
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult AddPatientMedication(Medications medication)
-        //{
-        //    if(ModelState.IsValid)
-        //    {
-        //        using (var context = new PatientRecordDataEntities())
-        //        {
-        //            context.Medications.Add(medication);
-        //            context.SaveChanges();
-
-        //            TempData["message"] = "Lääke lisätty potilaalle.";
-        //            return RedirectToAction("AddPatientMedication", new { patientID = medication.PatientID });
-        //        }
-        //    }
-        //    return View(medication);
-        //}
+        //}        
 
         [HttpGet]
         public ActionResult AddMedications()

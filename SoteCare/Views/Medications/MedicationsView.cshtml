@@ -7,7 +7,8 @@
 
 @using (Html.BeginForm("MedicationsView", "Medications", FormMethod.Get))
 {
-    
+    <input type="text" name="searchTerm" class="form-control" placeholder="Search Medication" value="@Request["searchTerm"]" />
+    <button type="submit" class="btn btn-primary">Search</button>
 }
 
 @if (TempData["message"] != null)
@@ -26,6 +27,7 @@
     <thead>
         <tr>
             <th>Nimi</th>
+            <th>Lääkitys</th>
             <th>Annostus (mg)</th>
             <th>Antotiheys</th>
             <th>Ohjeet</th>
@@ -36,7 +38,7 @@
         @if (!Model.Any())
         {
             <tr>
-                <td colspan="5" class="text-center">Ei näytettäviä lääkkeitä.</td>
+                <td colspan="6" class="text-center">Ei näytettäviä lääkkeitä.</td>
             </tr>
         }
         else
@@ -44,6 +46,7 @@
             foreach (var medication in Model)
             {
                 <tr>
+                    <td>@medication.Patients.FirstName @medication.Patients.LastName</td> 
                     <td>@medication.MedicationName</td>
                     <td>@medication.Dosage</td>
                     <td>@medication.Frequency</td>
