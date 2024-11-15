@@ -1,0 +1,48 @@
+﻿@model SoteCare.Models.Medications
+
+
+<h2>Lisää lääke potilaalle: @ViewBag.PatientName</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(m => m.PatientID)
+
+    <div>
+        @Html.LabelFor(m => m.MedicationName, "Lääkkeen nimi")
+        @Html.TextBoxFor(m => m.MedicationName, new { @class = "form-control" })
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.Dosage, "Annostus (mg)")
+        @Html.TextBoxFor(m => m.Dosage, new { @class = "form-control" })
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.Frequency, "Antotiheys")
+        @Html.TextBoxFor(m => m.Frequency, new { @class = "form-control" })
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.StartDate, "Aloituspäivä")
+        @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control", type = "date" })
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.EndDate, "Lopetuspäivä")
+        @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control", type = "date" })
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.RouteOfAdministration, "Antotapa")
+        @Html.TextBoxFor(m => m.RouteOfAdministration, new { @class = "form-control" })
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.Instructions, "Ohjeet")
+        @Html.TextBoxFor(m => m.Instructions, new { @class = "form-control" })
+    </div>
+
+    <a href="@Url.Action("PatientMedication", "Medications", new { patientID = ViewBag.PatientID })" class="btn btn-secondary">Takaisin potilaan lääkkeet</a>
+    <button type="submit" class="btn btn-primary">Tallenna</button>
+}
+

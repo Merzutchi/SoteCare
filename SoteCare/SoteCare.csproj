@@ -238,6 +238,8 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Medications\MedicationsView.cshtml" />
     <Content Include="Views\Medications\MedicationsDetail.cshtml" />
+    <Content Include="Views\Medications\AddPatientMedication.cshtml" />
+    <Content Include="Views\Medications\AddMedications.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

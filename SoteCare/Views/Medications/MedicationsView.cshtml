@@ -7,14 +7,16 @@
 
 @if (TempData["message"] != null)
  {
-    <div class="alert alert-success">@TempData["message"]</div>
+    <div class="alert alert-success" role="alert">@TempData["message"]</div>
  }
 @if (TempData["error"] != null)
  {
-    <div class="alert alert-danger">@TempData["error"]</div>
+    <div class="alert alert-danger" role="alert">@TempData["error"]</div>
  }
 
-<table class="medication-table">
+<a href="@Url.Action("AddMedication", "Medications")" class="btn btn-primary mb-3">Add Medication</a>
+
+<table class="table table-striped table-bordered medication-table">
     <thead>
         <tr>
             <th>Nimi </th>
@@ -25,20 +27,29 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var med in Model)
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="5" class="text-center">Ei näytettäviä lääkkeitä.</td>
+            </tr>
+        }
+        else
+        {
+            foreach (var medication in Model)
             {
                 <tr>
-                    <td>@med.MedicationName</td>
-                    <td>@med.Dosage</td>
-                    <td>@med.Frequency</td>
-                    <td>@med.Instructions</td>
+                    <td>@medication.MedicationName</td>
+                    <td>@medication.Dosage</td>
+                    <td>@medication.Frequency</td>
+                    <td>@medication.Instructions</td>
                     <td>
-                        <a href="@Url.Action("MedicationsDetail", "Medications", new { id = med.MedicationID})" class="btn btn-info">Lisätiedot</a>
-                        <a href="@Url.Action("UpdateMedication", "Medications", new { MedicationID = med.MedicationID })" class="btn btn-warning">Muokkaa</a>
-                        <a href="@Url.Action("DeleteMedication", "Medications", new { id = med.MedicationID})" class="btn btn-danger" onclick="return confirm('Olet poistamassa tämän lääkkeen. Oletko varma?');">Poista</a>
+                        <a href="@Url.Action("MedicationDetails", "Medications", new { id = medication.MedicationID })">View Details</a>
+                        <a href="@Url.Action("UpdateMedication", "Medications", new { MedicationID = medication.MedicationID })" class="btn btn-warning">Muokkaa</a>
+                        <a href="@Url.Action("DeleteMedication", "Medications", new { id = medication.MedicationID})" class="btn btn-danger" onclick="return confirm('Olet poistamassa tämän lääkkeen. Oletko varma?');">Poista</a>
                     </td>
                 </tr>
             }
+        }
     </tbody>
 </table>
 

@@ -20,14 +20,65 @@ namespace SoteCare.Controllers
 
         }
 
-        public ActionResult AddMedication()
+        public ActionResult PatientList()
+        {
+            using (var context = new PatientRecordDataEntities())
+            { 
+                var patients = context.Patients.ToList();
+                return View(patients);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult AddPatientMedication(int patientID) //Lisää potilaalle lääkkeen
+        {
+            using (var context = new PatientRecordDataEntities())
+            {
+                var patient = context.Patients.SingleOrDefault(p => p.PatientID == patientID);
+
+                if(patient == null)
+                {
+                   return HttpNotFound();
+                }
+
+                var medication = new Medications { PatientID = patientID };
+
+                ViewBag.PatientID = patient.PatientID;
+                ViewBag.PatientName = $"{patient.FirstName} { patient.LastName}";
+
+                return View(medication);
+                
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddPatientMedication(Medications medication)
+        {
+            if(ModelState.IsValid)
+            {
+                using (var context = new PatientRecordDataEntities())
+                {
+                    context.Medications.Add(medication);
+                    context.SaveChanges();
+
+                    TempData["message"] = "Lääke lisätty potilaalle.";
+                    return RedirectToAction("AddPatientMedication", new { patientID = medication.PatientID });
+                }
+            }
+            return View(medication);
+        }
+
+
+        [HttpGet] //Lisää lääkkeitä lääke-listaan
+        public ActionResult AddMedications()
         {
             return View(new Medications());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddMedication(Medications medication)
+        public ActionResult AddMedications(Medications medication)
         {
             if (ModelState.IsValid) 
             {
@@ -41,21 +92,6 @@ namespace SoteCare.Controllers
                 return RedirectToAction("MedicationsView");
             }
             return View(medication);
-        }
-
-        public ActionResult PatientMedication(int patientID)
-        {
-            using (var context = new PatientRecordDataEntities())
-            { 
-                var medications = context.Medications.Where(m => m.PatientID == patientID).ToList();
-
-                var patient = context.Patients.SingleOrDefault(p => p.PatientID == patientID);
-
-                ViewBag.PatientName = $"{patient?.FirstName} {patient?.LastName}";
-                ViewBag.PatientID = patientID;
-
-                return View(patient);
-            }
         }
 
         [HttpGet]
@@ -72,16 +108,15 @@ namespace SoteCare.Controllers
         {
             using (var context = new PatientRecordDataEntities())
             {
-                var data = context.Medications.Where(x => x.MedicationID == MedicationID).SingleOrDefault();
+                var medication = context.Medications.SingleOrDefault(x => x.MedicationID == MedicationID);
 
-                if (data == null)
+                if (medication == null)
                 {
                     return HttpNotFound();
                 }
 
-                return View(data);
+                return View(medication);
             }
-
         }
 
         [HttpPost]
@@ -116,7 +151,7 @@ namespace SoteCare.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("", ""); /*lisää joku ilmotus juttu*/
+                        ModelState.AddModelError("", "Lääkettä ei löytynyt"); /*lisää joku ilmotus juttu*/
                     }                       
                 }
             }
@@ -131,7 +166,7 @@ namespace SoteCare.Controllers
                 if (medication == null)
                 {
                     TempData["error"] = "Ei näytettäviä tietoja.";
-                    return RedirectToAction("MedicationView");
+                    return RedirectToAction("MedicationsView");
                 }
                 return View(medication);
             }
