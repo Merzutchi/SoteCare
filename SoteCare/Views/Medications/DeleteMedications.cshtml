@@ -1,0 +1,32 @@
+﻿@model SoteCare.Models.Medications
+
+@{
+    ViewBag.Title = "Confirm Deletion";
+}
+
+<h2>Are you sure you want to delete this medication?</h2>
+
+<div>
+    <strong>Medication Name:</strong> @Model.MedicationName
+</div>
+<div>
+    <strong>Dosage:</strong> @Model.Dosage
+</div>
+<div>
+    <strong>Frequency:</strong> @Model.Frequency
+</div>
+<div>
+    <strong>Instructions:</strong> @Model.Instructions
+</div>
+<div>
+    <strong>Patient:</strong> @Model.Patients.FirstName @Model.Patients.LastName
+</div>
+
+@using (Html.BeginForm("DeleteMedicationConfirmed", "Medications", FormMethod.Post))
+ {
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.MedicationID) 
+
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a href="@Url.Action("MedicationsView", "Medications")" class="btn btn-secondary">Cancel</a>
+ }

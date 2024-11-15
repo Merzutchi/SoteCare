@@ -240,6 +240,7 @@
     <Content Include="Views\Medications\MedicationsDetail.cshtml" />
     <Content Include="Views\Medications\AddMedications.cshtml" />
     <Content Include="Views\Medications\UpdateMedications.cshtml" />
+    <Content Include="Views\Medications\DeleteMedications.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

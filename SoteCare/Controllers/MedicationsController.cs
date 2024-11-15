@@ -158,12 +158,28 @@ namespace SoteCare.Controllers
 
         [HttpGet]
         public ActionResult DeleteMedication(int id)
-        { 
-           using (var context = new PatientRecordDataEntities())
-           {
+        {
+            using (var context = new PatientRecordDataEntities())
+            {
                 var medication = context.Medications.SingleOrDefault(x => x.MedicationID == id);
+                if (medication == null)
+                {
+                    TempData["error"] = "Medication not found.";
+                    return RedirectToAction("MedicationsView");
+                }                
+                return View(medication);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteMedicationConfirm(int MedicationID)
+        {
+            using (var context = new PatientRecordDataEntities())
+            {
+                var medication = context.Medications.SingleOrDefault(x => x.MedicationID == MedicationID);
                 if (medication != null)
-               {
+                {
                     context.Medications.Remove(medication);
                     context.SaveChanges();
                     TempData["message"] = "Lääke poistettu.";
@@ -172,7 +188,7 @@ namespace SoteCare.Controllers
                 {
                     TempData["error"] = "Ei osuvaa lääkettä.";
                 }
-           }
+            }
             return RedirectToAction("MedicationsView");
         }
     }
