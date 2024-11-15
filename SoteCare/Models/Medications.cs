@@ -11,7 +11,8 @@ namespace SoteCare.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Medications
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,17 +23,39 @@ namespace SoteCare.Models
     
         public int MedicationID { get; set; }
         public int PatientID { get; set; }
+
+        [Display(Name = "L‰‰kkeen Nimi")]
         public string MedicationName { get; set; }
+
+        [Display(Name = "Annos")]
         public string Dosage { get; set; }
+
+        [Display(Name = "Aloitusp‰iv‰m‰‰r‰")]
         public Nullable<System.DateTime> StartDate { get; set; }
+
+        [Display(Name = "Lopetusp‰iv‰m‰‰r‰")]
         public Nullable<System.DateTime> EndDate { get; set; }
+
+        [Display(Name = "Annosv‰li")]
         public string Frequency { get; set; }
+
+        [Display(Name = "Antotapa")]
         public string RouteOfAdministration { get; set; }
+
+        [Display(Name = "Ohjeet")]
         public string Instructions { get; set; }
         public Nullable<int> DoctorID { get; set; }
+
+        [Display(Name = "L‰‰kkeen t‰ydennystila")]
         public string RefillStatus { get; set; }
+
+        [Display(Name = "L‰‰kkeen tila")]
         public string MedicationStatus { get; set; }
+
+        [Display(Name = "Allergiat")]
         public string Allergies { get; set; }
+
+        [Display(Name = "Kommentit")]
         public string Comments { get; set; }
     
         public virtual Patients Patients { get; set; }
