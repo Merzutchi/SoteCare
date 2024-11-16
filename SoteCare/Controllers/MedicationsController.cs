@@ -14,6 +14,21 @@ namespace SoteCare.Controllers
     {
         private readonly PatientRecordDataEntities context = new PatientRecordDataEntities();
 
+        public ActionResult MedicationsView(string searchTerm)
+        {
+            var medications = context.Medications
+                                     .Include(m => m.Patients)
+                                     .Include(m => m.Treatment)
+                                     .Include(m => m.Dosages)
+                                     .Where(m => string.IsNullOrEmpty(searchTerm) ||
+                                                m.MedicationName.Contains(searchTerm) ||
+                                                m.Patients.FirstName.Contains(searchTerm) ||
+                                                m.Patients.LastName.Contains(searchTerm))
+                                     .ToList();
+
+            return View(medications);
+        }
+
         public ActionResult CreateMedication()
         {
             ViewBag.Patients = new SelectList(context.Patients.Select(p => new { p.PatientID, FullName = p.FirstName + "" + p.LastName }).ToList(), "PatientID", "FullName");
@@ -26,31 +41,39 @@ namespace SoteCare.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 if (medication.PatientID == 0)
                 {
                     ModelState.AddModelError("PatientID", "Valitse potilas.");
                     return View(medication);
                 }
 
-                context.Medications.Add(medication);
-                context.SaveChanges();
-
-                if (dosages != null)
+                try
                 {
-                    foreach (var dosage in dosages)
-                    { 
-                        dosage.MedicationID = medication.MedicationID;
-                        context.SaveChanges();
+                    
+                    context.Medications.Add(medication);
+                    context.SaveChanges();
+
+                    if (dosages != null)
+                    {
+                        foreach (var dosage in dosages)
+                        {
+                            dosage.MedicationID = medication.MedicationID;
+                            context.Dosages.Add(dosage); 
+                        }
+                        context.SaveChanges(); 
                     }
+                    TempData["message"] = "Medication and dosages added successfully!";
+                    return RedirectToAction("MedicationsView");
                 }
-                TempData["message"] = "";
-                return RedirectToAction("MedicationsView");                   
+
+                catch 
+                {
+                    ModelState.AddModelError("", "An error occurred while saving the medication.");
+                }
             }
-            ViewBag.Patients = new SelectList(context.Patients.Select(p => new { p.PatientID, FullName = p.FirstName + "" + p.LastName }).ToList(), "PatientID", "FullName");
+            ViewBag.Patients = new SelectList(context.Patients.Select(p => new { p.PatientID, FullName = p.FirstName + " " + p.LastName }).ToList(), "PatientID", "FullName");
             return View(medication);
         }
-
-
-
     }
 }
