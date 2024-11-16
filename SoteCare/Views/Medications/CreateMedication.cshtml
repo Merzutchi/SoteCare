@@ -1,0 +1,62 @@
+﻿@model SoteCare.Models.Medications
+
+<h2>Add Medication</h2>
+
+@using (Html.BeginForm("CreateMedication", "Medications", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="PatientID">Patient</label>
+        @Html.DropDownList("PatientID", (SelectList)ViewBag.Patients, "Select Patient", new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label for="MedicationName">Medication Name</label>
+        @Html.TextBoxFor(m => m.MedicationName, new { @class = "form-control", placeholder = "Medication Name" })
+    </div>
+
+    <div class="form-group">
+        <label for="RefillStatus">Refill Status</label>
+        @Html.TextBoxFor(m => m.RefillStatus, new { @class = "form-control", placeholder = "Refill Status" })
+    </div>
+
+    <h3>Dosage Information</h3>
+    <div id="dosage-section">
+        <div class="dosage-item">
+            <label>Dosage Amount</label>
+            <input type="text" name="dosages[0].DosageAmount" class="form-control" placeholder="Dosage Amount" />
+
+            <label>Frequency</label>
+            <input type="text" name="dosages[0].Frequency" class="form-control" placeholder="Frequency" />
+
+            <label>Instructions</label>
+            <textarea name="dosages[0].Instructions" class="form-control" placeholder="Instructions"></textarea>
+        </div>
+    </div>
+
+    <button type="button" id="add-dosage" class="btn btn-secondary">Add Dosage</button>
+    <br />
+    <br />
+
+    <button type="submit" class="btn btn-primary">Save Medication</button>
+}
+
+<script type="text/javascript">var dosageCount = 1;  // Starting index for the dosages
+
+    $("#add-dosage").click(function () {
+        var newDosageHtml = `
+            <div class="dosage-item">
+                <label>Dosage Amount</label>
+                <input type="text" name="dosages[` + dosageCount + `].DosageAmount" class="form-control" placeholder="Dosage Amount" />
+
+                <label>Frequency</label>
+                <input type="text" name="dosages[` + dosageCount + `].Frequency" class="form-control" placeholder="Frequency" />
+
+                <label>Instructions</label>
+                <textarea name="dosages[` + dosageCount + `].Instructions" class="form-control" placeholder="Instructions"></textarea>
+            </div>
+        `;
+        $("#dosage-section").append(newDosageHtml);
+        dosageCount++;
+    });</script>

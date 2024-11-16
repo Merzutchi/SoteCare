@@ -37,20 +37,18 @@ namespace SoteCare.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateMedication(Medications medication, List<Dosage> dosages)
+        public JsonResult CreateMedication(Medications medication, List<Dosage> dosages)
         {
             if (ModelState.IsValid)
             {
-
                 if (medication.PatientID == 0)
                 {
                     ModelState.AddModelError("PatientID", "Valitse potilas.");
-                    return View(medication);
+                    return Json(new { success = false, message = "Patient is required." });
                 }
 
                 try
                 {
-                    
                     context.Medications.Add(medication);
                     context.SaveChanges();
 
@@ -59,21 +57,20 @@ namespace SoteCare.Controllers
                         foreach (var dosage in dosages)
                         {
                             dosage.MedicationID = medication.MedicationID;
-                            context.Dosages.Add(dosage); 
+                            context.Dosages.Add(dosage);
                         }
-                        context.SaveChanges(); 
+                        context.SaveChanges();
                     }
-                    TempData["message"] = "Medication and dosages added successfully!";
-                    return RedirectToAction("MedicationsView");
-                }
 
-                catch 
+                    return Json(new { success = true });
+                }
+                catch
                 {
-                    ModelState.AddModelError("", "An error occurred while saving the medication.");
+                    return Json(new { success = false, message = "An error occurred while saving the medication." });
                 }
             }
-            ViewBag.Patients = new SelectList(context.Patients.Select(p => new { p.PatientID, FullName = p.FirstName + " " + p.LastName }).ToList(), "PatientID", "FullName");
-            return View(medication);
+
+            return Json(new { success = false, message = "Invalid model data." });
         }
     }
 }
