@@ -90,6 +90,7 @@
           <Property Name="StartDate" Type="date" />
           <Property Name="EndDate" Type="date" />
           <Property Name="TreatmentType" Type="nvarchar" MaxLength="100" />
+		  <Property Name="Dosage" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="TreatmentMedications">
           <Key>
