@@ -564,6 +564,7 @@
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
                 <ScalarProperty Name="TreatmentType" ColumnName="TreatmentType" />
+				<ScalarProperty Name="Dosage" ColumnName="Dosage" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
