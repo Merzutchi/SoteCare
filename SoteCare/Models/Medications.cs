@@ -23,7 +23,7 @@ namespace SoteCare.Models
     
         public int MedicationID { get; set; }
         public int PatientID { get; set; }
-        public string MedicationName { get; set; }        
+        public string MedicationName { get; set; }
         public Nullable<int> DoctorID { get; set; }
         public string RefillStatus { get; set; }
         public string MedicationStatus { get; set; }

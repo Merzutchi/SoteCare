@@ -273,12 +273,6 @@
           <Property Name="MedicationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PatientID" Type="Int32" Nullable="false" />
           <Property Name="MedicationName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Dosage" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="StartDate" Type="DateTime" Precision="0" />
-          <Property Name="EndDate" Type="DateTime" Precision="0" />
-          <Property Name="Frequency" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="RouteOfAdministration" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Instructions" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="DoctorID" Type="Int32" />
           <Property Name="RefillStatus" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="MedicationStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
