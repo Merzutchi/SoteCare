@@ -130,6 +130,9 @@
     <Compile Include="Models\Doctors.cs">
       <DependentUpon>PatientRecordData.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Dosage.cs">
+      <DependentUpon>PatientRecordData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Medications.cs">
       <DependentUpon>PatientRecordData.tt</DependentUpon>
     </Compile>

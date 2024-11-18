@@ -18,6 +18,8 @@
         <AssociationConnector Association="PatientRecordDataModel.FK__Treatment__Patie__3C69FB99" ManuallyRouted="false" />
         <AssociationConnector Association="PatientRecordDataModel.FK__VitalFunc__Patie__398D8EEE" ManuallyRouted="false" />
         <AssociationConnector Association="PatientRecordDataModel.TreatmentMedications" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.Dosage" Width="1.5" PointX="0.625" PointY="1.625" />
+        <AssociationConnector Association="PatientRecordDataModel.FK__Dosages__Medicat__6FE99F9F" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
