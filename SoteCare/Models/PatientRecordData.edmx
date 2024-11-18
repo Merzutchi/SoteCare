@@ -28,6 +28,7 @@
           <Property Name="EndDate" Type="date" />
           <Property Name="RouteOfAdministration" Type="nvarchar" MaxLength="100" />
           <Property Name="Instructions" Type="text" />
+          <Property Name="DosageAmount" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Medications">
           <Key>
@@ -450,29 +451,30 @@
             <End Role="Medications" EntitySet="Medications" />
             <End Role="Treatment" EntitySet="Treatment" />
           </AssociationSet>
-          <EntitySet Name="Dosages" EntityType="PatientRecordDataModel.Dosage" />
+          <EntitySet Name="Dosages1" EntityType="PatientRecordDataModel.Dosages" />
           <AssociationSet Name="FK__Dosages__Medicat__6FE99F9F" Association="PatientRecordDataModel.FK__Dosages__Medicat__6FE99F9F">
             <End Role="Medications" EntitySet="Medications" />
-            <End Role="Dosage" EntitySet="Dosages" />
+            <End Role="Dosage" EntitySet="Dosages1" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="Dosage">
+        <EntityType Name="Dosages">
           <Key>
             <PropertyRef Name="DosageID" />
           </Key>
           <Property Name="DosageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MedicationID" Type="Int32" Nullable="false" />
-          <Property Name="Dosage1" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Dosage" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Frequency" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="EndDate" Type="DateTime" Precision="0" />
           <Property Name="RouteOfAdministration" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Instructions" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Medication" Relationship="PatientRecordDataModel.FK__Dosages__Medicat__6FE99F9F" FromRole="Dosage" ToRole="Medications" />
+          <Property Name="DosageAmount" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK__Dosages__Medicat__6FE99F9F">
           <End Type="PatientRecordDataModel.Medications" Role="Medications" Multiplicity="1" />
-          <End Type="PatientRecordDataModel.Dosage" Role="Dosage" Multiplicity="*" />
+          <End Type="PatientRecordDataModel.Dosages" Role="Dosage" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Medications">
               <PropertyRef Name="MedicationID" />
@@ -606,15 +608,16 @@
               <ScalarProperty Name="TreatmentID" ColumnName="TreatmentID" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="Dosages">
-            <EntityTypeMapping TypeName="PatientRecordDataModel.Dosage">
+          <EntitySetMapping Name="Dosages1">
+            <EntityTypeMapping TypeName="PatientRecordDataModel.Dosages">
               <MappingFragment StoreEntitySet="Dosages">
+                <ScalarProperty Name="DosageAmount" ColumnName="DosageAmount" />
                 <ScalarProperty Name="Instructions" ColumnName="Instructions" />
                 <ScalarProperty Name="RouteOfAdministration" ColumnName="RouteOfAdministration" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="Frequency" ColumnName="Frequency" />
-                <ScalarProperty Name="Dosage1" ColumnName="Dosage" />
+                <ScalarProperty Name="Dosage" ColumnName="Dosage" />
                 <ScalarProperty Name="MedicationID" ColumnName="MedicationID" />
                 <ScalarProperty Name="DosageID" ColumnName="DosageID" />
               </MappingFragment>

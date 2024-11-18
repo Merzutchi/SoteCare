@@ -16,23 +16,30 @@ namespace SoteCare.Controllers
 
         public ActionResult MedicationsView(string searchTerm)
         {
-            var medications = context.Medications
-                                     .Include(m => m.Patients)
-                                     .Include(m => m.Treatment)
-                                     .Include(m => m.Dosages)
-                                     .Where(m => string.IsNullOrEmpty(searchTerm) ||
-                                                m.MedicationName.Contains(searchTerm) ||
-                                                m.Patients.FirstName.Contains(searchTerm) ||
-                                                m.Patients.LastName.Contains(searchTerm))
-                                     .ToList();
-
-            ViewBag.Patients = new SelectList(context.Patients.Select(p => new
+            try
             {
-                p.PatientID,
-                FullName = p.FirstName + " " + p.LastName
-            }).ToList(), "PatientID", "FullName");
+                var medications = context.Medications
+                                         .Include(m => m.Patients)
+                                         .Include(m => m.Treatment)
+                                         .Include(m => m.Dosages)
+                                         .Where(m => string.IsNullOrEmpty(searchTerm) ||
+                                                     m.MedicationName.Contains(searchTerm) ||
+                                                     m.Patients.FirstName.Contains(searchTerm) ||
+                                                     m.Patients.LastName.Contains(searchTerm))
+                                         .ToList();
 
-            return View(medications);
+                ViewBag.Patients = new SelectList(context.Patients.Select(p => new
+                {
+                    p.PatientID,
+                    FullName = p.FirstName + " " + p.LastName
+                }).ToList(), "PatientID", "FullName");
+
+                return View(medications);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "Medications", "MedicationsView"));
+            }
         }
 
         public ActionResult CreateMedication()
@@ -58,7 +65,7 @@ namespace SoteCare.Controllers
                     context.Medications.Add(medication);
                     context.SaveChanges();
 
-                    if (dosages != null)
+                    if (dosages != null && dosages.Any())
                     {
                         foreach (var dosage in dosages)
                         {
@@ -67,16 +74,126 @@ namespace SoteCare.Controllers
                         }
                         context.SaveChanges();
                     }
+                    else
+                    {
+                        return Json(new { success = false, message = "Dosage information is missing." });
+                    }
 
-                    return Json(new { success = true });
+                    return Json(new { success = true, medication });
                 }
-                catch
+                catch 
                 {
                     return Json(new { success = false, message = "An error occurred while saving the medication." });
                 }
             }
 
             return Json(new { success = false, message = "Invalid model data." });
+        }
+
+        // GET: UpdateMedication
+        public ActionResult UpdateMedication(int id)
+        {
+            var medication = context.Medications.Include(m => m.Dosages)
+                                                .FirstOrDefault(m => m.MedicationID == id);
+
+            if (medication == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.Patients = new SelectList(context.Patients.Select(p => new { p.PatientID, FullName = p.FirstName + " " + p.LastName }).ToList(), "PatientID", "FullName");
+
+            return View(medication);
+        }
+
+        // POST: UpdateMedication
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateMedication(Medications medication, List<Dosage> dosages)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var existingMedication = context.Medications.Include(m => m.Dosages)
+                                                                .FirstOrDefault(m => m.MedicationID == medication.MedicationID);
+                    if (existingMedication == null)
+                    {
+                        return HttpNotFound();
+                    }
+
+                    existingMedication.MedicationName = medication.MedicationName;
+                    existingMedication.PatientID = medication.PatientID;
+                    existingMedication.RefillStatus = medication.RefillStatus;
+
+                    // Removes existing dosages, adds new ones
+                    context.Dosages.RemoveRange(existingMedication.Dosages);
+                    if (dosages != null)
+                    {
+                        foreach (var dosage in dosages)
+                        {
+                            dosage.MedicationID = medication.MedicationID;
+                            context.Dosages.Add(dosage);
+                        }
+                    }
+
+                    context.SaveChanges();
+
+                    return RedirectToAction("MedicationsView"); //back to Meds list
+                }
+                catch
+                {
+                    ModelState.AddModelError("", "An error occurred while updating the medication.");
+                }
+            }
+
+            return View(medication);
+        }
+        // GET: DeleteMedication
+        public ActionResult DeleteMedication(int id)
+        {
+            var medication = context.Medications
+                                    .Include(m => m.Dosages)
+                                    .FirstOrDefault(m => m.MedicationID == id);
+
+            if (medication == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(medication);
+        }
+
+        // POST: DeleteMedication
+        [HttpPost, ActionName("DeleteMedication")]
+        [ValidateAntiForgeryToken]
+        public ActionResult ConfirmDeleteMedication(int id)
+        {
+            try
+            {
+                var medication = context.Medications.Include(m => m.Dosages)
+                                                    .FirstOrDefault(m => m.MedicationID == id);
+
+                if (medication == null)
+                {
+                    return HttpNotFound();
+                }
+
+                context.Dosages.RemoveRange(medication.Dosages);
+
+                // Removes medication
+                context.Dosages.RemoveRange(medication.Dosages);
+                context.Medications.Remove(medication);
+                context.SaveChanges();
+
+                return RedirectToAction("MedicationsView");
+            }
+            catch
+            {
+                var medication = context.Medications.Include(m => m.Dosages).Include(m => m.Treatment)
+                                            .FirstOrDefault(m => m.MedicationID == id);
+                return View(medication);
+            }
         }
     }
 }
