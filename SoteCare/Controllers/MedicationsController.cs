@@ -26,13 +26,19 @@ namespace SoteCare.Controllers
                                                 m.Patients.LastName.Contains(searchTerm))
                                      .ToList();
 
+            ViewBag.Patients = new SelectList(context.Patients.Select(p => new
+            {
+                p.PatientID,
+                FullName = p.FirstName + " " + p.LastName
+            }).ToList(), "PatientID", "FullName");
+
             return View(medications);
         }
 
         public ActionResult CreateMedication()
         {
             ViewBag.Patients = new SelectList(context.Patients.Select(p => new { p.PatientID, FullName = p.FirstName + "" + p.LastName }).ToList(), "PatientID", "FullName");
-            return View();
+            return PartialView("CreateMedication");
         }
 
         [HttpPost]

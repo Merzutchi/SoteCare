@@ -2,15 +2,24 @@
 
 <h2>Lääkehallinta</h2>
 
+
 @using (Html.BeginForm("MedicationsView", "Medications", FormMethod.Get))
 {
     <input type="text" name="searchTerm" class="form-control" placeholder="Search Medication" value="@Request["searchTerm"]" />
     <button type="submit" class="btn btn-primary">Search</button>
 }
 
-<a href="@Url.Action("CreateMedication", "Medications")" class="btn btn-primary mb-3">Add Medication</a>
+<hr />
 
-<table class="table table-striped table-bordered">
+<!-- Medication form (partial view) -->
+<div id="createMedicationContainer">
+    @Html.Partial("CreateMedication", new SoteCare.Models.Medications())
+</div>
+
+<hr />
+
+<!-- Medication table -->
+<table id="medicationsTable" class="table table-striped table-bordered">
     <thead>
         <tr>
             <th>Patient</th>
@@ -36,7 +45,7 @@
         {
             foreach (var medication in Model)
             {
-                var dosage = medication.Dosages.FirstOrDefault(); 
+                var dosage = medication.Dosages.FirstOrDefault();
                 var treatment = medication.Treatment.FirstOrDefault();
 
                 <tr>
@@ -59,6 +68,58 @@
         }
     </tbody>
 </table>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- AJAX script -->
+<script>
+    $(document).ready(function () {
+        // Handles form submission
+        $("#createMedicationForm").submit(function (event) {
+            event.preventDefault(); // Prevents default form submission
+
+            $.ajax({
+                url: '@Url.Action("CreateMedication", "Medications")',
+                type: 'POST',
+                data: $(this).serialize(), // Serializes form data
+                success: function (response) {
+                    if (response.success) {
+                        alert("Medication added successfully!");
+
+                        // Dynamically adds new medication to table
+                        $("#medicationsTable tbody").append(`
+                            <tr>
+                                <td>${response.medication.PatientName}</td>
+                                <td>${response.medication.MedicationName}</td>
+                                <td>${response.medication.Dosage}</td>
+                                <td>${response.medication.TreatmentType || ""}</td>
+                                <td>${response.medication.StartDate || ""}</td>
+                                <td>${response.medication.EndDate || ""}</td>
+                                <td>${response.medication.Frequency || ""}</td>
+                                <td>${response.medication.Instructions || ""}</td>
+                                <td>${response.medication.RefillStatus || ""}</td>
+                                <td>
+                                    <a href="/Medications/MedicationDetails/${response.medication.MedicationID}" class="btn btn-info">View</a>
+                                    <a href="/Medications/UpdateMedication/${response.medication.MedicationID}" class="btn btn-warning">Edit</a>
+                                    <a href="/Medications/DeleteMedication/${response.medication.MedicationID}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this medication?');">Delete</a>
+                                </td>
+                            </tr>
+                        `);
+
+                        // Clears form after submission
+                        $("#createMedicationForm")[0].reset();
+                    } else {
+                        alert(response.message || "An error occurred while adding medication.");
+                    }
+                },
+                error: function () {
+                    alert("An unexpected error occurred. Please try again.");
+                }
+            });
+        });
+    });
+</script>
 
 
 
