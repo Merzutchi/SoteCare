@@ -19,9 +19,9 @@ namespace SoteCare.Controllers
             try
             {
                 var medications = context.Medications
-                                         .Include(m => m.Patients)
-                                         .Include(m => m.Treatment)
-                                         .Include(m => m.Dosages)
+                                         .Include(m => m.Patients) 
+                                         .Include(m => m.Treatment) 
+                                         .Include(m => m.Dosages) 
                                          .Where(m => string.IsNullOrEmpty(searchTerm) ||
                                                      m.MedicationName.Contains(searchTerm) ||
                                                      m.Patients.FirstName.Contains(searchTerm) ||
@@ -50,7 +50,7 @@ namespace SoteCare.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult CreateMedication(Medications medication, List<Dosage> dosages)
+        public JsonResult CreateMedication(Medications medication, List<Dosages> dosages)
         {
             if (ModelState.IsValid)
             {
@@ -109,7 +109,7 @@ namespace SoteCare.Controllers
         // POST: UpdateMedication
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UpdateMedication(Medications medication, List<Dosage> dosages)
+        public ActionResult UpdateMedication(Medications medication, List<Dosages> dosages)
         {
             if (ModelState.IsValid)
             {
@@ -179,9 +179,6 @@ namespace SoteCare.Controllers
                     return HttpNotFound();
                 }
 
-                context.Dosages.RemoveRange(medication.Dosages);
-
-                // Removes medication
                 context.Dosages.RemoveRange(medication.Dosages);
                 context.Medications.Remove(medication);
                 context.SaveChanges();
