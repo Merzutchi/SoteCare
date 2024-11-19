@@ -327,35 +327,34 @@
           <NavigationProperty Name="Treatment" Relationship="Self.FK__Treatment__Patie__3C69FB99" FromRole="Patients" ToRole="Treatment" />
           <NavigationProperty Name="VitalFunctions" Relationship="Self.FK__VitalFunc__Patie__398D8EEE" FromRole="Patients" ToRole="VitalFunctions" />
         </EntityType>
-<EntityType Name="Treatment">
-  <Key>
-    <PropertyRef Name="TreatmentID" />
-  </Key>
-  <Property Name="TreatmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-  <Property Name="PatientID" Type="Int32" Nullable="false" />
-  <Property Name="MedicationID" Type="Int32" />
-  <Property Name="StartDate" Type="DateTime" Precision="0" />
-  <Property Name="EndDate" Type="DateTime" Precision="0" />
-</EntityType>
-          <Property Name="TreatmentType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Patients" Relationship="Self.FK__Treatment__Patie__3C69FB99" FromRole="Treatment" ToRole="Patients" />
-          <NavigationProperty Name="Medications" Relationship="Self.TreatmentMedications" FromRole="Treatment" ToRole="Medications" />
-          <Property Name="Dosage" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="Users">
-          <Key>
-            <PropertyRef Name="UserID" />
-          </Key>
-          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="FullName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="DateOfBirth" Type="DateTime" Precision="0" />
-          <Property Name="IsActive" Type="Boolean" />
-        </EntityType>
+		  <EntityType Name="Treatment">
+			  <Key>
+				  <PropertyRef Name="TreatmentID" />
+			  </Key>
+			  <Property Name="TreatmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+			  <Property Name="PatientID" Type="Int32" Nullable="false" />
+			  <Property Name="MedicationID" Type="Int32" />
+			  <Property Name="StartDate" Type="DateTime" Precision="0" />
+			  <Property Name="EndDate" Type="DateTime" Precision="0" />
+			  <Property Name="TreatmentType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+			  <NavigationProperty Name="Patients" Relationship="Self.FK__Treatment__Patie__3C69FB99" FromRole="Treatment" ToRole="Patients" />
+			  <NavigationProperty Name="Medications" Relationship="Self.TreatmentMedications" FromRole="Treatment" ToRole="Medications" />
+			  <Property Name="Dosage" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+		  </EntityType>
+		  <EntityType Name="Users">
+			  <Key>
+				  <PropertyRef Name="UserID" />
+			  </Key>
+			  <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+			  <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+			  <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+			  <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+			  <Property Name="FullName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+			  <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+			  <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+			  <Property Name="DateOfBirth" Type="DateTime" Precision="0" />
+			  <Property Name="IsActive" Type="Boolean" />
+		  </EntityType>
         <EntityType Name="VitalFunctions">
           <Key>
             <PropertyRef Name="VitalFunctionID" />
@@ -473,33 +472,19 @@
     <Property Name="DosageAmount" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="Medication" Relationship="PatientRecordDataModel.FK__Dosages__Medicat__6FE99F9F" FromRole="Dosage" ToRole="Medications" />
 </EntityType>
-          <Key>
-            <PropertyRef Name="DosageID" />
-          </Key>
-          <Property Name="DosageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MedicationID" Type="Int32" Nullable="false" />
-          <Property Name="Dosage" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Frequency" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="EndDate" Type="DateTime" Precision="0" />
-          <Property Name="RouteOfAdministration" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Instructions" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Medication" Relationship="PatientRecordDataModel.FK__Dosages__Medicat__6FE99F9F" FromRole="Dosage" ToRole="Medications" />
-<Property Name="DosageAmount" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-</EntityType>
+
 <Association Name="FK__Dosages__Medicat__6FE99F9F">
   <End Type="PatientRecordDataModel.Medications" Role="Medications" Multiplicity="1" />
   <End Type="PatientRecordDataModel.Dosages" Role="Dosage" Multiplicity="*" />
+  <ReferentialConstraint>
+    <Principal Role="Medications">
+      <PropertyRef Name="MedicationID" />
+    </Principal>
+    <Dependent Role="Dosage">
+      <PropertyRef Name="MedicationID" />
+    </Dependent>
+  </ReferentialConstraint>
 </Association>
-          <ReferentialConstraint>
-            <Principal Role="Medications">
-              <PropertyRef Name="MedicationID" />
-            </Principal>
-            <Dependent Role="Dosage">
-              <PropertyRef Name="MedicationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -624,24 +609,21 @@
               <ScalarProperty Name="TreatmentID" ColumnName="TreatmentID" />
             </EndProperty>
           </AssociationSetMapping>
-<EntitySetMapping Name="Dosages">
-  <EntityTypeMapping TypeName="PatientRecordDataModel.Dosages">
-    <MappingFragment StoreEntitySet="Dosages">
-      <ScalarProperty Name="DosageAmount" ColumnName="DosageAmount" />
-      <ScalarProperty Name="Instructions" ColumnName="Instructions" />
-      <ScalarProperty Name="RouteOfAdministration" ColumnName="RouteOfAdministration" />
-      <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-      <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-      <ScalarProperty Name="Frequency" ColumnName="Frequency" />
-      <ScalarProperty Name="Dosage" ColumnName="Dosage" />
-    </MappingFragment>
-  </EntityTypeMapping>
-</EntitySetMapping>
-                <ScalarProperty Name="MedicationID" ColumnName="MedicationID" />
-                <ScalarProperty Name="DosageID" ColumnName="DosageID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+			<EntitySetMapping Name="Dosages">
+				<EntityTypeMapping TypeName="PatientRecordDataModel.Dosages">
+					<MappingFragment StoreEntitySet="Dosages">
+						<ScalarProperty Name="DosageAmount" ColumnName="DosageAmount" />
+						<ScalarProperty Name="Instructions" ColumnName="Instructions" />
+						<ScalarProperty Name="RouteOfAdministration" ColumnName="RouteOfAdministration" />
+						<ScalarProperty Name="EndDate" ColumnName="EndDate" />
+						<ScalarProperty Name="StartDate" ColumnName="StartDate" />
+						<ScalarProperty Name="Frequency" ColumnName="Frequency" />
+						<ScalarProperty Name="Dosage" ColumnName="Dosage" />
+						<ScalarProperty Name="MedicationID" ColumnName="MedicationID" />
+						<ScalarProperty Name="DosageID" ColumnName="DosageID" />
+					</MappingFragment>
+				</EntityTypeMapping>
+			</EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

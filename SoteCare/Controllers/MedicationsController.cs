@@ -50,7 +50,7 @@ namespace SoteCare.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult CreateMedication(Medications medication, List<Dosage> dosages)
+        public JsonResult CreateMedication(Medications medication, List<Dosages> dosages)
         {
             if (ModelState.IsValid)
             {
@@ -109,7 +109,7 @@ namespace SoteCare.Controllers
         // POST: UpdateMedication
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UpdateMedication(Medications medication, List<Dosage> dosages)
+        public ActionResult UpdateMedication(Medications medication, List<Dosages> dosages)
         {
             if (ModelState.IsValid)
             {
