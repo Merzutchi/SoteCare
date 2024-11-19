@@ -12,22 +12,17 @@ namespace SoteCare.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Dosages
+    public partial class Dosage
     {
         public int DosageID { get; set; }
         public int MedicationID { get; set; }
-        public string Dosage { get; set; }
+        public string Dosage1 { get; set; }
         public string Frequency { get; set; }
         public System.DateTime StartDate { get; set; }
         public Nullable<System.DateTime> EndDate { get; set; }
         public string RouteOfAdministration { get; set; }
         public string Instructions { get; set; }
-        public string DosageAmount { get; set; }
     
-<<<<<<< HEAD
-        public virtual Medications Medications { get; set; }
-=======
         public virtual Medications Medication { get; set; }
->>>>>>> ae1f219e6de7b824f785d9a864ef9b58a8d4be96
     }
 }

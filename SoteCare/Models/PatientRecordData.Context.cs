@@ -33,6 +33,10 @@ namespace SoteCare.Models
         public virtual DbSet<Treatment> Treatment { get; set; }
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<VitalFunctions> VitalFunctions { get; set; }
+<<<<<<< HEAD
         public virtual DbSet<Dosages> Dosages { get; set; }
+=======
+        public virtual DbSet<Dosages> Dosages { get; set; }  // Corrected to match master version
+>>>>>>> ae1f219e6de7b824f785d9a864ef9b58a8d4be96
     }
 }
