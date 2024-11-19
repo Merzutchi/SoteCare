@@ -127,6 +127,9 @@
     <Compile Include="Models\Doctors.cs">
       <DependentUpon>PatientRecordData.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Dosages.cs">
+      <DependentUpon>PatientRecordData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Medications.cs">
       <DependentUpon>PatientRecordData.tt</DependentUpon>
     </Compile>
