@@ -130,7 +130,7 @@
     <Compile Include="Models\Doctors.cs">
       <DependentUpon>PatientRecordData.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Dosage.cs">
+    <Compile Include="Models\Dosages.cs">
       <DependentUpon>PatientRecordData.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Medications.cs">
@@ -240,10 +240,10 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Medications\MedicationsView.cshtml" />
-    <Content Include="Views\Medications\MedicationsDetail.cshtml" />
-    <Content Include="Views\Medications\AddMedications.cshtml" />
-    <Content Include="Views\Medications\UpdateMedications.cshtml" />
-    <Content Include="Views\Medications\DeleteMedications.cshtml" />
+    <Content Include="Views\Medications\CreateMedication.cshtml" />
+    <Content Include="Views\Medications\DeleteMedication.cshtml" />
+    <Content Include="Views\Medications\UpdateMedication.cshtml" />
+    <Content Include="Views\Medications\ConfirmDeleteMedication.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

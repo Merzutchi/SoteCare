@@ -6,190 +6,194 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
 using System.Threading.Tasks;
+using System.Runtime.Remoting.Messaging;
 
 namespace SoteCare.Controllers
 {
     public class MedicationsController : Controller
     {
-        // GET: Medications
-        public async Task<ActionResult> MedicationsView(string searchTerm)
-        {
-            using (var context = new PatientRecordDataEntities())
-            {
-                var medications = await context.Medications
-             .Where(m => string.IsNullOrEmpty(searchTerm) || m.MedicationName.Contains(searchTerm))
-             .ToListAsync();
-                return View(medications); 
-            }
-        }
+        private readonly PatientRecordDataEntities context = new PatientRecordDataEntities();
 
-        //public ActionResult PatientList()
-        //{
-        //    using (var context = new PatientRecordDataEntities())
-        //    { 
-        //        var patients = context.Patients.ToList();
-        //        return View(patients);
-        //    }
-        //}        
-
-        [HttpGet]
-        public ActionResult AddMedications()
+        public ActionResult MedicationsView(string searchTerm)
         {
-            using (var context = new PatientRecordDataEntities())
+            try
             {
-                var patients = context.Patients.Select(p => new
+                var medications = context.Medications
+                                         .Include(m => m.Patients)
+                                         .Include(m => m.Treatment)
+                                         .Include(m => m.Dosages)
+                                         .Where(m => string.IsNullOrEmpty(searchTerm) ||
+                                                     m.MedicationName.Contains(searchTerm) ||
+                                                     m.Patients.FirstName.Contains(searchTerm) ||
+                                                     m.Patients.LastName.Contains(searchTerm))
+                                         .ToList();
+
+                ViewBag.Patients = new SelectList(context.Patients.Select(p => new
                 {
                     p.PatientID,
                     FullName = p.FirstName + " " + p.LastName
-                }).ToList();
+                }).ToList(), "PatientID", "FullName");
 
-                ViewBag.Patients = new SelectList(patients, "PatientID", "FullName");
-
-                return View(new Medications());
+                return View(medications);
             }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "Medications", "MedicationsView"));
+            }
+        }
+
+        public ActionResult CreateMedication()
+        {
+            ViewBag.Patients = new SelectList(context.Patients.Select(p => new { p.PatientID, FullName = p.FirstName + "" + p.LastName }).ToList(), "PatientID", "FullName");
+            return PartialView("CreateMedication");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddMedications(Medications medication)
-        {
-            if (ModelState.IsValid) 
-            {
-                using (var context = new PatientRecordDataEntities())
-                {
-                    context.Medications.Add(medication);
-                    context.SaveChanges();
-                }
-
-                TempData["message"] = "Lääke Lisätty.";
-                return RedirectToAction("MedicationsView");
-            }
-            return View(medication);
-        }
-
-        [HttpGet]
-        public ActionResult GetMedications()
-        {
-            using (var context = new PatientRecordDataEntities())
-            {
-                List<Medications> data = context.Medications.ToList();
-                return View(data);
-            }
-        }
-
-        public ActionResult UpdateMedication(int MedicationID)
-        {
-            using (var context = new PatientRecordDataEntities())
-            {
-                var medication = context.Medications
-                    .Where(m => m.MedicationID == MedicationID)
-                    .SingleOrDefault();
-
-                if (medication == null)
-                {
-                    TempData["error"] = "Medication not found.";
-                    return RedirectToAction("MedicationsView");
-                }
-              
-                var patients = context.Patients
-                    .Select(p => new { p.PatientID, FullName = p.FirstName + " " + p.LastName })
-                    .ToList();
-
-                ViewBag.Patients = new SelectList(patients, "PatientID", "FullName", medication.PatientID);
-
-                return View(medication);
-            }
-        }
-
-        // POST: Update Medication
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult UpdateMedication(int MedicationID, int PatientID, Medications medication)
+        public JsonResult CreateMedication(Medications medication, List<Dosage> dosages)
         {
             if (ModelState.IsValid)
             {
-                using (var context = new PatientRecordDataEntities())
+                if (medication.PatientID == 0)
                 {
-                    var existingMedication = context.Medications
-                        .SingleOrDefault(x => x.MedicationID == MedicationID);
+                    ModelState.AddModelError("PatientID", "Valitse potilas.");
+                    return Json(new { success = false, message = "Patient is required." });
+                }
 
-                    if (existingMedication != null)
+                try
+                {
+                    context.Medications.Add(medication);
+                    context.SaveChanges();
+
+                    if (dosages != null && dosages.Any())
                     {
-                        
-                        existingMedication.MedicationName = medication.MedicationName;
-                        existingMedication.Dosage = medication.Dosage;
-                        existingMedication.Frequency = medication.Frequency;
-                        existingMedication.Instructions = medication.Instructions;
-                        existingMedication.PatientID = PatientID;
-
-                        context.SaveChanges(); 
-
-                        TempData["message"] = "Medication updated successfully.";
-                        return RedirectToAction("MedicationsView");
+                        foreach (var dosage in dosages)
+                        {
+                            dosage.MedicationID = medication.MedicationID;
+                            context.Dosages.Add(dosage);
+                        }
+                        context.SaveChanges();
                     }
                     else
                     {
-                        TempData["error"] = "Medication not found.";
-                        return View(medication);
+                        return Json(new { success = false, message = "Dosage information is missing." });
                     }
+
+                    return Json(new { success = true, medication });
+                }
+                catch 
+                {
+                    return Json(new { success = false, message = "An error occurred while saving the medication." });
                 }
             }
+
+            return Json(new { success = false, message = "Invalid model data." });
+        }
+
+        // GET: UpdateMedication
+        public ActionResult UpdateMedication(int id)
+        {
+            var medication = context.Medications.Include(m => m.Dosages)
+                                                .FirstOrDefault(m => m.MedicationID == id);
+
+            if (medication == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.Patients = new SelectList(context.Patients.Select(p => new { p.PatientID, FullName = p.FirstName + " " + p.LastName }).ToList(), "PatientID", "FullName");
+
             return View(medication);
         }
 
-        public ActionResult MedicationDetails(int id)
-        {
-            using (var context = new PatientRecordDataEntities())
-            {
-                
-                var medication = context.Medications
-                                        .Include(m => m.Patients) 
-                                        .SingleOrDefault(x => x.MedicationID == id);
-
-                if (medication == null)
-                {
-                    TempData["error"] = "Ei näytettäviä tietoja.";
-                    return RedirectToAction("MedicationsView");
-                }
-               
-                return View(medication);
-            }
-        }
-
-        [HttpGet]
-        public ActionResult DeleteMedication(int id)
-        {
-            using (var context = new PatientRecordDataEntities())
-            {
-                var medication = context.Medications.SingleOrDefault(x => x.MedicationID == id);
-                if (medication == null)
-                {
-                    TempData["error"] = "Medication not found.";
-                    return RedirectToAction("MedicationsView");
-                }                
-                return View(medication);
-            }
-        }
-
+        // POST: UpdateMedication
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteMedicationConfirm(int MedicationID)
+        public ActionResult UpdateMedication(Medications medication, List<Dosage> dosages)
         {
-            using (var context = new PatientRecordDataEntities())
+            if (ModelState.IsValid)
             {
-                var medication = context.Medications.SingleOrDefault(x => x.MedicationID == MedicationID);
-                if (medication != null)
+                try
                 {
-                    context.Medications.Remove(medication);
+                    var existingMedication = context.Medications.Include(m => m.Dosages)
+                                                                .FirstOrDefault(m => m.MedicationID == medication.MedicationID);
+                    if (existingMedication == null)
+                    {
+                        return HttpNotFound();
+                    }
+
+                    existingMedication.MedicationName = medication.MedicationName;
+                    existingMedication.PatientID = medication.PatientID;
+                    existingMedication.RefillStatus = medication.RefillStatus;
+
+                    // Removes existing dosages, adds new ones
+                    context.Dosages.RemoveRange(existingMedication.Dosages);
+                    if (dosages != null)
+                    {
+                        foreach (var dosage in dosages)
+                        {
+                            dosage.MedicationID = medication.MedicationID;
+                            context.Dosages.Add(dosage);
+                        }
+                    }
+
                     context.SaveChanges();
-                    TempData["message"] = "Lääke poistettu.";
+
+                    return RedirectToAction("MedicationsView"); //back to Meds list
                 }
-                else
+                catch
                 {
-                    TempData["error"] = "Ei osuvaa lääkettä.";
+                    ModelState.AddModelError("", "An error occurred while updating the medication.");
                 }
             }
-            return RedirectToAction("MedicationsView");
+
+            return View(medication);
+        }
+        // GET: DeleteMedication
+        public ActionResult DeleteMedication(int id)
+        {
+            var medication = context.Medications
+                                    .Include(m => m.Dosages)
+                                    .FirstOrDefault(m => m.MedicationID == id);
+
+            if (medication == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(medication);
+        }
+
+        // POST: DeleteMedication
+        [HttpPost, ActionName("DeleteMedication")]
+        [ValidateAntiForgeryToken]
+        public ActionResult ConfirmDeleteMedication(int id)
+        {
+            try
+            {
+                var medication = context.Medications.Include(m => m.Dosages)
+                                                    .FirstOrDefault(m => m.MedicationID == id);
+
+                if (medication == null)
+                {
+                    return HttpNotFound();
+                }
+
+                context.Dosages.RemoveRange(medication.Dosages);
+
+                // Removes medication
+                context.Dosages.RemoveRange(medication.Dosages);
+                context.Medications.Remove(medication);
+                context.SaveChanges();
+
+                return RedirectToAction("MedicationsView");
+            }
+            catch
+            {
+                var medication = context.Medications.Include(m => m.Dosages).Include(m => m.Treatment)
+                                            .FirstOrDefault(m => m.MedicationID == id);
+                return View(medication);
+            }
         }
     }
 }
