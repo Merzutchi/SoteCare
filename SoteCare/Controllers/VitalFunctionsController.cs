@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Configuration;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -52,6 +53,11 @@ namespace SoteCare.Controllers
         // GET: VitalFunctions/Details/5
         public ActionResult Details(int? id)
         {
+
+            //var latestDate = db.VitalFunctions.OrderByDescending(v => v.DateTime).FirstOrDefault();
+            //ViewBag.LatestDate = latestDate; //EI TOIMI IHA VIEL AINAKAA KU KOITTAA SAADA UUSINTA DETAILII NÄKYY POTILASLISTAA
+
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -62,8 +68,7 @@ namespace SoteCare.Controllers
                 return HttpNotFound();
             }
 
-            //var latestDate = db.VitalFunctions.OrderByDescending(v => v.DateTime).FirstOrDefault();
-            //ViewBag.LatestDate = latestDate?.PatientID;       EI TOIMI IHA VIEL AINAKAA KU KOITTAA SAADA UUSINTA DETAILII NÄKYY POTILASLISTAA
+            
 
             return View(vitalFunction);
         }
