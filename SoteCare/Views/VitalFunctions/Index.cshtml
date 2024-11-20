@@ -1,0 +1,50 @@
+﻿@model IEnumerable<SoteCare.Models.VitalFunctions>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Full list of SoteCare patients vital functions</h2>
+
+<p>
+    <a class="btn btn-outline-secondary" href="~/VitalFunctions/Create">
+        Add vital functions
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+            <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+            <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5" />
+        </svg>
+    </a>
+</p>
+<table class="styled-table">
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.DateTime)</th>
+        <th>@Html.DisplayNameFor(model => model.HeartRate)</th>
+        <th>@Html.DisplayNameFor(model => model.SystolicBloodPressure)</th>
+        <th>@Html.DisplayNameFor(model => model.DiastolicBloodPressure)</th>
+        <th>@Html.DisplayNameFor(model => model.RespiratoryRate)</th>
+        <th>@Html.DisplayNameFor(model => model.Temperature)</th>
+        <th>@Html.DisplayNameFor(model => model.OxygenSaturation)</th>
+        <th>@Html.DisplayNameFor(model => model.Patients.FirstName)</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.DateTime)</td>
+            <td>@Html.DisplayFor(modelItem => item.HeartRate)</td>
+            <td>@Html.DisplayFor(modelItem => item.SystolicBloodPressure)</td>
+            <td>@Html.DisplayFor(modelItem => item.DiastolicBloodPressure)</td>
+            <td>@Html.DisplayFor(modelItem => item.RespiratoryRate)</td>
+            <td>@Html.DisplayFor(modelItem => item.Temperature)</td>
+            <td>@Html.DisplayFor(modelItem => item.OxygenSaturation)</td>
+            <td>@Html.DisplayFor(modelItem => item.Patients.FirstName)</td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.VitalFunctionID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.VitalFunctionID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.VitalFunctionID })
+            </td>
+        </tr>
+    }
+
+</table>

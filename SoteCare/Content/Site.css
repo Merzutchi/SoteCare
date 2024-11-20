@@ -1,20 +1,108 @@
-﻿/* Set padding to keep content from hitting the edges */
-.body-content {
-    margin-top: 15px;
-    padding-left: 15px;
-    padding-right: 15px;
+﻿* {
+    box-sizing: border-box;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-.dl-horizontal dt {
-    white-space: normal;
+body {
+    margin: 0;
+    font-family: "Lato", sans-serif;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+
+/* NÄYTÖLLE RESPONSIIVISUUTA VISSIIN ? */
+@media screen and (max-height: 450px) {
+.sidenav {
+    padding-top: 15px;
+}
+
+.sidenav a {
+    font-size: 18px;
+}
+}
+
+/* Style the search box */
+#sideSearch {
+    width: auto;
+    margin-left: 20px;
+    font-size: 18px;
+    padding: 11px;
+    border: 1px solid #ddd;
+}
+
+/* SIVU "VIIVOJEN" VÄRI */
+hr {
+    border: 3px solid;
+    color: turquoise;
+}
+
+/* SIVUPALKKI ULKOMUOTOO */
+.sidenav {
+    height: 100%;
+    width: 300px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+}
+
+
+/* SIVUPALKKI TEKSTIT */
+.sidenav a {
+    padding: 6px 6px 6px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+}
+
+/* HOVERIN VÄRI SIVUPALKIS */
+.sidenav a:hover {
+/*background-color: #ddd;*/
+    color: whitesmoke;
+}
+
+/* KESKUSTAN CONTENT MUOKKAUS */
+.content {
+    margin-left: 300px;
+    padding-left: 20px;
+}
+
+/* POTILASLISTA TAULUKON ULKOASUA */
+
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: dimgray;
 }
