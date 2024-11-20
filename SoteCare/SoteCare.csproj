@@ -127,10 +127,16 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Diagnosis.cs">
+      <DependentUpon>PatientRecordData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Doctors.cs">
       <DependentUpon>PatientRecordData.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Dosages.cs">
+      <DependentUpon>PatientRecordData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MedicationList.cs">
       <DependentUpon>PatientRecordData.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Medications.cs">
@@ -140,6 +146,9 @@
       <DependentUpon>PatientRecordData.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PatientHistory.cs">
+      <DependentUpon>PatientRecordData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PatientMedication.cs">
       <DependentUpon>PatientRecordData.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PatientRecordData.Context.cs">
