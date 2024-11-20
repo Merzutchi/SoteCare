@@ -124,7 +124,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MedicationsController.cs" />
+    <Compile Include="Controllers\PatientHistoryController.cs" />
     <Compile Include="Controllers\PatientsController.cs" />
+    <Compile Include="Controllers\VitalFunctionsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -259,6 +261,16 @@
     <Content Include="Views\Patients\Details.cshtml" />
     <Content Include="Views\Patients\Edit.cshtml" />
     <Content Include="Views\Patients\Index.cshtml" />
+    <Content Include="Views\PatientHistory\Create.cshtml" />
+    <Content Include="Views\PatientHistory\Delete.cshtml" />
+    <Content Include="Views\PatientHistory\Details.cshtml" />
+    <Content Include="Views\PatientHistory\Edit.cshtml" />
+    <Content Include="Views\PatientHistory\Index.cshtml" />
+    <Content Include="Views\VitalFunctions\Create.cshtml" />
+    <Content Include="Views\VitalFunctions\Delete.cshtml" />
+    <Content Include="Views\VitalFunctions\Details.cshtml" />
+    <Content Include="Views\VitalFunctions\Edit.cshtml" />
+    <Content Include="Views\VitalFunctions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
