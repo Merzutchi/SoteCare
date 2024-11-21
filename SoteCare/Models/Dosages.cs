@@ -14,6 +14,12 @@ namespace SoteCare.Models
     
     public partial class Dosages
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Dosages()
+        {
+            this.PatientMedications = new HashSet<PatientMedication>();
+        }
+    
         public int DosageID { get; set; }
         public int MedicationID { get; set; }
         public string Dosage { get; set; }
@@ -24,7 +30,8 @@ namespace SoteCare.Models
         public string Instructions { get; set; }
         public string DosageAmount { get; set; }
     
-        public virtual Medications Medications { get; set; }
         public virtual Medications Medication { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientMedication> PatientMedications { get; set; }
     }
 }
