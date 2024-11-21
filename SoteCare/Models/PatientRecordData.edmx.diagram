@@ -8,9 +8,9 @@
         <EntityTypeShape EntityType="PatientRecordDataModel.Doctors" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordDataModel.Medications" Width="1.5" PointX="1" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordDataModel.Nurses" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PatientRecordDataModel.PatientHistory" Width="1.5" PointX="0.625" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.PatientHistory" Width="1.5" PointX="0.5" PointY="7.875" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordDataModel.Patients" Width="1.5" PointX="5.75" PointY="4" IsExpanded="true" />
-        <EntityTypeShape EntityType="PatientRecordDataModel.Treatment" Width="1.5" PointX="5.75" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.Treatment" Width="1.5" PointX="6" PointY="8.875" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordDataModel.Users" Width="1.5" PointX="9.875" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordDataModel.VitalFunctions" Width="1.5" PointX="8" PointY="3.625" IsExpanded="true" />
         <AssociationConnector Association="PatientRecordDataModel.FK__Medicatio__Patie__4222D4EF" ManuallyRouted="false" />
