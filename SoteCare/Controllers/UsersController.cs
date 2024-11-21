@@ -85,6 +85,7 @@ namespace SoteCare.Controllers
             {
                 db.Entry(users).State = EntityState.Modified;
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
             return View(users);
@@ -116,6 +117,7 @@ namespace SoteCare.Controllers
             {
                 db.Entry(users).State = EntityState.Modified;
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
             return View(users);
