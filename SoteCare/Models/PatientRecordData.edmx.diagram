@@ -6,9 +6,9 @@
     <edmx:Diagrams>
       <Diagram DiagramId="b66d62bbfcec45aca787deb3c826c069" Name="Diagram1">
         <EntityTypeShape EntityType="PatientRecordDataModel.Doctors" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PatientRecordDataModel.Medications" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.Medications" Width="1.5" PointX="1" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordDataModel.Nurses" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PatientRecordDataModel.PatientHistory" Width="1.5" PointX="2.625" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.PatientHistory" Width="1.5" PointX="0.625" PointY="9.25" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordDataModel.Patients" Width="1.5" PointX="5.75" PointY="4" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordDataModel.Treatment" Width="1.5" PointX="5.75" PointY="8.875" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordDataModel.Users" Width="1.5" PointX="9.875" PointY="1.125" IsExpanded="true" />
@@ -21,13 +21,14 @@
         <EntityTypeShape EntityType="PatientRecordDataModel.Dosages" Width="1.5" PointX="3.75" PointY="0.875" />
         <AssociationConnector Association="PatientRecordDataModel.FK__Dosages__Medicat__6FE99F9F" />
         <EntityTypeShape EntityType="PatientRecordDataModel.Diagnosis" Width="1.5" PointX="8.125" PointY="7.25" />
-        <EntityTypeShape EntityType="PatientRecordDataModel.MedicationList" Width="1.5" PointX="0.5" PointY="5.375" />
-        <EntityTypeShape EntityType="PatientRecordDataModel.PatientMedication" Width="1.5" PointX="3" PointY="4.625" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.MedicationList" Width="1.5" PointX="0.5" PointY="4.75" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.PatientMedication" Width="1.5" PointX="3" PointY="5.5" />
         <AssociationConnector Association="PatientRecordDataModel.FK__Diagnoses__Patie__72C60C4A" />
         <AssociationConnector Association="PatientRecordDataModel.FK_Medications_MedicationLists" />
         <AssociationConnector Association="PatientRecordDataModel.FK_PatientMedications_MedicationLists" />
         <AssociationConnector Association="PatientRecordDataModel.FK__PatientMe__Medic__778AC167" />
         <AssociationConnector Association="PatientRecordDataModel.FK__PatientMe__Patie__787EE5A0" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_PatientMedication_Dosages" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
