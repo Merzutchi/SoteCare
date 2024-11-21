@@ -23,5 +23,6 @@ namespace SoteCare.Models
         public string Dosage { get; set; }
     
         public virtual Patients Patients { get; set; }
+        public virtual Medications Medication { get; set; }
     }
 }
