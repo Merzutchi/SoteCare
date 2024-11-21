@@ -24,10 +24,7 @@ namespace SoteCare.Models
         public string Instructions { get; set; }
         public string DosageAmount { get; set; }
     
-<<<<<<< HEAD
         public virtual Medications Medications { get; set; }
-=======
         public virtual Medications Medication { get; set; }
->>>>>>> ae1f219e6de7b824f785d9a864ef9b58a8d4be96
     }
 }
