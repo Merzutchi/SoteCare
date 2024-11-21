@@ -17,7 +17,6 @@ namespace SoteCare.Models
         public int HistoryID { get; set; }
         public int PatientID { get; set; }
         public string ConditionName { get; set; }
-        public Nullable<System.DateTime> DiagnosisDate { get; set; }
         public string TreatmentDetails { get; set; }
         public Nullable<System.DateTime> SurgeryDate { get; set; }
         public string Notes { get; set; }

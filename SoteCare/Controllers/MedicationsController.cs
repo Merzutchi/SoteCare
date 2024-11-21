@@ -20,7 +20,7 @@ namespace SoteCare.Controllers
             {
                 var medications = context.Medications
                                          .Include(m => m.Patients)
-                                         .Include(m => m.Treatment)
+                                         //.Include(m => m.Treatment)
                                          .Include(m => m.Dosages)
                                          .Where(m => string.IsNullOrEmpty(searchTerm) ||
                                                      m.MedicationName.Contains(searchTerm) ||
@@ -164,36 +164,36 @@ namespace SoteCare.Controllers
             return View(medication);
         }
 
-        // POST: DeleteMedication
-        [HttpPost, ActionName("DeleteMedication")]
-        [ValidateAntiForgeryToken]
-        public ActionResult ConfirmDeleteMedication(int id)
-        {
-            try
-            {
-                var medication = context.Medications.Include(m => m.Dosages)
-                                                    .FirstOrDefault(m => m.MedicationID == id);
+        //// POST: DeleteMedication
+        //[HttpPost, ActionName("DeleteMedication")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult ConfirmDeleteMedication(int id)
+        //{
+        //    try
+        //    {
+        //        var medication = context.Medications.Include(m => m.Dosages)
+        //                                            .FirstOrDefault(m => m.MedicationID == id);
 
-                if (medication == null)
-                {
-                    return HttpNotFound();
-                }
+        //        if (medication == null)
+        //        {
+        //            return HttpNotFound();
+        //        }
 
-                context.Dosages.RemoveRange(medication.Dosages);
+        //        context.Dosages.RemoveRange(medication.Dosages);
 
-                // Removes medication
-                context.Dosages.RemoveRange(medication.Dosages);
-                context.Medications.Remove(medication);
-                context.SaveChanges();
+        //        // Removes medication
+        //        context.Dosages.RemoveRange(medication.Dosages);
+        //        context.Medications.Remove(medication);
+        //        context.SaveChanges();
 
-                return RedirectToAction("MedicationsView");
-            }
-            catch
-            {
-                var medication = context.Medications.Include(m => m.Dosages).Include(m => m.Treatment)
-                                            .FirstOrDefault(m => m.MedicationID == id);
-                return View(medication);
-            }
-        }
+        //        return RedirectToAction("MedicationsView");
+        //    }
+        //    catch
+        //    {
+        //        var medication = context.Medications.Include(m => m.Dosages).Include(m => m.Treatment)
+        //                                    .FirstOrDefault(m => m.MedicationID == id);
+        //        return View(medication);
+        //    }
+        //}
     }
 }

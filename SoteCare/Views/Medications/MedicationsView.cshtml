@@ -38,16 +38,16 @@
         {
             foreach (var medication in Model)
             {
-                var dosage = medication.Dosages.FirstOrDefault(); 
-                var treatment = medication.Treatment.FirstOrDefault();
+                var dosage = medication.Dosages.FirstOrDefault();
+                //var treatment = medication.Treatment.FirstOrDefault();
 
                 <tr>
                     <td>@medication.Patients.FirstName @medication.Patients.LastName</td>
                     <td>@medication.MedicationName</td>
                     <td>@dosage?.DosageAmount</td>
-                    <td>@treatment?.TreatmentType</td>
+                    @*<td>@treatment?.TreatmentType</td>
                     <td>@treatment?.StartDate?.ToString("d")</td>
-                    <td>@treatment?.EndDate?.ToString("d")</td>
+                    <td>@treatment?.EndDate?.ToString("d")</td>*@
                     <td>@dosage?.Frequency</td>
                     <td>@dosage?.Instructions</td>
                     <td>@medication.RefillStatus</td>
