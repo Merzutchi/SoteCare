@@ -53,7 +53,7 @@ namespace SoteCare.Controllers
                 {
                     PatientID = patientId,
                     MedicationID = medicationId,
-                    Dosages = dosage,
+                    Dosage = dosage,
                     StartDate = DateTime.Now
                 };
                 context.PatientMedications.Add(patientMedication);
