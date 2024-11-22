@@ -30,6 +30,8 @@ namespace SoteCare.Models
         public string Allergies { get; set; }
         public string Comments { get; set; }
         public Nullable<int> MedicationListID { get; set; }
+        public string MedicationType { get; set; }
+        public string Description { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Dosages> Dosages { get; set; }
