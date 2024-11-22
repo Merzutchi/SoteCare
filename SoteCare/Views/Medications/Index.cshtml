@@ -1,0 +1,26 @@
+﻿@model  IEnumerable<SoteCare.Models.Medications>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var medication in Model)
+            {
+                <tr>
+                    <td>@medication.MedicationName</td>
+                    <td>@medication.MedicationType</td>
+                    <td>@medication.</td>
+                </tr>
+            }
+    </tbody>
+</table>

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Data.Entity;
+using System.Threading.Tasks;
 
 
 namespace SoteCare.Controllers
@@ -12,11 +13,32 @@ namespace SoteCare.Controllers
     {
         private readonly PatientRecordDataEntities context = new PatientRecordDataEntities();
 
-        public ActionResult MedicationsView(string searchTerm)
+       public ActionResult Index()
         {
-            return View(context);
+            var medications = context.Medications.ToList();
+            return View(medications);
+
         }
 
-        
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Medications medication)
+        {
+            if (ModelState.IsValid)
+            {
+                context.Medications.Add(medication);
+                context.SaveChanges();
+                return RedirectToAction("Index");
+            }            
+            return View(medication);
+        }
     }
 }
+
+
+

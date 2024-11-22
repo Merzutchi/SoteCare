@@ -123,7 +123,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\MedicationListController.cs" />
     <Compile Include="Controllers\MedicationsController.cs" />
     <Compile Include="Controllers\PatientHistoryController.cs" />
     <Compile Include="Controllers\PatientsController.cs" />
@@ -252,11 +251,6 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Medications\MedicationsView.cshtml" />
-    <Content Include="Views\Medications\CreateMedication.cshtml" />
-    <Content Include="Views\Medications\DeleteMedication.cshtml" />
-    <Content Include="Views\Medications\UpdateMedication.cshtml" />
-    <Content Include="Views\Medications\ConfirmDeleteMedication.cshtml" />
     <Content Include="Views\Patients\Create.cshtml" />
     <Content Include="Views\Patients\Delete.cshtml" />
     <Content Include="Views\Patients\Details.cshtml" />
@@ -274,6 +268,7 @@
     <Content Include="Views\VitalFunctions\Index.cshtml" />
     <Content Include="Views\MedicationList\AddMedication.cshtml" />
     <Content Include="Views\MedicationList\ListIndex.cshtml" />
+    <Content Include="Views\Medications\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
