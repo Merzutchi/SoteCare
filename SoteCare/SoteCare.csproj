@@ -270,7 +270,8 @@
     <Content Include="Views\MedicationList\ListIndex.cshtml" />
     <Content Include="Views\Medications\Index.cshtml" />
     <Content Include="Views\Medications\Create.cshtml" />
-    <Content Include="Views\Medications\DeleteConfirmation.cshtml" />
+    <Content Include="Views\Medications\DeleteConfirmed.cshtml" />
+    <Content Include="Views\Medications\CreateMedication.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

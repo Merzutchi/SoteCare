@@ -1,9 +1,5 @@
 ﻿@model IEnumerable<SoteCare.Models.Medications>
 
-@{
-    ViewBag.Title = "Medications";
-}
-
 <h2>Medications</h2>
 
 <table class="table">
@@ -30,25 +26,34 @@
     </tbody>
 </table>
 
-<a href="@Url.Action("Create")" class="btn btn-primary">Add Medication</a>
-
-<div id="deleteModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<button class="btn btn-primary" onclick="showCreateModal()">Add Medication</button>
+<div id="modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Delete Medication</h5>
+                <h5 class="modal-title" id="modalLabel">Action</h5>
             </div>
-            <div class="modal-body" id="deleteModalBody">
+            <div class="modal-body" id="modalBody">
             </div>
         </div>
     </div>
 </div>
 
 <script>
-   function showDeleteModal(id) {
-       const url = '@Url.Action("DeletePartial", "Medications", new { id = "__id__" })'.replace('__id__', id);
-       $("#deleteModalBody").load(url, function () {
-           $("#deleteModal").modal("show");
-       });
-   }
+    function showDeleteModal(id) {
+        const url = '@Url.Action("DeletePartial", "Medications", new { id = "__id__" })'.replace('__id__', id);
+        $("#modalBody").load(url, function () {
+            $("#modal").modal("show");
+        });
+    }
+
+    function showCreateModal() {
+        const url = '@Url.Action("CreatePartial", "Medications")';
+        $("#modalBody").load(url, function () {
+            $("#modal").modal("show");
+        });
+    }
 </script>
+
+
+@*Poistobuttonia en tiedä mikä vikana, ei poista tällähetkellä mitään, sain toimimaan ku väsäilin aikasemmin mut nyt toimii vaa add-buttoni*@
