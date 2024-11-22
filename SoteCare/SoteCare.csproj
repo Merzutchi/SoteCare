@@ -122,6 +122,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\DiagnosesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MedicationsController.cs" />
     <Compile Include="Controllers\NursesController.cs" />
@@ -273,6 +274,12 @@
     <Content Include="Views\VitalFunctions\Details.cshtml" />
     <Content Include="Views\VitalFunctions\Edit.cshtml" />
     <Content Include="Views\VitalFunctions\Index.cshtml" />
+    <Content Include="Views\Patients\Index2.cshtml" />
+    <Content Include="Views\Diagnoses\Create.cshtml" />
+    <Content Include="Views\Diagnoses\Delete.cshtml" />
+    <Content Include="Views\Diagnoses\Details.cshtml" />
+    <Content Include="Views\Diagnoses\Edit.cshtml" />
+    <Content Include="Views\Diagnoses\Index.cshtml" />
     <Content Include="Views\Users\Create.cshtml" />
     <Content Include="Views\Users\Delete.cshtml" />
     <Content Include="Views\Users\Details.cshtml" />

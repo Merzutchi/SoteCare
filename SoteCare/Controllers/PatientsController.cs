@@ -20,6 +20,12 @@ namespace SoteCare.Controllers
             return View(db.Patients.ToList());
         }
 
+        public ActionResult Index2()
+        {
+            var patients = db.Patients.Include(p => p.PatientMedications).Include(p => p.Treatment).Include(p => p.VitalFunctions).Include(p => p.PatientHistory);
+            return View(patients.ToList());
+        }
+
         // GET: Patients/Details/5
         public ActionResult Details(int? id)
         {

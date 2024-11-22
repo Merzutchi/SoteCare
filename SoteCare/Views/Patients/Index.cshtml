@@ -33,15 +33,15 @@
     {
         <tbody>
         <tr class="active-row">
-            <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
-            <td>@Html.DisplayFor(modelItem => item.LastName)</td>
-            <td>@Html.DisplayFor(modelItem => item.DateOfBirth)</td>
-            <td>@Html.DisplayFor(modelItem => item.Gender)</td>
-            <td>@Html.DisplayFor(modelItem => item.Address)</td>
-            <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
-            <td>@Html.DisplayFor(modelItem => item.Email)</td>
-            <td>@Html.DisplayFor(modelItem => item.EmergencyContactName)</td>
-            <td>@Html.DisplayFor(modelItem => item.EmergencyContactPhone)</td>
+            <td>@item.FirstName</td>
+            <td>@item.LastName</td>
+            <td>@item.DateOfBirth.ToString("dd/MM/yyyy")</td>
+            <td>@item.Gender</td>
+            <td>@item.Address</td>
+            <td>@item.PhoneNumber</td>
+            <td>@item.Email</td>
+            <td>@item.EmergencyContactName</td>
+            <td>@item.EmergencyContactPhone</td>
             <td>
 
 
@@ -49,6 +49,7 @@
                 <a class="btn btn-outline-primary btn-sm" href="@Url.Action("Create", "VitalFunctions", new { id = item.PatientID })">Kirjaa elintoimintoja tähän?</a>
                 <a class="btn btn-outline-primary btn-sm" href="@Url.Action("Details", "VitalFunctions", new { id = item.PatientID })">Viimeisin elintoiminto tähän?</a>
                 <a class="btn btn-outline-danger btn-sm" href="@Url.Action("Details", "PatientHistory", new { id = item.PatientID })">Potilaan kirjaushistoria tähän?</a>
+                <a class="btn btn-outline-danger btn-sm" href="@Url.Action("Details", "Diagnoses", new { id = item.PatientID })">Potilaan diagnoosi tähän?</a>
 
                 @* NUO NAPPULAT NYT TOIMII ATM mut jos ei oo kirjattu jollekki potilaalle mitään ni tulee sit errorii viel *@
 

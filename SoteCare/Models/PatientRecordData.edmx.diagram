@@ -21,6 +21,7 @@
 
         <EntityTypeShape EntityType="PatientRecordDataModel.Dosages" Width="1.5" PointX="5.25" PointY="8" />
 
+
         <AssociationConnector Association="PatientRecordDataModel.FK__Dosages__Medicat__6FE99F9F" />
         <EntityTypeShape EntityType="PatientRecordDataModel.Diagnosis" Width="1.5" PointX="3" PointY="14.125" />
         <EntityTypeShape EntityType="PatientRecordDataModel.MedicationList" Width="1.5" PointX="0.75" PointY="10.125" />
