@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Data.Entity;
 using System.Threading.Tasks;
+using System.Net;
 
 
 namespace SoteCare.Controllers
@@ -36,6 +37,46 @@ namespace SoteCare.Controllers
                 return RedirectToAction("Index");
             }            
             return View(medication);
+        }
+
+        public ActionResult DeletePartial(int id)
+        {
+            var medication = context.Medications.Find(id);
+            if (medication == null)
+            {
+                return HttpNotFound();
+            }
+            return PartialView("DeleteConfirmation", medication);  
+        }
+
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+
+        //    var medication = context.Medications.Find(id);
+        //    if (medication == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+
+        //    return View(medication);
+        //}
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            var medication = context.Medications.Find(id);
+            if (medication != null)
+            {
+                context.Medications.Remove(medication);
+                context.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

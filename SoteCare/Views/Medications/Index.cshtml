@@ -1,28 +1,54 @@
-﻿@model  IEnumerable<SoteCare.Models.Medications>
+﻿@model IEnumerable<SoteCare.Models.Medications>
+
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Medications";
 }
 
-<h2>Index</h2>
+<h2>Medications</h2>
 
-<table>
+<table class="table">
     <thead>
         <tr>
             <th>Name</th>
             <th>Type</th>
             <th>Description</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var medication in Model)
-            {
-                <tr>
-                    <td>@medication.MedicationName</td>
-                    <td>@medication.MedicationType</td>
-                    <td>@medication.Description</td>
-                </tr>
-            }
+        {
+            <tr>
+                <td>@medication.MedicationName</td>
+                <td>@medication.MedicationType</td>
+                <td>@medication.Description</td>
+                <td>
+                    <button class="btn btn-danger" onclick="showDeleteModal(@medication.MedicationID)">Delete</button>
+                </td>
+            </tr>
+        }
     </tbody>
-
-    <a href="@Url.Action("Create")">Lisää</a>
 </table>
+
+<a href="@Url.Action("Create")" class="btn btn-primary">Add Medication</a>
+
+<div id="deleteModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Medication</h5>
+            </div>
+            <div class="modal-body" id="deleteModalBody">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+   function showDeleteModal(id) {
+       const url = '@Url.Action("DeletePartial", "Medications", new { id = "__id__" })'.replace('__id__', id);
+       $("#deleteModalBody").load(url, function () {
+           $("#deleteModal").modal("show");
+       });
+   }
+</script>
