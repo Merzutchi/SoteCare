@@ -40,15 +40,15 @@
 
     <h4>Treatment</h4>
     <div class="form-group">
-        @Html.LabelFor(m => m.Treatment.FirstOrDefault().StartDate)
+        @*@Html.LabelFor(m => m.Treatment.FirstOrDefault().StartDate)
         @Html.TextBoxFor(m => m.Treatment.FirstOrDefault().StartDate, new { @class = "form-control", type = "date" })
-        @Html.ValidationMessageFor(m => m.Treatment.FirstOrDefault().StartDate, "", new { @class = "text-danger" })
+        @Html.ValidationMessageFor(m => m.Treatment.FirstOrDefault().StartDate, "", new { @class = "text-danger" })*@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Treatment.FirstOrDefault().EndDate)
+        @*@Html.LabelFor(m => m.Treatment.FirstOrDefault().EndDate)
         @Html.TextBoxFor(m => m.Treatment.FirstOrDefault().EndDate, new { @class = "form-control", type = "date" })
-        @Html.ValidationMessageFor(m => m.Treatment.FirstOrDefault().EndDate, "", new { @class = "text-danger" })
+        @Html.ValidationMessageFor(m => m.Treatment.FirstOrDefault().EndDate, "", new { @class = "text-danger" })*@
     </div>
 
     <button type="submit" class="btn btn-primary">Update Medication</button>

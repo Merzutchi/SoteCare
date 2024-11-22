@@ -18,11 +18,10 @@
         <AssociationConnector Association="PatientRecordDataModel.FK__Treatment__Patie__3C69FB99" ManuallyRouted="false" />
         <AssociationConnector Association="PatientRecordDataModel.FK__VitalFunc__Patie__398D8EEE" ManuallyRouted="false" />
         <AssociationConnector Association="PatientRecordDataModel.TreatmentMedications" ManuallyRouted="false" />
-<<<<<<< HEAD
+
         <EntityTypeShape EntityType="PatientRecordDataModel.Dosages" Width="1.5" PointX="5.25" PointY="8" />
-=======
-        
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; ae1f219e6de7b824f785d9a864ef9b58a8d4be96
+
+
         <AssociationConnector Association="PatientRecordDataModel.FK__Dosages__Medicat__6FE99F9F" />
         <EntityTypeShape EntityType="PatientRecordDataModel.Diagnosis" Width="1.5" PointX="3" PointY="14.125" />
         <EntityTypeShape EntityType="PatientRecordDataModel.MedicationList" Width="1.5" PointX="0.75" PointY="10.125" />

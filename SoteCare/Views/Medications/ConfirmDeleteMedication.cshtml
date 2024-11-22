@@ -10,8 +10,8 @@
     <p><strong>Medication:</strong> @Model.MedicationName</p>
     <p><strong>Patient:</strong> @Model.Patients.FirstName @Model.Patients.LastName</p>
     <p><strong>Dosage:</strong> @Model.Dosages.FirstOrDefault()?.DosageAmount</p>
-    <p><strong>Start Date:</strong> @Model.Treatment?.StartDate?.ToString("d")</p>
-    <p><strong>End Date:</strong> @Model.Treatment?.EndDate?.ToString("d")</p>
+    @*<p><strong>Start Date:</strong> @Model.Treatment?.StartDate?.ToString("d")</p>
+    <p><strong>End Date:</strong> @Model.Treatment?.EndDate?.ToString("d")</p>*@
     <p><strong>Refill Status:</strong> @Model.RefillStatus</p>
 </div>
 
