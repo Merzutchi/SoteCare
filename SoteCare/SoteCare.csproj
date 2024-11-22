@@ -124,6 +124,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MedicationsController.cs" />
+    <Compile Include="Controllers\NursesController.cs" />
     <Compile Include="Controllers\PatientHistoryController.cs" />
     <Compile Include="Controllers\PatientsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
@@ -279,6 +280,11 @@
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Users\Index2.cshtml" />
     <Content Include="Views\Users\Edit2.cshtml" />
+    <Content Include="Views\Nurses\Create.cshtml" />
+    <Content Include="Views\Nurses\Delete.cshtml" />
+    <Content Include="Views\Nurses\Details.cshtml" />
+    <Content Include="Views\Nurses\Edit.cshtml" />
+    <Content Include="Views\Nurses\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
