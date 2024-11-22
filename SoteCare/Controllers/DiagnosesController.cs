@@ -10,132 +10,112 @@ using SoteCare.Models;
 
 namespace SoteCare.Controllers
 {
-    public class VitalFunctionsController : Controller
+    public class DiagnosesController : Controller
     {
         private PatientRecordDataEntities db = new PatientRecordDataEntities();
 
-        // GET: VitalFunctions
+        // GET: Diagnoses
         public ActionResult Index()
         {
-
-            var vitalFunctions = db.VitalFunctions.Include(v => v.Patients);
-            return View(vitalFunctions.ToList());
+            var diagnoses = db.Diagnoses.Include(d => d.Patient);
+            return View(diagnoses.ToList());
         }
 
-
-
-
-        //[HttpPost]  JOTAIN IHME KOITOSTA SIIHE TAULUKKOON TÄS
-        //public JsonResult UpdateRow(int VitalFunctionID)
-        //{
-
-        //    var item = db.VitalFunctions.Where(x => x.VitalFunctionID == VitalFunctionID).FirstOrDefault();
-
-        //    if (item != null)
-        //    {
-        //        return Json(new { success = true });
-        //    }
-            
-
-        //    return Json(new { success = false, message = "Item not found." });
-        //}
-
-        // GET: VitalFunctions/Details/5
+        // GET: Diagnoses/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            VitalFunctions vitalFunctions = db.VitalFunctions.Find(id);
-            if (vitalFunctions == null)
+            Diagnosis diagnosis = db.Diagnoses.Find(id);
+            if (diagnosis == null)
             {
                 return HttpNotFound();
             }
-            return View(vitalFunctions);
+            return View(diagnosis);
         }
 
-        // GET: VitalFunctions/Create
+        // GET: Diagnoses/Create
         public ActionResult Create()
         {
-
             ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName");
             return View();
         }
 
-        // POST: VitalFunctions/Create
+        // POST: Diagnoses/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "VitalFunctionID,PatientID,DateTime,HeartRate,SystolicBloodPressure,DiastolicBloodPressure,RespiratoryRate,Temperature,OxygenSaturation")] VitalFunctions vitalFunctions)
+        public ActionResult Create([Bind(Include = "DiagnosisID,PatientID,DiagnosisName,DiagnosisDate,Notes")] Diagnosis diagnosis)
         {
             if (ModelState.IsValid)
             {
-                db.VitalFunctions.Add(vitalFunctions);
+                db.Diagnoses.Add(diagnosis);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", vitalFunctions.PatientID);
-            return View(vitalFunctions);
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", diagnosis.PatientID);
+            return View(diagnosis);
         }
 
-        // GET: VitalFunctions/Edit/5
+        // GET: Diagnoses/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            VitalFunctions vitalFunctions = db.VitalFunctions.Find(id);
-            if (vitalFunctions == null)
+            Diagnosis diagnosis = db.Diagnoses.Find(id);
+            if (diagnosis == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", vitalFunctions.PatientID);
-            return View(vitalFunctions);
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", diagnosis.PatientID);
+            return View(diagnosis);
         }
 
-        // POST: VitalFunctions/Edit/5
+        // POST: Diagnoses/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "VitalFunctionID,PatientID,DateTime,HeartRate,SystolicBloodPressure,DiastolicBloodPressure,RespiratoryRate,Temperature,OxygenSaturation")] VitalFunctions vitalFunctions)
+        public ActionResult Edit([Bind(Include = "DiagnosisID,PatientID,DiagnosisName,DiagnosisDate,Notes")] Diagnosis diagnosis)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(vitalFunctions).State = EntityState.Modified;
+                db.Entry(diagnosis).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", vitalFunctions.PatientID);
-            return View(vitalFunctions);
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", diagnosis.PatientID);
+            return View(diagnosis);
         }
 
-        // GET: VitalFunctions/Delete/5
+        // GET: Diagnoses/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            VitalFunctions vitalFunctions = db.VitalFunctions.Find(id);
-            if (vitalFunctions == null)
+            Diagnosis diagnosis = db.Diagnoses.Find(id);
+            if (diagnosis == null)
             {
                 return HttpNotFound();
             }
-            return View(vitalFunctions);
+            return View(diagnosis);
         }
 
-        // POST: VitalFunctions/Delete/5
+        // POST: Diagnoses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            VitalFunctions vitalFunctions = db.VitalFunctions.Find(id);
-            db.VitalFunctions.Remove(vitalFunctions);
+            Diagnosis diagnosis = db.Diagnoses.Find(id);
+            db.Diagnoses.Remove(diagnosis);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
