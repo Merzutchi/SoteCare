@@ -1,0 +1,13 @@
+﻿@model SoteCare.Models.Medications
+
+<h3>Are you sure you want to delete this medication?</h3>
+<p>Medication Name: @Model.MedicationName</p>
+
+@using (Html.BeginForm("Delete", "Medications", new { id = Model.MedicationID }, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-danger">Yes, delete</button>
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+}
+
+

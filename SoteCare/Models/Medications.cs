@@ -19,10 +19,10 @@ namespace SoteCare.Models
         {
             this.Dosages = new HashSet<Dosages>();
             this.PatientMedications = new HashSet<PatientMedication>();
+            this.Treatments = new HashSet<Treatment>();
         }
     
         public int MedicationID { get; set; }
-        public int PatientID { get; set; }
         public string MedicationName { get; set; }
         public Nullable<int> DoctorID { get; set; }
         public string RefillStatus { get; set; }
@@ -30,12 +30,15 @@ namespace SoteCare.Models
         public string Allergies { get; set; }
         public string Comments { get; set; }
         public Nullable<int> MedicationListID { get; set; }
+        public string MedicationType { get; set; }
+        public string Description { get; set; }
     
-        public virtual Patients Patients { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Dosages> Dosages { get; set; }
         public virtual MedicationList MedicationList { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientMedication> PatientMedications { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Treatment> Treatments { get; set; }
     }
 }

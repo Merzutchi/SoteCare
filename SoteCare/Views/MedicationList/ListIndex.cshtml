@@ -1,0 +1,42 @@
+﻿@model IEnumerable<SoteCare.Models.MedicationList>
+
+    @{
+        ViewBag.Title = "Medication Lists";
+    }
+
+    <h2>Medication Lists</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Medication List Name</th>
+                <th>Description</th>
+                <th>Medications</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var list in Model)  
+             {
+                <tr>
+                    <td>@list.MedicationName</td>
+                    <td>@list.Description</td>
+                    <td>
+                        <ul>
+                            @foreach (var medication in list.Medications)  
+                             {
+                                <li>@medication.MedicationName</li>
+                             }
+                        </ul>
+                    </td>
+                    <td>
+                        @using (Html.BeginForm("AddMedication", "MedicationList", new { listId = list.MedicationListID }, FormMethod.Post))
+                         {
+                            <input type="submit" value="Add Medication" class="btn btn-primary" />
+                         }
+                    </td>
+                </tr>
+             }
+        </tbody>
+    </table>
+
