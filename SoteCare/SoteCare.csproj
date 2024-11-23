@@ -287,7 +287,9 @@
     <Content Include="Views\Nurses\Details.cshtml" />
     <Content Include="Views\Nurses\Edit.cshtml" />
     <Content Include="Views\Nurses\Index.cshtml" />
-    <Content Include="Views\Medications\Medications.cshtml" />
+    <Content Include="Views\Medications\Index.cshtml" />
+    <Content Include="Views\Medications\DeleteConfirmation.cshtml" />
+    <Content Include="Views\Medications\CreateMedication.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

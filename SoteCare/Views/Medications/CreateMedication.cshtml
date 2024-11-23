@@ -1,0 +1,30 @@
+﻿@model SoteCare.Models.Medications
+
+<h3>Create Medication</h3>
+
+@using (Html.BeginForm("Create", "Medications", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.MedicationName)
+        @Html.TextBoxFor(m => m.MedicationName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.MedicationName, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.MedicationType)
+        @Html.TextBoxFor(m => m.MedicationType, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.MedicationType, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Description)
+        @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+}
+
