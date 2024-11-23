@@ -46,7 +46,7 @@ public class MedicationsController : Controller
         {
             return HttpNotFound();
         }
-        return PartialView("DeleteConfirmation", medication);  // Modal for deletion   //ei toimi kunnolla
+        return PartialView("DeleteConfirmation", medication);
     }
 
     // POST: Confirm Deletion
