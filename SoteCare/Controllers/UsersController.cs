@@ -1,122 +1,150 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using SoteCare.Models;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using SoteCare.Models;
 
 namespace SoteCare.Controllers
 {
-    public class PatientsController : Controller
+    public class UsersController : Controller
     {
         private PatientRecordDataEntities db = new PatientRecordDataEntities();
 
-        // GET: Patients
+        // GET: Users
         public ActionResult Index()
         {
-            return View(db.Patients.ToList());
+            return View(db.Users.ToList());
         }
-
+        // GET: Users Usernames, passwords
         public ActionResult Index2()
         {
-            var patients = db.Patients.Include(p => p.PatientMedications).Include(p => p.Treatment).Include(p => p.VitalFunctions).Include(p => p.PatientHistory);
-            return View(patients.ToList());
+            return View(db.Users.ToList());
         }
 
-        // GET: Patients/Details/5
+        // GET: Users/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Patients patients = db.Patients.Find(id);
-            if (patients == null)
+            Users users = db.Users.Find(id);
+            if (users == null)
             {
                 return HttpNotFound();
             }
-            return View(patients);
+            return View(users);
         }
 
-        // GET: Patients/Create
+        // GET: Users/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Patients/Create
+        // POST: Users/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PatientID,FirstName,LastName,DateOfBirth,Gender,Address,PhoneNumber,Email,EmergencyContactName,EmergencyContactPhone")] Patients patients)
+        public ActionResult Create([Bind(Include = "UserID,Username,Password,Role,FullName,Email,PhoneNumber,DateOfBirth,IsActive")] Users users)
         {
             if (ModelState.IsValid)
             {
-                db.Patients.Add(patients);
+                db.Users.Add(users);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(patients);
+            return View(users);
         }
 
-        // GET: Patients/Edit/5
+        // GET: Users/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Patients patients = db.Patients.Find(id);
-            if (patients == null)
+            Users users = db.Users.Find(id);
+            if (users == null)
             {
                 return HttpNotFound();
             }
-            return View(patients);
+            return View(users);
         }
 
-        // POST: Patients/Edit/5
+        // POST: Users/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PatientID,FirstName,LastName,DateOfBirth,Gender,Address,PhoneNumber,Email,EmergencyContactName,EmergencyContactPhone")] Patients patients)
+        public ActionResult Edit([Bind(Include = "UserID,Username,Password,Role,FullName,Email,PhoneNumber,DateOfBirth,IsActive")] Users users)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(patients).State = EntityState.Modified;
+                db.Entry(users).State = EntityState.Modified;
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
-            return View(patients);
+            return View(users);
         }
 
-        // GET: Patients/Delete/5
+        // GET: Users/Edit/5
+        public ActionResult Edit2(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Users users = db.Users.Find(id);
+            if (users == null)
+            {
+                return HttpNotFound();
+            }
+            return View(users);
+        }
+
+        // POST: Users/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit2([Bind(Include = "UserID,Username,Password,Role,FullName,Email,PhoneNumber,DateOfBirth,IsActive")] Users users)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(users).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            return View(users);
+        }
+
+        // GET: Users/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Patients patients = db.Patients.Find(id);
-            if (patients == null)
+            Users users = db.Users.Find(id);
+            if (users == null)
             {
                 return HttpNotFound();
             }
-            return View(patients);
+            return View(users);
         }
 
-        // POST: Patients/Delete/5
+        // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Patients patients = db.Patients.Find(id);
-            db.Patients.Remove(patients);
+            Users users = db.Users.Find(id);
+            db.Users.Remove(users);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
