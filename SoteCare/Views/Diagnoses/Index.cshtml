@@ -21,7 +21,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>@Html.DisplayFor(modelItem => item.DiagnosisName)</td>
-        <td>@item.DiagnosisDate.ToString("dd/MM/yyyy/")</td>
+        <td>@item.DiagnosisDate.ToString("dd/MM/yyyy")</td>
         <td>@Html.DisplayFor(modelItem => item.Notes)</td>
         <td>@Html.DisplayFor(modelItem => item.Patient.FirstName)</td>
         <td>
