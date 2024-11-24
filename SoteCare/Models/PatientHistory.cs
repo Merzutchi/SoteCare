@@ -18,7 +18,7 @@ namespace SoteCare.Models
         public int PatientID { get; set; }
         public string ConditionName { get; set; }
         public string TreatmentDetails { get; set; }
-        public Nullable<System.DateTime> SurgeryDate { get; set; }
+        public System.DateTime SurgeryDate { get; set; }
         public string Notes { get; set; }
     
         public virtual Patients Patients { get; set; }

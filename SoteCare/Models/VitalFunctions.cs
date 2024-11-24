@@ -16,7 +16,7 @@ namespace SoteCare.Models
     {
         public int VitalFunctionID { get; set; }
         public int PatientID { get; set; }
-        public System.DateTime DateTime { get; set; }
+        public System.DateTime DateTime { get; set; } = DateTime.Now;
         public Nullable<int> HeartRate { get; set; }
         public Nullable<int> SystolicBloodPressure { get; set; }
         public Nullable<int> DiastolicBloodPressure { get; set; }
