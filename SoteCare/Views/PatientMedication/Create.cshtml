@@ -1,0 +1,38 @@
+﻿@model SoteCare.Models.PatientMedication
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Prescribe Medication</h2>
+
+@using (Html.BeginForm("Create", "PatientMedication", new { patientId = ViewBag.PatientID }, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="MedicationID">Medication</label>
+        @Html.DropDownListFor(m => m.MedicationID, (SelectList)ViewBag.MedicationID, "Select Medication", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.MedicationID)
+    </div>
+
+    <div class="form-group">
+        <label for="DosageID">Dosage</label>
+        @Html.DropDownListFor(m => m.DosageID, (SelectList)ViewBag.DosageID, "Select Dosage Amount", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.DosageID)
+    </div>
+
+    <div class="form-group">
+        <label for="Frequency">Frequency</label>
+        @Html.TextBoxFor(m => m.Dosage.Frequency, new { @class = "form-control", placeholder = "Enter Frequency" })
+        @Html.ValidationMessageFor(m => m.Dosage.Frequency)
+    </div>
+
+    <div class="form-group">
+        <label for="MedicationDescription">Medication Description</label>
+        @Html.TextBoxFor(m => m.Medication.Description, new { @class = "form-control", placeholder = "Enter Medication Description" })
+        @Html.ValidationMessageFor(m => m.Medication.Description)
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+}
+

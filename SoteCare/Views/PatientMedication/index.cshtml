@@ -1,0 +1,42 @@
+﻿@model IEnumerable<SoteCare.Models.PatientMedication>
+@{
+    ViewBag.Title = "Patient Medications";
+}
+
+<h2>Patient Medications</h2>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Medication</th>
+                <th>Dosage</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var medication in Model)
+            {
+                <tr>
+                    <td>@medication.Medication.MedicationName</td>
+                    <td>@medication.Dosage.DosageAmount @medication.Dosage.Frequency</td>
+                    <td>@medication.StartDate?.ToString("d")</td>
+                    <td>@medication.EndDate?.ToString("d")</td>
+                    <td>
+                        <a href="@Url.Action("Edit", "PatientMedication", new { id = medication.PatientMedicationID })" class="btn btn-primary">Edit</a>
+                        <a href="@Url.Action("Delete", "PatientMedication", new { id = medication.PatientMedicationID })" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">No medications found for this patient.</div>
+}
+
+
