@@ -52,7 +52,7 @@ namespace SoteCare.Controllers
             ViewBag.PatientID = patientId.Value;
             ViewBag.MedicationID = new SelectList(context.Medications, "MedicationID", "MedicationName");
             ViewBag.DosageID = new SelectList(context.Dosages, "DosageID", "DosageAmount");
-            ViewBag.MedicationDescription = new SelectList(context.Medications, "MedicationID", "Description");
+            ViewBag.Description = new SelectList(context.Medications, "MedicationID", "Description");
             ViewBag.DoseInterval = new SelectList(new List<string> { "12 hours", "24 hours", "Every 4 hours" });
 
             return View(patientMedication);
