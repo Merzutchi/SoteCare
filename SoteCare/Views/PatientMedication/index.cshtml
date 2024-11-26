@@ -1,42 +1,50 @@
 ﻿@model IEnumerable<SoteCare.Models.PatientMedication>
+
 @{
-    ViewBag.Title = "Patient Medications";
+    ViewBag.Title = "Medications";
 }
 
-<h2>Patient Medications</h2>
+<h2>Medications for Patient: @ViewBag.PatientID</h2>
 
-@if (Model != null && Model.Any())
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Medication</th>
-                <th>Dosage</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var medication in Model)
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Medication</th>
+            <th>Dosage</th>
+            <th>Frequency</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var medication in Model)
             {
                 <tr>
-                    <td>@medication.Medication.MedicationName</td>
-                    <td>@medication.Dosage.DosageAmount @medication.Dosage.Frequency</td>
-                    <td>@medication.StartDate?.ToString("d")</td>
-                    <td>@medication.EndDate?.ToString("d")</td>
+                    <td>@medication.Medication?.MedicationName</td>
+                    <td>@medication.Dosage?.Dosage</td>
+                    <td>@medication.Dosage?.Frequency</td>
+                    <td>@medication.Dosage?.StartDate?.ToString("dd-MM-yyyy")</td>
+                    <td>@medication.Dosage?.EndDate?.ToString("dd-MM-yyyy")</td>
                     <td>
-                        <a href="@Url.Action("Edit", "PatientMedication", new { id = medication.PatientMedicationID })" class="btn btn-primary">Edit</a>
-                        <a href="@Url.Action("Delete", "PatientMedication", new { id = medication.PatientMedicationID })" class="btn btn-danger">Delete</a>
+                        <a href="@Url.Action("Edit", "PatientMedication", new { patientId = medication.PatientID, medicationId = medication.MedicationID })">Edit</a> |
+                        <a href="@Url.Action("Delete", "PatientMedication", new { patientId = medication.PatientID, medicationId = medication.MedicationID })" onclick="return confirm('Are you sure you want to delete this medication?');">Delete</a>
                     </td>
                 </tr>
             }
-        </tbody>
-    </table>
-}
-else
-{
-    <div class="alert alert-info">No medications found for this patient.</div>
-}
+        }
+        else
+        {
+            <tr>
+                <td colspan="6" class="text-center">No medications found for this patient.</td>
+            </tr>
+        }
+    </tbody>
+</table>
 
+<p>
+    <a href="@Url.Action("Create", "PatientMedication", new { patientId = ViewBag.PatientID })" class="btn btn-primary">Add Medication</a>
+</p>
 
