@@ -22,15 +22,15 @@ namespace SoteCare.Controllers
                 return RedirectToAction("SelectPatient");
             }
 
-            ViewBag.PatientID = patientId.Value;
-
-            var patientMedications = context.PatientMedications
+            var medications = context.PatientMedications
                 .Where(pm => pm.PatientID == patientId.Value)
-                .Include(pm => pm.Medication)
-                .Include(pm => pm.Dosage)
+                .Include(pm => pm.Medication)   
+                .Include(pm => pm.Dosage)    
+                .Include(pm => pm.Patient)        
                 .ToList();
 
-            return View(patientMedications);
+            ViewBag.PatientID = patientId.Value;
+            return View(medications);
         }
 
         public ActionResult SelectPatient()
@@ -52,7 +52,7 @@ namespace SoteCare.Controllers
             ViewBag.PatientID = patientId.Value;
             ViewBag.MedicationID = new SelectList(context.Medications, "MedicationID", "MedicationName");
             ViewBag.DosageID = new SelectList(context.Dosages, "DosageID", "DosageAmount");
-            ViewBag.MedicationDescription = new SelectList(context.Medications, "MedicationID", "Description");
+            ViewBag.Description = new SelectList(context.Medications, "MedicationID", "Description");
             ViewBag.DoseInterval = new SelectList(new List<string> { "12 hours", "24 hours", "Every 4 hours" });
 
             return View(patientMedication);

@@ -17,7 +17,7 @@ namespace SoteCare.Models
         public int DiagnosisID { get; set; }
         public Nullable<int> PatientID { get; set; }
         public string DiagnosisName { get; set; }
-        public DateTime DiagnosisDate { get; set; } = DateTime.Now;
+        public Nullable<System.DateTime> DiagnosisDate { get; set; }
         public string Notes { get; set; }
     
         public virtual Patients Patient { get; set; }
