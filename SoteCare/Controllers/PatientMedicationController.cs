@@ -22,15 +22,15 @@ namespace SoteCare.Controllers
                 return RedirectToAction("SelectPatient");
             }
 
-            ViewBag.PatientID = patientId.Value;
-
-            var patientMedications = context.PatientMedications
+            var medications = context.PatientMedications
                 .Where(pm => pm.PatientID == patientId.Value)
-                .Include(pm => pm.Medication)
-                .Include(pm => pm.Dosage)
+                .Include(pm => pm.Medication)   
+                .Include(pm => pm.Dosage)    
+                .Include(pm => pm.Patient)        
                 .ToList();
 
-            return View(patientMedications);
+            ViewBag.PatientID = patientId.Value;
+            return View(medications);
         }
 
         public ActionResult SelectPatient()

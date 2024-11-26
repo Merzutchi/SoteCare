@@ -97,6 +97,8 @@
           <Property Name="EndDate" Type="date" />
           <Property Name="MedicationListID" Type="int" />
           <Property Name="DosageID" Type="int" />
+          <Property Name="DoseStrength" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="DoseInterval" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Patients">
           <Key>
@@ -650,6 +652,8 @@
           <NavigationProperty Name="Patient" Relationship="PatientRecordDataModel.FK__PatientMe__Patie__787EE5A0" FromRole="PatientMedication" ToRole="Patients" />
           <Property Name="DosageID" Type="Int32" />
           <NavigationProperty Name="Dosage" Relationship="PatientRecordDataModel.FK_PatientMedication_Dosages" FromRole="PatientMedication" ToRole="Dosages" />
+          <Property Name="DoseStrength" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="DoseInterval" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
 		  
         <Association Name="FK__Diagnoses__Patie__72C60C4A">
@@ -912,6 +916,8 @@
           <EntitySetMapping Name="PatientMedications">
             <EntityTypeMapping TypeName="PatientRecordDataModel.PatientMedication">
               <MappingFragment StoreEntitySet="PatientMedications">
+                <ScalarProperty Name="DoseInterval" ColumnName="DoseInterval" />
+                <ScalarProperty Name="DoseStrength" ColumnName="DoseStrength" />
                 <ScalarProperty Name="DosageID" ColumnName="DosageID" />
                 <ScalarProperty Name="MedicationListID" ColumnName="MedicationListID" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
@@ -937,7 +943,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
