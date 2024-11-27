@@ -301,10 +301,13 @@
     <Content Include="Views\MedicationList\Create.cshtml" />
     <Content Include="Views\MedicationList\Edit.cshtml" />
     <Content Include="Views\MedicationList\Delete.cshtml" />
+    <Content Include="Views\Treatment\Create.cshtml" />
+    <Content Include="Views\Treatment\Index.cshtml" />
+    <Content Include="Views\Treatment\Edit.cshtml" />
+    <Content Include="Views\Treatment\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Treatment\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
