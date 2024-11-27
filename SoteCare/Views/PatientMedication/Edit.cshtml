@@ -1,9 +1,10 @@
 ﻿@model SoteCare.Models.PatientMedication
+
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Edit Medication";
 }
 
-<h2>Prescribe Medication</h2>
+<h2>Edit Medication for Patient ID: @Model.PatientID</h2>
 
 @using (Html.BeginForm())
 {
@@ -35,7 +36,7 @@
         @Html.TextBoxFor(model => model.Dosage.Frequency, new { @class = "form-control", placeholder = "Enter frequency (if editable)" })
     </div>
 
-    <button type="submit" class="btn btn-primary">Add Medication</button>
-    @Html.ActionLink("Back to List", "Index", new { patientId = ViewBag.PatientID }, new { @class = "btn btn-secondary" })
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    @Html.ActionLink("Back to List", "Index", new { patientId = Model.PatientID }, new { @class = "btn btn-secondary" })
 }
 
