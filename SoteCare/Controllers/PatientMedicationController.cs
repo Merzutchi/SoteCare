@@ -24,9 +24,8 @@ namespace SoteCare.Controllers
 
             var medications = context.PatientMedications
                 .Where(pm => pm.PatientID == patientId.Value)
-                .Include(pm => pm.Medication)   
-                .Include(pm => pm.Dosage)    
-                .Include(pm => pm.Patient)        
+                .Include(pm => pm.Medication)
+                .Include(pm => pm.Dosage)
                 .ToList();
 
             ViewBag.PatientID = patientId.Value;
@@ -52,9 +51,7 @@ namespace SoteCare.Controllers
             ViewBag.PatientID = patientId.Value;
             ViewBag.MedicationID = new SelectList(context.Medications, "MedicationID", "MedicationName");
             ViewBag.DosageID = new SelectList(context.Dosages, "DosageID", "DosageAmount");
-            ViewBag.Description = new SelectList(context.Medications, "MedicationID", "Description");
-            ViewBag.DoseInterval = new SelectList(new List<string> { "12 hours", "24 hours", "Every 4 hours" });
-
+            ViewBag.DoseInterval = new SelectList(new List<string> { "Aamu", "Päivä", "Ilta" });
             return View(patientMedication);
         }
 
@@ -72,58 +69,73 @@ namespace SoteCare.Controllers
                 try
                 {
                     patientMedication.PatientID = patientId.Value;
+
                     context.PatientMedications.Add(patientMedication);
-
-                    if (!string.IsNullOrEmpty(patientMedication.Dosage.Frequency))
-                    {
-                        var dosage = context.Dosages.FirstOrDefault(d => d.DosageID == patientMedication.DosageID);
-                        if (dosage != null)
-                        {
-                            dosage.Frequency = patientMedication.Dosage.Frequency;
-                            context.Entry(dosage).State = EntityState.Modified;
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("DosageNotFound", "Selected dosage could not be found.");
-                        }
-                    }
-
                     context.SaveChanges();
+
                     return RedirectToAction("Index", new { patientId = patientId });
                 }
                 catch (DbEntityValidationException dbEx)
                 {
-                    string message = string.Empty;
                     foreach (var validationErrors in dbEx.EntityValidationErrors)
                     {
                         foreach (var validationError in validationErrors.ValidationErrors)
                         {
-                            message += string.Format("Property: {0} Error: {1}\n", validationError.PropertyName, validationError.ErrorMessage);
+                            Console.WriteLine($"Property: {validationError.PropertyName}, Error: {validationError.ErrorMessage}");
                         }
                     }
-                    Console.WriteLine(message);
+
                     ModelState.AddModelError("", "Data validation failed. Please check the form for errors.");
-                    ViewBag.ValidationErrors = message;
-
-                    ViewBag.PatientID = patientId.Value;
-                    ViewBag.MedicationID = new SelectList(context.Medications, "MedicationID", "MedicationName", patientMedication.MedicationID);
-                    ViewBag.DosageID = new SelectList(context.Dosages, "DosageID", "DosageAmount", patientMedication.DosageID);
-                    ViewBag.MedicationDescription = new SelectList(context.Medications, "MedicationID", "Description", patientMedication.MedicationID);
-                    ViewBag.DoseInterval = new SelectList(new List<string> { "12 hours", "24 hours", "Every 4 hours" }, patientMedication.Dosage.Frequency);
-
-                    return View(patientMedication);
                 }
             }
-            ViewBag.PatientID = patientId.Value;
             ViewBag.MedicationID = new SelectList(context.Medications, "MedicationID", "MedicationName", patientMedication.MedicationID);
             ViewBag.DosageID = new SelectList(context.Dosages, "DosageID", "DosageAmount", patientMedication.DosageID);
-            ViewBag.MedicationDescription = new SelectList(context.Medications, "MedicationID", "Description", patientMedication.MedicationID);
-            ViewBag.DoseInterval = new SelectList(new List<string> { "12 hours", "24 hours", "Every 4 hours" }, patientMedication.Dosage.Frequency);
+            ViewBag.DoseInterval = new SelectList(new List<string> { "Morning", "Evening", "Night" }, patientMedication.DoseInterval);
 
             return View(patientMedication);
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpGet]
+        public ActionResult Edit(int? patientId, int? medicationId)
+        {
+            if (!patientId.HasValue || !medicationId.HasValue)
+            {
+                return HttpNotFound("Patient or Medication not specified.");
+            }
+
+            var patientMedication = context.PatientMedications
+                .Include(pm => pm.Dosage)
+                .FirstOrDefault(pm => pm.PatientID == patientId.Value && pm.MedicationID == medicationId.Value);
+
+            if (patientMedication == null)
+            {
+                return HttpNotFound("PatientMedication not found.");
+            }
+
+            ViewBag.MedicationID = new SelectList(context.Medications, "MedicationID", "MedicationName", patientMedication.MedicationID);
+            ViewBag.DosageID = new SelectList(context.Dosages, "DosageID", "DosageAmount", patientMedication.DosageID);
+            ViewBag.DoseInterval = new SelectList(new List<string> { "Aamu", "Päivä", "Ilta" });
+            return View(patientMedication);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(PatientMedication patientMedication)
+        {
+            if (ModelState.IsValid)
+            {
+                context.Entry(patientMedication).State = EntityState.Modified;
+                context.SaveChanges();
+                return RedirectToAction("Index", new { patientId = patientMedication.PatientID });
+            }
+
+            ViewBag.MedicationID = new SelectList(context.Medications, "MedicationID", "MedicationName", patientMedication.MedicationID);
+            ViewBag.DosageID = new SelectList(context.Dosages, "DosageID", "DosageAmount", patientMedication.DosageID);
+            ViewBag.DoseInterval = new SelectList(new List<string> { "Aamu", "Päivä", "Ilta" });
+            return View(patientMedication);
+        }
+
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int? patientId, int medicationId)
         {
@@ -138,6 +150,7 @@ namespace SoteCare.Controllers
 
             return RedirectToAction("Index", new { patientId = patientId });
         }
+
     }
 
 }

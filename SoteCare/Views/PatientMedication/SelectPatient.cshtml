@@ -2,34 +2,22 @@
 
 <h2>Select a Patient</h2>
 
-@if (Model != null && Model.Any())
-{
-    <table class="table">
-        <thead>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Patient Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var patient in Model)
+        {
             <tr>
-                <th>Patient Name</th>
-                <th>Actions</th>
+                <td>@patient.FirstName @patient.LastName</td>
+                <td>
+                    @Html.ActionLink("Manage Medications", "Index", new { patientId = patient.PatientID })
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var patient in Model)
-            {
-                <tr>
-                    <td>@patient.FirstName @patient.LastName</td>
-                    <td>
-                        <a href="@Url.Action("Index", "PatientMedication", new { patientId = patient.PatientID })" class="btn btn-primary">
-                            View Medications
-                        </a>
-                        <a href="@Url.Action("Create", "PatientMedication", new { patientId = patient.PatientID })" class="btn btn-secondary">
-                            Add Medication
-                        </a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <div class="alert alert-info">No patients available.</div>
-}
+        }
+    </tbody>
+</table>
