@@ -1,0 +1,30 @@
+﻿@model IEnumerable<SoteCare.Models.MedicationList>
+
+<h2>Medication Lists</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<table class="table">
+    <tr>
+        <th>Medication Name</th>
+        <th>Medication Type</th>
+        <th>Description</th>
+        <th>Actions</th>
+    </tr>
+
+    @foreach (var medicationList in Model)
+    {
+        <tr>
+            <td>@medicationList.MedicationName</td>
+            <td>@medicationList.MedicationType</td>
+            <td>@medicationList.Description</td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = medicationList.MedicationListID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = medicationList.MedicationListID })
+            </td>
+        </tr>
+    }
+</table>
+

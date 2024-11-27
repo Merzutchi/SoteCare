@@ -124,6 +124,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\DiagnosesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MedicationListController.cs" />
     <Compile Include="Controllers\MedicationsController.cs" />
     <Compile Include="Controllers\NursesController.cs" />
     <Compile Include="Controllers\PatientHistoryController.cs" />
@@ -295,6 +296,10 @@
     <Content Include="Views\PatientMedication\SelectPatient.cshtml" />
     <Content Include="Views\PatientMedication\Create.cshtml" />
     <Content Include="Views\PatientMedication\Edit.cshtml" />
+    <Content Include="Views\MedicationList\Index.cshtml" />
+    <Content Include="Views\MedicationList\Create.cshtml" />
+    <Content Include="Views\MedicationList\Edit.cshtml" />
+    <Content Include="Views\MedicationList\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
