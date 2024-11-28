@@ -11,13 +11,12 @@ namespace SoteCare.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-
+    
     public partial class VitalFunctions
     {
         public int VitalFunctionID { get; set; }
         public int PatientID { get; set; }
-        public System.DateTime DateTime { get; set; } = DateTime.Now;
+        public System.DateTime DateTime { get; set; }
         public Nullable<int> HeartRate { get; set; }
         public Nullable<int> SystolicBloodPressure { get; set; }
         public Nullable<int> DiastolicBloodPressure { get; set; }

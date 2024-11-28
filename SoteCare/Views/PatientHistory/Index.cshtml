@@ -24,7 +24,7 @@
         <tr>
             <td>@Html.DisplayFor(modelItem => item.ConditionName)</td>
             <td>@Html.DisplayFor(modelItem => item.TreatmentDetails)</td>
-            <td>@Html.DisplayFor(modelItem => item.SurgeryDate)</td>
+            <td>@item.SurgeryDate.ToString("d")</td>
             <td>@Html.DisplayFor(modelItem => item.Notes)</td>
             <td>@Html.DisplayFor(modelItem => item.Patients.FirstName)</td>
             <td>

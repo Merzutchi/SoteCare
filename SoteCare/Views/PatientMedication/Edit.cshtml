@@ -1,0 +1,42 @@
+﻿@model SoteCare.Models.PatientMedication
+
+@{
+    ViewBag.Title = "Edit Medication";
+}
+
+<h2>Edit Medication for Patient ID: @Model.PatientID</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.MedicationID, "Medication")
+        @Html.DropDownList("MedicationID", (SelectList)ViewBag.MedicationID, "Select Medication", new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DosageID, "Dosage")
+        @Html.DropDownList("DosageID", (SelectList)ViewBag.DosageID, "Select Dosage", new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Medication.Description)
+        @Html.TextBoxFor(model => model.Medication.Description, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DoseInterval, "Dose Interval")
+        @Html.DropDownListFor(model => model.DoseInterval, (SelectList)ViewBag.DoseInterval, "Select Interval", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.DoseInterval, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Dosage.Frequency, "Frequency")
+        @Html.TextBoxFor(model => model.Dosage.Frequency, new { @class = "form-control", placeholder = "Enter frequency (if editable)" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    @Html.ActionLink("Back to List", "Index", new { patientId = Model.PatientID }, new { @class = "btn btn-secondary" })
+}
+

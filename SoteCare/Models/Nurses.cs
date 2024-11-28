@@ -11,17 +11,13 @@ namespace SoteCare.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-
+    
     public partial class Nurses
     {
         public int NurseID { get; set; }
-        [DisplayName("First Name")]
         public string FirstName { get; set; }
-        [DisplayName("Last Name")]
         public string LastName { get; set; }
         public string Department { get; set; }
-        [DisplayName("Phone number")]
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
     }

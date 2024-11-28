@@ -1,0 +1,39 @@
+﻿@model IEnumerable<SoteCare.Models.PatientMedication>
+
+@{
+    ViewBag.Title = "Medications";
+}
+
+<h2>Medications for Patient: @ViewBag.PatientID</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Medication Name</th>
+            <th>Dosage Amount</th>
+            <th>Frequency</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Medication.MedicationName</td>
+                <td>@item.Dosage.DosageAmount</td>
+                <td>@item.Dosage.Frequency</td>
+                <td>@item.Medication.Description</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { patientId = ViewBag.PatientID, medicationId = item.MedicationID }) |
+                    @Html.ActionLink("Delete", "DeleteConfirmed", new { patientId = ViewBag.PatientID, medicationId = item.MedicationID }, new { @class = "text-danger", onclick = "return confirm('Are you sure?');" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p>
+    @Html.ActionLink("Add Medication", "Create", new { patientId = ViewBag.PatientID }, new { @class = "btn btn-primary" })
+</p>
+

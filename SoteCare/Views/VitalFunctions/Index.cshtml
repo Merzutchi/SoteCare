@@ -31,7 +31,7 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td>@item.DateTime.ToString("dd/MM/yyyy")</td>
+            <td>@item.DateTime.ToString("f")</td>
             <td>@Html.DisplayFor(modelItem => item.HeartRate)</td>
             <td>@Html.DisplayFor(modelItem => item.SystolicBloodPressure)</td>
             <td>@Html.DisplayFor(modelItem => item.DiastolicBloodPressure)</td>
