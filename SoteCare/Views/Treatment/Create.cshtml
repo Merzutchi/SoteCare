@@ -6,46 +6,43 @@
 
 <h2>Create Treatment</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Create", "Treatment", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
     <div class="form-group">
-        @Html.LabelFor(model => model.PatientID)
-        @Html.DropDownListFor(model => model.PatientID, (SelectList)ViewBag.Patients, "Select Patient", new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.PatientID)
+        @Html.LabelFor(m => m.PatientID, "Select Patient")
+        @Html.DropDownListFor(m => m.PatientID, (SelectList)ViewBag.PatientID, "-- Select Patient --", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.PatientID)
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.MedicationID)
-        @Html.DropDownListFor(model => model.MedicationID, (SelectList)ViewBag.Medications, "Select Medication", new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.MedicationID)
+        @Html.LabelFor(m => m.TreatmentType, "Treatment Type")
+        @Html.TextBoxFor(m => m.TreatmentType, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.TreatmentType)
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.DosageID)
-        @Html.DropDownListFor(model => model.DosageID, (SelectList)ViewBag.Dosages, "Select Dosage", new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.DosageID)
+        @Html.LabelFor(m => m.MedicationID, "Select Medication")
+        @Html.DropDownListFor(m => m.MedicationID, (SelectList)ViewBag.Medications, "-- Select Medication --", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.MedicationID)
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.TreatmentType)
-        @Html.EditorFor(model => model.TreatmentType, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.TreatmentType)
+        @Html.LabelFor(m => m.StartDate, "Start Date")
+        @Html.TextBoxFor(m => m.StartDate, "{0:dd-MM-yyyy}", new { @class = "form-control", type = "date" })
+        @Html.ValidationMessageFor(m => m.StartDate)
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.StartDate)
-        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.StartDate)
+        @Html.LabelFor(m => m.EndDate, "End Date")
+        @Html.TextBoxFor(m => m.EndDate, "{0:dd-MM-yyyy}", new { @class = "form-control", type = "date" })
+        @Html.ValidationMessageFor(m => m.EndDate)
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.EndDate)
-        @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.EndDate)
+        <button type="submit" class="btn btn-primary">Save Treatment</button>
     </div>
-
-    <button type="submit" class="btn btn-primary">Create Treatment</button>
 }
 
+@*i giv öp, nyt joku muu saa tehä, en saa toimimaan*@ 
