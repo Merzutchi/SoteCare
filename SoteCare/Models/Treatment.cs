@@ -21,8 +21,10 @@ namespace SoteCare.Models
         public Nullable<System.DateTime> EndDate { get; set; }
         public string TreatmentType { get; set; }
         public string Dosage { get; set; }
+        public Nullable<int> DosageID { get; set; }
     
         public virtual Patients Patients { get; set; }
         public virtual Medications Medication { get; set; }
+        public virtual Dosages Dosages { get; set; }
     }
 }

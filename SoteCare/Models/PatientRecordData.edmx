@@ -126,6 +126,7 @@
           <Property Name="EndDate" Type="date" />
           <Property Name="TreatmentType" Type="nvarchar" MaxLength="100" />
           <Property Name="Dosage" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DosageID" Type="int" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -275,6 +276,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Treatment_Dosages">
+          <End Role="Dosages" Type="Self.Dosages" Multiplicity="0..1" />
+          <End Role="Treatment" Type="Self.Treatment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dosages">
+              <PropertyRef Name="DosageID" />
+            </Principal>
+            <Dependent Role="Treatment">
+              <PropertyRef Name="DosageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Treatment_Medications">
           <End Role="Medications" Type="Self.Medications" Multiplicity="0..1" />
           <End Role="Treatment" Type="Self.Treatment" Multiplicity="*" />
@@ -339,6 +352,10 @@
           <AssociationSet Name="FK_PatientMedications_MedicationLists" Association="Self.FK_PatientMedications_MedicationLists">
             <End Role="MedicationLists" EntitySet="MedicationLists" />
             <End Role="PatientMedications" EntitySet="PatientMedications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Treatment_Dosages" Association="Self.FK_Treatment_Dosages">
+            <End Role="Dosages" EntitySet="Dosages" />
+            <End Role="Treatment" EntitySet="Treatment" />
           </AssociationSet>
           <AssociationSet Name="FK_Treatment_Medications" Association="Self.FK_Treatment_Medications">
             <End Role="Medications" EntitySet="Medications" />
@@ -441,6 +458,8 @@
 			  <NavigationProperty Name="Patients" Relationship="Self.FK__Treatment__Patie__3C69FB99" FromRole="Treatment" ToRole="Patients" />
 			  <Property Name="Dosage" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Medication" Relationship="PatientRecordDataModel.FK_Treatment_Medications" FromRole="Treatment" ToRole="Medications" />
+          <Property Name="DosageID" Type="Int32" />
+          <NavigationProperty Name="Dosages" Relationship="PatientRecordDataModel.FK_Treatment_Dosages" FromRole="Treatment" ToRole="Dosages" />
 		  </EntityType>
 		  
 		  <EntityType Name="Users">
@@ -581,6 +600,10 @@
             <End Role="Medications" EntitySet="Medications" />
             <End Role="Treatment" EntitySet="Treatment" />
           </AssociationSet>
+          <AssociationSet Name="FK_Treatment_Dosages" Association="PatientRecordDataModel.FK_Treatment_Dosages">
+            <End Role="Dosages" EntitySet="Dosages" />
+            <End Role="Treatment" EntitySet="Treatment" />
+          </AssociationSet>
 		  </EntityContainer>
 
 		  <EntityType Name="Dosages">
@@ -598,6 +621,7 @@
 			  <Property Name="DosageAmount" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
 			  <NavigationProperty Name="Medication" Relationship="PatientRecordDataModel.FK__Dosages__Medicat__6FE99F9F" FromRole="Dosage" ToRole="Medications" />
           <NavigationProperty Name="PatientMedications" Relationship="PatientRecordDataModel.FK_PatientMedication_Dosages" FromRole="Dosages" ToRole="PatientMedication" />
+          <NavigationProperty Name="Treatment" Relationship="PatientRecordDataModel.FK_Treatment_Dosages" FromRole="Dosages" ToRole="Treatment" />
 		  </EntityType>
 
 <Association Name="FK__Dosages__Medicat__6FE99F9F">
@@ -746,6 +770,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Treatment_Dosages">
+          <End Type="PatientRecordDataModel.Dosages" Role="Dosages" Multiplicity="0..1" />
+          <End Type="PatientRecordDataModel.Treatment" Role="Treatment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dosages">
+              <PropertyRef Name="DosageID" />
+            </Principal>
+            <Dependent Role="Treatment">
+              <PropertyRef Name="DosageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
 		  
       </Schema>
     </edmx:ConceptualModels>
@@ -831,6 +867,7 @@
           <EntitySetMapping Name="Treatment">
             <EntityTypeMapping TypeName="PatientRecordDataModel.Treatment">
               <MappingFragment StoreEntitySet="Treatment">
+                <ScalarProperty Name="DosageID" ColumnName="DosageID" />
                 <ScalarProperty Name="Dosage" ColumnName="Dosage" />
                 <ScalarProperty Name="TreatmentID" ColumnName="TreatmentID" />
                 <ScalarProperty Name="PatientID" ColumnName="PatientID" />
