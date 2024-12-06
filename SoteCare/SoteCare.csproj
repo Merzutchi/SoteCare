@@ -304,6 +304,11 @@
     <Content Include="Views\MedicationList\Delete.cshtml" />
     <Content Include="Views\Treatment\Index.cshtml" />
     <Content Include="Views\Treatment\Create.cshtml" />
+    <Content Include="Views\Doctors\Index.cshtml" />
+    <Content Include="Views\Doctors\Edit.cshtml" />
+    <Content Include="Views\Doctors\Delete.cshtml" />
+    <Content Include="Views\Doctors\Details.cshtml" />
+    <Content Include="Views\Doctors\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
