@@ -33,6 +33,7 @@
         <AssociationConnector Association="PatientRecordDataModel.FK__PatientMe__Patie__787EE5A0" />
         <AssociationConnector Association="PatientRecordDataModel.FK_PatientMedication_Dosages" />
         <AssociationConnector Association="PatientRecordDataModel.FK_Treatment_Medications" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_Treatment_Dosages" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -1,0 +1,36 @@
+﻿@model IEnumerable<SoteCare.Models.Treatment>
+
+<h2>Treatment List</h2>
+
+<button onclick="location.href='@Url.Action("Create", "Treatment")'" class="btn btn-primary">Add Treatment</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Patient</th>
+            <th>Medication</th>
+            <th>Dosage</th>
+            <th>Treatment Type</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@(item.Patients?.FirstName + " " + item.Patients?.LastName ?? "Unknown")</td>
+                <td>@(item.Medication?.MedicationName ?? "Unknown")</td>
+                <td>@(item.Dosages?.DosageAmount ?? "Unknown")</td>
+                <td>@item.TreatmentType</td>
+                <td>@item.StartDate?.ToString("dd/MM/yyyy")</td>
+                <td>@item.EndDate?.ToString("dd/MM/yyyy")</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.TreatmentID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.TreatmentID })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
