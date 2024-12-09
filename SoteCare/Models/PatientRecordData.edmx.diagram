@@ -4,22 +4,20 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="b66d62bbfcec45aca787deb3c826c069" Name="Diagram1">
+      <Diagram DiagramId="b66d62bbfcec45aca787deb3c826c069" Name="Diagram1" ZoomLevel="85">
         <EntityTypeShape EntityType="PatientRecordDataModel.Doctors" Width="1.5" PointX="2.375" PointY="13.375" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordDataModel.Medications" Width="1.5" PointX="7.75" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordDataModel.Nurses" Width="1.5" PointX="0.5" PointY="13.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="PatientRecordDataModel.PatientHistory" Width="1.5" PointX="5.25" PointY="7.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="PatientRecordDataModel.Patients" Width="1.5" PointX="8" PointY="5.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="PatientRecordDataModel.Treatment" Width="1.5" PointX="5.25" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.PatientHistory" Width="1.5" PointX="2.625" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.Patients" Width="1.5" PointX="5.125" PointY="1.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordDataModel.Users" Width="1.5" PointX="0.5" PointY="10.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="PatientRecordDataModel.VitalFunctions" Width="1.5" PointX="10.25" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.VitalFunctions" Width="1.5" PointX="5.875" PointY="6.5" IsExpanded="true" />
         <AssociationConnector Association="PatientRecordDataModel.FK__Medicatio__Patie__4222D4EF" ManuallyRouted="false" />
         <AssociationConnector Association="PatientRecordDataModel.FK__PatientHi__Patie__3F466844" ManuallyRouted="false" />
-        <AssociationConnector Association="PatientRecordDataModel.FK__Treatment__Patie__3C69FB99" ManuallyRouted="false" />
         <AssociationConnector Association="PatientRecordDataModel.FK__VitalFunc__Patie__398D8EEE" ManuallyRouted="false" />
         <AssociationConnector Association="PatientRecordDataModel.TreatmentMedications" ManuallyRouted="false" />
 
-        <EntityTypeShape EntityType="PatientRecordDataModel.Dosages" Width="1.5" PointX="2.625" PointY="7.625" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.Dosages" Width="1.5" PointX="9.375" PointY="7.25" />
 
 
         <AssociationConnector Association="PatientRecordDataModel.FK__Dosages__Medicat__6FE99F9F" />
@@ -32,9 +30,11 @@
         <AssociationConnector Association="PatientRecordDataModel.FK__PatientMe__Medic__778AC167" />
         <AssociationConnector Association="PatientRecordDataModel.FK__PatientMe__Patie__787EE5A0" />
         <AssociationConnector Association="PatientRecordDataModel.FK_PatientMedication_Dosages" />
-        <AssociationConnector Association="PatientRecordDataModel.FK_Treatment_Medications" />
-        <AssociationConnector Association="PatientRecordDataModel.FK_Treatment_Dosages" />
-      </Diagram>
+        <EntityTypeShape EntityType="PatientRecordDataModel.Treatment" Width="1.5" PointX="2.625" PointY="7.25" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_Treatment_Dosage" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_Treatment_Medication" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_Treatment_Patient" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

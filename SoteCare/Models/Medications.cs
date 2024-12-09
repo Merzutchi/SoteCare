@@ -19,7 +19,7 @@ namespace SoteCare.Models
         {
             this.Dosages = new HashSet<Dosages>();
             this.PatientMedications = new HashSet<PatientMedication>();
-            this.Treatments = new HashSet<Treatment>();
+            this.Treatment = new HashSet<Treatment>();
         }
     
         public int MedicationID { get; set; }
@@ -39,6 +39,6 @@ namespace SoteCare.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientMedication> PatientMedications { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Treatment> Treatments { get; set; }
+        public virtual ICollection<Treatment> Treatment { get; set; }
     }
 }

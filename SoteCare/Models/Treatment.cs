@@ -16,15 +16,15 @@ namespace SoteCare.Models
     {
         public int TreatmentID { get; set; }
         public int PatientID { get; set; }
-        public Nullable<int> MedicationID { get; set; }
-        public Nullable<System.DateTime> StartDate { get; set; }
+        public int MedicationID { get; set; }
+        public int DosageID { get; set; }
+        public System.DateTime StartDate { get; set; }
         public Nullable<System.DateTime> EndDate { get; set; }
         public string TreatmentType { get; set; }
-        public string Dosage { get; set; }
-        public Nullable<int> DosageID { get; set; }
+        public string Notes { get; set; }
     
-        public virtual Patients Patients { get; set; }
-        public virtual Medications Medication { get; set; }
         public virtual Dosages Dosages { get; set; }
+        public virtual Medications Medications { get; set; }
+        public virtual Patients Patients { get; set; }
     }
 }

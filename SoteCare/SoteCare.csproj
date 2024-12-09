@@ -131,7 +131,6 @@
     <Compile Include="Controllers\PatientHistoryController.cs" />
     <Compile Include="Controllers\PatientMedicationController.cs" />
     <Compile Include="Controllers\PatientsController.cs" />
-    <Compile Include="Controllers\TreatmentController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\VitalFunctionsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -244,13 +243,6 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Web.config" />
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
@@ -302,13 +294,18 @@
     <Content Include="Views\MedicationList\Create.cshtml" />
     <Content Include="Views\MedicationList\Edit.cshtml" />
     <Content Include="Views\MedicationList\Delete.cshtml" />
-    <Content Include="Views\Treatment\Index.cshtml" />
-    <Content Include="Views\Treatment\Create.cshtml" />
     <Content Include="Views\Doctors\Index.cshtml" />
     <Content Include="Views\Doctors\Edit.cshtml" />
     <Content Include="Views\Doctors\Delete.cshtml" />
     <Content Include="Views\Doctors\Details.cshtml" />
     <Content Include="Views\Doctors\Create.cshtml" />
+    <Content Include="Web.config" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

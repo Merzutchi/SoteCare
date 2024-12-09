@@ -30,12 +30,12 @@ namespace SoteCare.Models
         public virtual DbSet<Nurses> Nurses { get; set; }
         public virtual DbSet<PatientHistory> PatientHistory { get; set; }
         public virtual DbSet<Patients> Patients { get; set; }
-        public virtual DbSet<Treatment> Treatment { get; set; }
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<VitalFunctions> VitalFunctions { get; set; }
         public virtual DbSet<Dosages> Dosages { get; set; }
         public virtual DbSet<Diagnosis> Diagnoses { get; set; }
         public virtual DbSet<MedicationList> MedicationLists { get; set; }
         public virtual DbSet<PatientMedication> PatientMedications { get; set; }
+        public virtual DbSet<Treatment> Treatment { get; set; }
     }
 }

@@ -18,10 +18,10 @@ namespace SoteCare.Models
         public Patients()
         {
             this.PatientHistory = new HashSet<PatientHistory>();
-            this.Treatment = new HashSet<Treatment>();
             this.VitalFunctions = new HashSet<VitalFunctions>();
             this.Diagnoses = new HashSet<Diagnosis>();
             this.PatientMedications = new HashSet<PatientMedication>();
+            this.Treatment = new HashSet<Treatment>();
         }
     
         public int PatientID { get; set; }
@@ -38,12 +38,12 @@ namespace SoteCare.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientHistory> PatientHistory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Treatment> Treatment { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VitalFunctions> VitalFunctions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Diagnosis> Diagnoses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientMedication> PatientMedications { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Treatment> Treatment { get; set; }
     }
 }
