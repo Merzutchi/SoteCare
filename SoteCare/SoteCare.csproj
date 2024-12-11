@@ -125,6 +125,60 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Diagnoses.cs">
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Doctors.cs">
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Dosages.cs">
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MedicationLists.cs">
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Medications.cs">
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Nurses.cs">
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PatientHistory.cs">
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PatientMedications.cs">
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PatientRecordDataEntities.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PatientRecordDataEntities.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PatientRecordDataEntities.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PatientRecordDataEntities.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PatientRecordDataEntities.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Patients.cs">
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Treatment.cs">
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TreatmentDetails.cs">
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Users.cs">
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\VitalFunctions.cs">
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -147,12 +201,29 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Models\PatientRecordDataEntities.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PatientRecordDataEntities.edmx</DependentUpon>
+      <LastGenOutput>PatientRecordDataEntities.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\PatientRecordDataEntities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PatientRecordDataEntities.edmx</DependentUpon>
+      <LastGenOutput>PatientRecordDataEntities.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <EntityDeploy Include="Models\PatientRecordDataEntities.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>PatientRecordDataEntities.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\PatientRecordDataEntities.edmx.diagram">
+      <DependentUpon>PatientRecordDataEntities.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
     <Content Include="Scripts\jquery-3.7.1.min.js" />
@@ -176,7 +247,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
