@@ -1,11 +1,12 @@
-﻿using SoteCare.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using SoteCare.Models;
 
 namespace SoteCare.Controllers
 {
@@ -16,31 +17,40 @@ namespace SoteCare.Controllers
         // GET: PatientMedications
         public ActionResult Index()
         {
-            return View();
+            var patientMedications = db.PatientMedications.Include(p => p.MedicationLists).Include(p => p.Medications).Include(p => p.Patients);
+            return View(patientMedications.ToList());
         }
 
+        // GET: PatientMedications/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            PatientMedications patientMedications = db.PatientMedications.Find(id);
+            if (patientMedications == null)
+            {
+                return HttpNotFound();
+            }
+            return View(patientMedications);
+        }
+
+        // GET: PatientMedications/Create
         public ActionResult Create()
         {
-            var patientList = db.Patients
-                                .Select(p => new
-                                {
-                                    PatientID = p.PatientID,
-                                    FullName = p.FirstName + " " + p.LastName 
-                                })
-                                .ToList();
-
-            ViewBag.PatientID = new SelectList(patientList, "PatientID", "FullName");
-
-            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName");
             ViewBag.MedicationListID = new SelectList(db.MedicationLists, "MedicationListID", "MedicationName");
-
+            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName");
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName");
             return View();
         }
 
         // POST: PatientMedications/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PatientID,MedicationID,StartDate,EndDate,DoseStrength,MedicationListID")] PatientMedications patientMedications)
+        public ActionResult Create([Bind(Include = "PatientMedicationID,PatientID,MedicationID,StartDate,EndDate,MedicationListID,DoseStrength")] PatientMedications patientMedications)
         {
             if (ModelState.IsValid)
             {
@@ -49,37 +59,36 @@ namespace SoteCare.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", patientMedications.PatientID);
-            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", patientMedications.MedicationID);
             ViewBag.MedicationListID = new SelectList(db.MedicationLists, "MedicationListID", "MedicationName", patientMedications.MedicationListID);
-
+            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", patientMedications.MedicationID);
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", patientMedications.PatientID);
             return View(patientMedications);
         }
 
+        // GET: PatientMedications/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
             PatientMedications patientMedications = db.PatientMedications.Find(id);
             if (patientMedications == null)
             {
                 return HttpNotFound();
             }
-
-            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "Name", patientMedications.PatientID);
-            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", patientMedications.MedicationID);
             ViewBag.MedicationListID = new SelectList(db.MedicationLists, "MedicationListID", "MedicationName", patientMedications.MedicationListID);
-
+            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", patientMedications.MedicationID);
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", patientMedications.PatientID);
             return View(patientMedications);
         }
 
         // POST: PatientMedications/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PatientMedicationID,PatientID,MedicationID,StartDate,EndDate,DoseStrength,MedicationListID")] PatientMedications patientMedications)
+        public ActionResult Edit([Bind(Include = "PatientMedicationID,PatientID,MedicationID,StartDate,EndDate,MedicationListID,DoseStrength")] PatientMedications patientMedications)
         {
             if (ModelState.IsValid)
             {
@@ -87,12 +96,45 @@ namespace SoteCare.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "Name", patientMedications.PatientID);
-            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", patientMedications.MedicationID);
             ViewBag.MedicationListID = new SelectList(db.MedicationLists, "MedicationListID", "MedicationName", patientMedications.MedicationListID);
-
+            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", patientMedications.MedicationID);
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", patientMedications.PatientID);
             return View(patientMedications);
+        }
+
+        // GET: PatientMedications/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            PatientMedications patientMedications = db.PatientMedications.Find(id);
+            if (patientMedications == null)
+            {
+                return HttpNotFound();
+            }
+            return View(patientMedications);
+        }
+
+        // POST: PatientMedications/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            PatientMedications patientMedications = db.PatientMedications.Find(id);
+            db.PatientMedications.Remove(patientMedications);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

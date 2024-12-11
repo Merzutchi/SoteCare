@@ -1,5 +1,10 @@
 ﻿@model IEnumerable<SoteCare.Models.PatientMedications>
 
+@{
+    ViewBag.Title = "Index";
+}
+
+
 <h2>Patient Medications</h2>
 
 <table class="table">
@@ -9,7 +14,7 @@
             <th>Medication</th>
             <th>Start Date</th>
             <th>End Date</th>
-            <th>Status</th>
+            <th>Status/DoseStrength?</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -17,10 +22,11 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.Patients.FirstName @item.Patients.LastName</td>  
+                <td>@item.Patients.FirstName @item.Patients.LastName</td>
                 <td>@item.Medications.MedicationName</td>
                 <td>@item.StartDate</td>
                 <td>@item.EndDate</td>
+                <td>@item.DoseStrength</td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.PatientMedicationID }) |
                     @Html.ActionLink("Details", "Details", new { id = item.PatientMedicationID }) |
@@ -36,4 +42,37 @@
 
 
 
+@*<h2>Index</h2>
 
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.StartDate)</th>
+            <th>@Html.DisplayNameFor(model => model.EndDate)</th>
+            <th>@Html.DisplayNameFor(model => model.DoseStrength)</th>
+            <th>@Html.DisplayNameFor(model => model.MedicationLists.MedicationName)</th>
+            <th>@Html.DisplayNameFor(model => model.Medications.MedicationName)</th>
+            <th>@Html.DisplayNameFor(model => model.Patients.FirstName)</th>
+            <th></th>
+        </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>@Html.DisplayFor(modelItem => item.EndDate)</td>
+            <td>@Html.DisplayFor(modelItem => item.DoseStrength)</td>
+            <td>@Html.DisplayFor(modelItem => item.MedicationLists.MedicationName)</td>
+            <td>@Html.DisplayFor(modelItem => item.Medications.MedicationName)</td>
+            <td>@Html.DisplayFor(modelItem => item.Patients.FirstName)</td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.PatientMedicationID }) |
+                @Html.ActionLink("Details", "Details", new { id=item.PatientMedicationID }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.PatientMedicationID })
+            </td>
+        </tr>
+    }
+
+    </table>*@
