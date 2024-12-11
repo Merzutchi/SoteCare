@@ -125,6 +125,7 @@
     <Compile Include="Controllers\DiagnosesController.cs" />
     <Compile Include="Controllers\DoctorsController.cs" />
     <Compile Include="Controllers\DosagesController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MedicationsController.cs" />
     <Compile Include="Controllers\MedicationsListController.cs" />
     <Compile Include="Controllers\NursesController.cs" />
@@ -309,6 +310,9 @@
     <Content Include="Views\VitalFunctions\Delete.cshtml" />
     <Content Include="Views\VitalFunctions\Details.cshtml" />
     <Content Include="Views\VitalFunctions\Edit.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

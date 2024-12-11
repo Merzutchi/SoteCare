@@ -20,10 +20,8 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.Medication.MedicationName</td>
-                <td>@item.Dosage.DosageAmount</td>
-                <td>@item.Dosage.Frequency</td>
-                <td>@item.Medication.Description</td>
+                <td>@item.Medications.MedicationName</td>
+                <td>@item.Medications.Description</td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { patientId = ViewBag.PatientID, medicationId = item.MedicationID }) |
                     @Html.ActionLink("Delete", "DeleteConfirmed", new { patientId = ViewBag.PatientID, medicationId = item.MedicationID }, new { @class = "text-danger", onclick = "return confirm('Are you sure?');" })

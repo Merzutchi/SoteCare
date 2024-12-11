@@ -29,13 +29,14 @@
         @Html.ActionLink("PatientMedication", "Index", "PatientMedications")
         @Html.ActionLink("Doctors", "Index", "Doctors")
 
-        <div class="content">
-            @RenderBody()
-            <hr />
-            <footer>
-                <p>&copy; @DateTime.Now.Year - SoteCare</p>
-            </footer>
-        </div>
+        
+    </div>
+    <div class="content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - SoteCare</p>
+        </footer>
     </div>
 </body>
 </html>
