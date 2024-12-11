@@ -1,5 +1,7 @@
-﻿using System;
+﻿using SoteCare.Models;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -8,82 +10,96 @@ namespace SoteCare.Controllers
 {
     public class TreatmentController : Controller
     {
+        private readonly PatientRecordDataEntities context = new PatientRecordDataEntities();
+
         // GET: Treatment
         public ActionResult Index()
         {
-            return View();
-        }
+            var treatments = context.Treatment
+                         .Include(t => t.Patient)
+                         .Include(t => t.Medications)
+                         .Include(t => t.Dosages)
+                         .ToList();
 
-        // GET: Treatment/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
+            return View(treatments);
         }
 
         // GET: Treatment/Create
-        public ActionResult Create()
+        public ActionResult Create(int? patientId)
         {
-            return View();
+            var dosages = context.Dosages.ToList();
+            foreach (var dosage in dosages)
+            {
+                System.Diagnostics.Debug.WriteLine($"DosageID: {dosage.DosageID}, DosageAmount: {dosage.DosageAmount}");
+            }
+
+            ViewBag.PatientID = new SelectList(context.Patients.Select(p => new
+            {
+                p.PatientID,
+                FullName = p.FirstName + " " + p.LastName
+            }), "PatientID", "FullName", patientId);
+
+            ViewBag.MedicationID = new SelectList(context.Medications.Select(m => new
+            {
+                m.MedicationID,
+                m.MedicationName
+            }), "MedicationID", "MedicationName");
+
+            ViewBag.DosageID = new SelectList(context.Dosages.Select(d => new
+            {
+                d.DosageID,
+                d.DosageAmount
+            }), "DosageID", "DosageAmount");
+
+            return View(new Treatment());
         }
 
-        // POST: Treatment/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Treatment treatments)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add insert logic here
+                try
+                {
+                    context.Treatment.Add(treatments);
+                    context.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    foreach (var validationErrors in ex.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Property: {validationError.PropertyName}, Error: {validationError.ErrorMessage}");
+                        }
+                    }
 
-                return RedirectToAction("Index");
+                    ModelState.AddModelError("", "There was a problem saving the treatment. Please check the input.");
+                }
             }
-            catch
+
+            ViewBag.PatientID = new SelectList(context.Patients.Select(p => new
             {
-                return View();
-            }
-        }
+                p.PatientID,
+                FullName = p.FirstName + " " + p.LastName
+            }), "PatientID", "FullName", treatments.PatientID);
 
-        // GET: Treatment/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Treatment/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
+            ViewBag.MedicationID = new SelectList(context.Medications.Select(m => new
             {
-                // TODO: Add update logic here
+                m.MedicationID,
+                m.MedicationName
+            }), "MedicationID", "MedicationName", treatments.MedicationID);
 
-                return RedirectToAction("Index");
-            }
-            catch
+            ViewBag.DosageID = new SelectList(context.Dosages.Select(d => new
             {
-                return View();
-            }
-        }
+                d.DosageID,
+                d.DosageAmount
+            }), "DosageID", "DosageAmount", treatments.DosageID);
 
-        // GET: Treatment/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Treatment/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return View(treatments);
         }
     }
 }
+

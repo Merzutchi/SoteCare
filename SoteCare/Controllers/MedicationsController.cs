@@ -1,89 +1,64 @@
-﻿using System;
+﻿using SoteCare.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace SoteCare.Controllers
+public class MedicationsController : Controller
 {
-    public class MedicationsController : Controller
+    private readonly PatientRecordDataEntities context = new PatientRecordDataEntities();
+
+    // GET: Index for Medications
+    public ActionResult Index()
     {
-        // GET: Medications
-        public ActionResult Index()
+        var medications = context.Medications.ToList();
+        return View(medications);
+    }
+
+    public ActionResult CreatePartial()
+    {
+        return PartialView("CreateMedication");
+    }
+
+    // POST: Create Medication
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public ActionResult Create(Medications medication)
+    {
+        if (ModelState.IsValid)
         {
-            return View();
+            context.Medications.Add(medication);
+            context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        return View(medication);
+    }
+
+    // GET: Delete Confirmation
+    public ActionResult DeletePartial(int id)
+    {
+        var medication = context.Medications.Find(id);
+        if (medication == null)
+        {
+            return HttpNotFound();
+        }
+        return PartialView("DeleteConfirmation", medication);
+    }
+
+    // POST: Confirm Deletion
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public ActionResult DeleteConfirmed(int id)
+    {
+        var medication = context.Medications.Find(id);
+        if (medication != null)
+        {
+            context.Medications.Remove(medication);
+            context.SaveChanges();
         }
 
-        // GET: Medications/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: Medications/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Medications/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Medications/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Medications/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Medications/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Medications/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        return RedirectToAction("Index");
     }
 }
+

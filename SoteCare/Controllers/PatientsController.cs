@@ -1,6 +1,9 @@
-﻿using System;
+﻿using SoteCare.Models;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -8,16 +11,33 @@ namespace SoteCare.Controllers
 {
     public class PatientsController : Controller
     {
+        private PatientRecordDataEntities db = new PatientRecordDataEntities();
+
         // GET: Patients
         public ActionResult Index()
         {
-            return View();
+            return View(db.Patients.ToList());
+        }
+
+        public ActionResult Index2()
+        {
+            var patients = db.Patients.Include(p => p.PatientMedications).Include(p => p.Treatment).Include(p => p.VitalFunctions).Include(p => p.PatientHistory);
+            return View(patients.ToList());
         }
 
         // GET: Patients/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patients patients = db.Patients.Find(id);
+            if (patients == null)
+            {
+                return HttpNotFound();
+            }
+            return View(patients);
         }
 
         // GET: Patients/Create
@@ -27,63 +47,87 @@ namespace SoteCare.Controllers
         }
 
         // POST: Patients/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "PatientID,FirstName,LastName,DateOfBirth,Gender,Address,PhoneNumber,Email,EmergencyContactName,EmergencyContactPhone")] Patients patients)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add insert logic here
-
+                db.Patients.Add(patients);
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+
+            return View(patients);
         }
 
         // GET: Patients/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patients patients = db.Patients.Find(id);
+            if (patients == null)
+            {
+                return HttpNotFound();
+            }
+            return View(patients);
         }
 
         // POST: Patients/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "PatientID,FirstName,LastName,DateOfBirth,Gender,Address,PhoneNumber,Email,EmergencyContactName,EmergencyContactPhone")] Patients patients)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
-
+                db.Entry(patients).State = EntityState.Modified;
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+            return View(patients);
         }
 
         // GET: Patients/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patients patients = db.Patients.Find(id);
+            if (patients == null)
+            {
+                return HttpNotFound();
+            }
+            return View(patients);
         }
 
         // POST: Patients/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            Patients patients = db.Patients.Find(id);
+            db.Patients.Remove(patients);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
 
-                return RedirectToAction("Index");
-            }
-            catch
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
             {
-                return View();
+                db.Dispose();
             }
+            base.Dispose(disposing);
         }
     }
 }
+

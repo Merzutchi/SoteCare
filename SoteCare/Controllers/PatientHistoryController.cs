@@ -1,6 +1,9 @@
-﻿using System;
+﻿using SoteCare.Models;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -8,82 +11,122 @@ namespace SoteCare.Controllers
 {
     public class PatientHistoryController : Controller
     {
+        private PatientRecordDataEntities db = new PatientRecordDataEntities();
+
         // GET: PatientHistory
         public ActionResult Index()
         {
-            return View();
+            var patientHistory = db.PatientHistory.Include(p => p.Patients);
+            return View(patientHistory.ToList());
         }
 
         // GET: PatientHistory/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            PatientHistory patientHistory = db.PatientHistory.Find(id);
+            if (patientHistory == null)
+            {
+                return HttpNotFound();
+            }
+            return View(patientHistory);
         }
 
         // GET: PatientHistory/Create
         public ActionResult Create()
         {
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName");
             return View();
         }
 
         // POST: PatientHistory/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "HistoryID,PatientID,ConditionName,TreatmentDetails,SurgeryDate,Notes")] PatientHistory patientHistory)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add insert logic here
-
+                db.PatientHistory.Add(patientHistory);
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", patientHistory.PatientID);
+            return View(patientHistory);
         }
 
         // GET: PatientHistory/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            PatientHistory patientHistory = db.PatientHistory.Find(id);
+            if (patientHistory == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", patientHistory.PatientID);
+            return View(patientHistory);
         }
 
         // POST: PatientHistory/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "HistoryID,PatientID,ConditionName,TreatmentDetails,SurgeryDate,Notes")] PatientHistory patientHistory)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
-
+                db.Entry(patientHistory).State = EntityState.Modified;
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", patientHistory.PatientID);
+            return View(patientHistory);
         }
 
         // GET: PatientHistory/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            PatientHistory patientHistory = db.PatientHistory.Find(id);
+            if (patientHistory == null)
+            {
+                return HttpNotFound();
+            }
+            return View(patientHistory);
         }
 
         // POST: PatientHistory/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            PatientHistory patientHistory = db.PatientHistory.Find(id);
+            db.PatientHistory.Remove(patientHistory);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
 
-                return RedirectToAction("Index");
-            }
-            catch
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
             {
-                return View();
+                db.Dispose();
             }
+            base.Dispose(disposing);
         }
     }
 }
+

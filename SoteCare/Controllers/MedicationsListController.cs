@@ -1,89 +1,106 @@
-﻿using System;
+﻿using SoteCare.Models;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
 namespace SoteCare.Controllers
 {
-    public class MedicationsListController : Controller
+    namespace SoteCare.Controllers
     {
-        // GET: MedicationsList
-        public ActionResult Index()
+        public class MedicationListController : Controller
         {
-            return View();
-        }
+            private readonly PatientRecordDataEntities context = new PatientRecordDataEntities();
 
-        // GET: MedicationsList/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: MedicationsList/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: MedicationsList/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
+            // GET: MedicationList
+            public ActionResult Index()
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                var medicationLists = context.MedicationLists.ToList();
+                return View(medicationLists);
             }
-            catch
+
+            public ActionResult Create()
             {
                 return View();
             }
-        }
 
-        // GET: MedicationsList/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: MedicationsList/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
+            // GET: MedicationList/Details/5
+            public ActionResult Details(int id)
             {
-                // TODO: Add update logic here
+                var medicationList = context.MedicationLists.Find(id);
+                if (medicationList == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(medicationList);
+            }
 
+            // POST: MedicationList/Create
+            [HttpPost]
+            [ValidateAntiForgeryToken]
+            public ActionResult Create(MedicationLists medicationList)
+            {
+                if (ModelState.IsValid)
+                {
+                    context.MedicationLists.Add(medicationList);
+                    context.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                return View(medicationList);
+            }
+
+            // GET: MedicationList/Edit/5
+            public ActionResult Edit(int id)
+            {
+                var medicationList = context.MedicationLists.Find(id);
+                if (medicationList == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(medicationList);
+            }
+
+            // POST: MedicationList/Edit/5
+            [HttpPost]
+            [ValidateAntiForgeryToken]
+            public ActionResult Edit(MedicationLists medicationList)
+            {
+                if (ModelState.IsValid)
+                {
+                    context.Entry(medicationList).State = EntityState.Modified;
+                    context.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                return View(medicationList);
+            }
+
+            // GET: MedicationList/Delete/5
+            public ActionResult Delete(int id)
+            {
+                var medicationList = context.MedicationLists.Find(id);
+                if (medicationList == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(medicationList);
+            }
+
+            // POST: MedicationList/Delete/5
+            [HttpPost, ActionName("Delete")]
+            [ValidateAntiForgeryToken]
+            public ActionResult DeleteConfirmed(int id)
+            {
+                var medicationList = context.MedicationLists.Find(id);
+                if (medicationList != null)
+                {
+                    context.MedicationLists.Remove(medicationList);
+                    context.SaveChanges();
+                }
                 return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: MedicationsList/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: MedicationsList/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
             }
         }
     }
 }
+
