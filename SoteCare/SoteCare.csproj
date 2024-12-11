@@ -257,10 +257,14 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Diagnoses\Index.cshtml" />
+    <Content Include="Views\Diagnoses\Edit.cshtml" />
+    <Content Include="Views\Diagnoses\Details.cshtml" />
+    <Content Include="Views\Diagnoses\Delete.cshtml" />
+    <Content Include="Views\Diagnoses\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Diagnoses\" />
     <Folder Include="Views\Doctors\" />
     <Folder Include="Views\Dosages\" />
     <Folder Include="Views\MedicationsList\" />
