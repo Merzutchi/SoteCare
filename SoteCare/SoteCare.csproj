@@ -270,8 +270,8 @@
     <Content Include="Views\Doctors\Create.cshtml" />
     <Content Include="Views\Dosages\Index.cshtml" />
     <Content Include="Views\Medications\Index.cshtml" />
-    <Content Include="Views\Medications\Delete.cshtml" />
-    <Content Include="Views\Medications\Create.cshtml" />
+    <Content Include="Views\Medications\DeleteMedication.cshtml" />
+    <Content Include="Views\Medications\CreateMedication.cshtml" />
     <Content Include="Views\MedicationsList\Index.cshtml" />
     <Content Include="Views\MedicationsList\Create.cshtml" />
     <Content Include="Views\MedicationsList\Edit.cshtml" />
