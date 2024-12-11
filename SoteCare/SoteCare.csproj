@@ -267,12 +267,14 @@
     <Content Include="Views\Doctors\Details.cshtml" />
     <Content Include="Views\Doctors\Delete.cshtml" />
     <Content Include="Views\Doctors\Create.cshtml" />
+    <Content Include="Views\Dosages\Index.cshtml" />
+    <Content Include="Views\Medications\Index.cshtml" />
+    <Content Include="Views\Medications\Delete.cshtml" />
+    <Content Include="Views\Medications\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Dosages\" />
     <Folder Include="Views\MedicationsList\" />
-    <Folder Include="Views\Medications\" />
     <Folder Include="Views\Nurses\" />
     <Folder Include="Views\PatientHistory\" />
     <Folder Include="Views\PatientMedications\" />
