@@ -24,7 +24,6 @@ namespace SoteCare.Controllers
             var medications = context.PatientMedications
                 .Where(pm => pm.PatientID == patientId.Value)
                 .Include(pm => pm.Medications)
-                .Include(pm => pm.Dosage)
                 .ToList();
 
             ViewBag.PatientID = patientId.Value;
@@ -88,8 +87,6 @@ namespace SoteCare.Controllers
                 }
             }
             ViewBag.MedicationID = new SelectList(context.Medications, "MedicationID", "MedicationName", patientMedication.MedicationID);
-            ViewBag.DosageID = new SelectList(context.Dosages, "DosageID", "DosageAmount", patientMedication.DosageID);
-            ViewBag.DoseInterval = new SelectList(new List<string> { "Morning", "Evening", "Night" }, patientMedication.DoseInterval);
 
             return View(patientMedication);
         }
@@ -103,7 +100,6 @@ namespace SoteCare.Controllers
             }
 
             var patientMedication = context.PatientMedications
-                .Include(pm => pm.Dosage)
                 .FirstOrDefault(pm => pm.PatientID == patientId.Value && pm.MedicationID == medicationId.Value);
 
             if (patientMedication == null)
@@ -112,7 +108,6 @@ namespace SoteCare.Controllers
             }
 
             ViewBag.MedicationID = new SelectList(context.Medications, "MedicationID", "MedicationName", patientMedication.MedicationID);
-            ViewBag.DosageID = new SelectList(context.Dosages, "DosageID", "DosageAmount", patientMedication.DosageID);
             ViewBag.DoseInterval = new SelectList(new List<string> { "Aamu", "Päivä", "Ilta" });
             return View(patientMedication);
         }
@@ -129,7 +124,6 @@ namespace SoteCare.Controllers
             }
 
             ViewBag.MedicationID = new SelectList(context.Medications, "MedicationID", "MedicationName", patientMedication.MedicationID);
-            ViewBag.DosageID = new SelectList(context.Dosages, "DosageID", "DosageAmount", patientMedication.DosageID);
             ViewBag.DoseInterval = new SelectList(new List<string> { "Aamu", "Päivä", "Ilta" });
             return View(patientMedication);
         }

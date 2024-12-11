@@ -13,16 +13,16 @@ namespace SoteCare.Controllers
         private readonly PatientRecordDataEntities context = new PatientRecordDataEntities();
 
         // GET: Treatment
-        public ActionResult Index()
-        {
-            var treatments = context.Treatment
-                         .Include(t => t.Patient)
-                         .Include(t => t.Medications)
-                         .Include(t => t.Dosages)
-                         .ToList();
+        //public ActionResult Index()
+        //{
+        //    var treatments = context.Treatment
+        //                 .Include(t => t.Patient)
+        //                 .Include(t => t.Medications)
+        //                 .Include(t => t.Dosages)
+        //                 .ToList();
 
-            return View(treatments);
-        }
+        //    return View(treatments);
+        //}
 
         // GET: Treatment/Create
         public ActionResult Create(int? patientId)
@@ -92,11 +92,6 @@ namespace SoteCare.Controllers
                 m.MedicationName
             }), "MedicationID", "MedicationName", treatments.MedicationID);
 
-            ViewBag.DosageID = new SelectList(context.Dosages.Select(d => new
-            {
-                d.DosageID,
-                d.DosageAmount
-            }), "DosageID", "DosageAmount", treatments.DosageID);
 
             return View(treatments);
         }
