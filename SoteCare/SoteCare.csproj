@@ -275,10 +275,16 @@
     <Content Include="Views\MedicationsList\Create.cshtml" />
     <Content Include="Views\MedicationsList\Edit.cshtml" />
     <Content Include="Views\MedicationsList\Delete.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Nurses\Index.cshtml" />
+    <Content Include="Views\Nurses\Edit.cshtml" />
+    <Content Include="Views\Nurses\Details.cshtml" />
+    <Content Include="Views\Nurses\Delete.cshtml" />
+    <Content Include="Views\Nurses\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Nurses\" />
     <Folder Include="Views\PatientHistory\" />
     <Folder Include="Views\PatientMedications\" />
     <Folder Include="Views\Patients\" />
