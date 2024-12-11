@@ -9,6 +9,7 @@
             <th>Medication</th>
             <th>Start Date</th>
             <th>End Date</th>
+            <th>Status</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -16,8 +17,8 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.Patients.FirstName</td> 
-                <td>@item.Medications.MedicationName</td> 
+                <td>@item.Patients.FirstName @item.Patients.LastName</td>  
+                <td>@item.Medications.MedicationName</td>
                 <td>@item.StartDate</td>
                 <td>@item.EndDate</td>
                 <td>
@@ -31,6 +32,7 @@
 </table>
 
 @Html.ActionLink("Create New", "Create")
+
 
 
 

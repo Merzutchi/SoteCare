@@ -45,5 +45,7 @@ namespace SoteCare.Models
         public virtual ICollection<VitalFunctions> VitalFunctions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Treatment> Treatment { get; set; }
+
+        
     }
 }

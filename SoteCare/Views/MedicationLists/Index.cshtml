@@ -1,0 +1,33 @@
+﻿@model IEnumerable<SoteCare.Models.MedicationLists>
+
+<h2>Medication Lists</h2>
+
+<table class="table">
+    @Html.AntiForgeryToken()
+    <thead>
+        <tr>
+            <th>Medication Name</th>
+            <th>Medication Type</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.MedicationName</td>
+                <td>@item.MedicationType</td>
+                <td>@item.Description</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.MedicationListID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.MedicationListID })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.ActionLink("Create New List", "Create")
+
+

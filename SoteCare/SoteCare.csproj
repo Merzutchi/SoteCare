@@ -272,10 +272,10 @@
     <Content Include="Views\Medications\Index.cshtml" />
     <Content Include="Views\Medications\DeleteMedication.cshtml" />
     <Content Include="Views\Medications\CreateMedication.cshtml" />
-    <Content Include="Views\MedicationsList\Index.cshtml" />
-    <Content Include="Views\MedicationsList\Create.cshtml" />
-    <Content Include="Views\MedicationsList\Edit.cshtml" />
-    <Content Include="Views\MedicationsList\Delete.cshtml" />
+    <Content Include="Views\MedicationLists\Index.cshtml" />
+    <Content Include="Views\MedicationLists\Create.cshtml" />
+    <Content Include="Views\MedicationLists\Edit.cshtml" />
+    <Content Include="Views\MedicationLists\Delete.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Nurses\Index.cshtml" />
@@ -315,6 +315,10 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Dosages\Edit.cshtml" />
     <Content Include="Views\Dosages\Create.cshtml" />
+    <Content Include="Views\Treatment\Create.cshtml" />
+    <Content Include="Views\Treatment\Edit.cshtml" />
+    <Content Include="Views\Treatment\Details.cshtml" />
+    <Content Include="Views\Treatment\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

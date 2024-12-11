@@ -3,14 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
-namespace SoteCare.Controllers
-{
+
+
     namespace SoteCare.Controllers
     {
-        public class MedicationsListController : Controller
+        public class MedicationListsController : Controller
         {
             private readonly PatientRecordDataEntities context = new PatientRecordDataEntities();
 
@@ -37,10 +38,10 @@ namespace SoteCare.Controllers
                 return View(medicationList);
             }
 
-            // POST: MedicationList/Create
+            // POST: MedicationLists/Create
             [HttpPost]
             [ValidateAntiForgeryToken]
-            public ActionResult Create(MedicationLists medicationList)
+            public ActionResult Create([Bind(Include = "MedicationName, MedicationType, Description")] MedicationLists medicationList)
             {
                 if (ModelState.IsValid)
                 {
@@ -51,35 +52,14 @@ namespace SoteCare.Controllers
                 return View(medicationList);
             }
 
-            //// GET: MedicationList/Edit/5
-            //public ActionResult Edit(int id)
-            //{
-            //    var medicationList = context.MedicationLists.Find(id);
-            //    if (medicationList == null)
-            //    {
-            //        return HttpNotFound();
-            //    }                                                             ei toimi edit
-            //    return View(medicationList);
-            //}
-
-            //// POST: MedicationList/Edit/5
-            //[HttpPost]
-            //[ValidateAntiForgeryToken]
-            //public ActionResult Edit(MedicationLists medicationList)
-            //{
-            //    if (ModelState.IsValid)
-            //    {
-            //        context.Entry(medicationList).State = EntityState.Modified;
-            //        context.SaveChanges();
-            //        return RedirectToAction("Index");
-            //    }
-            //    return View(medicationList);
-            //}
-
-            // GET: MedicationList/Delete/5
-            public ActionResult Delete(int id)
+            // GET: MedicationLists/Edit/5
+            public ActionResult Edit(int? id)
             {
-                var medicationList = context.MedicationLists.Find(id);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                MedicationLists medicationList = context.MedicationLists.Find(id);
                 if (medicationList == null)
                 {
                     return HttpNotFound();
@@ -87,20 +67,46 @@ namespace SoteCare.Controllers
                 return View(medicationList);
             }
 
-            // POST: MedicationList/Delete/5
+            // POST: MedicationLists/Edit/5
+            [HttpPost]
+            [ValidateAntiForgeryToken]
+            public ActionResult Edit([Bind(Include = "MedicationListID, MedicationName, MedicationType, Description")] MedicationLists medicationList)
+            {
+                if (ModelState.IsValid)
+                {
+                    context.Entry(medicationList).State = EntityState.Modified;
+                    context.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                return View(medicationList);
+            }
+
+            // GET: MedicationLists/Delete/5
+            public ActionResult Delete(int? id)
+            {
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                MedicationLists medicationList = context.MedicationLists.Find(id);
+                if (medicationList == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(medicationList);
+            }
+
+            // POST: MedicationLists/Delete/5
             [HttpPost, ActionName("Delete")]
             [ValidateAntiForgeryToken]
             public ActionResult DeleteConfirmed(int id)
             {
-                var medicationList = context.MedicationLists.Find(id);
-                if (medicationList != null)
-                {
-                    context.MedicationLists.Remove(medicationList);
-                    context.SaveChanges();
-                }
+                MedicationLists medicationList = context.MedicationLists.Find(id);
+                context.MedicationLists.Remove(medicationList);
+                context.SaveChanges();
                 return RedirectToAction("Index");
             }
         }
     }
-}
+
 
