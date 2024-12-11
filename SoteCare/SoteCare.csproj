@@ -297,13 +297,17 @@
     <Content Include="Views\Patients\Details.cshtml" />
     <Content Include="Views\Patients\Delete.cshtml" />
     <Content Include="Views\Patients\Create.cshtml" />
+    <Content Include="Views\Treatment\Index.cshtml" />
+    <Content Include="Views\TreatmentDetails\Index.cshtml" />
+    <Content Include="Views\VitalFunctions\Index.cshtml" />
+    <Content Include="Views\Users\Index.cshtml" />
+    <Content Include="Views\Users\Index2.cshtml" />
+    <Content Include="Views\Users\Create.cshtml" />
+    <Content Include="Views\Users\Delete.cshtml" />
+    <Content Include="Views\Users\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\TreatmentDetails\" />
-    <Folder Include="Views\Treatment\" />
-    <Folder Include="Views\Users\" />
-    <Folder Include="Views\VitalFunctions\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
