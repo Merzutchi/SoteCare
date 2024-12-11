@@ -1,10 +1,8 @@
 ﻿using SoteCare.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -15,21 +13,21 @@ namespace SoteCare.Controllers
         private readonly PatientRecordDataEntities context = new PatientRecordDataEntities();
 
         // GET: Treatment
-        public ActionResult Index()
-        {
-            var treatments = context.Treatment
-                         .Include(t => t.Patients)
-                         .Include (t => t.Medication)
-                         .Include(t => t.Dosages)
-                         .ToList();
+        //public ActionResult Index()
+        //{
+        //    var treatments = context.Treatment
+        //                 .Include(t => t.Patient)
+        //                 .Include(t => t.Medications)
+        //                 .Include(t => t.Dosages)
+        //                 .ToList();
 
-            return View(treatments);
-        }
+        //    return View(treatments);
+        //}
 
         // GET: Treatment/Create
         public ActionResult Create(int? patientId)
         {
-            var dosages = context.Dosages.ToList(); 
+            var dosages = context.Dosages.ToList();
             foreach (var dosage in dosages)
             {
                 System.Diagnostics.Debug.WriteLine($"DosageID: {dosage.DosageID}, DosageAmount: {dosage.DosageAmount}");
@@ -56,7 +54,8 @@ namespace SoteCare.Controllers
             return View(new Treatment());
         }
 
-        [HttpPost][ValidateAntiForgeryToken]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(Treatment treatments)
         {
             if (ModelState.IsValid)
@@ -93,23 +92,9 @@ namespace SoteCare.Controllers
                 m.MedicationName
             }), "MedicationID", "MedicationName", treatments.MedicationID);
 
-            ViewBag.DosageID = new SelectList(context.Dosages.Select(d => new
-            {
-                d.DosageID,
-                d.DosageAmount
-            }), "DosageID", "DosageAmount", treatments.DosageID);
 
             return View(treatments);
         }
     }
 }
-//ei
-//toimi
-//tää
-//paska
-//joku
-//muu
-//saa
-//hoitaa
-//kiitos
 

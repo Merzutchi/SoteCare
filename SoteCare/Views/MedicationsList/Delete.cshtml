@@ -1,4 +1,4 @@
-﻿@model SoteCare.Models.MedicationList
+﻿@model SoteCare.Models.MedicationLists
 
 <h2>Delete Medication List</h2>
 
@@ -14,8 +14,9 @@
 {
     @Html.AntiForgeryToken()
 
-    <button type="submit" class="btn btn-danger">Delete</button> 
+    <button type="submit" class="btn btn-danger">Delete</button>
 
     @Html.ActionLink("Back to List", "Index");
 }
+
 

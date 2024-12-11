@@ -1,9 +1,8 @@
 ﻿using SoteCare.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Data.Entity.Validation;
-using System.Diagnostics;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -24,8 +23,7 @@ namespace SoteCare.Controllers
 
             var medications = context.PatientMedications
                 .Where(pm => pm.PatientID == patientId.Value)
-                .Include(pm => pm.Medication)
-                .Include(pm => pm.Dosage)
+                .Include(pm => pm.Medications)
                 .ToList();
 
             ViewBag.PatientID = patientId.Value;
@@ -46,7 +44,7 @@ namespace SoteCare.Controllers
                 return HttpNotFound("Patient not specified.");
             }
 
-            var patientMedication = new PatientMedication { PatientID = patientId.Value };
+            var patientMedication = new PatientMedications { PatientID = patientId.Value };
 
             ViewBag.PatientID = patientId.Value;
             ViewBag.MedicationID = new SelectList(context.Medications, "MedicationID", "MedicationName");
@@ -57,7 +55,7 @@ namespace SoteCare.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(PatientMedication patientMedication, int? patientId)
+        public ActionResult Create(PatientMedications patientMedication, int? patientId)
         {
             if (!patientId.HasValue)
             {
@@ -89,8 +87,6 @@ namespace SoteCare.Controllers
                 }
             }
             ViewBag.MedicationID = new SelectList(context.Medications, "MedicationID", "MedicationName", patientMedication.MedicationID);
-            ViewBag.DosageID = new SelectList(context.Dosages, "DosageID", "DosageAmount", patientMedication.DosageID);
-            ViewBag.DoseInterval = new SelectList(new List<string> { "Morning", "Evening", "Night" }, patientMedication.DoseInterval);
 
             return View(patientMedication);
         }
@@ -104,7 +100,6 @@ namespace SoteCare.Controllers
             }
 
             var patientMedication = context.PatientMedications
-                .Include(pm => pm.Dosage)
                 .FirstOrDefault(pm => pm.PatientID == patientId.Value && pm.MedicationID == medicationId.Value);
 
             if (patientMedication == null)
@@ -113,14 +108,13 @@ namespace SoteCare.Controllers
             }
 
             ViewBag.MedicationID = new SelectList(context.Medications, "MedicationID", "MedicationName", patientMedication.MedicationID);
-            ViewBag.DosageID = new SelectList(context.Dosages, "DosageID", "DosageAmount", patientMedication.DosageID);
             ViewBag.DoseInterval = new SelectList(new List<string> { "Aamu", "Päivä", "Ilta" });
             return View(patientMedication);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(PatientMedication patientMedication)
+        public ActionResult Edit(PatientMedications patientMedication)
         {
             if (ModelState.IsValid)
             {
@@ -130,7 +124,6 @@ namespace SoteCare.Controllers
             }
 
             ViewBag.MedicationID = new SelectList(context.Medications, "MedicationID", "MedicationName", patientMedication.MedicationID);
-            ViewBag.DosageID = new SelectList(context.Dosages, "DosageID", "DosageAmount", patientMedication.DosageID);
             ViewBag.DoseInterval = new SelectList(new List<string> { "Aamu", "Päivä", "Ilta" });
             return View(patientMedication);
         }

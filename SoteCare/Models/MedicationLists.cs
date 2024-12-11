@@ -12,13 +12,13 @@ namespace SoteCare.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class MedicationList
+    public partial class MedicationLists
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public MedicationList()
+        public MedicationLists()
         {
             this.Medications = new HashSet<Medications>();
-            this.PatientMedications = new HashSet<PatientMedication>();
+            this.PatientMedications = new HashSet<PatientMedications>();
         }
     
         public int MedicationListID { get; set; }
@@ -29,6 +29,6 @@ namespace SoteCare.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Medications> Medications { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PatientMedication> PatientMedications { get; set; }
+        public virtual ICollection<PatientMedications> PatientMedications { get; set; }
     }
 }

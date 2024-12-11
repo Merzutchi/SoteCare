@@ -1,12 +1,11 @@
-﻿using System;
+﻿using SoteCare.Models;
+using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using SoteCare.Models;
 
 namespace SoteCare.Controllers
 {
@@ -29,15 +28,15 @@ namespace SoteCare.Controllers
         //public JsonResult UpdateRow(int VitalFunctionID)
         //{
 
-        //    var item = db.VitalFunctions.Where(x => x.VitalFunctionID == VitalFunctionID).FirstOrDefault();
+        //	var item = db.VitalFunctions.Where(x => x.VitalFunctionID == VitalFunctionID).FirstOrDefault();
 
-        //    if (item != null)
-        //    {
-        //        return Json(new { success = true });
-        //    }
-            
+        //	if (item != null)
+        //	{
+        //    	return Json(new { success = true });
+        //	}
 
-        //    return Json(new { success = false, message = "Item not found." });
+
+        //	return Json(new { success = false, message = "Item not found." });
         //}
 
         // GET: VitalFunctions/Details/5
@@ -64,7 +63,7 @@ namespace SoteCare.Controllers
         }
 
         // POST: VitalFunctions/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -98,7 +97,7 @@ namespace SoteCare.Controllers
         }
 
         // POST: VitalFunctions/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -150,3 +149,4 @@ namespace SoteCare.Controllers
         }
     }
 }
+

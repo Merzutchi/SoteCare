@@ -12,7 +12,7 @@ namespace SoteCare.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Diagnosis
+    public partial class Diagnoses
     {
         public int DiagnosisID { get; set; }
         public Nullable<int> PatientID { get; set; }
@@ -20,6 +20,6 @@ namespace SoteCare.Models
         public Nullable<System.DateTime> DiagnosisDate { get; set; }
         public string Notes { get; set; }
     
-        public virtual Patients Patient { get; set; }
+        public virtual Patients Patients { get; set; }
     }
 }

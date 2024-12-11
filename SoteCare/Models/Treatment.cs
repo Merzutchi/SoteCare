@@ -14,17 +14,23 @@ namespace SoteCare.Models
     
     public partial class Treatment
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Treatment()
+        {
+            this.TreatmentDetails = new HashSet<TreatmentDetails>();
+        }
+    
         public int TreatmentID { get; set; }
         public int PatientID { get; set; }
         public Nullable<int> MedicationID { get; set; }
-        public Nullable<System.DateTime> StartDate { get; set; }
+        public System.DateTime StartDate { get; set; }
         public Nullable<System.DateTime> EndDate { get; set; }
         public string TreatmentType { get; set; }
-        public string Dosage { get; set; }
-        public Nullable<int> DosageID { get; set; }
+        public string Notes { get; set; }
     
+        public virtual Medications Medications { get; set; }
         public virtual Patients Patients { get; set; }
-        public virtual Medications Medication { get; set; }
-        public virtual Dosages Dosages { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TreatmentDetails> TreatmentDetails { get; set; }
     }
 }
