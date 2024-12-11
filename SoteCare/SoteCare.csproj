@@ -287,11 +287,19 @@
     <Content Include="Views\PatientHistory\Details.cshtml" />
     <Content Include="Views\PatientHistory\Delete.cshtml" />
     <Content Include="Views\PatientHistory\Create.cshtml" />
+    <Content Include="Views\PatientMedications\Index.cshtml" />
+    <Content Include="Views\PatientMedications\SelectPatient.cshtml" />
+    <Content Include="Views\PatientMedications\Edit.cshtml" />
+    <Content Include="Views\PatientMedications\Create.cshtml" />
+    <Content Include="Views\Patients\Index.cshtml" />
+    <Content Include="Views\Patients\Index2.cshtml" />
+    <Content Include="Views\Patients\Edit.cshtml" />
+    <Content Include="Views\Patients\Details.cshtml" />
+    <Content Include="Views\Patients\Delete.cshtml" />
+    <Content Include="Views\Patients\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\PatientMedications\" />
-    <Folder Include="Views\Patients\" />
     <Folder Include="Views\TreatmentDetails\" />
     <Folder Include="Views\Treatment\" />
     <Folder Include="Views\Users\" />
