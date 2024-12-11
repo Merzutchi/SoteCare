@@ -122,6 +122,19 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\DiagnosesController.cs" />
+    <Compile Include="Controllers\DoctorsController.cs" />
+    <Compile Include="Controllers\DosagesController.cs" />
+    <Compile Include="Controllers\MedicationsController.cs" />
+    <Compile Include="Controllers\MedicationsListController.cs" />
+    <Compile Include="Controllers\NursesController.cs" />
+    <Compile Include="Controllers\PatientHistoryController.cs" />
+    <Compile Include="Controllers\PatientMedicationsController.cs" />
+    <Compile Include="Controllers\PatientsController.cs" />
+    <Compile Include="Controllers\TreatmentController.cs" />
+    <Compile Include="Controllers\TreatmentDetailsController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Controllers\VitalFunctionsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -247,6 +260,19 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Diagnoses\" />
+    <Folder Include="Views\Doctors\" />
+    <Folder Include="Views\Dosages\" />
+    <Folder Include="Views\MedicationsList\" />
+    <Folder Include="Views\Medications\" />
+    <Folder Include="Views\Nurses\" />
+    <Folder Include="Views\PatientHistory\" />
+    <Folder Include="Views\PatientMedications\" />
+    <Folder Include="Views\Patients\" />
+    <Folder Include="Views\TreatmentDetails\" />
+    <Folder Include="Views\Treatment\" />
+    <Folder Include="Views\Users\" />
+    <Folder Include="Views\VitalFunctions\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
