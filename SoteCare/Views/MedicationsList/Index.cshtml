@@ -1,31 +1,48 @@
 ﻿@model IEnumerable<SoteCare.Models.MedicationLists>
 
+@{
+    ViewBag.Title = "Medication Lists";
+}
+
 <h2>Medication Lists</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
 </p>
 
-<table class="table">
-    <tr>
-        <th>Medication Name</th>
-        <th>Medication Type</th>
-        <th>Description</th>
-        <th>Actions</th>
-    </tr>
-
-    @foreach (var medicationList in Model)
-    {
+<table class="table table-striped table-bordered">
+    <thead>
         <tr>
-            <td>@medicationList.MedicationName</td>
-            <td>@medicationList.MedicationType</td>
-            <td>@medicationList.Description</td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = medicationList.MedicationListID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = medicationList.MedicationListID })
-            </td>
+            <th>Medication Name</th>
+            <th>Medication Type</th>
+            <th>Description</th>
+            <th>Actions</th>
         </tr>
-    }
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="4" class="text-center">No medication lists available.</td>
+            </tr>
+        }
+        else
+        {
+            foreach (var medicationLists in Model)
+            {
+                <tr>
+                    <td>@medicationLists.MedicationName</td>
+                    <td>@medicationLists.MedicationType</td>
+                    <td>@medicationLists.Description</td>
+                    <td>
+                        @*@Html.ActionLink("Edit", "Edit", new { id = medicationLists.MedicationListID }) |*@
+                        @Html.ActionLink("Delete", "Delete", new { id = medicationLists.MedicationListID },
+                                 new { onclick = "return confirm('Are you sure you want to delete this item?');" })
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
 </table>
 
 

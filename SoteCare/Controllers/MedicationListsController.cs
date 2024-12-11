@@ -10,7 +10,7 @@ namespace SoteCare.Controllers
 {
     namespace SoteCare.Controllers
     {
-        public class MedicationListController : Controller
+        public class MedicationsListController : Controller
         {
             private readonly PatientRecordDataEntities context = new PatientRecordDataEntities();
 
@@ -51,30 +51,30 @@ namespace SoteCare.Controllers
                 return View(medicationList);
             }
 
-            // GET: MedicationList/Edit/5
-            public ActionResult Edit(int id)
-            {
-                var medicationList = context.MedicationLists.Find(id);
-                if (medicationList == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(medicationList);
-            }
+            //// GET: MedicationList/Edit/5
+            //public ActionResult Edit(int id)
+            //{
+            //    var medicationList = context.MedicationLists.Find(id);
+            //    if (medicationList == null)
+            //    {
+            //        return HttpNotFound();
+            //    }                                                             ei toimi edit
+            //    return View(medicationList);
+            //}
 
-            // POST: MedicationList/Edit/5
-            [HttpPost]
-            [ValidateAntiForgeryToken]
-            public ActionResult Edit(MedicationLists medicationList)
-            {
-                if (ModelState.IsValid)
-                {
-                    context.Entry(medicationList).State = EntityState.Modified;
-                    context.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-                return View(medicationList);
-            }
+            //// POST: MedicationList/Edit/5
+            //[HttpPost]
+            //[ValidateAntiForgeryToken]
+            //public ActionResult Edit(MedicationLists medicationList)
+            //{
+            //    if (ModelState.IsValid)
+            //    {
+            //        context.Entry(medicationList).State = EntityState.Modified;
+            //        context.SaveChanges();
+            //        return RedirectToAction("Index");
+            //    }
+            //    return View(medicationList);
+            //}
 
             // GET: MedicationList/Delete/5
             public ActionResult Delete(int id)

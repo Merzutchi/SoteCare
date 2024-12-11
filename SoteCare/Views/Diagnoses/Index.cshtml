@@ -14,7 +14,7 @@
         <th>@Html.DisplayNameFor(model => model.DiagnosisName)</th>
         <th>@Html.DisplayNameFor(model => model.DiagnosisDate)</th>
         <th>@Html.DisplayNameFor(model => model.Notes)</th>
-        <th>@Html.DisplayNameFor(model => model.Patient.FirstName)</th>
+        <th>@Html.DisplayNameFor(model => model.Patients.FirstName)</th>
         <th></th>
     </tr>
 
@@ -22,9 +22,9 @@
     {
         <tr>
             <td>@Html.DisplayFor(modelItem => item.DiagnosisName)</td>
-            <td>@item.DiagnosisDate.ToString("d")</td>
+            <td>@(item.DiagnosisDate.HasValue ? item.DiagnosisDate.Value.ToString("dd/MM/yyyy") : "N/A")</td>
             <td>@Html.DisplayFor(modelItem => item.Notes)</td>
-            <td>@Html.DisplayFor(modelItem => item.Patient.FirstName)</td>
+            <td>@Html.DisplayFor(modelItem => item.Patients.FirstName)</td>
             <td>
                 <a class="btn btn-outline-secondary btn-sm" href="@Url.Action("Edit", "Diagnoses", new { id = item.DiagnosisID })">
                     Edit

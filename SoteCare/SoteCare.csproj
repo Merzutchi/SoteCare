@@ -127,7 +127,7 @@
     <Compile Include="Controllers\DosagesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MedicationsController.cs" />
-    <Compile Include="Controllers\MedicationsListController.cs" />
+    <Compile Include="Controllers\MedicationListsController.cs" />
     <Compile Include="Controllers\NursesController.cs" />
     <Compile Include="Controllers\PatientHistoryController.cs" />
     <Compile Include="Controllers\PatientMedicationsController.cs" />
@@ -313,6 +313,8 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Dosages\Edit.cshtml" />
+    <Content Include="Views\Dosages\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

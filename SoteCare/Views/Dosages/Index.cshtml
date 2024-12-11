@@ -1,7 +1,46 @@
-﻿
+﻿@model IEnumerable<SoteCare.Models.Dosages>
+
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>Index</h2>
 
+<p>
+    @Html.ActionLink("Create New", "Create", "Dosages", null, new { @class = "btn btn-primary" })
+</p>
+
+@*lisäsin create buttonin, en oo varma onko tarkotusta sille?*@
+
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>Medication</th>
+            <th>Dosage (mg)</th>
+            <th>Frequency</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Route</th>
+            <th>Instructions</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Medications.MedicationName</td>
+                <td>@item.Frequency</td>
+                <td>@item.StartDate.ToString("dd MMM yyyy")</td>
+                <td>@item.EndDate?.ToString("dd MMM yyyy")</td>
+                <td>@item.RouteOfAdministration</td>
+                <td>@item.Instructions</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.DosageID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.DosageID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.DosageID })
+                </td>
+            </tr>
+        }
+    </tbody>    
+</table>

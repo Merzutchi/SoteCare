@@ -10,10 +10,10 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.MedicationID, "Medication")
-        @Html.DropDownList("MedicationID", (SelectList)ViewBag.MedicationID, "Select Medication", new { @class = "form-control" })
-    </div>
+<div class="form-group">
+    @Html.LabelFor(model => model.MedicationID, "MedicationName")
+    @Html.DropDownList("MedicationID", (SelectList)ViewBag.MedicationID, "Select Medication", new { @class = "form-control" })
+</div>
 
     <button type="submit" class="btn btn-primary">Save Changes</button>
     @Html.ActionLink("Back to List", "Index", new { patientId = Model.PatientID }, new { @class = "btn btn-secondary" })

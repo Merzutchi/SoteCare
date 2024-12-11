@@ -6,145 +6,133 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Net;
 
 namespace SoteCare.Controllers
 {
-    public class PatientMedicationController : Controller
+    public class PatientMedicationsController : Controller
     {
         private readonly PatientRecordDataEntities context = new PatientRecordDataEntities();
 
         // GET: PatientMedication
-        public ActionResult Index(int? patientId)
+        public ActionResult Index()
         {
-            if (!patientId.HasValue)
+            var patientMedications = context.PatientMedications.Include(p => p.MedicationLists).Include(p => p.Medications).Include(p => p.Patients);
+            return View(patientMedications.ToList());
+        }
+
+        // GET: PatientMedications/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
             {
-                return RedirectToAction("SelectPatient");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            var medications = context.PatientMedications
-                .Where(pm => pm.PatientID == patientId.Value)
-                .Include(pm => pm.Medications)
-                .ToList();
-
-            ViewBag.PatientID = patientId.Value;
-            return View(medications);
-        }
-
-        public ActionResult SelectPatient()
-        {
-            var patients = context.Patients.ToList();
-            return View(patients);
-        }
-
-        [HttpGet]
-        public ActionResult Create(int? patientId)
-        {
-            if (!patientId.HasValue)
+            PatientMedications patientMedications = context.PatientMedications.Find(id);
+            if (patientMedications == null)
             {
-                return HttpNotFound("Patient not specified.");
+                return HttpNotFound();
             }
-
-            var patientMedication = new PatientMedications { PatientID = patientId.Value };
-
-            ViewBag.PatientID = patientId.Value;
-            ViewBag.MedicationID = new SelectList(context.Medications, "MedicationID", "MedicationName");
-            ViewBag.DosageID = new SelectList(context.Dosages, "DosageID", "DosageAmount");
-            ViewBag.DoseInterval = new SelectList(new List<string> { "Aamu", "Päivä", "Ilta" });
-            return View(patientMedication);
+            return View(patientMedications);
         }
 
+        // GET: PatientMedications/Create
+        public ActionResult Create()
+        {
+            ViewBag.MedicationListID = new SelectList(context.MedicationLists, "MedicationListID", "MedicationName"); 
+            ViewBag.MedicationID = new SelectList(context.Medications, "MedicationID", "MedicationName"); 
+            ViewBag.PatientID = new SelectList(context.Patients, "PatientID", "FirstName"); 
+            return View();
+        }
+
+        // POST: PatientMedications/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(PatientMedications patientMedication, int? patientId)
-        {
-            if (!patientId.HasValue)
-            {
-                return HttpNotFound("Patient not specified.");
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    patientMedication.PatientID = patientId.Value;
-
-                    context.PatientMedications.Add(patientMedication);
-                    context.SaveChanges();
-
-                    return RedirectToAction("Index", new { patientId = patientId });
-                }
-                catch (DbEntityValidationException dbEx)
-                {
-                    foreach (var validationErrors in dbEx.EntityValidationErrors)
-                    {
-                        foreach (var validationError in validationErrors.ValidationErrors)
-                        {
-                            Console.WriteLine($"Property: {validationError.PropertyName}, Error: {validationError.ErrorMessage}");
-                        }
-                    }
-
-                    ModelState.AddModelError("", "Data validation failed. Please check the form for errors.");
-                }
-            }
-            ViewBag.MedicationID = new SelectList(context.Medications, "MedicationID", "MedicationName", patientMedication.MedicationID);
-
-            return View(patientMedication);
-        }
-
-        [HttpGet]
-        public ActionResult Edit(int? patientId, int? medicationId)
-        {
-            if (!patientId.HasValue || !medicationId.HasValue)
-            {
-                return HttpNotFound("Patient or Medication not specified.");
-            }
-
-            var patientMedication = context.PatientMedications
-                .FirstOrDefault(pm => pm.PatientID == patientId.Value && pm.MedicationID == medicationId.Value);
-
-            if (patientMedication == null)
-            {
-                return HttpNotFound("PatientMedication not found.");
-            }
-
-            ViewBag.MedicationID = new SelectList(context.Medications, "MedicationID", "MedicationName", patientMedication.MedicationID);
-            ViewBag.DoseInterval = new SelectList(new List<string> { "Aamu", "Päivä", "Ilta" });
-            return View(patientMedication);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(PatientMedications patientMedication)
+        public ActionResult Create([Bind(Include = "PatientMedicationID,PatientID,MedicationID,StartDate,EndDate,MedicationListID,DoseStrength")] PatientMedications patientMedications)
         {
             if (ModelState.IsValid)
             {
-                context.Entry(patientMedication).State = EntityState.Modified;
+                context.PatientMedications.Add(patientMedications);
                 context.SaveChanges();
-                return RedirectToAction("Index", new { patientId = patientMedication.PatientID });
+                return RedirectToAction("Index");
             }
 
-            ViewBag.MedicationID = new SelectList(context.Medications, "MedicationID", "MedicationName", patientMedication.MedicationID);
-            ViewBag.DoseInterval = new SelectList(new List<string> { "Aamu", "Päivä", "Ilta" });
-            return View(patientMedication);
+            ViewBag.MedicationListID = new SelectList(context.MedicationLists, "MedicationListID", "MedicationName", patientMedications.MedicationListID);
+            ViewBag.MedicationID = new SelectList(context.Medications, "MedicationID", "MedicationName", patientMedications.MedicationID);
+            ViewBag.PatientID = new SelectList(context.Patients, "PatientID", "FirstName", patientMedications.PatientID);
+            return View(patientMedications);
         }
 
+        // GET: PatientMedications/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            PatientMedications patientMedications = context.PatientMedications.Find(id);
+            if (patientMedications == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.MedicationListID = new SelectList(context.MedicationLists, "MedicationListID", "MedicationName", patientMedications.MedicationListID);
+            ViewBag.MedicationID = new SelectList(context.Medications, "MedicationID", "MedicationName", patientMedications.MedicationID);
+            ViewBag.PatientID = new SelectList(context.Patients, "PatientID", "FirstName", patientMedications.PatientID);
+            return View(patientMedications);
+        }
+
+        // POST: PatientMedications/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int? patientId, int medicationId)
+        public ActionResult Edit([Bind(Include = "PatientMedicationID,PatientID,MedicationID,StartDate,EndDate,MedicationListID,DoseStrength")] PatientMedications patientMedications)
         {
-            var patientMedication = context.PatientMedications
-                .FirstOrDefault(pm => pm.PatientID == patientId && pm.MedicationID == medicationId);
-
-            if (patientMedication != null)
+            if (ModelState.IsValid)
             {
-                context.PatientMedications.Remove(patientMedication);
+                context.Entry(patientMedications).State = EntityState.Modified;
                 context.SaveChanges();
+                return RedirectToAction("Index");
             }
-
-            return RedirectToAction("Index", new { patientId = patientId });
+            ViewBag.MedicationListID = new SelectList(context.MedicationLists, "MedicationListID", "MedicationName", patientMedications.MedicationListID);
+            ViewBag.MedicationID = new SelectList(context.Medications, "MedicationID", "MedicationName", patientMedications.MedicationID);
+            ViewBag.PatientID = new SelectList(context.Patients, "PatientID", "FirstName", patientMedications.PatientID);
+            return View(patientMedications);
         }
 
+        // GET: PatientMedications/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            PatientMedications patientMedications = context.PatientMedications.Find(id);
+            if (patientMedications == null)
+            {
+                return HttpNotFound();
+            }
+            return View(patientMedications);
+        }
+
+        // POST: PatientMedications/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            PatientMedications patientMedications = context.PatientMedications.Find(id);
+            context.PatientMedications.Remove(patientMedications);
+            context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                context.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
-
 }
+
 
