@@ -11,7 +11,8 @@ namespace SoteCare.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class MedicationLists
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,10 +21,17 @@ namespace SoteCare.Models
             this.Medications = new HashSet<Medications>();
             this.PatientMedications = new HashSet<PatientMedications>();
         }
-    
+
+        [Display(Name = "L‰‰kelistaID")]
         public int MedicationListID { get; set; }
+
+        [Display(Name = "L‰‰kkeen nimi")]
         public string MedicationName { get; set; }
+
+        [Display(Name = "L‰‰kkeen tyyppi")]
         public string MedicationType { get; set; }
+
+        [Display(Name = "L‰‰kkeen kuvaus???")]
         public string Description { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

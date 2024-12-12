@@ -11,7 +11,8 @@ namespace SoteCare.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Patients
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -23,16 +24,35 @@ namespace SoteCare.Models
             this.VitalFunctions = new HashSet<VitalFunctions>();
             this.Treatment = new HashSet<Treatment>();
         }
-    
+
+        [Display(Name = "PotilasID")]
         public int PatientID { get; set; }
+
+        [Display(Name = "Etunimi")]
         public string FirstName { get; set; }
+
+        [Display(Name = "Sukunimi")]
         public string LastName { get; set; }
+
+        [Display(Name = "Syntymäaika")]
         public System.DateTime DateOfBirth { get; set; }
+
+        [Display(Name = "Sukupuoli")]
         public string Gender { get; set; }
+
+        [Display(Name = "Kotiosoite")]
         public string Address { get; set; }
+
+        [Display(Name = "Puhelinnumero")]
         public string PhoneNumber { get; set; }
+
+        [Display(Name = "Sähköposti")]
         public string Email { get; set; }
+
+        [Display(Name = "Hätätilanteen yhteyshenkilön nimi")]
         public string EmergencyContactName { get; set; }
+
+        [Display(Name = "Hätätilanteen yhteyshenkilön puhelinnumero")]
         public string EmergencyContactPhone { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
