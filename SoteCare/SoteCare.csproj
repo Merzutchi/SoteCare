@@ -132,8 +132,8 @@
     <Compile Include="Controllers\PatientHistoryController.cs" />
     <Compile Include="Controllers\PatientMedicationsController.cs" />
     <Compile Include="Controllers\PatientsController.cs" />
-    <Compile Include="Controllers\TreatmentController.cs" />
     <Compile Include="Controllers\TreatmentDetailsController.cs" />
+    <Compile Include="Controllers\TreatmentsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\VitalFunctionsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -294,7 +294,6 @@
     <Content Include="Views\Patients\Details.cshtml" />
     <Content Include="Views\Patients\Delete.cshtml" />
     <Content Include="Views\Patients\Create.cshtml" />
-    <Content Include="Views\Treatment\Index.cshtml" />
     <Content Include="Views\TreatmentDetails\Index.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Users\Index2.cshtml" />
@@ -310,16 +309,17 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Dosages\Edit.cshtml" />
     <Content Include="Views\Dosages\Create.cshtml" />
-    <Content Include="Views\Treatment\Create.cshtml" />
-    <Content Include="Views\Treatment\Edit.cshtml" />
-    <Content Include="Views\Treatment\Details.cshtml" />
-    <Content Include="Views\Treatment\Delete.cshtml" />
     <Content Include="Views\PatientMedications\Create.cshtml" />
     <Content Include="Views\PatientMedications\Delete.cshtml" />
     <Content Include="Views\PatientMedications\Details.cshtml" />
     <Content Include="Views\PatientMedications\Edit.cshtml" />
     <Content Include="Views\PatientMedications\Index.cshtml" />
     <Content Include="Views\VitalFunctions\Index.cshtml" />
+    <Content Include="Views\Treatments\Create.cshtml" />
+    <Content Include="Views\Treatments\Delete.cshtml" />
+    <Content Include="Views\Treatments\Details.cshtml" />
+    <Content Include="Views\Treatments\Edit.cshtml" />
+    <Content Include="Views\Treatments\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
