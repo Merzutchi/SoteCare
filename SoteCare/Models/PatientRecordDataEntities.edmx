@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-<Schema Namespace="PatientRecordDataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="PatientRecordModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Diagnoses">
           <Key>
             <PropertyRef Name="DiagnosisID" />
@@ -61,7 +61,7 @@
           <Property Name="Allergies" Type="text" />
           <Property Name="Comments" Type="text" />
           <Property Name="MedicationListID" Type="int" />
-          <Property Name="MedicationType" Type="nvarchar" MaxLength="255" />
+          <Property Name="MedicationType" Type="nvarchar" MaxLength="100" />
           <Property Name="Description" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Nurses">
@@ -96,9 +96,7 @@
           <Property Name="StartDate" Type="date" />
           <Property Name="EndDate" Type="date" />
           <Property Name="MedicationListID" Type="int" />
-          <Property Name="DosageID" Type="int" />
           <Property Name="DoseStrength" Type="decimal" Precision="10" Scale="2" />
-          <Property Name="DoseInterval" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Patients">
           <Key>
@@ -122,10 +120,18 @@
           <Property Name="TreatmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PatientID" Type="int" Nullable="false" />
           <Property Name="MedicationID" Type="int" />
-          <Property Name="StartDate" Type="date" />
+          <Property Name="StartDate" Type="date" Nullable="false" />
           <Property Name="EndDate" Type="date" />
-          <Property Name="TreatmentType" Type="nvarchar" MaxLength="100" />
-          <Property Name="Dosage" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="TreatmentType" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="TreatmentDetails">
+          <Key>
+            <PropertyRef Name="TreatmentDetailID" />
+          </Key>
+          <Property Name="TreatmentDetailID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TreatmentID" Type="int" Nullable="false" />
+          <Property Name="MedicationID" Type="int" Nullable="false" />
           <Property Name="DosageID" Type="int" />
         </EntityType>
         <EntityType Name="Users">
@@ -156,7 +162,7 @@
           <Property Name="Temperature" Type="decimal" Precision="5" Scale="2" />
           <Property Name="OxygenSaturation" Type="decimal" Precision="5" Scale="2" />
         </EntityType>
-        <Association Name="FK__Diagnoses__Patie__72C60C4A">
+        <Association Name="FK__Diagnoses__Patie__74AE54BC">
           <End Role="Patients" Type="Self.Patients" Multiplicity="0..1" />
           <End Role="Diagnoses" Type="Self.Diagnoses" Multiplicity="*" />
           <ReferentialConstraint>
@@ -192,7 +198,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PatientMe__Medic__778AC167">
+        <Association Name="FK__PatientMe__Medic__787EE5A0">
           <End Role="Medications" Type="Self.Medications" Multiplicity="0..1" />
           <End Role="PatientMedications" Type="Self.PatientMedications" Multiplicity="*" />
           <ReferentialConstraint>
@@ -204,7 +210,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PatientMe__Patie__787EE5A0">
+        <Association Name="FK__PatientMe__Patie__797309D9">
           <End Role="Patients" Type="Self.Patients" Multiplicity="0..1" />
           <End Role="PatientMedications" Type="Self.PatientMedications" Multiplicity="*" />
           <ReferentialConstraint>
@@ -212,18 +218,6 @@
               <PropertyRef Name="PatientID" />
             </Principal>
             <Dependent Role="PatientMedications">
-              <PropertyRef Name="PatientID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Treatment__Patie__3C69FB99">
-          <End Role="Patients" Type="Self.Patients" Multiplicity="1" />
-          <End Role="Treatment" Type="Self.Treatment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Patients">
-              <PropertyRef Name="PatientID" />
-            </Principal>
-            <Dependent Role="Treatment">
               <PropertyRef Name="PatientID" />
             </Dependent>
           </ReferentialConstraint>
@@ -252,18 +246,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PatientMedication_Dosages">
-          <End Role="Dosages" Type="Self.Dosages" Multiplicity="0..1" />
-          <End Role="PatientMedications" Type="Self.PatientMedications" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Dosages">
-              <PropertyRef Name="DosageID" />
-            </Principal>
-            <Dependent Role="PatientMedications">
-              <PropertyRef Name="DosageID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_PatientMedications_MedicationLists">
           <End Role="MedicationLists" Type="Self.MedicationLists" Multiplicity="0..1" />
           <End Role="PatientMedications" Type="Self.PatientMedications" Multiplicity="*" />
@@ -276,19 +258,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Treatment_Dosages">
-          <End Role="Dosages" Type="Self.Dosages" Multiplicity="0..1" />
-          <End Role="Treatment" Type="Self.Treatment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Dosages">
-              <PropertyRef Name="DosageID" />
-            </Principal>
-            <Dependent Role="Treatment">
-              <PropertyRef Name="DosageID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Treatment_Medications">
+        <Association Name="FK_Treatment_Medication">
           <End Role="Medications" Type="Self.Medications" Multiplicity="0..1" />
           <End Role="Treatment" Type="Self.Treatment" Multiplicity="*" />
           <ReferentialConstraint>
@@ -300,7 +270,59 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="PatientRecordDataModelStoreContainer">
+        <Association Name="FK_Treatment_Patient">
+          <End Role="Patients" Type="Self.Patients" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Treatment" Type="Self.Treatment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patients">
+              <PropertyRef Name="PatientID" />
+            </Principal>
+            <Dependent Role="Treatment">
+              <PropertyRef Name="PatientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TreatmentDetails_Dosage">
+          <End Role="Dosages" Type="Self.Dosages" Multiplicity="0..1" />
+          <End Role="TreatmentDetails" Type="Self.TreatmentDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dosages">
+              <PropertyRef Name="DosageID" />
+            </Principal>
+            <Dependent Role="TreatmentDetails">
+              <PropertyRef Name="DosageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TreatmentDetails_Medication">
+          <End Role="Medications" Type="Self.Medications" Multiplicity="1" />
+          <End Role="TreatmentDetails" Type="Self.TreatmentDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medications">
+              <PropertyRef Name="MedicationID" />
+            </Principal>
+            <Dependent Role="TreatmentDetails">
+              <PropertyRef Name="MedicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TreatmentDetails_Treatment">
+          <End Role="Treatment" Type="Self.Treatment" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TreatmentDetails" Type="Self.TreatmentDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Treatment">
+              <PropertyRef Name="TreatmentID" />
+            </Principal>
+            <Dependent Role="TreatmentDetails">
+              <PropertyRef Name="TreatmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PatientRecordModelStoreContainer">
           <EntitySet Name="Diagnoses" EntityType="Self.Diagnoses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Doctors" EntityType="Self.Doctors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Dosages" EntityType="Self.Dosages" Schema="dbo" store:Type="Tables" />
@@ -311,9 +333,10 @@
           <EntitySet Name="PatientMedications" EntityType="Self.PatientMedications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patients" EntityType="Self.Patients" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Treatment" EntityType="Self.Treatment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TreatmentDetails" EntityType="Self.TreatmentDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VitalFunctions" EntityType="Self.VitalFunctions" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Diagnoses__Patie__72C60C4A" Association="Self.FK__Diagnoses__Patie__72C60C4A">
+          <AssociationSet Name="FK__Diagnoses__Patie__74AE54BC" Association="Self.FK__Diagnoses__Patie__74AE54BC">
             <End Role="Patients" EntitySet="Patients" />
             <End Role="Diagnoses" EntitySet="Diagnoses" />
           </AssociationSet>
@@ -325,17 +348,13 @@
             <End Role="Patients" EntitySet="Patients" />
             <End Role="PatientHistory" EntitySet="PatientHistory" />
           </AssociationSet>
-          <AssociationSet Name="FK__PatientMe__Medic__778AC167" Association="Self.FK__PatientMe__Medic__778AC167">
+          <AssociationSet Name="FK__PatientMe__Medic__787EE5A0" Association="Self.FK__PatientMe__Medic__787EE5A0">
             <End Role="Medications" EntitySet="Medications" />
             <End Role="PatientMedications" EntitySet="PatientMedications" />
           </AssociationSet>
-          <AssociationSet Name="FK__PatientMe__Patie__787EE5A0" Association="Self.FK__PatientMe__Patie__787EE5A0">
+          <AssociationSet Name="FK__PatientMe__Patie__797309D9" Association="Self.FK__PatientMe__Patie__797309D9">
             <End Role="Patients" EntitySet="Patients" />
             <End Role="PatientMedications" EntitySet="PatientMedications" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Treatment__Patie__3C69FB99" Association="Self.FK__Treatment__Patie__3C69FB99">
-            <End Role="Patients" EntitySet="Patients" />
-            <End Role="Treatment" EntitySet="Treatment" />
           </AssociationSet>
           <AssociationSet Name="FK__VitalFunc__Patie__398D8EEE" Association="Self.FK__VitalFunc__Patie__398D8EEE">
             <End Role="Patients" EntitySet="Patients" />
@@ -345,29 +364,47 @@
             <End Role="MedicationLists" EntitySet="MedicationLists" />
             <End Role="Medications" EntitySet="Medications" />
           </AssociationSet>
-          <AssociationSet Name="FK_PatientMedication_Dosages" Association="Self.FK_PatientMedication_Dosages">
-            <End Role="Dosages" EntitySet="Dosages" />
-            <End Role="PatientMedications" EntitySet="PatientMedications" />
-          </AssociationSet>
           <AssociationSet Name="FK_PatientMedications_MedicationLists" Association="Self.FK_PatientMedications_MedicationLists">
             <End Role="MedicationLists" EntitySet="MedicationLists" />
             <End Role="PatientMedications" EntitySet="PatientMedications" />
           </AssociationSet>
-          <AssociationSet Name="FK_Treatment_Dosages" Association="Self.FK_Treatment_Dosages">
-            <End Role="Dosages" EntitySet="Dosages" />
-            <End Role="Treatment" EntitySet="Treatment" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Treatment_Medications" Association="Self.FK_Treatment_Medications">
+          <AssociationSet Name="FK_Treatment_Medication" Association="Self.FK_Treatment_Medication">
             <End Role="Medications" EntitySet="Medications" />
             <End Role="Treatment" EntitySet="Treatment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Treatment_Patient" Association="Self.FK_Treatment_Patient">
+            <End Role="Patients" EntitySet="Patients" />
+            <End Role="Treatment" EntitySet="Treatment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TreatmentDetails_Dosage" Association="Self.FK_TreatmentDetails_Dosage">
+            <End Role="Dosages" EntitySet="Dosages" />
+            <End Role="TreatmentDetails" EntitySet="TreatmentDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TreatmentDetails_Medication" Association="Self.FK_TreatmentDetails_Medication">
+            <End Role="Medications" EntitySet="Medications" />
+            <End Role="TreatmentDetails" EntitySet="TreatmentDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TreatmentDetails_Treatment" Association="Self.FK_TreatmentDetails_Treatment">
+            <End Role="Treatment" EntitySet="Treatment" />
+            <End Role="TreatmentDetails" EntitySet="TreatmentDetails" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="PatientRecordDataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        
-		  <EntityType Name="Doctors">
+      <Schema Namespace="PatientRecordModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Diagnoses">
+          <Key>
+            <PropertyRef Name="DiagnosisID" />
+          </Key>
+          <Property Name="DiagnosisID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PatientID" Type="Int32" />
+          <Property Name="DiagnosisName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DiagnosisDate" Type="DateTime" Precision="0" />
+          <Property Name="Notes" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Patients" Relationship="Self.FK__Diagnoses__Patie__74AE54BC" FromRole="Diagnoses" ToRole="Patients" />
+        </EntityType>
+        <EntityType Name="Doctors">
           <Key>
             <PropertyRef Name="DoctorID" />
           </Key>
@@ -378,7 +415,33 @@
           <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
-		  
+        <EntityType Name="Dosages">
+          <Key>
+            <PropertyRef Name="DosageID" />
+          </Key>
+          <Property Name="DosageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MedicationID" Type="Int32" Nullable="false" />
+          <Property Name="Dosage" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Frequency" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <Property Name="RouteOfAdministration" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Instructions" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DosageAmount" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Medications" Relationship="Self.FK__Dosages__Medicat__6FE99F9F" FromRole="Dosages" ToRole="Medications" />
+          <NavigationProperty Name="TreatmentDetails" Relationship="Self.FK_TreatmentDetails_Dosage" FromRole="Dosages" ToRole="TreatmentDetails" />
+        </EntityType>
+        <EntityType Name="MedicationLists">
+          <Key>
+            <PropertyRef Name="MedicationListID" />
+          </Key>
+          <Property Name="MedicationListID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MedicationName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="MedicationType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Medications" Relationship="Self.FK_Medications_MedicationLists" FromRole="MedicationLists" ToRole="Medications" />
+          <NavigationProperty Name="PatientMedications" Relationship="Self.FK_PatientMedications_MedicationLists" FromRole="MedicationLists" ToRole="PatientMedications" />
+        </EntityType>
         <EntityType Name="Medications">
           <Key>
             <PropertyRef Name="MedicationID" />
@@ -390,15 +453,15 @@
           <Property Name="MedicationStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Allergies" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Dosages" Relationship="PatientRecordDataModel.FK__Dosages__Medicat__6FE99F9F" FromRole="Medications" ToRole="Dosage" />
           <Property Name="MedicationListID" Type="Int32" />
-          <NavigationProperty Name="MedicationList" Relationship="PatientRecordDataModel.FK_Medications_MedicationLists" FromRole="Medications" ToRole="MedicationList" />
-          <NavigationProperty Name="PatientMedications" Relationship="PatientRecordDataModel.FK__PatientMe__Medic__778AC167" FromRole="Medications" ToRole="PatientMedication" />
-          <NavigationProperty Name="Treatments" Relationship="PatientRecordDataModel.FK_Treatment_Medications" FromRole="Medications" ToRole="Treatment" />
-          <Property Name="MedicationType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MedicationType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Dosages" Relationship="Self.FK__Dosages__Medicat__6FE99F9F" FromRole="Medications" ToRole="Dosages" />
+          <NavigationProperty Name="MedicationLists" Relationship="Self.FK_Medications_MedicationLists" FromRole="Medications" ToRole="MedicationLists" />
+          <NavigationProperty Name="PatientMedications" Relationship="Self.FK__PatientMe__Medic__787EE5A0" FromRole="Medications" ToRole="PatientMedications" />
+          <NavigationProperty Name="Treatment" Relationship="Self.FK_Treatment_Medication" FromRole="Medications" ToRole="Treatment" />
+          <NavigationProperty Name="TreatmentDetails" Relationship="Self.FK_TreatmentDetails_Medication" FromRole="Medications" ToRole="TreatmentDetails" />
         </EntityType>
-		  
         <EntityType Name="Nurses">
           <Key>
             <PropertyRef Name="NurseID" />
@@ -410,7 +473,6 @@
           <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
-		  
         <EntityType Name="PatientHistory">
           <Key>
             <PropertyRef Name="HistoryID" />
@@ -423,7 +485,21 @@
           <Property Name="Notes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Patients" Relationship="Self.FK__PatientHi__Patie__3F466844" FromRole="PatientHistory" ToRole="Patients" />
         </EntityType>
-		  
+        <EntityType Name="PatientMedications">
+          <Key>
+            <PropertyRef Name="PatientMedicationID" />
+          </Key>
+          <Property Name="PatientMedicationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PatientID" Type="Int32" />
+          <Property Name="MedicationID" Type="Int32" />
+          <Property Name="StartDate" Type="DateTime" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <Property Name="MedicationListID" Type="Int32" />
+          <Property Name="DoseStrength" Type="Decimal" Precision="10" Scale="2" />
+          <NavigationProperty Name="MedicationLists" Relationship="Self.FK_PatientMedications_MedicationLists" FromRole="PatientMedications" ToRole="MedicationLists" />
+          <NavigationProperty Name="Medications" Relationship="Self.FK__PatientMe__Medic__787EE5A0" FromRole="PatientMedications" ToRole="Medications" />
+          <NavigationProperty Name="Patients" Relationship="Self.FK__PatientMe__Patie__797309D9" FromRole="PatientMedications" ToRole="Patients" />
+        </EntityType>
         <EntityType Name="Patients">
           <Key>
             <PropertyRef Name="PatientID" />
@@ -438,45 +514,53 @@
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="EmergencyContactName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="EmergencyContactPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Diagnoses" Relationship="Self.FK__Diagnoses__Patie__74AE54BC" FromRole="Patients" ToRole="Diagnoses" />
           <NavigationProperty Name="PatientHistory" Relationship="Self.FK__PatientHi__Patie__3F466844" FromRole="Patients" ToRole="PatientHistory" />
-          <NavigationProperty Name="Treatment" Relationship="Self.FK__Treatment__Patie__3C69FB99" FromRole="Patients" ToRole="Treatment" />
+          <NavigationProperty Name="PatientMedications" Relationship="Self.FK__PatientMe__Patie__797309D9" FromRole="Patients" ToRole="PatientMedications" />
           <NavigationProperty Name="VitalFunctions" Relationship="Self.FK__VitalFunc__Patie__398D8EEE" FromRole="Patients" ToRole="VitalFunctions" />
-          <NavigationProperty Name="Diagnoses" Relationship="PatientRecordDataModel.FK__Diagnoses__Patie__72C60C4A" FromRole="Patients" ToRole="Diagnosis" />
-          <NavigationProperty Name="PatientMedications" Relationship="PatientRecordDataModel.FK__PatientMe__Patie__787EE5A0" FromRole="Patients" ToRole="PatientMedication" />
+          <NavigationProperty Name="Treatment" Relationship="Self.FK_Treatment_Patient" FromRole="Patients" ToRole="Treatment" />
         </EntityType>
-		  
-		  <EntityType Name="Treatment">
-			  <Key>
-				  <PropertyRef Name="TreatmentID" />
-			  </Key>
-			  <Property Name="TreatmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-			  <Property Name="PatientID" Type="Int32" Nullable="false" />
-			  <Property Name="MedicationID" Type="Int32" />
-			  <Property Name="StartDate" Type="DateTime" Precision="0" />
-			  <Property Name="EndDate" Type="DateTime" Precision="0" />
-			  <Property Name="TreatmentType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-			  <NavigationProperty Name="Patients" Relationship="Self.FK__Treatment__Patie__3C69FB99" FromRole="Treatment" ToRole="Patients" />
-			  <Property Name="Dosage" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Medication" Relationship="PatientRecordDataModel.FK_Treatment_Medications" FromRole="Treatment" ToRole="Medications" />
+        <EntityType Name="Treatment">
+          <Key>
+            <PropertyRef Name="TreatmentID" />
+          </Key>
+          <Property Name="TreatmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PatientID" Type="Int32" Nullable="false" />
+          <Property Name="MedicationID" Type="Int32" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <Property Name="TreatmentType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Medications" Relationship="Self.FK_Treatment_Medication" FromRole="Treatment" ToRole="Medications" />
+          <NavigationProperty Name="Patients" Relationship="Self.FK_Treatment_Patient" FromRole="Treatment" ToRole="Patients" />
+          <NavigationProperty Name="TreatmentDetails" Relationship="Self.FK_TreatmentDetails_Treatment" FromRole="Treatment" ToRole="TreatmentDetails" />
+        </EntityType>
+        <EntityType Name="TreatmentDetails">
+          <Key>
+            <PropertyRef Name="TreatmentDetailID" />
+          </Key>
+          <Property Name="TreatmentDetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TreatmentID" Type="Int32" Nullable="false" />
+          <Property Name="MedicationID" Type="Int32" Nullable="false" />
           <Property Name="DosageID" Type="Int32" />
-          <NavigationProperty Name="Dosages" Relationship="PatientRecordDataModel.FK_Treatment_Dosages" FromRole="Treatment" ToRole="Dosages" />
-		  </EntityType>
-		  
-		  <EntityType Name="Users">
-			  <Key>
-				  <PropertyRef Name="UserID" />
-			  </Key>
-			  <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-			  <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-			  <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-			  <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-			  <Property Name="FullName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-			  <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-			  <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-			  <Property Name="DateOfBirth" Type="DateTime" Precision="0" />
-			  <Property Name="IsActive" Type="Boolean" />
-		  </EntityType>
-		  
+          <NavigationProperty Name="Dosages" Relationship="Self.FK_TreatmentDetails_Dosage" FromRole="TreatmentDetails" ToRole="Dosages" />
+          <NavigationProperty Name="Medications" Relationship="Self.FK_TreatmentDetails_Medication" FromRole="TreatmentDetails" ToRole="Medications" />
+          <NavigationProperty Name="Treatment" Relationship="Self.FK_TreatmentDetails_Treatment" FromRole="TreatmentDetails" ToRole="Treatment" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FullName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DateOfBirth" Type="DateTime" Precision="0" />
+          <Property Name="IsActive" Type="Boolean" />
+        </EntityType>
         <EntityType Name="VitalFunctions">
           <Key>
             <PropertyRef Name="VitalFunctionID" />
@@ -492,7 +576,102 @@
           <Property Name="OxygenSaturation" Type="Decimal" Precision="5" Scale="2" />
           <NavigationProperty Name="Patients" Relationship="Self.FK__VitalFunc__Patie__398D8EEE" FromRole="VitalFunctions" ToRole="Patients" />
         </EntityType>
-		  
+        <Association Name="FK__Diagnoses__Patie__74AE54BC">
+          <End Role="Patients" Type="Self.Patients" Multiplicity="0..1" />
+          <End Role="Diagnoses" Type="Self.Diagnoses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patients">
+              <PropertyRef Name="PatientID" />
+            </Principal>
+            <Dependent Role="Diagnoses">
+              <PropertyRef Name="PatientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Dosages__Medicat__6FE99F9F">
+          <End Role="Medications" Type="Self.Medications" Multiplicity="1" />
+          <End Role="Dosages" Type="Self.Dosages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medications">
+              <PropertyRef Name="MedicationID" />
+            </Principal>
+            <Dependent Role="Dosages">
+              <PropertyRef Name="MedicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TreatmentDetails_Dosage">
+          <End Role="Dosages" Type="Self.Dosages" Multiplicity="0..1" />
+          <End Role="TreatmentDetails" Type="Self.TreatmentDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dosages">
+              <PropertyRef Name="DosageID" />
+            </Principal>
+            <Dependent Role="TreatmentDetails">
+              <PropertyRef Name="DosageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Medications_MedicationLists">
+          <End Role="MedicationLists" Type="Self.MedicationLists" Multiplicity="0..1" />
+          <End Role="Medications" Type="Self.Medications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MedicationLists">
+              <PropertyRef Name="MedicationListID" />
+            </Principal>
+            <Dependent Role="Medications">
+              <PropertyRef Name="MedicationListID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PatientMedications_MedicationLists">
+          <End Role="MedicationLists" Type="Self.MedicationLists" Multiplicity="0..1" />
+          <End Role="PatientMedications" Type="Self.PatientMedications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MedicationLists">
+              <PropertyRef Name="MedicationListID" />
+            </Principal>
+            <Dependent Role="PatientMedications">
+              <PropertyRef Name="MedicationListID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PatientMe__Medic__787EE5A0">
+          <End Role="Medications" Type="Self.Medications" Multiplicity="0..1" />
+          <End Role="PatientMedications" Type="Self.PatientMedications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medications">
+              <PropertyRef Name="MedicationID" />
+            </Principal>
+            <Dependent Role="PatientMedications">
+              <PropertyRef Name="MedicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Treatment_Medication">
+          <End Role="Medications" Type="Self.Medications" Multiplicity="0..1" />
+          <End Role="Treatment" Type="Self.Treatment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medications">
+              <PropertyRef Name="MedicationID" />
+            </Principal>
+            <Dependent Role="Treatment">
+              <PropertyRef Name="MedicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TreatmentDetails_Medication">
+          <End Role="Medications" Type="Self.Medications" Multiplicity="1" />
+          <End Role="TreatmentDetails" Type="Self.TreatmentDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medications">
+              <PropertyRef Name="MedicationID" />
+            </Principal>
+            <Dependent Role="TreatmentDetails">
+              <PropertyRef Name="MedicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__PatientHi__Patie__3F466844">
           <End Role="Patients" Type="Self.Patients" Multiplicity="1" />
           <End Role="PatientHistory" Type="Self.PatientHistory" Multiplicity="*" />
@@ -505,20 +684,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-		  
-        <Association Name="FK__Treatment__Patie__3C69FB99">
-          <End Role="Patients" Type="Self.Patients" Multiplicity="1" />
-          <End Role="Treatment" Type="Self.Treatment" Multiplicity="*" />
+        <Association Name="FK__PatientMe__Patie__797309D9">
+          <End Role="Patients" Type="Self.Patients" Multiplicity="0..1" />
+          <End Role="PatientMedications" Type="Self.PatientMedications" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Patients">
               <PropertyRef Name="PatientID" />
             </Principal>
-            <Dependent Role="Treatment">
+            <Dependent Role="PatientMedications">
               <PropertyRef Name="PatientID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-		  
         <Association Name="FK__VitalFunc__Patie__398D8EEE">
           <End Role="Patients" Type="Self.Patients" Multiplicity="1" />
           <End Role="VitalFunctions" Type="Self.VitalFunctions" Multiplicity="*" />
@@ -531,268 +708,120 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-		  
-		  <EntityContainer Name="PatientRecordDataEntities" annotation:LazyLoadingEnabled="true">
-			  <EntitySet Name="Doctors" EntityType="Self.Doctors" />
-			  <EntitySet Name="Medications" EntityType="Self.Medications" />
-			  <EntitySet Name="Nurses" EntityType="Self.Nurses" />
-			  <EntitySet Name="PatientHistory" EntityType="Self.PatientHistory" />
-			  <EntitySet Name="Patients" EntityType="Self.Patients" />
-			  <EntitySet Name="Treatment" EntityType="Self.Treatment" />
-			  <EntitySet Name="Users" EntityType="Self.Users" />
-			  <EntitySet Name="VitalFunctions" EntityType="Self.VitalFunctions" />
-
-			  <AssociationSet Name="FK__PatientHi__Patie__3F466844" Association="Self.FK__PatientHi__Patie__3F466844">
-				  <End Role="Patients" EntitySet="Patients" />
-				  <End Role="PatientHistory" EntitySet="PatientHistory" />
-			  </AssociationSet>
-
-			  <AssociationSet Name="FK__Treatment__Patie__3C69FB99" Association="Self.FK__Treatment__Patie__3C69FB99">
-				  <End Role="Patients" EntitySet="Patients" />
-				  <End Role="Treatment" EntitySet="Treatment" />
-			  </AssociationSet>
-
-			  <AssociationSet Name="FK__VitalFunc__Patie__398D8EEE" Association="Self.FK__VitalFunc__Patie__398D8EEE">
-				  <End Role="Patients" EntitySet="Patients" />
-				  <End Role="VitalFunctions" EntitySet="VitalFunctions" />
-			  </AssociationSet>
-
-			  <EntitySet Name="Dosages" EntityType="PatientRecordDataModel.Dosages" />
-			  <AssociationSet Name="FK__Dosages__Medicat__6FE99F9F" Association="PatientRecordDataModel.FK__Dosages__Medicat__6FE99F9F">
-				  <End Role="Medications" EntitySet="Medications" />
-				  <End Role="Dosage" EntitySet="Dosages" />
-			  </AssociationSet>
-
-			  <EntitySet Name="Diagnoses" EntityType="PatientRecordDataModel.Diagnosis" />
-			  <EntitySet Name="MedicationLists" EntityType="PatientRecordDataModel.MedicationList" />
-			  <EntitySet Name="PatientMedications" EntityType="PatientRecordDataModel.PatientMedication" />
-
-			  <AssociationSet Name="FK__Diagnoses__Patie__72C60C4A" Association="PatientRecordDataModel.FK__Diagnoses__Patie__72C60C4A">
-				  <End Role="Patients" EntitySet="Patients" />
-				  <End Role="Diagnosis" EntitySet="Diagnoses" />
-			  </AssociationSet>
-
-			  <AssociationSet Name="FK_Medications_MedicationLists" Association="PatientRecordDataModel.FK_Medications_MedicationLists">
-				  <End Role="MedicationList" EntitySet="MedicationLists" />
-				  <End Role="Medications" EntitySet="Medications" />
-			  </AssociationSet>
-
-			  <AssociationSet Name="FK_PatientMedications_MedicationLists" Association="PatientRecordDataModel.FK_PatientMedications_MedicationLists">
-				  <End Role="MedicationList" EntitySet="MedicationLists" />
-				  <End Role="PatientMedication" EntitySet="PatientMedications" />
-			  </AssociationSet>
-
-			  <AssociationSet Name="FK__PatientMe__Medic__778AC167" Association="PatientRecordDataModel.FK__PatientMe__Medic__778AC167">
-				  <End Role="Medications" EntitySet="Medications" />
-				  <End Role="PatientMedication" EntitySet="PatientMedications" />
-			  </AssociationSet>
-
-			  <AssociationSet Name="FK__PatientMe__Patie__787EE5A0" Association="PatientRecordDataModel.FK__PatientMe__Patie__787EE5A0">
-				  <End Role="Patients" EntitySet="Patients" />
-				  <End Role="PatientMedication" EntitySet="PatientMedications" />
-			  </AssociationSet>
-          <AssociationSet Name="FK_PatientMedication_Dosages" Association="PatientRecordDataModel.FK_PatientMedication_Dosages">
-            <End Role="Dosages" EntitySet="Dosages" />
-            <End Role="PatientMedication" EntitySet="PatientMedications" />
+        <Association Name="FK_Treatment_Patient">
+          <End Role="Patients" Type="Self.Patients" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Treatment" Type="Self.Treatment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patients">
+              <PropertyRef Name="PatientID" />
+            </Principal>
+            <Dependent Role="Treatment">
+              <PropertyRef Name="PatientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TreatmentDetails_Treatment">
+          <End Role="Treatment" Type="Self.Treatment" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TreatmentDetails" Type="Self.TreatmentDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Treatment">
+              <PropertyRef Name="TreatmentID" />
+            </Principal>
+            <Dependent Role="TreatmentDetails">
+              <PropertyRef Name="TreatmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PatientRecordDataEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Diagnoses" EntityType="Self.Diagnoses" />
+          <EntitySet Name="Doctors" EntityType="Self.Doctors" />
+          <EntitySet Name="Dosages" EntityType="Self.Dosages" />
+          <EntitySet Name="MedicationLists" EntityType="Self.MedicationLists" />
+          <EntitySet Name="Medications" EntityType="Self.Medications" />
+          <EntitySet Name="Nurses" EntityType="Self.Nurses" />
+          <EntitySet Name="PatientHistory" EntityType="Self.PatientHistory" />
+          <EntitySet Name="PatientMedications" EntityType="Self.PatientMedications" />
+          <EntitySet Name="Patients" EntityType="Self.Patients" />
+          <EntitySet Name="Treatment" EntityType="Self.Treatment" />
+          <EntitySet Name="TreatmentDetails" EntityType="Self.TreatmentDetails" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <EntitySet Name="VitalFunctions" EntityType="Self.VitalFunctions" />
+          <AssociationSet Name="FK__Diagnoses__Patie__74AE54BC" Association="Self.FK__Diagnoses__Patie__74AE54BC">
+            <End Role="Patients" EntitySet="Patients" />
+            <End Role="Diagnoses" EntitySet="Diagnoses" />
           </AssociationSet>
-			  
-          <AssociationSet Name="FK_Treatment_Medications" Association="PatientRecordDataModel.FK_Treatment_Medications">
+          <AssociationSet Name="FK__Dosages__Medicat__6FE99F9F" Association="Self.FK__Dosages__Medicat__6FE99F9F">
+            <End Role="Medications" EntitySet="Medications" />
+            <End Role="Dosages" EntitySet="Dosages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TreatmentDetails_Dosage" Association="Self.FK_TreatmentDetails_Dosage">
+            <End Role="Dosages" EntitySet="Dosages" />
+            <End Role="TreatmentDetails" EntitySet="TreatmentDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Medications_MedicationLists" Association="Self.FK_Medications_MedicationLists">
+            <End Role="MedicationLists" EntitySet="MedicationLists" />
+            <End Role="Medications" EntitySet="Medications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PatientMedications_MedicationLists" Association="Self.FK_PatientMedications_MedicationLists">
+            <End Role="MedicationLists" EntitySet="MedicationLists" />
+            <End Role="PatientMedications" EntitySet="PatientMedications" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PatientMe__Medic__787EE5A0" Association="Self.FK__PatientMe__Medic__787EE5A0">
+            <End Role="Medications" EntitySet="Medications" />
+            <End Role="PatientMedications" EntitySet="PatientMedications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Treatment_Medication" Association="Self.FK_Treatment_Medication">
             <End Role="Medications" EntitySet="Medications" />
             <End Role="Treatment" EntitySet="Treatment" />
           </AssociationSet>
-          <AssociationSet Name="FK_Treatment_Dosages" Association="PatientRecordDataModel.FK_Treatment_Dosages">
-            <End Role="Dosages" EntitySet="Dosages" />
+          <AssociationSet Name="FK_TreatmentDetails_Medication" Association="Self.FK_TreatmentDetails_Medication">
+            <End Role="Medications" EntitySet="Medications" />
+            <End Role="TreatmentDetails" EntitySet="TreatmentDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PatientHi__Patie__3F466844" Association="Self.FK__PatientHi__Patie__3F466844">
+            <End Role="Patients" EntitySet="Patients" />
+            <End Role="PatientHistory" EntitySet="PatientHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PatientMe__Patie__797309D9" Association="Self.FK__PatientMe__Patie__797309D9">
+            <End Role="Patients" EntitySet="Patients" />
+            <End Role="PatientMedications" EntitySet="PatientMedications" />
+          </AssociationSet>
+          <AssociationSet Name="FK__VitalFunc__Patie__398D8EEE" Association="Self.FK__VitalFunc__Patie__398D8EEE">
+            <End Role="Patients" EntitySet="Patients" />
+            <End Role="VitalFunctions" EntitySet="VitalFunctions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Treatment_Patient" Association="Self.FK_Treatment_Patient">
+            <End Role="Patients" EntitySet="Patients" />
             <End Role="Treatment" EntitySet="Treatment" />
           </AssociationSet>
-		  </EntityContainer>
-
-		  <EntityType Name="Dosages">
-			  <Key>
-				  <PropertyRef Name="DosageID" />
-			  </Key>
-			  <Property Name="DosageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-			  <Property Name="MedicationID" Type="Int32" Nullable="false" />
-			  <Property Name="Dosage" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-			  <Property Name="Frequency" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-			  <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
-			  <Property Name="EndDate" Type="DateTime" Precision="0" />
-			  <Property Name="RouteOfAdministration" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-			  <Property Name="Instructions" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-			  <Property Name="DosageAmount" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-			  <NavigationProperty Name="Medication" Relationship="PatientRecordDataModel.FK__Dosages__Medicat__6FE99F9F" FromRole="Dosage" ToRole="Medications" />
-          <NavigationProperty Name="PatientMedications" Relationship="PatientRecordDataModel.FK_PatientMedication_Dosages" FromRole="Dosages" ToRole="PatientMedication" />
-          <NavigationProperty Name="Treatment" Relationship="PatientRecordDataModel.FK_Treatment_Dosages" FromRole="Dosages" ToRole="Treatment" />
-		  </EntityType>
-
-<Association Name="FK__Dosages__Medicat__6FE99F9F">
-  <End Type="PatientRecordDataModel.Medications" Role="Medications" Multiplicity="1" />
-  <End Type="PatientRecordDataModel.Dosages" Role="Dosage" Multiplicity="*" />
-  <ReferentialConstraint>
-    <Principal Role="Medications">
-      <PropertyRef Name="MedicationID" />
-    </Principal>
-    <Dependent Role="Dosage">
-      <PropertyRef Name="MedicationID" />
-    </Dependent>
-  </ReferentialConstraint>
-</Association>
-		  
-        <EntityType Name="Diagnosis">
-          <Key>
-            <PropertyRef Name="DiagnosisID" />
-          </Key>
-          <Property Name="DiagnosisID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PatientID" Type="Int32" />
-          <Property Name="DiagnosisName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="DiagnosisDate" Type="DateTime" Precision="0" />
-          <Property Name="Notes" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Patient" Relationship="PatientRecordDataModel.FK__Diagnoses__Patie__72C60C4A" FromRole="Diagnosis" ToRole="Patients" />
-        </EntityType>
-		  
-        <EntityType Name="MedicationList">
-          <Key>
-            <PropertyRef Name="MedicationListID" />
-          </Key>
-          <Property Name="MedicationListID" Type="Int32" Nullable="false" />
-          <Property Name="MedicationName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="MedicationType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Medications" Relationship="PatientRecordDataModel.FK_Medications_MedicationLists" FromRole="MedicationList" ToRole="Medications" />
-          <NavigationProperty Name="PatientMedications" Relationship="PatientRecordDataModel.FK_PatientMedications_MedicationLists" FromRole="MedicationList" ToRole="PatientMedication" />
-        </EntityType>
-		  
-        <EntityType Name="PatientMedication">
-          <Key>
-            <PropertyRef Name="PatientMedicationID" />
-          </Key>
-          <Property Name="PatientMedicationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PatientID" Type="Int32" />
-          <Property Name="MedicationID" Type="Int32" />
-          <Property Name="StartDate" Type="DateTime" Precision="0" />
-          <Property Name="EndDate" Type="DateTime" Precision="0" />
-          <Property Name="MedicationListID" Type="Int32" />
-          <NavigationProperty Name="MedicationList" Relationship="PatientRecordDataModel.FK_PatientMedications_MedicationLists" FromRole="PatientMedication" ToRole="MedicationList" />
-          <NavigationProperty Name="Medication" Relationship="PatientRecordDataModel.FK__PatientMe__Medic__778AC167" FromRole="PatientMedication" ToRole="Medications" />
-          <NavigationProperty Name="Patient" Relationship="PatientRecordDataModel.FK__PatientMe__Patie__787EE5A0" FromRole="PatientMedication" ToRole="Patients" />
-          <Property Name="DosageID" Type="Int32" />
-          <NavigationProperty Name="Dosage" Relationship="PatientRecordDataModel.FK_PatientMedication_Dosages" FromRole="PatientMedication" ToRole="Dosages" />
-          <Property Name="DoseStrength" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="DoseInterval" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-		  
-        <Association Name="FK__Diagnoses__Patie__72C60C4A">
-          <End Type="PatientRecordDataModel.Patients" Role="Patients" Multiplicity="0..1" />
-          <End Type="PatientRecordDataModel.Diagnosis" Role="Diagnosis" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Patients">
-              <PropertyRef Name="PatientID" />
-            </Principal>
-            <Dependent Role="Diagnosis">
-              <PropertyRef Name="PatientID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-		  
-        <Association Name="FK_Medications_MedicationLists">
-          <End Type="PatientRecordDataModel.MedicationList" Role="MedicationList" Multiplicity="0..1" />
-          <End Type="PatientRecordDataModel.Medications" Role="Medications" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MedicationList">
-              <PropertyRef Name="MedicationListID" />
-            </Principal>
-            <Dependent Role="Medications">
-              <PropertyRef Name="MedicationListID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-		  
-        <Association Name="FK_PatientMedications_MedicationLists">
-          <End Type="PatientRecordDataModel.MedicationList" Role="MedicationList" Multiplicity="0..1" />
-          <End Type="PatientRecordDataModel.PatientMedication" Role="PatientMedication" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MedicationList">
-              <PropertyRef Name="MedicationListID" />
-            </Principal>
-            <Dependent Role="PatientMedication">
-              <PropertyRef Name="MedicationListID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-		  
-        <Association Name="FK__PatientMe__Medic__778AC167">
-          <End Type="PatientRecordDataModel.Medications" Role="Medications" Multiplicity="0..1" />
-          <End Type="PatientRecordDataModel.PatientMedication" Role="PatientMedication" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Medications">
-              <PropertyRef Name="MedicationID" />
-            </Principal>
-            <Dependent Role="PatientMedication">
-              <PropertyRef Name="MedicationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-		  
-        <Association Name="FK__PatientMe__Patie__787EE5A0">
-          <End Type="PatientRecordDataModel.Patients" Role="Patients" Multiplicity="0..1" />
-          <End Type="PatientRecordDataModel.PatientMedication" Role="PatientMedication" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Patients">
-              <PropertyRef Name="PatientID" />
-            </Principal>
-            <Dependent Role="PatientMedication">
-              <PropertyRef Name="PatientID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-		  
-        <Association Name="FK_PatientMedication_Dosages">
-          <End Type="PatientRecordDataModel.Dosages" Role="Dosages" Multiplicity="0..1" />
-          <End Type="PatientRecordDataModel.PatientMedication" Role="PatientMedication" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Dosages">
-              <PropertyRef Name="DosageID" />
-            </Principal>
-            <Dependent Role="PatientMedication">
-              <PropertyRef Name="DosageID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-		  
-        <Association Name="FK_Treatment_Medications">
-          <End Type="PatientRecordDataModel.Medications" Role="Medications" Multiplicity="0..1" />
-          <End Type="PatientRecordDataModel.Treatment" Role="Treatment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Medications">
-              <PropertyRef Name="MedicationID" />
-            </Principal>
-            <Dependent Role="Treatment">
-              <PropertyRef Name="MedicationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Treatment_Dosages">
-          <End Type="PatientRecordDataModel.Dosages" Role="Dosages" Multiplicity="0..1" />
-          <End Type="PatientRecordDataModel.Treatment" Role="Treatment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Dosages">
-              <PropertyRef Name="DosageID" />
-            </Principal>
-            <Dependent Role="Treatment">
-              <PropertyRef Name="DosageID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-		  
+          <AssociationSet Name="FK_TreatmentDetails_Treatment" Association="Self.FK_TreatmentDetails_Treatment">
+            <End Role="Treatment" EntitySet="Treatment" />
+            <End Role="TreatmentDetails" EntitySet="TreatmentDetails" />
+          </AssociationSet>
+        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      
-		<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="PatientRecordDataModelStoreContainer" CdmEntityContainer="PatientRecordDataEntities">
-          
-			<EntitySetMapping Name="Doctors">
-            <EntityTypeMapping TypeName="PatientRecordDataModel.Doctors">
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PatientRecordModelStoreContainer" CdmEntityContainer="PatientRecordDataEntities">
+          <EntitySetMapping Name="Diagnoses">
+            <EntityTypeMapping TypeName="PatientRecordModel.Diagnoses">
+              <MappingFragment StoreEntitySet="Diagnoses">
+                <ScalarProperty Name="DiagnosisID" ColumnName="DiagnosisID" />
+                <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+                <ScalarProperty Name="DiagnosisName" ColumnName="DiagnosisName" />
+                <ScalarProperty Name="DiagnosisDate" ColumnName="DiagnosisDate" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Doctors">
+            <EntityTypeMapping TypeName="PatientRecordModel.Doctors">
               <MappingFragment StoreEntitySet="Doctors">
                 <ScalarProperty Name="DoctorID" ColumnName="DoctorID" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
@@ -803,13 +832,34 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-			
-          <EntitySetMapping Name="Medications">
-            <EntityTypeMapping TypeName="PatientRecordDataModel.Medications">
-              <MappingFragment StoreEntitySet="Medications">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="MedicationType" ColumnName="MedicationType" />
+          <EntitySetMapping Name="Dosages">
+            <EntityTypeMapping TypeName="PatientRecordModel.Dosages">
+              <MappingFragment StoreEntitySet="Dosages">
+                <ScalarProperty Name="DosageID" ColumnName="DosageID" />
+                <ScalarProperty Name="MedicationID" ColumnName="MedicationID" />
+                <ScalarProperty Name="Dosage" ColumnName="Dosage" />
+                <ScalarProperty Name="Frequency" ColumnName="Frequency" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="RouteOfAdministration" ColumnName="RouteOfAdministration" />
+                <ScalarProperty Name="Instructions" ColumnName="Instructions" />
+                <ScalarProperty Name="DosageAmount" ColumnName="DosageAmount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MedicationLists">
+            <EntityTypeMapping TypeName="PatientRecordModel.MedicationLists">
+              <MappingFragment StoreEntitySet="MedicationLists">
                 <ScalarProperty Name="MedicationListID" ColumnName="MedicationListID" />
+                <ScalarProperty Name="MedicationName" ColumnName="MedicationName" />
+                <ScalarProperty Name="MedicationType" ColumnName="MedicationType" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Medications">
+            <EntityTypeMapping TypeName="PatientRecordModel.Medications">
+              <MappingFragment StoreEntitySet="Medications">
                 <ScalarProperty Name="MedicationID" ColumnName="MedicationID" />
                 <ScalarProperty Name="MedicationName" ColumnName="MedicationName" />
                 <ScalarProperty Name="DoctorID" ColumnName="DoctorID" />
@@ -817,12 +867,14 @@
                 <ScalarProperty Name="MedicationStatus" ColumnName="MedicationStatus" />
                 <ScalarProperty Name="Allergies" ColumnName="Allergies" />
                 <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="MedicationListID" ColumnName="MedicationListID" />
+                <ScalarProperty Name="MedicationType" ColumnName="MedicationType" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-			
           <EntitySetMapping Name="Nurses">
-            <EntityTypeMapping TypeName="PatientRecordDataModel.Nurses">
+            <EntityTypeMapping TypeName="PatientRecordModel.Nurses">
               <MappingFragment StoreEntitySet="Nurses">
                 <ScalarProperty Name="NurseID" ColumnName="NurseID" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
@@ -833,22 +885,33 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-			
           <EntitySetMapping Name="PatientHistory">
-            <EntityTypeMapping TypeName="PatientRecordDataModel.PatientHistory">
-				<MappingFragment StoreEntitySet="PatientHistory">
-					<ScalarProperty Name="HistoryID" ColumnName="HistoryID" />
-					<ScalarProperty Name="PatientID" ColumnName="PatientID" />
-					<ScalarProperty Name="ConditionName" ColumnName="ConditionName" />
-					<ScalarProperty Name="TreatmentDetails" ColumnName="TreatmentDetails" />
-					<ScalarProperty Name="SurgeryDate" ColumnName="SurgeryDate" />
-					<ScalarProperty Name="Notes" ColumnName="Notes" />
-				</MappingFragment>
+            <EntityTypeMapping TypeName="PatientRecordModel.PatientHistory">
+              <MappingFragment StoreEntitySet="PatientHistory">
+                <ScalarProperty Name="HistoryID" ColumnName="HistoryID" />
+                <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+                <ScalarProperty Name="ConditionName" ColumnName="ConditionName" />
+                <ScalarProperty Name="TreatmentDetails" ColumnName="TreatmentDetails" />
+                <ScalarProperty Name="SurgeryDate" ColumnName="SurgeryDate" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+              </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-			
+          <EntitySetMapping Name="PatientMedications">
+            <EntityTypeMapping TypeName="PatientRecordModel.PatientMedications">
+              <MappingFragment StoreEntitySet="PatientMedications">
+                <ScalarProperty Name="PatientMedicationID" ColumnName="PatientMedicationID" />
+                <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+                <ScalarProperty Name="MedicationID" ColumnName="MedicationID" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="MedicationListID" ColumnName="MedicationListID" />
+                <ScalarProperty Name="DoseStrength" ColumnName="DoseStrength" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Patients">
-            <EntityTypeMapping TypeName="PatientRecordDataModel.Patients">
+            <EntityTypeMapping TypeName="PatientRecordModel.Patients">
               <MappingFragment StoreEntitySet="Patients">
                 <ScalarProperty Name="PatientID" ColumnName="PatientID" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
@@ -863,24 +926,31 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-			
           <EntitySetMapping Name="Treatment">
-            <EntityTypeMapping TypeName="PatientRecordDataModel.Treatment">
+            <EntityTypeMapping TypeName="PatientRecordModel.Treatment">
               <MappingFragment StoreEntitySet="Treatment">
-                <ScalarProperty Name="DosageID" ColumnName="DosageID" />
-                <ScalarProperty Name="Dosage" ColumnName="Dosage" />
                 <ScalarProperty Name="TreatmentID" ColumnName="TreatmentID" />
                 <ScalarProperty Name="PatientID" ColumnName="PatientID" />
                 <ScalarProperty Name="MedicationID" ColumnName="MedicationID" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
                 <ScalarProperty Name="TreatmentType" ColumnName="TreatmentType" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-			
+          <EntitySetMapping Name="TreatmentDetails">
+            <EntityTypeMapping TypeName="PatientRecordModel.TreatmentDetails">
+              <MappingFragment StoreEntitySet="TreatmentDetails">
+                <ScalarProperty Name="TreatmentDetailID" ColumnName="TreatmentDetailID" />
+                <ScalarProperty Name="TreatmentID" ColumnName="TreatmentID" />
+                <ScalarProperty Name="MedicationID" ColumnName="MedicationID" />
+                <ScalarProperty Name="DosageID" ColumnName="DosageID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="PatientRecordDataModel.Users">
+            <EntityTypeMapping TypeName="PatientRecordModel.Users">
               <MappingFragment StoreEntitySet="Users">
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
@@ -894,9 +964,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-			
           <EntitySetMapping Name="VitalFunctions">
-            <EntityTypeMapping TypeName="PatientRecordDataModel.VitalFunctions">
+            <EntityTypeMapping TypeName="PatientRecordModel.VitalFunctions">
               <MappingFragment StoreEntitySet="VitalFunctions">
                 <ScalarProperty Name="VitalFunctionID" ColumnName="VitalFunctionID" />
                 <ScalarProperty Name="PatientID" ColumnName="PatientID" />
@@ -910,63 +979,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-			
-			<EntitySetMapping Name="Dosages">
-				<EntityTypeMapping TypeName="PatientRecordDataModel.Dosages">
-					<MappingFragment StoreEntitySet="Dosages">
-						<ScalarProperty Name="DosageAmount" ColumnName="DosageAmount" />
-						<ScalarProperty Name="Instructions" ColumnName="Instructions" />
-						<ScalarProperty Name="RouteOfAdministration" ColumnName="RouteOfAdministration" />
-						<ScalarProperty Name="EndDate" ColumnName="EndDate" />
-						<ScalarProperty Name="StartDate" ColumnName="StartDate" />
-						<ScalarProperty Name="Frequency" ColumnName="Frequency" />
-						<ScalarProperty Name="Dosage" ColumnName="Dosage" />
-						<ScalarProperty Name="MedicationID" ColumnName="MedicationID" />
-						<ScalarProperty Name="DosageID" ColumnName="DosageID" />
-					</MappingFragment>
-				</EntityTypeMapping>
-			</EntitySetMapping>
-			
-          <EntitySetMapping Name="Diagnoses">
-            <EntityTypeMapping TypeName="PatientRecordDataModel.Diagnosis">
-              <MappingFragment StoreEntitySet="Diagnoses">
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="DiagnosisDate" ColumnName="DiagnosisDate" />
-                <ScalarProperty Name="DiagnosisName" ColumnName="DiagnosisName" />
-                <ScalarProperty Name="PatientID" ColumnName="PatientID" />
-                <ScalarProperty Name="DiagnosisID" ColumnName="DiagnosisID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-			
-          <EntitySetMapping Name="MedicationLists">
-            <EntityTypeMapping TypeName="PatientRecordDataModel.MedicationList">
-              <MappingFragment StoreEntitySet="MedicationLists">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="MedicationType" ColumnName="MedicationType" />
-                <ScalarProperty Name="MedicationName" ColumnName="MedicationName" />
-                <ScalarProperty Name="MedicationListID" ColumnName="MedicationListID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-			
-          <EntitySetMapping Name="PatientMedications">
-            <EntityTypeMapping TypeName="PatientRecordDataModel.PatientMedication">
-              <MappingFragment StoreEntitySet="PatientMedications">
-                <ScalarProperty Name="DoseInterval" ColumnName="DoseInterval" />
-                <ScalarProperty Name="DoseStrength" ColumnName="DoseStrength" />
-                <ScalarProperty Name="DosageID" ColumnName="DosageID" />
-                <ScalarProperty Name="MedicationListID" ColumnName="MedicationListID" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="MedicationID" ColumnName="MedicationID" />
-                <ScalarProperty Name="PatientID" ColumnName="PatientID" />
-                <ScalarProperty Name="PatientMedicationID" ColumnName="PatientMedicationID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
         </EntityContainerMapping>
-			
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
@@ -980,7 +993,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />

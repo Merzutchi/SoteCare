@@ -1,7 +1,6 @@
 ﻿using SoteCare.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
@@ -12,104 +11,141 @@ namespace SoteCare.Controllers
 {
     public class TreatmentController : Controller
     {
-        private readonly PatientRecordDataEntities context = new PatientRecordDataEntities();
+        private PatientRecordDataEntities db = new PatientRecordDataEntities();
 
         // GET: Treatment
         public ActionResult Index()
         {
-            var treatments = context.Treatment
-                         .Include(t => t.Patients)
-                         .Include (t => t.Medication)
-                         .Include(t => t.Dosages)
-                         .ToList();
+            var treatments = db.Treatment.Include("Patients").Include("Medications");
+            return View(treatments.ToList());
+        }
 
-            return View(treatments);
+        // GET: Treatment/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Treatment treatment = db.Treatment.Find(id);
+            if (treatment == null)
+            {
+                return HttpNotFound();
+            }
+            return View(treatment);
         }
 
         // GET: Treatment/Create
-        public ActionResult Create(int? patientId)
+        public ActionResult Create()
         {
-            var dosages = context.Dosages.ToList(); 
-            foreach (var dosage in dosages)
-            {
-                System.Diagnostics.Debug.WriteLine($"DosageID: {dosage.DosageID}, DosageAmount: {dosage.DosageAmount}");
-            }
+            ViewBag.PatientID = new SelectList(
+                db.Patients.Select(p => new {
+                    PatientID = p.PatientID,
+                    FullName = p.FirstName + " " + p.LastName  
+                }),
+                "PatientID", "FullName"
+            );
 
-            ViewBag.PatientID = new SelectList(context.Patients.Select(p => new
-            {
-                p.PatientID,
-                FullName = p.FirstName + " " + p.LastName
-            }), "PatientID", "FullName", patientId);
-
-            ViewBag.MedicationID = new SelectList(context.Medications.Select(m => new
-            {
-                m.MedicationID,
-                m.MedicationName
-            }), "MedicationID", "MedicationName");
-
-            ViewBag.DosageID = new SelectList(context.Dosages.Select(d => new
-            {
-                d.DosageID,
-                d.DosageAmount
-            }), "DosageID", "DosageAmount");
-
-            return View(new Treatment());
+            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName");
+            return View();
         }
 
-        [HttpPost][ValidateAntiForgeryToken]
-        public ActionResult Create(Treatment treatments)
+        // POST: Treatment/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "PatientID, MedicationID, StartDate, EndDate, TreatmentType, Notes")] Treatment treatment)
         {
             if (ModelState.IsValid)
             {
-                try
-                {
-                    context.Treatment.Add(treatments);
-                    context.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var validationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in validationErrors.ValidationErrors)
-                        {
-                            System.Diagnostics.Debug.WriteLine($"Property: {validationError.PropertyName}, Error: {validationError.ErrorMessage}");
-                        }
-                    }
-
-                    ModelState.AddModelError("", "There was a problem saving the treatment. Please check the input.");
-                }
+                db.Treatment.Add(treatment);
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
 
-            ViewBag.PatientID = new SelectList(context.Patients.Select(p => new
-            {
-                p.PatientID,
-                FullName = p.FirstName + " " + p.LastName
-            }), "PatientID", "FullName", treatments.PatientID);
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FullName", treatment.PatientID);
+            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", treatment.MedicationID);
+            return View(treatment);
+        }
 
-            ViewBag.MedicationID = new SelectList(context.Medications.Select(m => new
+        // GET: Treatment/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
             {
-                m.MedicationID,
-                m.MedicationName
-            }), "MedicationID", "MedicationName", treatments.MedicationID);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
-            ViewBag.DosageID = new SelectList(context.Dosages.Select(d => new
+            // Find the treatment by ID
+            Treatment treatment = db.Treatment.Find(id);
+            if (treatment == null)
             {
-                d.DosageID,
-                d.DosageAmount
-            }), "DosageID", "DosageAmount", treatments.DosageID);
+                return HttpNotFound();
+            }
 
-            return View(treatments);
+            // Concatenate FirstName and LastName for FullName and pass it to the dropdown
+            ViewBag.PatientID = new SelectList(
+                db.Patients.Select(p => new {
+                    PatientID = p.PatientID,
+                    FullName = p.FirstName + " " + p.LastName  // Concatenate FirstName and LastName
+                }),
+                "PatientID", "FullName", treatment.PatientID  // Set the selected PatientID from the current treatment
+            );
+
+            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", treatment.MedicationID);
+            return View(treatment);
+        }
+
+        // POST: Treatment/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "TreatmentID, PatientID, MedicationID, StartDate, EndDate, TreatmentType, Notes")] Treatment treatment)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(treatment).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FullName", treatment.PatientID);
+            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", treatment.MedicationID);
+            return View(treatment);
+        }
+
+        // GET: Treatment/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Treatment treatment = db.Treatment.Find(id);
+            if (treatment == null)
+            {
+                return HttpNotFound();
+            }
+            return View(treatment);
+        }
+
+        // POST: Treatment/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Treatment treatment = db.Treatment.Find(id);
+            db.Treatment.Remove(treatment);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }
-//ei
-//toimi
-//tää
-//paska
-//joku
-//muu
-//saa
-//hoitaa
-//kiitos
 
+//edit niiku paris muissa controllereis antaa jotain ihme errorii

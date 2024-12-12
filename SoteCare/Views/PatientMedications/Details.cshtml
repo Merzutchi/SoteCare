@@ -1,0 +1,66 @@
+﻿@model SoteCare.Models.PatientMedications
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PatientMedications</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DoseStrength)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DoseStrength)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MedicationLists.MedicationName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MedicationLists.MedicationName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Medications.MedicationName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Medications.MedicationName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Patients.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Patients.FirstName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PatientMedicationID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

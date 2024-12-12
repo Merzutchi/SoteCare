@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -25,17 +25,18 @@
         @Html.ActionLink("Diagnoosit kirjaus", "Index", "Diagnoses")
         @Html.ActionLink("Users", "Index", "Users")
         @Html.ActionLink("Nurses", "Index", "Nurses")
-        @Html.ActionLink("Medication Lists", "Index", "MedicationList")
-        @Html.ActionLink("PatientMedication", "Index", "PatientMedications")
+        @Html.ActionLink("MedicationLists", "Index", "MedicationLists")
+        @Html.ActionLink("PatientMedications", "Index", "PatientMedications")
         @Html.ActionLink("Doctors", "Index", "Doctors")
 
-        <div class="content">
-            @RenderBody()
-            <hr />
-            <footer>
-                <p>&copy; @DateTime.Now.Year - SoteCare</p>
-            </footer>
-        </div>
+
+    </div>
+    <div class="content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - SoteCare</p>
+        </footer>
     </div>
 </body>
 </html>
@@ -64,3 +65,5 @@
             }
         }
     </script>*@
+
+

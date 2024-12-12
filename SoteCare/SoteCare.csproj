@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" />
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -48,10 +48,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\lib\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
@@ -124,69 +124,74 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\DiagnosesController.cs" />
     <Compile Include="Controllers\DoctorsController.cs" />
+    <Compile Include="Controllers\DosagesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\MedicationListController.cs" />
     <Compile Include="Controllers\MedicationsController.cs" />
+    <Compile Include="Controllers\MedicationListsController.cs" />
     <Compile Include="Controllers\NursesController.cs" />
     <Compile Include="Controllers\PatientHistoryController.cs" />
-    <Compile Include="Controllers\PatientMedicationController.cs" />
+    <Compile Include="Controllers\PatientMedicationsController.cs" />
     <Compile Include="Controllers\PatientsController.cs" />
     <Compile Include="Controllers\TreatmentController.cs" />
+    <Compile Include="Controllers\TreatmentDetailsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\VitalFunctionsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Diagnosis.cs">
-      <DependentUpon>PatientRecordData.tt</DependentUpon>
+    <Compile Include="Models\Diagnoses.cs">
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Doctors.cs">
-      <DependentUpon>PatientRecordData.tt</DependentUpon>
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Dosages.cs">
-      <DependentUpon>PatientRecordData.tt</DependentUpon>
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\MedicationList.cs">
-      <DependentUpon>PatientRecordData.tt</DependentUpon>
+    <Compile Include="Models\MedicationLists.cs">
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Medications.cs">
-      <DependentUpon>PatientRecordData.tt</DependentUpon>
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Nurses.cs">
-      <DependentUpon>PatientRecordData.tt</DependentUpon>
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PatientHistory.cs">
-      <DependentUpon>PatientRecordData.tt</DependentUpon>
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PatientMedication.cs">
-      <DependentUpon>PatientRecordData.tt</DependentUpon>
+    <Compile Include="Models\PatientMedications.cs">
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PatientRecordData.Context.cs">
+    <Compile Include="Models\PatientRecordDataEntities.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PatientRecordData.Context.tt</DependentUpon>
+      <DependentUpon>PatientRecordDataEntities.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PatientRecordData.cs">
+    <Compile Include="Models\PatientRecordDataEntities.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PatientRecordData.tt</DependentUpon>
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PatientRecordData.Designer.cs">
+    <Compile Include="Models\PatientRecordDataEntities.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PatientRecordData.edmx</DependentUpon>
+      <DependentUpon>PatientRecordDataEntities.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Patients.cs">
-      <DependentUpon>PatientRecordData.tt</DependentUpon>
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Treatment.cs">
-      <DependentUpon>PatientRecordData.tt</DependentUpon>
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TreatmentDetails.cs">
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Users.cs">
-      <DependentUpon>PatientRecordData.tt</DependentUpon>
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\VitalFunctions.cs">
-      <DependentUpon>PatientRecordData.tt</DependentUpon>
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -210,22 +215,15 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\PatientRecordData.Context.tt">
+    <Content Include="Models\PatientRecordDataEntities.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>PatientRecordData.edmx</DependentUpon>
-      <LastGenOutput>PatientRecordData.Context.cs</LastGenOutput>
+      <DependentUpon>PatientRecordDataEntities.edmx</DependentUpon>
+      <LastGenOutput>PatientRecordDataEntities.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\PatientRecordData.tt">
+    <Content Include="Models\PatientRecordDataEntities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>PatientRecordData.edmx</DependentUpon>
-      <LastGenOutput>PatientRecordData.cs</LastGenOutput>
-    </Content>
-    <EntityDeploy Include="Models\PatientRecordData.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>PatientRecordData.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\PatientRecordData.edmx.diagram">
-      <DependentUpon>PatientRecordData.edmx</DependentUpon>
+      <DependentUpon>PatientRecordDataEntities.edmx</DependentUpon>
+      <LastGenOutput>PatientRecordDataEntities.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -233,6 +231,13 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <EntityDeploy Include="Models\PatientRecordDataEntities.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>PatientRecordDataEntities.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\PatientRecordDataEntities.edmx.diagram">
+      <DependentUpon>PatientRecordDataEntities.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
     <Content Include="Scripts\jquery-3.7.1.min.js" />
@@ -253,62 +258,68 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Diagnoses\Index.cshtml" />
+    <Content Include="Views\Diagnoses\Edit.cshtml" />
+    <Content Include="Views\Diagnoses\Details.cshtml" />
+    <Content Include="Views\Diagnoses\Delete.cshtml" />
+    <Content Include="Views\Diagnoses\Create.cshtml" />
+    <Content Include="Views\Doctors\Index.cshtml" />
+    <Content Include="Views\Doctors\Edit.cshtml" />
+    <Content Include="Views\Doctors\Details.cshtml" />
+    <Content Include="Views\Doctors\Delete.cshtml" />
+    <Content Include="Views\Doctors\Create.cshtml" />
+    <Content Include="Views\Dosages\Index.cshtml" />
+    <Content Include="Views\Medications\Index.cshtml" />
+    <Content Include="Views\Medications\DeleteMedication.cshtml" />
+    <Content Include="Views\Medications\CreateMedication.cshtml" />
+    <Content Include="Views\MedicationLists\Index.cshtml" />
+    <Content Include="Views\MedicationLists\Create.cshtml" />
+    <Content Include="Views\MedicationLists\Edit.cshtml" />
+    <Content Include="Views\MedicationLists\Delete.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Patients\Create.cshtml" />
-    <Content Include="Views\Patients\Delete.cshtml" />
-    <Content Include="Views\Patients\Details.cshtml" />
-    <Content Include="Views\Patients\Edit.cshtml" />
-    <Content Include="Views\Patients\Index.cshtml" />
-    <Content Include="Views\PatientHistory\Create.cshtml" />
-    <Content Include="Views\PatientHistory\Delete.cshtml" />
-    <Content Include="Views\PatientHistory\Details.cshtml" />
-    <Content Include="Views\PatientHistory\Edit.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Nurses\Index.cshtml" />
+    <Content Include="Views\Nurses\Edit.cshtml" />
+    <Content Include="Views\Nurses\Details.cshtml" />
+    <Content Include="Views\Nurses\Delete.cshtml" />
+    <Content Include="Views\Nurses\Create.cshtml" />
     <Content Include="Views\PatientHistory\Index.cshtml" />
+    <Content Include="Views\PatientHistory\Edit.cshtml" />
+    <Content Include="Views\PatientHistory\Details.cshtml" />
+    <Content Include="Views\PatientHistory\Delete.cshtml" />
+    <Content Include="Views\PatientHistory\Create.cshtml" />
+    <Content Include="Views\Patients\Index.cshtml" />
+    <Content Include="Views\Patients\Index2.cshtml" />
+    <Content Include="Views\Patients\Edit.cshtml" />
+    <Content Include="Views\Patients\Details.cshtml" />
+    <Content Include="Views\Patients\Delete.cshtml" />
+    <Content Include="Views\Patients\Create.cshtml" />
+    <Content Include="Views\Treatment\Index.cshtml" />
+    <Content Include="Views\TreatmentDetails\Index.cshtml" />
+    <Content Include="Views\Users\Index.cshtml" />
+    <Content Include="Views\Users\Index2.cshtml" />
+    <Content Include="Views\Users\Create.cshtml" />
+    <Content Include="Views\Users\Delete.cshtml" />
+    <Content Include="Views\Users\Details.cshtml" />
     <Content Include="Views\VitalFunctions\Create.cshtml" />
     <Content Include="Views\VitalFunctions\Delete.cshtml" />
     <Content Include="Views\VitalFunctions\Details.cshtml" />
     <Content Include="Views\VitalFunctions\Edit.cshtml" />
-    <Content Include="Views\VitalFunctions\Index.cshtml" />
-    <Content Include="Views\Patients\Index2.cshtml" />
-    <Content Include="Views\Diagnoses\Create.cshtml" />
-    <Content Include="Views\Diagnoses\Delete.cshtml" />
-    <Content Include="Views\Diagnoses\Details.cshtml" />
-    <Content Include="Views\Diagnoses\Edit.cshtml" />
-    <Content Include="Views\Diagnoses\Index.cshtml" />
-    <Content Include="Views\Users\Create.cshtml" />
-    <Content Include="Views\Users\Delete.cshtml" />
-    <Content Include="Views\Users\Details.cshtml" />
-    <Content Include="Views\Users\Edit.cshtml" />
-    <Content Include="Views\Users\Index.cshtml" />
-    <Content Include="Views\Users\Index2.cshtml" />
-    <Content Include="Views\Users\Edit2.cshtml" />
-    <Content Include="Views\Nurses\Create.cshtml" />
-    <Content Include="Views\Nurses\Delete.cshtml" />
-    <Content Include="Views\Nurses\Details.cshtml" />
-    <Content Include="Views\Nurses\Edit.cshtml" />
-    <Content Include="Views\Nurses\Index.cshtml" />
-    <Content Include="Views\Medications\Index.cshtml" />
-    <Content Include="Views\Medications\DeleteConfirmation.cshtml" />
-    <Content Include="Views\Medications\CreateMedication.cshtml" />
-    <Content Include="Views\PatientMedication\Index.cshtml" />
-    <Content Include="Views\PatientMedication\SelectPatient.cshtml" />
-    <Content Include="Views\PatientMedication\Create.cshtml" />
-    <Content Include="Views\PatientMedication\Edit.cshtml" />
-    <Content Include="Views\MedicationList\Index.cshtml" />
-    <Content Include="Views\MedicationList\Create.cshtml" />
-    <Content Include="Views\MedicationList\Edit.cshtml" />
-    <Content Include="Views\MedicationList\Delete.cshtml" />
-    <Content Include="Views\Treatment\Index.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Dosages\Edit.cshtml" />
+    <Content Include="Views\Dosages\Create.cshtml" />
     <Content Include="Views\Treatment\Create.cshtml" />
-    <Content Include="Views\Doctors\Index.cshtml" />
-    <Content Include="Views\Doctors\Edit.cshtml" />
-    <Content Include="Views\Doctors\Delete.cshtml" />
-    <Content Include="Views\Doctors\Details.cshtml" />
-    <Content Include="Views\Doctors\Create.cshtml" />
+    <Content Include="Views\Treatment\Edit.cshtml" />
+    <Content Include="Views\Treatment\Details.cshtml" />
+    <Content Include="Views\Treatment\Delete.cshtml" />
+    <Content Include="Views\PatientMedications\Create.cshtml" />
+    <Content Include="Views\PatientMedications\Delete.cshtml" />
+    <Content Include="Views\PatientMedications\Details.cshtml" />
+    <Content Include="Views\PatientMedications\Edit.cshtml" />
+    <Content Include="Views\PatientMedications\Index.cshtml" />
+    <Content Include="Views\VitalFunctions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -376,11 +387,11 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets'))" />
-    <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.props'))" />
-    <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
   </Target>
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" />
-  <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" />
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

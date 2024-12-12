@@ -1,4 +1,4 @@
-﻿@model SoteCare.Models.Diagnosis
+﻿@model SoteCare.Models.Diagnoses
 
 @{
     ViewBag.Title = "Details";
@@ -35,11 +35,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Patient.FirstName)
+            @Html.DisplayNameFor(model => model.Patients.FirstName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Patient.FirstName)
+            @Html.DisplayFor(model => model.Patients.FirstName)
         </dd>
 
     </dl>
@@ -48,3 +48,10 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.DiagnosisID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+
+
+
+
+
+

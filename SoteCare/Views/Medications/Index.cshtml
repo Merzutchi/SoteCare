@@ -5,9 +5,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Description</th>
+            <th>@Html.DisplayNameFor(model => model.MedicationName)</th>
+            <th>@Html.DisplayNameFor(model => model.MedicationType)</th>
+            <th>@Html.DisplayNameFor(model => model.Description)</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -40,17 +40,19 @@
 </div>
 
 <script>
-    function showDeleteModal(id) {
-        const url = '@Url.Action("DeletePartial", "Medications", new { id = "__id__" })'.replace('__id__', id);
-        $("#modalBody").load(url, function () {
-            $("#modal").modal("show");
-        });
+	function showDeleteModal(id) {
+    	const url = '@Url.Action("DeletePartial", "Medications", new { id = "__id__" })'.replace('__id__', id);
+    	$("#modalBody").load(url, function () {
+        	$("#modal").modal("show");
+    	});
 }
 
-    function showCreateModal() {
-        const url = '@Url.Action("CreatePartial", "Medications")';
-        $("#modalBody").load(url, function () {
-            $("#modal").modal("show");
-        });
-    }
+	function showCreateModal() {
+    	const url = '@Url.Action("CreatePartial", "Medications")';
+    	$("#modalBody").load(url, function () {
+        	$("#modal").modal("show");
+    	});
+	}
 </script>
+
+
