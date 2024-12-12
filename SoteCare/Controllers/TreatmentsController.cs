@@ -1,26 +1,27 @@
-﻿using SoteCare.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Validation;
+using System.Data;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using SoteCare.Models;
 
 namespace SoteCare.Controllers
 {
-    public class TreatmentController : Controller
+    public class TreatmentsController : Controller
     {
         private PatientRecordDataEntities db = new PatientRecordDataEntities();
 
-        // GET: Treatment
+        // GET: Treatments
         public ActionResult Index()
         {
-            var treatments = db.Treatment.Include("Patients").Include("Medications");
-            return View(treatments.ToList());
+            var treatment = db.Treatment.Include(t => t.Medications).Include(t => t.Patients);
+            return View(treatment.ToList());
         }
 
-        // GET: Treatment/Details/5
+        // GET: Treatments/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -35,25 +36,20 @@ namespace SoteCare.Controllers
             return View(treatment);
         }
 
-        // GET: Treatment/Create
+        // GET: Treatments/Create
         public ActionResult Create()
         {
-            ViewBag.PatientID = new SelectList(
-                db.Patients.Select(p => new {
-                    PatientID = p.PatientID,
-                    FullName = p.FirstName + " " + p.LastName  
-                }),
-                "PatientID", "FullName"
-            );
-
             ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName");
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName");
             return View();
         }
 
-        // POST: Treatment/Create
+        // POST: Treatments/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PatientID, MedicationID, StartDate, EndDate, TreatmentType, Notes")] Treatment treatment)
+        public ActionResult Create([Bind(Include = "TreatmentID,PatientID,MedicationID,StartDate,EndDate,TreatmentType,Notes")] Treatment treatment)
         {
             if (ModelState.IsValid)
             {
@@ -62,56 +58,47 @@ namespace SoteCare.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FullName", treatment.PatientID);
             ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", treatment.MedicationID);
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", treatment.PatientID);
             return View(treatment);
         }
 
-        // GET: Treatment/Edit/5
+        // GET: Treatments/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            // Find the treatment by ID
             Treatment treatment = db.Treatment.Find(id);
             if (treatment == null)
             {
                 return HttpNotFound();
             }
-
-            // Concatenate FirstName and LastName for FullName and pass it to the dropdown
-            ViewBag.PatientID = new SelectList(
-                db.Patients.Select(p => new {
-                    PatientID = p.PatientID,
-                    FullName = p.FirstName + " " + p.LastName  // Concatenate FirstName and LastName
-                }),
-                "PatientID", "FullName", treatment.PatientID  // Set the selected PatientID from the current treatment
-            );
-
             ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", treatment.MedicationID);
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", treatment.PatientID);
             return View(treatment);
         }
 
-        // POST: Treatment/Edit/5
+        // POST: Treatments/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "TreatmentID, PatientID, MedicationID, StartDate, EndDate, TreatmentType, Notes")] Treatment treatment)
+        public ActionResult Edit([Bind(Include = "TreatmentID,PatientID,MedicationID,StartDate,EndDate,TreatmentType,Notes")] Treatment treatment)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(treatment).State = System.Data.Entity.EntityState.Modified;
+                db.Entry(treatment).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FullName", treatment.PatientID);
             ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", treatment.MedicationID);
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", treatment.PatientID);
             return View(treatment);
         }
 
-        // GET: Treatment/Delete/5
+        // GET: Treatments/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -126,7 +113,7 @@ namespace SoteCare.Controllers
             return View(treatment);
         }
 
-        // POST: Treatment/Delete/5
+        // POST: Treatments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -147,5 +134,3 @@ namespace SoteCare.Controllers
         }
     }
 }
-
-//edit niiku paris muissa controllereis antaa jotain ihme errorii

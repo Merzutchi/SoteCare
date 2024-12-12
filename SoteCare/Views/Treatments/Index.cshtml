@@ -1,0 +1,96 @@
+﻿@model IEnumerable<SoteCare.Models.Treatment>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<h2>Treatment List</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Patient</th>
+            <th>Treatment Type</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Patients.FirstName @item.Patients.LastName</td>
+                <td>@item.TreatmentType</td>
+                <td>@item.StartDate.ToShortDateString()</td>
+                <td>@(item.EndDate.HasValue ? item.EndDate.Value.ToShortDateString() : "Ongoing")</td>
+                <td>
+                    @Html.ActionLink("Details", "Details", new { id = item.TreatmentID }) |
+                    @Html.ActionLink("Edit", "Edit", new { id = item.TreatmentID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.TreatmentID })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.ActionLink("Create", "Create")
+
+
+@*<h2>Index</h2>
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TreatmentType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Notes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Medications.MedicationName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Patients.FirstName)
+            </th>
+            <th></th>
+        </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TreatmentType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Notes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Medications.MedicationName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Patients.FirstName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.TreatmentID }) |
+                @Html.ActionLink("Details", "Details", new { id=item.TreatmentID }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.TreatmentID })
+            </td>
+        </tr>
+    }
+
+    </table>*@
