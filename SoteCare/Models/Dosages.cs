@@ -27,16 +27,18 @@ namespace SoteCare.Models
         [Display(Name = "L‰‰keID")]
         public int MedicationID { get; set; }
 
-        [Display(Name = "Annostelu")]
+        [Display(Name = "Annostus")]
         public string Dosage { get; set; }
 
-        [Display(Name = "Esiintymistiheys???")]
+        [Display(Name = "Antotiheys")]
         public string Frequency { get; set; }
 
         [Display(Name = "Aloitus p‰iv‰m‰‰r‰")]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public System.DateTime StartDate { get; set; }
 
         [Display(Name = "Lopetus p‰iv‰m‰‰r‰")]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> EndDate { get; set; }
 
         [Display(Name = "Annostelureitti???")]

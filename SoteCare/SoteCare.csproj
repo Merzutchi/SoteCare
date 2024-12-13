@@ -320,6 +320,9 @@
     <Content Include="Views\Treatments\Details.cshtml" />
     <Content Include="Views\Treatments\Edit.cshtml" />
     <Content Include="Views\Treatments\Index.cshtml" />
+    <Content Include="Views\TreatmentDetails\Create.cshtml" />
+    <Content Include="Views\TreatmentDetails\Edit.cshtml" />
+    <Content Include="Views\TreatmentDetails\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

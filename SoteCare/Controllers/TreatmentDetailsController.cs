@@ -1,6 +1,9 @@
-﻿using System;
+﻿using SoteCare.Models;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -8,82 +11,136 @@ namespace SoteCare.Controllers
 {
     public class TreatmentDetailsController : Controller
     {
+        private PatientRecordDataEntities db = new PatientRecordDataEntities();
+
         // GET: TreatmentDetails
         public ActionResult Index()
         {
-            return View();
+            var treatmentDetails = db.TreatmentDetails
+                .Include(td => td.Treatment)
+                .Include(td => td.Medications)
+                .Include(td => td.Dosages);
+            return View(treatmentDetails.ToList());
         }
 
         // GET: TreatmentDetails/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            TreatmentDetails treatmentDetails = db.TreatmentDetails.Find(id);
+            if (treatmentDetails == null)
+            {
+                return HttpNotFound();
+            }
+            return View(treatmentDetails);
         }
 
         // GET: TreatmentDetails/Create
         public ActionResult Create()
         {
+            ViewBag.TreatmentID = new SelectList(db.Treatment, "TreatmentID", "TreatmentType");
+            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName");
+            ViewBag.DosageID = new SelectList(db.Dosages, "DosageID", "Dosage");
             return View();
         }
 
         // POST: TreatmentDetails/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "TreatmentDetailID,TreatmentID,MedicationID,DosageID")] TreatmentDetails treatmentDetails)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add insert logic here
-
+                db.TreatmentDetails.Add(treatmentDetails);
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+
+            ViewBag.TreatmentID = new SelectList(db.Treatment, "TreatmentID", "TreatmentType", treatmentDetails.TreatmentID);
+            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", treatmentDetails.MedicationID);
+            ViewBag.DosageID = new SelectList(db.Dosages, "DosageID", "Dosage", treatmentDetails.DosageID);
+            return View(treatmentDetails);
         }
 
         // GET: TreatmentDetails/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            TreatmentDetails treatmentDetails = db.TreatmentDetails
+                .Include(td => td.Treatment)
+                .Include(td => td.Medications)
+                .Include(td => td.Dosages)
+                .FirstOrDefault(td => td.TreatmentDetailID == id);
+
+            if (treatmentDetails == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.TreatmentID = new SelectList(db.Treatment, "TreatmentID", "TreatmentType", treatmentDetails.TreatmentID);
+            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", treatmentDetails.MedicationID);
+            ViewBag.DosageID = new SelectList(db.Dosages, "DosageID", "Dosage", treatmentDetails.DosageID);
+            return View(treatmentDetails);
         }
 
         // POST: TreatmentDetails/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "TreatmentDetailID,TreatmentID,MedicationID,DosageID")] TreatmentDetails treatmentDetails)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
-
+                db.Entry(treatmentDetails).State = EntityState.Modified;
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+
+            ViewBag.TreatmentID = new SelectList(db.Treatment, "TreatmentID", "TreatmentType", treatmentDetails.TreatmentID);
+            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", treatmentDetails.MedicationID);
+            ViewBag.DosageID = new SelectList(db.Dosages, "DosageID", "Dosage", treatmentDetails.DosageID);
+            return View(treatmentDetails);
         }
 
         // GET: TreatmentDetails/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            TreatmentDetails treatmentDetails = db.TreatmentDetails.Find(id);
+            if (treatmentDetails == null)
+            {
+                return HttpNotFound();
+            }
+            return View(treatmentDetails);
         }
 
         // POST: TreatmentDetails/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            TreatmentDetails treatmentDetails = db.TreatmentDetails.Find(id);
+            db.TreatmentDetails.Remove(treatmentDetails);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
 
-                return RedirectToAction("Index");
-            }
-            catch
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
             {
-                return View();
+                db.Dispose();
             }
+            base.Dispose(disposing);
         }
     }
 }
