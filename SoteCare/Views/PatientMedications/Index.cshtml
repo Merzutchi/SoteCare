@@ -7,7 +7,7 @@
 
 <h2>Patient Medications</h2>
 
-<table class="table">
+<table class="styled-table">
     <thead>
         <tr>
             <th>Potilaan nimi</th>
@@ -39,7 +39,9 @@
 
 @Html.ActionLink("Create New", "Create")
 
-
+@{
+    Html.RenderPartial("_LoginModal", new SoteCare.Models.Users());
+}
 
 
 @*<h2>Index</h2>

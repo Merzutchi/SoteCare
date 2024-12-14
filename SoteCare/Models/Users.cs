@@ -18,9 +18,12 @@ namespace SoteCare.Models
         [Display(Name = "K‰ytt‰j‰ID")]
         public int UserID { get; set; }
 
+        [Required(ErrorMessage = "Anna k‰ytt‰j‰tunnus")]
         [Display(Name = "K‰ytt‰j‰tunnus")]
         public string Username { get; set; }
 
+        [Required(ErrorMessage = "Anna salasana")]
+        [DataType(DataType.Password)]
         [Display(Name = "Salasana")]
         public string Password { get; set; }
 
@@ -35,6 +38,8 @@ namespace SoteCare.Models
 
         [Display(Name = "Puhelinnumero")]
         public string PhoneNumber { get; set; }
+
+        public string LoginErrorMessage { get; set; }
 
         [Display(Name = "Syntym‰aika")]
         public Nullable<System.DateTime> DateOfBirth { get; set; }

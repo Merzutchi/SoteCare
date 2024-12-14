@@ -4,10 +4,10 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Annosjakelu</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create", "Dosages", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Create New", "Create", "Dosages")
 </p>
 
 @*lisäsin create buttonin, en oo varma onko tarkotusta sille?*@
@@ -42,5 +42,9 @@
                 </td>
             </tr>
         }
-    </tbody>    
+    </tbody>
 </table>
+
+@{
+    Html.RenderPartial("_LoginModal", new SoteCare.Models.Users());
+}

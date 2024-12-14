@@ -1,0 +1,46 @@
+﻿@model SoteCare.Models.Users﻿
+
+<div class="modal" id="LoginRuutu">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Kirjautuminen SoteCare-järjestelmään</h1>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("Authorize", "Home", FormMethod.Post, new { id = "loginForm" }))
+
+                {
+
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal">
+                        <h4>Kirjautuminen</h4>
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.UserID)
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <label class="text-bg-danger">
+                            @Html.DisplayFor(model => model.LoginErrorMessage)
+                        </label>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" form="loginForm">Kirjaudu</button>
+                <a href="@Url.Action("Index")" class="btn btn-dark">Peruuta</a>
+            </div>
+        </div>
+    </div>
+</div>

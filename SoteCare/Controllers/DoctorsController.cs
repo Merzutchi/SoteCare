@@ -16,7 +16,14 @@ namespace SoteCare.Controllers
         // GET: Doctors
         public ActionResult Index()
         {
-            return View(db.Doctors.ToList());
+            if (Session["UserName"] == null)
+            {
+                return RedirectToAction("login", "home");
+            }
+            else
+            {
+                return View(db.Doctors.ToList());
+            }
         }
 
         // GET: Doctors/Details/5

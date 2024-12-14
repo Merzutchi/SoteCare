@@ -8,34 +8,38 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
+
 <body>
-    <div class="sidenav">
-        @Html.ActionLink("SoteCare", "Index", "Home")
-        <hr />
-        <input type="text" id="sideSearch" onkeyup="myFunction()" placeholder="Haku.." title="Hae tietoja">
-        <hr />
-        @Html.ActionLink("Home", "Index", "Home")
-        @Html.ActionLink("About", "About", "Home")
-        @Html.ActionLink("Contact", "Contact", "Home")
-        @Html.ActionLink("Patients", "Index", "Patients")
-        @Html.ActionLink("Patients 2", "Index2", "Patients")
-        @Html.ActionLink("Medications", "Index", "Medications")
-        @Html.ActionLink("Patient History", "Index", "PatientHistory")
-        @Html.ActionLink("VitalFunctions kirjaus", "Index", "VitalFunctions")
-        @Html.ActionLink("Diagnoosit kirjaus", "Index", "Diagnoses")
-        @Html.ActionLink("Users", "Index", "Users")
-        @Html.ActionLink("Nurses", "Index", "Nurses")
-        @Html.ActionLink("MedicationLists", "Index", "MedicationLists")
-        @Html.ActionLink("PatientMedications", "Index", "PatientMedications")
-        @Html.ActionLink("Doctors", "Index", "Doctors")
+    
+    @{ 
+        if (Session["UserName"] == null)
+        {
+            Html.RenderPartial("_LoggedOut");
+        }
+        else
+        {
+            Html.RenderPartial("_LoggedIn");
+        }
 
+    }
 
-    </div>
     <div class="content">
         @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - SoteCare</p>
+        <footer class="oma-footer">
+            @using System.Globalization
+            @{ 
+                string loggausInfo = "";
+                if (Session["UserName"] == null)
+                {
+                    loggausInfo = "Et ole kirjautunut sisään";
+                }
+                else
+                {
+                    loggausInfo = "Olet kirjautunut käyttäjänä: " + Session["UserName"];
+                }
+            }
+            <p>&copy; SoteCare, @loggausInfo, tänään on @DateTime.Today.ToString("D", CultureInfo.CreateSpecificCulture("fi-FI"))</p>
         </footer>
     </div>
 </body>
