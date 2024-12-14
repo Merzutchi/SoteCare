@@ -1,0 +1,30 @@
+﻿
+@section scripts {
+    <script type="text/javascript">
+        $(window).on('load', function () {
+            if (@ViewBag.LoginError == 1) {
+                $('#LoginRuutu').modal('show');
+            }
+        });
+    </script>
+}
+
+<div class="sidenav">
+    @Html.ActionLink("SoteCare", "Index", "Home", null, new { @class = "sidenav-link" })
+    @*@Html.ActionLink("Kirjaudu sisään", "LogIn", "Home")*@
+    @*Modal -tyyppisen ikkunan avauspainike*@
+    <a class="sidenav-link" data-bs-toggle="modal" data-bs-target="#LoginRuutu">Kirjaudu sisään</a>
+
+    <hr />
+    <input type="text" id="sideSearch" onkeyup="myFunction()" placeholder="Haku.." title="Hae tietoja">
+    <hr />
+    @Html.ActionLink("Potilaat", "Index", "Patients", null, new { @class = "sidenav-link" })
+    @Html.ActionLink("Potilas historia", "Index", "PatientHistory", null, new { @class = "sidenav-link" })
+    @Html.ActionLink("Elintoiminnot", "Index", "VitalFunctions", null, new { @class = "sidenav-link" })
+    @Html.ActionLink("Diagnoosit", "Index", "Diagnoses", null, new { @class = "sidenav-link" })
+    @Html.ActionLink("Lääkelista?", "Index", "MedicationLists", null, new { @class = "sidenav-link" })
+    @Html.ActionLink("Potilaiden lääkitys", "Index", "PatientMedications", null, new { @class = "sidenav-link" })
+    @Html.ActionLink("Hoidot?", "Index", "Treatments", null, new { @class = "sidenav-link" })
+    <hr />
+</div>
+

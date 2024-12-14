@@ -288,8 +288,8 @@
     <Content Include="Views\PatientHistory\Details.cshtml" />
     <Content Include="Views\PatientHistory\Delete.cshtml" />
     <Content Include="Views\PatientHistory\Create.cshtml" />
+    <Content Include="Views\Patients\Index3.cshtml" />
     <Content Include="Views\Patients\Index.cshtml" />
-    <Content Include="Views\Patients\Index2.cshtml" />
     <Content Include="Views\Patients\Edit.cshtml" />
     <Content Include="Views\Patients\Details.cshtml" />
     <Content Include="Views\Patients\Delete.cshtml" />
@@ -320,6 +320,22 @@
     <Content Include="Views\Treatments\Details.cshtml" />
     <Content Include="Views\Treatments\Edit.cshtml" />
     <Content Include="Views\Treatments\Index.cshtml" />
+    <Content Include="Views\Home\LogIn.cshtml" />
+    <Content Include="Views\Home\LogOut.cshtml" />
+    <Content Include="Views\Shared\_LoggedIn.cshtml" />
+    <Content Include="Views\Shared\_LoggedOut.cshtml" />
+    <Content Include="Views\Home\_LoginModal.cshtml" />
+    <Content Include="Views\Patients\_LoginModal.cshtml" />
+    <Content Include="Views\Treatments\_LoginModal.cshtml" />
+    <Content Include="Views\Users\_LoginModal.cshtml" />
+    <Content Include="Views\VitalFunctions\_LoginModal.cshtml" />
+    <Content Include="Views\Diagnoses\_LoginModal.cshtml" />
+    <Content Include="Views\Doctors\_LoginModal.cshtml" />
+    <Content Include="Views\Dosages\_LoginModal.cshtml" />
+    <Content Include="Views\Medications\_LoginModal.cshtml" />
+    <Content Include="Views\Nurses\_LoginModal.cshtml" />
+    <Content Include="Views\PatientHistory\_LoginModal.cshtml" />
+    <Content Include="Views\PatientMedications\_LoginModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

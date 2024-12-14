@@ -7,7 +7,7 @@
 
 <h2>Treatment List</h2>
 
-<table class="table">
+<table class="styled-table">
     <thead>
         <tr>
             <th>Patient</th>
@@ -35,6 +35,10 @@
     </tbody>
 </table>
 @Html.ActionLink("Create", "Create")
+
+@{
+    Html.RenderPartial("_LoginModal", new SoteCare.Models.Users());
+}
 
 
 @*<h2>Index</h2>

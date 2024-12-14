@@ -4,12 +4,12 @@
     ViewBag.Title = "Index2";
 }
 
-<h2>Index2</h2>
+<h2>Elintoiminnot</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Lisää elintoiminto", "Create")
 </p>
-<table class="table">
+<table class="styled-table">
     <tr>
         <th>@Html.DisplayNameFor(model => model.DateTime)</th>
         <th>@Html.DisplayNameFor(model => model.HeartRate)</th>
@@ -22,22 +22,27 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>@Html.DisplayFor(modelItem => item.DateTime)</td>
-        <td>@Html.DisplayFor(modelItem => item.HeartRate)</td>
-        <td>@Html.DisplayFor(modelItem => item.SystolicBloodPressure)</td>
-        <td>@Html.DisplayFor(modelItem => item.DiastolicBloodPressure)</td>
-        <td>@Html.DisplayFor(modelItem => item.RespiratoryRate)</td>
-        <td>@Html.DisplayFor(modelItem => item.Temperature)</td>
-        <td>@Html.DisplayFor(modelItem => item.OxygenSaturation)</td>
-        <td>@Html.DisplayFor(modelItem => item.Patients.FirstName)</td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.VitalFunctionID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.VitalFunctionID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.VitalFunctionID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.DateTime)</td>
+            <td>@Html.DisplayFor(modelItem => item.HeartRate)</td>
+            <td>@Html.DisplayFor(modelItem => item.SystolicBloodPressure)</td>
+            <td>@Html.DisplayFor(modelItem => item.DiastolicBloodPressure)</td>
+            <td>@Html.DisplayFor(modelItem => item.RespiratoryRate)</td>
+            <td>@Html.DisplayFor(modelItem => item.Temperature)</td>
+            <td>@Html.DisplayFor(modelItem => item.OxygenSaturation)</td>
+            <td>@Html.DisplayFor(modelItem => item.Patients.FirstName)</td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.VitalFunctionID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.VitalFunctionID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.VitalFunctionID })
+            </td>
+        </tr>
+    }
 
 </table>
+
+@{
+    Html.RenderPartial("_LoginModal", new SoteCare.Models.Users());
+}

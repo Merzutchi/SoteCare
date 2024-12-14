@@ -35,7 +35,7 @@ hr {
 }
 
 /* SIVUPALKKI ULKOMUOTOO */
-.sidenav {
+/*.sidenav {
     height: 100%;
     width: 300px;
     position: fixed;
@@ -44,22 +44,22 @@ hr {
     left: 0;
     background-color: #111;
     overflow-x: hidden;
-}
+}*/
 
 
-/* SIVUPALKKI TEKSTIT */
-.sidenav a {
+/* SIVUPALKKI TEKSTIT*/ 
+/*.sidenav a {
     padding: 6px 6px 6px 32px;
     text-decoration: none;
     font-size: 25px;
     color: #818181;
     display: block;
-}
+}*/
 
 /* HOVERIN VÄRI SIVUPALKIS */
-.sidenav a:hover {
-/*background-color: #ddd;*/
-    color: whitesmoke;
+/*.sidenav a:hover {
+    background-color: #ddd;
+    color: whitesmoke;*/
 }
 
 /* KESKUSTAN CONTENT MUOKKAUS */
@@ -105,4 +105,22 @@ hr {
 .styled-table tbody tr.active-row {
     font-weight: bold;
     color: dimgray;
+}
+
+
+
+.sidenav-link {
+    display: block;
+    padding: 10px 15px;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    background-color: #007bff; /* Esimerkki */
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.sidenav-link:hover {
+    background-color: #0056b3; /* Hover-efekti */
+    text-decoration: underline;
 }

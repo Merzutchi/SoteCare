@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2 class="text-center">Full list of SoteCare patients history</h2>
+<h2 class="text-center">SoteCare Potilashistoria</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -24,7 +24,7 @@
         <tr>
             <td>@Html.DisplayFor(modelItem => item.ConditionName)</td>
             <td>@Html.DisplayFor(modelItem => item.TreatmentDetails)</td>
-            @*<td>@item.SurgeryDate.ToString("d")</td>*@
+            <td>@item.SurgeryDate</td>
             <td>@Html.DisplayFor(modelItem => item.Notes)</td>
             <td>@Html.DisplayFor(modelItem => item.Patients.FirstName)</td>
             <td>
@@ -52,5 +52,7 @@
 
 </table>
 
-
+@{
+    Html.RenderPartial("_LoginModal", new SoteCare.Models.Users());
+}
 

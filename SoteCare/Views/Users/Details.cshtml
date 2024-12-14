@@ -41,4 +41,6 @@
     @Html.ActionLink("Back to List", "Index")
 </p>
 
-
+@{
+    Html.RenderPartial("_LoginModal", new SoteCare.Models.Users());
+}

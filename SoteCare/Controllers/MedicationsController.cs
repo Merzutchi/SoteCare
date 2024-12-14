@@ -12,8 +12,17 @@ public class MedicationsController : Controller
     // GET: Index for Medications
     public ActionResult Index()
     {
-        var medications = context.Medications.ToList();
-        return View(medications);
+        if (Session["UserName"] == null)
+        {
+            return RedirectToAction("login", "home");
+        }
+        else
+        {
+            var medications = context.Medications.ToList();
+            return View(medications);
+       
+        }
+        
     }
 
     public ActionResult CreatePartial()

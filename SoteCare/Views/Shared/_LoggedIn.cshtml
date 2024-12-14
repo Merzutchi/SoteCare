@@ -1,0 +1,24 @@
+﻿<div class="sidenav">
+    @Html.ActionLink("SoteCare", "Index", "Home")
+    @*@Html.ActionLink("Kirjaudu sisään", "LogIn", "Home")*@
+    <a class="nav-item" data-bs-toggle="modal" data-bs-target="#LoginRuutu">Kirjaudu sisään</a>
+    @Html.ActionLink("Kirjaudu ulos", "LogOut", "Home")
+    <hr />
+    <input type="text" id="sideSearch" onkeyup="myFunction()" placeholder="Haku.." title="Hae tietoja">
+    <hr />
+    @Html.ActionLink("Potilaat", "Index", "Patients")
+    @Html.ActionLink("Potilas historia", "Index", "PatientHistory")
+    @Html.ActionLink("Elintoiminnot", "Index", "VitalFunctions")
+    @Html.ActionLink("Diagnoosit", "Index", "Diagnoses")
+    @Html.ActionLink("Lääkelista?", "Index", "MedicationLists")
+    @Html.ActionLink("Potilaiden lääkitys", "Index", "PatientMedications")
+    @Html.ActionLink("Hoidot?", "Index", "Treatments")
+    <hr />
+    @Html.ActionLink("Lääkkeet", "Index", "Medications")
+    @Html.ActionLink("Annosjakelu", "Index", "Dosages")
+    @Html.ActionLink("Lääkärit", "Index", "Doctors")
+    @Html.ActionLink("Hoitajat", "Index", "Nurses")
+    @Html.ActionLink("Käyttäjät", "Index", "Users")
+
+
+</div>
