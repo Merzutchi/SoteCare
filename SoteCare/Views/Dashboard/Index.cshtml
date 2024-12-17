@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+}
+
+@section styles {
+    <link rel="stylesheet" href="~/Content/dashboard.css" />
+}
+
+<div class="dashboard-container">
+    <h1>Welcome, @User.Identity.Name</h1>
+    <p>Your healthcare dashboard</p>
+
+    <!-- Patient Statistics -->
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <h3>Total Patients</h3>
+            <p>@ViewBag.TotalPatients</p>
+        </div>
+        <div class="stat-card">
+            <h3>New Patients</h3>
+            <p>@ViewBag.NewPatients</p>
+        </div>
+    </div>
+
+    <!-- Recent Patients -->
+    <h2 class="section-title">Recent Patients</h2>
+    <table class="dashboard-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Date of Birth</th>
+                <th>Gender</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var patient in ViewBag.RecentPatients)
+            {
+                <tr>
+                    <td>@patient.PatientID</td>
+                    <td>@patient.FirstName @patient.LastName</td>
+                    <td>@patient.DateOfBirth.ToShortDateString()</td>
+                    <td>@patient.Gender</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Doctor List -->
+    <h2 class="section-title">Doctor List</h2>
+    <ul>
+        @foreach (var doctor in ViewBag.Doctors)
+        {
+            <li>@doctor.FirstName @doctor.LastName - @doctor.Specialization</li>
+        }
+    </ul>
+</div>
+
