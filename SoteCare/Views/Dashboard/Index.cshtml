@@ -4,55 +4,114 @@
 
 @section styles {
     <link rel="stylesheet" href="~/Content/dashboard.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
 }
 
-<div class="dashboard-container">
-    <h1>Welcome, @User.Identity.Name</h1>
-    <p>Your healthcare dashboard</p>
-
-    <!-- Patient Statistics -->
-    <div class="dashboard-stats">
-        <div class="stat-card">
-            <h3>Total Patients</h3>
-            <p>@ViewBag.TotalPatients</p>
+<div class="container-fluid dashboard-container">
+    <!-- Top Section -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1>Welcome, @User.Identity.Name</h1>
+            <p>Your healthcare dashboard</p>
         </div>
-        <div class="stat-card">
-            <h3>New Patients</h3>
-            <p>@ViewBag.NewPatients</p>
+        <div class="col-md-4 text-right">
+            <!-- User Info -->
+            <div class="card bg-light p-3">
+                <h5>User</h5>
+                <p>@User.Identity.Name</p>
+            </div>
         </div>
     </div>
 
-    <!-- Recent Patients -->
-    <h2 class="section-title">Recent Patients</h2>
-    <table class="dashboard-table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Date of Birth</th>
-                <th>Gender</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var patient in ViewBag.RecentPatients)
-            {
-                <tr>
-                    <td>@patient.PatientID</td>
-                    <td>@patient.FirstName @patient.LastName</td>
-                    <td>@patient.DateOfBirth.ToShortDateString()</td>
-                    <td>@patient.Gender</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <!-- Patient Statistics -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card text-center bg-light p-3">
+                <h4>Total Patients</h4>
+                <p class="h2">@ViewBag.TotalPatients</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card text-center bg-light p-3">
+                <h4>New Patients</h4>
+                <p class="h2">@ViewBag.NewPatients</p>
+            </div>
+        </div>
+    </div>
 
-    <!-- Doctor List -->
-    <h2 class="section-title">Doctor List</h2>
-    <ul>
-        @foreach (var doctor in ViewBag.Doctors)
-        {
-            <li>@doctor.FirstName @doctor.LastName - @doctor.Specialization</li>
-        }
-    </ul>
+    <!-- Main Section -->
+    <div class="row">
+        <!-- Left Column (Recent Patients and Cards) -->
+        <div class="col-md-8">
+            <!-- Recent Patients Table -->
+            <h2 class="section-title">Recent Patients</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Date of Birth</th>
+                        <th>Gender</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var patient in ViewBag.RecentPatients)
+                    {
+                        <tr>
+                            <td>@patient.PatientID</td>
+                            <td>@patient.FirstName @patient.LastName</td>
+                            <td>@patient.DateOfBirth.ToShortDateString()</td>
+                            <td>@patient.Gender</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <!-- Medication Info and Treatment Cards -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card bg-info text-white p-3 mb-3">
+                        <h4>Medication Info</h4>
+                        <p>Number of Medications: @ViewBag.TotalMedications</p>
+                        <p>Active Medications: @ViewBag.ActiveMedications</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card bg-success text-white p-3 mb-3">
+                        <h4>Treatment Info</h4>
+                        <p>Active Treatments: @ViewBag.ActiveTreatments</p>
+                        <p>Completed Treatments: @ViewBag.CompletedTreatments</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column (Doctor List) -->
+        <div class="col-md-4">
+            <h2 class="section-title">Doctor List</h2>
+            <div class="card bg-light p-3">
+                <ul class="list-unstyled">
+                    @foreach (var doctor in ViewBag.Doctors)
+                    {
+                        <li class="mb-2">
+                            <strong>@doctor.FirstName @doctor.LastName</strong>
+                            <br />
+                            Specialization: @doctor.Specialization
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+}
+
+
+
+
+@*user boxiin pitäs lisätä pfp iconi, ja jtn action juttuja*@
+@*pitää centralize kaikki content on vasemmalla puolella*@

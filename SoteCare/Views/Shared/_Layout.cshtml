@@ -3,50 +3,51 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - SoteCare</title>
     <link rel="stylesheet" href="~/Content/site.css" />
-
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 
 <body>
+    <!-- Sidebar Navigation -->
     <div class="sidenav">
-        @Html.ActionLink("SoteCare", "Index", "Home")
-        <hr />
-        <input type="text" id="sideSearch" onkeyup="myFunction()" placeholder="Haku.." title="Hae tietoja">
-        <hr />
-        @Html.ActionLink("Home", "Index", "Home")
-        @Html.ActionLink("About", "About", "Home")
-        @Html.ActionLink("Contact", "Contact", "Home")
-        @Html.ActionLink("Patients", "Index", "Patients")
-        @Html.ActionLink("Patients 2", "Index2", "Patients")
-        @Html.ActionLink("Medications", "Index", "Medications")
-        @Html.ActionLink("Patient History", "Index", "PatientHistory")
-        @Html.ActionLink("VitalFunctions kirjaus", "Index", "VitalFunctions")
-        @Html.ActionLink("Diagnoosit kirjaus", "Index", "Diagnoses")
-        @Html.ActionLink("Users", "Index", "Users")
-        @Html.ActionLink("Nurses", "Index", "Nurses")
-        @Html.ActionLink("MedicationLists", "Index", "MedicationLists")
-        @Html.ActionLink("PatientMedications", "Index", "PatientMedications")
-        @Html.ActionLink("Doctors", "Index", "Doctors")
+        <h4>SoteCare</h4>
+        <input type="text" id="sideSearch" placeholder="Search...">
 
+        <!-- Links -->
+        <a href="@Url.Action("Index", "Dashboard")">Dashboard</a>
 
+        <h6>Patients</h6>
+        <a href="@Url.Action("Index", "Patients")">All Patients</a>
+        <a href="@Url.Action("Create", "Patients")">Add Patient</a>
+
+        <h6>Medications</h6>
+        <a href="@Url.Action("Index", "Medications")">Medications</a>
+        <a href="@Url.Action("Index", "MedicationLists")">Medication Lists</a>
+
+        <h6>Vitals</h6>
+        <a href="@Url.Action("Index", "VitalFunctions")">Vital Signs</a>
+        <a href="@Url.Action("Index", "Diagnoses")">Diagnoses</a>
+
+        <h6>Staff</h6>
+        <a href="@Url.Action("Index", "Doctors")">Doctors</a>
+        <a href="@Url.Action("Index", "Nurses")">Nurses</a>
+        <a href="@Url.Action("Index", "Users")">Users</a>
     </div>
+
+    <!-- Main Content -->
     <div class="content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - SoteCare</p>
-        </footer>
     </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    @RenderSection("styles", required: false)
 </body>
 </html>
 
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/bootstrap")
-@RenderSection("scripts", required: false)
-@RenderSection("styles", required: false) @*dashboard view, other views .css*@
 @*<script>
         function myFunction() {
             // Declare variables

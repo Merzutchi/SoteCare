@@ -14,25 +14,40 @@ namespace SoteCare.Controllers
         // GET: Dashboard
         public ActionResult Index()
         {
-            // Patient Statistics
-            int totalPatients = db.Patients.Count();
-            var recentPatients = db.Patients
-                .OrderByDescending(p => p.PatientID)
-                .Take(5)
-                .ToList();
+            var oneMonthAgo = DateTime.Now.AddMonths(-1); 
 
-            // Doctor List
+            var totalPatients = db.Patients.Count();
+            var newPatients = db.Patients
+                                .Where(p => p.DateOfBirth > oneMonthAgo) 
+                                .Count();
+
+            var totalMedications = db.Medications.Count();
+            var activeMedications = db.PatientMedications
+                                .Count(m => m.EndDate == null || m.EndDate > DateTime.Now);
+
+            var activeTreatments = db.Treatment
+                                .Count(t => t.EndDate == null || t.EndDate > DateTime.Now);
+            var completedTreatments = db.Treatment
+                                .Count(t => t.EndDate < DateTime.Now);
+
+            var recentPatients = db.Patients
+                                .OrderByDescending(p => p.PatientID)
+                                .Take(5)
+                                .ToList();
+
             var doctors = db.Doctors.ToList();
 
-            // Active Treatments
-            var activeTreatments = db.Treatment
-                .Where(t => t.EndDate == null || t.EndDate > DateTime.Now)
-                .ToList();
-
             ViewBag.TotalPatients = totalPatients;
+            ViewBag.NewPatients = newPatients;
+
+            ViewBag.TotalMedications = totalMedications;
+            ViewBag.ActiveMedications = activeMedications;
+
+            ViewBag.ActiveTreatments = activeTreatments;
+            ViewBag.CompletedTreatments = completedTreatments;
+
             ViewBag.RecentPatients = recentPatients;
             ViewBag.Doctors = doctors;
-            ViewBag.ActiveTreatments = activeTreatments;
 
             return View();
         }
