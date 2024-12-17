@@ -8,6 +8,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
+
 <body>
     <div class="sidenav">
         @Html.ActionLink("SoteCare", "Index", "Home")
@@ -67,3 +68,27 @@
     </script>*@
 
 
+@*<body>
+    <div class="sidenav">
+        <h2>SoteCare</h2>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <hr />
+            <p>Welcome, @User.Identity.Name</p>
+            <hr />
+            @Html.ActionLink("Dashboard", "Index", "Dashboard")
+            @Html.ActionLink("Patients", "Index", "Patients")
+            @Html.ActionLink("Medications", "Index", "Medications")
+            @Html.ActionLink("Logout", "Logout", "Account")
+        }
+        else
+        {
+            @Html.ActionLink("Login", "Login", "Account")
+            @Html.ActionLink("Register", "Register", "Account")
+        }
+    </div>
+
+    <div class="content">
+        @RenderBody()
+    </div>
+</body> for logged in view*@  
