@@ -1,35 +1,46 @@
-﻿/* General Reset */
-* {
+﻿* {
     box-sizing: border-box;
 }
 
 body {
     margin: 0;
     font-family: "Lato", sans-serif;
-    background-color: #E7EAF2; /* Porcelain */
-    color: #456F72; /* Leaf Shade */
 }
 
 /* Sidebar Styling */
 .sidenav {
     height: 100%;
-    width: 250px;
+    width: 300px;
     position: fixed;
+    z-index: 1;
     top: 0;
     left: 0;
-    background-color: #456F72; /* Leaf Shade */
+    background-color: #456f72; /* Leaf Shade */
     overflow-x: hidden;
     padding-top: 20px;
-    color: #E7EAF2; /* Text color */
 }
 
-    /* Sidebar Logo */
     .sidenav h4 {
         text-align: center;
         color: #A6CAC5; /* Accent Mint */
         margin-bottom: 20px;
         font-size: 24px;
     }
+
+    .sidenav a {
+        padding: 10px 20px;
+        text-decoration: none;
+        font-size: 18px;
+        color: #A6CAC5; /* Accent Mint */
+        display: block;
+        transition: all 0.3s ease;
+    }
+
+        .sidenav a:hover {
+            background-color: #5172BB; /* Hand-Painted */
+            color: #E7EAF2; /* Porcelain */
+            border-radius: 4px;
+        }
 
 /* Sidebar Search Box */
 #sideSearch {
@@ -38,7 +49,7 @@ body {
     padding: 8px;
     border: 1px solid #A6CAC5;
     border-radius: 4px;
-    background-color: #F4F4F4; /* Light background */
+    background-color: #F4F4F4;
     color: #456F72;
 }
 
@@ -47,38 +58,11 @@ body {
         outline: none;
     }
 
-/* Sidebar Links */
-.sidenav a {
-    display: block;
-    padding: 10px 20px;
-    color: #A6CAC5;
-    text-decoration: none;
-    font-size: 18px;
-    transition: all 0.3s ease;
-}
-
-    .sidenav a:hover {
-        background-color: #5172BB; /* Hand-Painted Hover */
-        color: #E7EAF2;
-        border-radius: 4px;
-    }
-
-/* Sidebar Section Titles */
-.sidenav h6 {
-    font-size: 14px;
-    text-transform: uppercase;
-    color: #9EB1DF; /* Sheer Wash */
-    margin: 15px 20px 10px;
-    border-bottom: 1px solid #A6CAC5;
-    padding-bottom: 5px;
-}
-
-/* Main Content Area */
+/* Content Styling */
 .content {
-    margin-left: 250px; /* Same as sidebar width */
+    margin-left: 300px;
     padding: 20px;
-    background-color: #F8F9FA; /* Light grey for contrast */
-    min-height: 100vh; /* Full viewport height */
+    color: #456F72; /* Leaf Shade */
 }
 
 /* Horizontal Divider */
@@ -89,14 +73,41 @@ hr {
     width: 80%;
 }
 
-/* Responsive Sidebar Collapse */
-@media screen and (max-width: 768px) {
-    .sidenav {
-        width: 0;
-        padding: 0;
+/* Table Styling */
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+    .styled-table thead tr {
+        background-color: #5172BB; /* Hand-Painted */
+        color: #ffffff;
+        text-align: left;
     }
 
-    .content {
-        margin-left: 0;
+    .styled-table th,
+    .styled-table td {
+        padding: 12px 15px;
     }
-}
+
+    .styled-table tbody tr {
+        border-bottom: 1px solid #dddddd;
+    }
+
+        .styled-table tbody tr:nth-of-type(even) {
+            background-color: #E7EAF2; /* Porcelain */
+        }
+
+        .styled-table tbody tr:hover {
+            background-color: #9EB1DF; /* Sheer Wash */
+            color: #456F72; /* Leaf Shade */
+            transition: background-color 0.2s ease;
+        }
+
+        .styled-table tbody tr:last-of-type {
+            border-bottom: 2px solid #5172BB; /* Hand-Painted */
+        }
