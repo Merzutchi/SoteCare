@@ -327,7 +327,7 @@
     <Content Include="Views\TreatmentDetails\Delete.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
     <Content Include="Views\Patients\PatientHistory.cshtml" />
-    <Content Include="Views\Patients\Diagnose.cshtml" />
+    <Content Include="Views\Patients\Diagnoses.cshtml" />
     <Content Include="Views\Patients\VitalFunctions.cshtml" />
     <Content Include="Views\Patients\PatientMedications.cshtml" />
   </ItemGroup>

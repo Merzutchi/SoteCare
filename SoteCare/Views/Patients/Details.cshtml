@@ -13,8 +13,8 @@
         <li class="@(ViewBag.ActiveTab == "Diagnoses" ? "active" : "")">
             <a href="@Url.Action("Diagnoses", "Patients", new { id = Model.PatientID })">Diagnoses</a>
         </li>
-        <li class="@(ViewBag.ActiveTab == "Medications" ? "active" : "")">
-            <a href="@Url.Action("Medications", "Patients", new { id = Model.PatientID })">Medications</a>
+        <li class="@(ViewBag.ActiveTab == "PatientMedications" ? "active" : "")">
+            <a href="@Url.Action("PatientMedications", "Patients", new { id = Model.PatientID })">Medications</a>
         </li>
         <li class="@(ViewBag.ActiveTab == "VitalFunctions" ? "active" : "")">
             <a href="@Url.Action("VitalFunctions", "Patients", new { id = Model.PatientID })">Vital Functions</a>

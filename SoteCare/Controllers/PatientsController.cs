@@ -92,6 +92,9 @@ namespace SoteCare.Controllers
 
             var patientMedications = db.PatientMedications
                 .Where(m => m.PatientID == id)
+                .Include(m => m.Medications) 
+                .Include(m => m.Doctors)     
+                .Include(m => m.Dosages)     
                 .OrderByDescending(m => m.StartDate)
                 .ToList();
 
