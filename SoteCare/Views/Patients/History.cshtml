@@ -1,0 +1,26 @@
+﻿@model IEnumerable<SoteCare.Models.PatientHistory>
+
+<h3>Treatment History for @ViewBag.PatientName</h3>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Surgery Date</th>
+            <th>Condition</th>
+            <th>Treatment Details</th>
+            <th>Notes</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.SurgeryDate?.ToString("d")</td>
+                <td>@item.ConditionName</td>
+                <td>@item.TreatmentDetails</td>
+                <td>@item.Notes</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

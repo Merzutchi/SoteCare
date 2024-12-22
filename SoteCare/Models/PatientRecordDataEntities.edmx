@@ -14,6 +14,8 @@
           <Property Name="DiagnosisName" Type="varchar" MaxLength="255" />
           <Property Name="DiagnosisDate" Type="date" />
           <Property Name="Notes" Type="varchar" MaxLength="255" />
+          <Property Name="DoctorName" Type="nvarchar" MaxLength="255" />
+          <Property Name="DoctorID" Type="int" />
         </EntityType>
         <EntityType Name="Doctors">
           <Key>
@@ -234,6 +236,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Diagnoses_Doctors">
+          <End Role="Doctors" Type="Self.Doctors" Multiplicity="0..1" />
+          <End Role="Diagnoses" Type="Self.Diagnoses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctors">
+              <PropertyRef Name="DoctorID" />
+            </Principal>
+            <Dependent Role="Diagnoses">
+              <PropertyRef Name="DoctorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Medications_MedicationLists">
           <End Role="MedicationLists" Type="Self.MedicationLists" Multiplicity="0..1" />
           <End Role="Medications" Type="Self.Medications" Multiplicity="*" />
@@ -360,6 +374,10 @@
             <End Role="Patients" EntitySet="Patients" />
             <End Role="VitalFunctions" EntitySet="VitalFunctions" />
           </AssociationSet>
+          <AssociationSet Name="FK_Diagnoses_Doctors" Association="Self.FK_Diagnoses_Doctors">
+            <End Role="Doctors" EntitySet="Doctors" />
+            <End Role="Diagnoses" EntitySet="Diagnoses" />
+          </AssociationSet>
           <AssociationSet Name="FK_Medications_MedicationLists" Association="Self.FK_Medications_MedicationLists">
             <End Role="MedicationLists" EntitySet="MedicationLists" />
             <End Role="Medications" EntitySet="Medications" />
@@ -403,6 +421,9 @@
           <Property Name="DiagnosisDate" Type="DateTime" Precision="0" />
           <Property Name="Notes" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Patients" Relationship="Self.FK__Diagnoses__Patie__74AE54BC" FromRole="Diagnoses" ToRole="Patients" />
+          <Property Name="DoctorName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DoctorID" Type="Int32" />
+          <NavigationProperty Name="Doctors" Relationship="PatientRecordModel.FK_Diagnoses_Doctors" FromRole="Diagnoses" ToRole="Doctors" />
         </EntityType>
         <EntityType Name="Doctors">
           <Key>
@@ -414,6 +435,7 @@
           <Property Name="Specialization" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Diagnoses" Relationship="PatientRecordModel.FK_Diagnoses_Doctors" FromRole="Doctors" ToRole="Diagnoses" />
         </EntityType>
         <EntityType Name="Dosages">
           <Key>
@@ -802,7 +824,23 @@
             <End Role="Treatment" EntitySet="Treatment" />
             <End Role="TreatmentDetails" EntitySet="TreatmentDetails" />
           </AssociationSet>
+          <AssociationSet Name="FK_Diagnoses_Doctors" Association="PatientRecordModel.FK_Diagnoses_Doctors">
+            <End Role="Doctors" EntitySet="Doctors" />
+            <End Role="Diagnoses" EntitySet="Diagnoses" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_Diagnoses_Doctors">
+          <End Type="PatientRecordModel.Doctors" Role="Doctors" Multiplicity="0..1" />
+          <End Type="PatientRecordModel.Diagnoses" Role="Diagnoses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctors">
+              <PropertyRef Name="DoctorID" />
+            </Principal>
+            <Dependent Role="Diagnoses">
+              <PropertyRef Name="DoctorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -812,6 +850,8 @@
           <EntitySetMapping Name="Diagnoses">
             <EntityTypeMapping TypeName="PatientRecordModel.Diagnoses">
               <MappingFragment StoreEntitySet="Diagnoses">
+                <ScalarProperty Name="DoctorID" ColumnName="DoctorID" />
+                <ScalarProperty Name="DoctorName" ColumnName="DoctorName" />
                 <ScalarProperty Name="DiagnosisID" ColumnName="DiagnosisID" />
                 <ScalarProperty Name="PatientID" ColumnName="PatientID" />
                 <ScalarProperty Name="DiagnosisName" ColumnName="DiagnosisName" />

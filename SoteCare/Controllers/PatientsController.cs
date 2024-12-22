@@ -21,8 +21,7 @@ namespace SoteCare.Controllers
 
         public ActionResult Index2()
         {
-            var patients = db.Patients.Include(p => p.PatientMedications).Include(p => p.Treatment).Include(p => p.VitalFunctions).Include(p => p.PatientHistory);
-            return View(patients.ToList());
+            return View(db.Patients.ToList());
         }
 
         // GET: Patients/Details/5
@@ -40,94 +39,108 @@ namespace SoteCare.Controllers
             return View(patients);
         }
 
-        // GET: Patients/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Patients/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PatientID,FirstName,LastName,DateOfBirth,Gender,Address,PhoneNumber,Email,EmergencyContactName,EmergencyContactPhone")] Patients patients)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Patients.Add(patients);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(patients);
-        }
-
-        // GET: Patients/Edit/5
-        public ActionResult Edit(int? id)
+        // GET: PatientHistory
+        public ActionResult PatientHistory(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Patients patients = db.Patients.Find(id);
-            if (patients == null)
+
+            var history = db.PatientHistory
+                .Where(h => h.PatientID == id)
+                .ToList();
+
+            if (!history.Any())
             {
-                return HttpNotFound();
+                return HttpNotFound("No treatment history found for this patient.");
             }
-            return View(patients);
+
+            ViewBag.PatientName = db.Patients.Find(id)?.FirstName + " " + db.Patients.Find(id)?.LastName;
+
+            return View(history);
         }
 
-        // POST: Patients/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PatientID,FirstName,LastName,DateOfBirth,Gender,Address,PhoneNumber,Email,EmergencyContactName,EmergencyContactPhone")] Patients patients)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(patients).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(patients);
-        }
-
-        // GET: Patients/Delete/5
-        public ActionResult Delete(int? id)
+        // GET: Diagnoses
+        public ActionResult Diagnoses(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Patients patients = db.Patients.Find(id);
-            if (patients == null)
+
+            var diagnoses = db.Diagnoses
+                .Include(d => d.Doctors) 
+                .Where(d => d.PatientID == id)
+                .OrderByDescending(d => d.DiagnosisDate)
+                .ToList();
+
+            if (!diagnoses.Any())
             {
-                return HttpNotFound();
+                return HttpNotFound("No diagnoses found for this patient.");
             }
-            return View(patients);
+
+            ViewBag.PatientName = db.Patients.Find(id)?.FirstName + " " + db.Patients.Find(id)?.LastName;
+
+            return View(diagnoses);
         }
 
-        // POST: Patients/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        // GET: Medications
+        public ActionResult PatientMedications(int? id)
         {
-            Patients patients = db.Patients.Find(id);
-            db.Patients.Remove(patients);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var patientMedications = db.PatientMedications
+                .Where(m => m.PatientID == id)
+                .OrderByDescending(m => m.StartDate)
+                .ToList();
+
+            if (!patientMedications.Any())
+            {
+                return HttpNotFound("No medications found for this patient.");
+            }
+
+            ViewBag.PatientName = db.Patients.Find(id)?.FirstName + " " + db.Patients.Find(id)?.LastName;
+
+            return View(patientMedications);
         }
 
-        protected override void Dispose(bool disposing)
+        // GET: VitalFunctions
+        public ActionResult VitalFunctions(int? id)
         {
-            if (disposing)
+            if (id == null)
             {
-                db.Dispose();
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            base.Dispose(disposing);
+
+            var vitalFunctions = db.VitalFunctions
+                .Where(v => v.PatientID == id)
+                .OrderBy(v => v.DateTime)
+                .ToList();
+
+            if (!vitalFunctions.Any())
+            {
+                return HttpNotFound("No vital function records found for this patient.");
+            }
+
+            var viewModel = new VitalFunctionChart
+            {
+                PatientName = db.Patients.Find(id)?.FirstName + " " + db.Patients.Find(id)?.LastName,
+                VitalFunctionDates = vitalFunctions.Select(v => v.DateTime.ToString("yyyy-MM-dd HH:mm")).ToList(),
+                HeartRates = vitalFunctions.Select(v => v.HeartRate ?? 0).ToList(),
+                SystolicBP = vitalFunctions.Select(v => v.SystolicBloodPressure ?? 0).ToList(),
+                DiastolicBP = vitalFunctions.Select(v => v.DiastolicBloodPressure ?? 0).ToList(),
+                RespiratoryRates = vitalFunctions.Select(v => v.RespiratoryRate ?? 0).ToList(),
+                Temperatures = vitalFunctions.Select(v => v.Temperature ?? 0).ToList(),
+                OxygenSaturations = vitalFunctions.Select(v => v.OxygenSaturation ?? 0).ToList()
+            };
+
+            return View(viewModel);
         }
     }
 }
+
 

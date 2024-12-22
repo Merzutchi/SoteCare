@@ -6,7 +6,7 @@
     <edmx:Diagrams>
       <Diagram DiagramId="798a424d486d4b9c91172fdf0a350486" Name="Diagram1" ZoomLevel="64">
         <EntityTypeShape EntityType="PatientRecordModel.Diagnoses" Width="1.5" PointX="2.5" PointY="5.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="PatientRecordModel.Doctors" Width="1.5" PointX="12.625" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordModel.Doctors" Width="1.5" PointX="0.625" PointY="3.125" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordModel.Dosages" Width="1.5" PointX="8" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordModel.MedicationLists" Width="1.5" PointX="0.625" PointY="8.25" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordModel.Medications" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
@@ -31,6 +31,7 @@
         <AssociationConnector Association="PatientRecordModel.FK__VitalFunc__Patie__398D8EEE" ManuallyRouted="false" />
         <AssociationConnector Association="PatientRecordModel.FK_Treatment_Patient" ManuallyRouted="false" />
         <AssociationConnector Association="PatientRecordModel.FK_TreatmentDetails_Treatment" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordModel.FK_Diagnoses_Doctors" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

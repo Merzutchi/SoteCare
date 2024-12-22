@@ -290,7 +290,6 @@
     <Content Include="Views\PatientHistory\Details.cshtml" />
     <Content Include="Views\PatientHistory\Delete.cshtml" />
     <Content Include="Views\PatientHistory\Create.cshtml" />
-    <Content Include="Views\Patients\Index.cshtml" />
     <Content Include="Views\Patients\Index2.cshtml" />
     <Content Include="Views\Patients\Edit.cshtml" />
     <Content Include="Views\Patients\Details.cshtml" />
@@ -326,6 +325,8 @@
     <Content Include="Views\TreatmentDetails\Edit.cshtml" />
     <Content Include="Views\TreatmentDetails\Delete.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
+    <Content Include="Views\Patients\History.cshtml" />
+    <Content Include="Views\Patients\Diagnose.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
