@@ -1,4 +1,5 @@
 ﻿using SoteCare.Models;
+using SoteCare.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+
 
 namespace SoteCare.Controllers
 {
@@ -15,11 +17,6 @@ namespace SoteCare.Controllers
 
         // GET: Patients
         public ActionResult Index()
-        {
-            return View(db.Patients.ToList());
-        }
-
-        public ActionResult Index2()
         {
             return View(db.Patients.ToList());
         }
@@ -121,15 +118,16 @@ namespace SoteCare.Controllers
                 .OrderBy(v => v.DateTime)
                 .ToList();
 
-            if (!vitalFunctions.Any())
+            var patient = db.Patients.Find(id);
+            if (patient == null)
             {
-                return HttpNotFound("No vital function records found for this patient.");
+                return HttpNotFound("Patient not found.");
             }
 
-            var viewModel = new VitalFunctionChart
+            var viewModel = new VFunctionChart
             {
-                PatientName = db.Patients.Find(id)?.FirstName + " " + db.Patients.Find(id)?.LastName,
-                VitalFunctionDates = vitalFunctions.Select(v => v.DateTime.ToString("yyyy-MM-dd HH:mm")).ToList(),
+                PatientName = $"{patient.FirstName} {patient.LastName}",
+                Dates = vitalFunctions.Select(v => v.DateTime.ToString("dd-MM-yyyy HH:mm")).ToList(),
                 HeartRates = vitalFunctions.Select(v => v.HeartRate ?? 0).ToList(),
                 SystolicBP = vitalFunctions.Select(v => v.SystolicBloodPressure ?? 0).ToList(),
                 DiastolicBP = vitalFunctions.Select(v => v.DiastolicBloodPressure ?? 0).ToList(),
@@ -138,6 +136,7 @@ namespace SoteCare.Controllers
                 OxygenSaturations = vitalFunctions.Select(v => v.OxygenSaturation ?? 0).ToList()
             };
 
+            ViewBag.NoRecords = !vitalFunctions.Any();
             return View(viewModel);
         }
     }

@@ -1,0 +1,26 @@
+﻿@model IEnumerable<SoteCare.Models.PatientHistory>
+
+<h2>Patient History for @ViewBag.PatientName</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Condition Name</th>
+            <th>Treatment Details</th>
+            <th>Surgery Date</th>
+            <th>Notes</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var history in Model)
+        {
+            <tr>
+                <td>@history.ConditionName</td>
+                <td>@history.TreatmentDetails</td>
+                <td>@(history.SurgeryDate.HasValue ? history.SurgeryDate.Value.ToString("dd-MM-yyyy") : "N/A")</td>
+                <td>@history.Notes</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

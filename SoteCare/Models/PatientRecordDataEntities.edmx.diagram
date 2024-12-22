@@ -32,6 +32,7 @@
         <AssociationConnector Association="PatientRecordModel.FK_Treatment_Patient" ManuallyRouted="false" />
         <AssociationConnector Association="PatientRecordModel.FK_TreatmentDetails_Treatment" ManuallyRouted="false" />
         <AssociationConnector Association="PatientRecordModel.FK_Diagnoses_Doctors" />
+        <AssociationConnector Association="PatientRecordModel.FK_PatientMedications_Doctors" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
