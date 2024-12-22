@@ -1,99 +1,45 @@
 ﻿@model SoteCare.Models.Patients
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Delete Patient";
 }
 
-<h2>Delete</h2>
+<div class="container">
+    <h2>Delete Patient</h2>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Patients</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
+    <div class="alert alert-warning">
+        <p>Are you sure you want to delete the following patient?</p>
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
+    <table class="table table-bordered">
+        <tr>
+            <th>Full Name</th>
+            <td>@Model.FirstName @Model.LastName</td>
+        </tr>
+        <tr>
+            <th>Date of Birth</th>
+            <td>@Model.DateOfBirth.ToString("dd-MM-yyyy")</td>
+        </tr>
+        <tr>
+            <th>Gender</th>
+            <td>@Model.Gender</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>@Model.Email</td>
+        </tr>
+        <tr>
+            <th>Phone Number</th>
+            <td>@Model.PhoneNumber</td>
+        </tr>
+    </table>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DateOfBirth)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DateOfBirth)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Gender)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Gender)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EmergencyContactName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EmergencyContactName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EmergencyContactPhone)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EmergencyContactPhone)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("DeleteConfirmed", "Patients", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.PatientID)
 
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
-        </div>
+        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+        <a href="@Url.Action("Index", "Patients")" class="btn btn-secondary">Cancel</a>
     }
 </div>
-
-

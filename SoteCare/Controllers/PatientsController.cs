@@ -142,6 +142,93 @@ namespace SoteCare.Controllers
             ViewBag.NoRecords = !vitalFunctions.Any();
             return View(viewModel);
         }
+
+        // GET: Patients/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "PatientID,FirstName,LastName,DateOfBirth,Gender,Address,PhoneNumber,Email,EmergencyContactName,EmergencyContactPhone")] Patients patients)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Patients.Add(patients);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(patients);
+        }
+
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patients patients = db.Patients.Find(id);
+            if (patients == null)
+            {
+                return HttpNotFound();
+            }
+            return View(patients);
+        }
+
+        // POST: Patients/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "PatientID,FirstName,LastName,DateOfBirth,Gender,Address,PhoneNumber,Email,EmergencyContactName,EmergencyContactPhone")] Patients patients)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(patients).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(patients);
+        }
+
+        // GET: Patients/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patients patients = db.Patients.Find(id);
+            if (patients == null)
+            {
+                return HttpNotFound();
+            }
+            return View(patients);
+        }
+
+        // POST: Patients/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Patients patients = db.Patients.Find(id);
+            db.Patients.Remove(patients);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+
     }
 }
 
