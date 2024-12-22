@@ -101,8 +101,8 @@ body {
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding: 15px;
-    max-width: 250px; /* Restrict width to make it compact */
-    margin-left: auto; /* Align to the right */
+    max-width: 250px; 
+    margin-left: auto; 
     margin-bottom: 20px;
     text-align: center;
 }

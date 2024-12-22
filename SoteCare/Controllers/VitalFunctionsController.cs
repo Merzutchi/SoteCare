@@ -21,24 +21,6 @@ namespace SoteCare.Controllers
             return View(vitalFunctions.ToList());
         }
 
-
-
-
-        //[HttpPost]  JOTAIN IHME KOITOSTA SIIHE TAULUKKOON TÄS
-        //public JsonResult UpdateRow(int VitalFunctionID)
-        //{
-
-        //	var item = db.VitalFunctions.Where(x => x.VitalFunctionID == VitalFunctionID).FirstOrDefault();
-
-        //	if (item != null)
-        //	{
-        //    	return Json(new { success = true });
-        //	}
-
-
-        //	return Json(new { success = false, message = "Item not found." });
-        //}
-
         // GET: VitalFunctions/Details/5
         public ActionResult Details(int? id)
         {

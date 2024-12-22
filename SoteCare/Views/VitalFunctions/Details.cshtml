@@ -78,6 +78,7 @@
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.VitalFunctionID }) |
+    @Html.ActionLink("View Vital Functions Chart", "Chart", new { id = Model.PatientID }, new { @class = "btn btn-primary" })
     @Html.ActionLink("Back to List", "Index")
 </p>
 
