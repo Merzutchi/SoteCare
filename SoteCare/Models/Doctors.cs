@@ -11,26 +11,26 @@ namespace SoteCare.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Doctors
     {
-        [Display(Name = "LääkäriID")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Doctors()
+        {
+            this.Diagnoses = new HashSet<Diagnoses>();
+            this.PatientMedications = new HashSet<PatientMedications>();
+        }
+    
         public int DoctorID { get; set; }
-
-        [Display(Name = "Etunimi")]
         public string FirstName { get; set; }
-
-        [Display(Name = "Sukunimi")]
         public string LastName { get; set; }
-
-        [Display(Name = "Erikoistuminen??")]
         public string Specialization { get; set; }
-
-        [Display(Name = "Puhelinnumero")]
         public string PhoneNumber { get; set; }
-
-        [Display(Name = "Sähköposti")]
         public string Email { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Diagnoses> Diagnoses { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientMedications> PatientMedications { get; set; }
     }
 }

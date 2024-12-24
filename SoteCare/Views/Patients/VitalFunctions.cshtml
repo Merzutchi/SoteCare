@@ -1,0 +1,76 @@
+﻿@model SoteCare.ViewModels.VFunctionChart
+
+@{
+    ViewBag.Title = "Vital Functions";
+}
+
+<div class="container">
+    <h2>Vital Functions for @Model.PatientName</h2>
+
+    <canvas id="vitalChart" width="800" height="400"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('vitalChart').getContext('2d');
+        const vitalChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Dates)), // X-axis labels
+                datasets: [
+                    {
+                        label: 'Heart Rate',
+                        data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.HeartRates)),
+                        borderColor: 'red',
+                        fill: false
+                    },
+                    {
+                        label: 'Systolic BP',
+                        data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.SystolicBP)),
+                        borderColor: 'blue',
+                        fill: false
+                    },
+                    {
+                        label: 'Diastolic BP',
+                        data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.DiastolicBP)),
+                        borderColor: 'green',
+                        fill: false
+                    },
+                    {
+                        label: 'Respiratory Rate',
+                        data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.RespiratoryRates)),
+                        borderColor: 'purple',
+                        fill: false
+                    },
+                    {
+                        label: 'Temperature',
+                        data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Temperatures)),
+                        borderColor: 'orange',
+                        fill: false
+                    },
+                    {
+                        label: 'Oxygen Saturation',
+                        data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.OxygenSaturations)),
+                        borderColor: 'teal',
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date/Time'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Values'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</div>

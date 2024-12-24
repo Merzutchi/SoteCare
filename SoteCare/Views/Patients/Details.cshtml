@@ -1,92 +1,61 @@
 ﻿@model SoteCare.Models.Patients
 
-@{
-    ViewBag.Title = "Details";
-}
+<div class="container">
+    <h2>@Model.FirstName @Model.LastName</h2>
 
-<h2>Details</h2>
+    <ul class="nav nav-tabs">
+        <li class="@(ViewBag.ActiveTab == "Details" ? "active" : "")">
+            <a href="@Url.Action("Details", "Patients", new { id = Model.PatientID })">Basic Info</a>
+        </li>
+        <li class="@(ViewBag.ActiveTab == "PatientHistory" ? "active" : "")">
+            <a href="@Url.Action("PatientHistory", "Patients", new { id = Model.PatientID })">Treatment History</a>
+        </li>
+        <li class="@(ViewBag.ActiveTab == "Diagnoses" ? "active" : "")">
+            <a href="@Url.Action("Diagnoses", "Patients", new { id = Model.PatientID })">Diagnoses</a>
+        </li>
+        <li class="@(ViewBag.ActiveTab == "PatientMedications" ? "active" : "")">
+            <a href="@Url.Action("PatientMedications", "Patients", new { id = Model.PatientID })">Medications</a>
+        </li>
+        <li class="@(ViewBag.ActiveTab == "VitalFunctions" ? "active" : "")">
+            <a href="@Url.Action("VitalFunctions", "Patients", new { id = Model.PatientID })">Vital Functions</a>
+        </li>
+    </ul>
 
-<div>
-    <h4>Patients</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DateOfBirth)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DateOfBirth)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Gender)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Gender)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EmergencyContactName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EmergencyContactName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EmergencyContactPhone)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EmergencyContactPhone)
-        </dd>
-
-    </dl>
+    <!-- Main Content for Basic Info -->
+    <div class="tab-content">
+        <div class="tab-pane active">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Date of Birth</th>
+                    <td>@Model.DateOfBirth.ToString("d")</td>
+                </tr>
+                <tr>
+                    <th>Gender</th>
+                    <td>@Model.Gender</td>
+                </tr>
+                <tr>
+                    <th>Address</th>
+                    <td>@Model.Address</td>
+                </tr>
+                <tr>
+                    <th>Phone Number</th>
+                    <td>@Model.PhoneNumber</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>@Model.Email</td>
+                </tr>
+                <tr>
+                    <th>Emergency Contact Name</th>
+                    <td>@Model.EmergencyContactName</td>
+                </tr>
+                <tr>
+                    <th>Emergency Contact Phone</th>
+                    <td>@Model.EmergencyContactPhone</td>
+                </tr>
+            </table>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.PatientID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
 
 
