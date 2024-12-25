@@ -21,23 +21,42 @@ namespace SoteCare.Controllers
             return View(vitalFunctions.ToList());
         }
 
+        public ActionResult AddVitalFunction(int patientId)
+        {
+            var vitalFunction = new VitalFunctions
+            {
+                PatientID = patientId,
+                DateTime = DateTime.Now // Default to the current time
+            };
+            return View(vitalFunction);
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult AddVitalFunction([Bind(Include = "PatientID,DateTime,HeartRate,SystolicBloodPressure,DiastolicBloodPressure,RespiratoryRate,Temperature,OxygenSaturation")] VitalFunctions vitalFunction)
+        {
+            if (ModelState.IsValid)
+            {
+                db.VitalFunctions.Add(vitalFunction);
+                db.SaveChanges();
 
+                var updatedData = db.VitalFunctions
+                    .Where(v => v.PatientID == vitalFunction.PatientID)
+                    .OrderBy(v => v.DateTime)
+                    .Select(v => new
+                    {
+                        v.DateTime,
+                        v.HeartRate,
+                        v.SystolicBloodPressure,
+                        v.DiastolicBloodPressure
+                    })
+                    .ToList();
 
-        //[HttpPost]  JOTAIN IHME KOITOSTA SIIHE TAULUKKOON TÄS
-        //public JsonResult UpdateRow(int VitalFunctionID)
-        //{
+                return Json(new { success = true, data = updatedData });
+            }
 
-        //	var item = db.VitalFunctions.Where(x => x.VitalFunctionID == VitalFunctionID).FirstOrDefault();
-
-        //	if (item != null)
-        //	{
-        //    	return Json(new { success = true });
-        //	}
-
-
-        //	return Json(new { success = false, message = "Item not found." });
-        //}
+            return Json(new { success = false, message = "Failed to add vital function." });
+        }
 
         // GET: VitalFunctions/Details/5
         public ActionResult Details(int? id)
