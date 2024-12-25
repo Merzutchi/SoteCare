@@ -7,60 +7,141 @@
 <div class="container">
     <h2>Vital Functions for @Model.PatientName</h2>
 
-    <canvas id="vitalChart" width="800" height="400"></canvas>
+    <button class="btn btn-success mb-3" id="showAddForm">Add New Vital Function</button>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
+    <div id="addVitalFunctionForm" style="display: none;">
+        @using (Html.BeginForm("AddVitalFunction", "VitalFunctions", FormMethod.Post, new { id = "addVitalForm" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.PatientID)
+
+            <div class="form-group">
+                <label>Date/Time</label>
+                <input type="datetime-local" name="DateTime" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label>Heart Rate</label>
+                <input type="number" name="HeartRate" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Systolic BP</label>
+                <input type="number" name="SystolicBloodPressure" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Diastolic BP</label>
+                <input type="number" name="DiastolicBloodPressure" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Respiratory Rate</label>
+                <input type="number" name="RespiratoryRate" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Temperature</label>
+                <input type="number" step="0.1" name="Temperature" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Oxygen Saturation</label>
+                <input type="number" step="0.1" name="OxygenSaturation" class="form-control" />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        }
+    </div>
+
+    <canvas id="vitalChart" width="800" height="400"></canvas>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    document.getElementById("showAddForm").addEventListener("click", function () {
+        document.getElementById("addVitalFunctionForm").style.display = "block";
+    });
+
+    document.getElementById("addVitalForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const formData = new FormData(form);
+
+        fetch('/VitalFunctions/AddVitalFunction', {
+            method: 'POST',
+            body: new URLSearchParams([...formData]),
+            headers: {
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    location.reload();
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Prepare Data for the Chart
+        const vitalData = @Html.Raw(Json.Encode(Model));
+
+        const labels = vitalData.Dates;
+        const heartRates = vitalData.HeartRates;
+        const systolicBP = vitalData.SystolicBP;
+        const diastolicBP = vitalData.DiastolicBP;
+
+        // Render Chart.js Line Chart
         const ctx = document.getElementById('vitalChart').getContext('2d');
-        const vitalChart = new Chart(ctx, {
+        new Chart(ctx, {
             type: 'line',
             data: {
-                labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Dates)), // X-axis labels
+                labels: labels,
                 datasets: [
                     {
                         label: 'Heart Rate',
-                        data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.HeartRates)),
-                        borderColor: 'red',
-                        fill: false
-                    },
-                    {
-                        label: 'Systolic BP',
-                        data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.SystolicBP)),
+                        data: heartRates,
                         borderColor: 'blue',
+                        borderWidth: 2,
                         fill: false
                     },
                     {
-                        label: 'Diastolic BP',
-                        data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.DiastolicBP)),
+                        label: 'Systolic Blood Pressure',
+                        data: systolicBP,
+                        borderColor: 'red',
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'Diastolic Blood Pressure',
+                        data: diastolicBP,
                         borderColor: 'green',
-                        fill: false
-                    },
-                    {
-                        label: 'Respiratory Rate',
-                        data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.RespiratoryRates)),
-                        borderColor: 'purple',
-                        fill: false
-                    },
-                    {
-                        label: 'Temperature',
-                        data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Temperatures)),
-                        borderColor: 'orange',
-                        fill: false
-                    },
-                    {
-                        label: 'Oxygen Saturation',
-                        data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.OxygenSaturations)),
-                        borderColor: 'teal',
+                        borderWidth: 2,
                         fill: false
                     }
                 ]
             },
             options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Vital Signs Over Time'
+                    }
+                },
                 scales: {
                     x: {
                         title: {
                             display: true,
-                            text: 'Date/Time'
+                            text: 'Date'
                         }
                     },
                     y: {
@@ -72,5 +153,5 @@
                 }
             }
         });
-    </script>
-</div>
+    });
+</script>

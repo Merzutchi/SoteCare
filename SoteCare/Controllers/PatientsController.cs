@@ -129,6 +129,7 @@ namespace SoteCare.Controllers
 
             var viewModel = new VFunctionChart
             {
+                PatientID = id.Value, 
                 PatientName = $"{patient.FirstName} {patient.LastName}",
                 Dates = vitalFunctions.Select(v => v.DateTime.ToString("dd-MM-yyyy HH:mm")).ToList(),
                 HeartRates = vitalFunctions.Select(v => v.HeartRate ?? 0).ToList(),
@@ -139,6 +140,7 @@ namespace SoteCare.Controllers
                 OxygenSaturations = vitalFunctions.Select(v => v.OxygenSaturation ?? 0).ToList()
             };
 
+            ViewBag.PatientID = id;
             ViewBag.NoRecords = !vitalFunctions.Any();
             return View(viewModel);
         }

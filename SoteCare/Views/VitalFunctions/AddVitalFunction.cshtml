@@ -1,0 +1,103 @@
+﻿@model SoteCare.Models.VitalFunctions
+@{
+    ViewBag.Title = "Add";
+}
+
+<div class="container mt-5">
+    <h3>Add New Vital Function</h3>
+    @using (Html.BeginForm("AddVitalFunction", "VitalFunctions", FormMethod.Post, new { id = "addVitalForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.PatientID)
+
+        <div class="form-group">
+            <label for="DateTime">Date/Time</label>
+            <input type="datetime-local" name="DateTime" class="form-control" required
+                    value="@Model.DateTime.ToString("yyyy-MM-ddTHH:mm")" />
+        </div>
+
+        <div class="form-group">
+            <label for="HeartRate">Heart Rate</label>
+            <input type="number" name="HeartRate" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label for="SystolicBloodPressure">Systolic Blood Pressure</label>
+            <input type="number" name="SystolicBloodPressure" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label for="DiastolicBloodPressure">Diastolic Blood Pressure</label>
+            <input type="number" name="DiastolicBloodPressure" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label for="RespiratoryRate">Respiratory Rate</label>
+            <input type="number" name="RespiratoryRate" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label for="Temperature">Temperature</label>
+            <input type="number" step="0.1" name="Temperature" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label for="OxygenSaturation">Oxygen Saturation</label>
+            <input type="number" step="0.1" name="OxygenSaturation" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-success">Add Vital Function</button>
+    }
+</div>
+
+<script>
+    document.getElementById("addVitalForm").addEventListener("submit", function (e) {
+        e.preventDefault(); // Prevent the form from submitting normally
+
+        const form = e.target;
+        const formData = new FormData(form);
+
+        fetch('/VitalFunctions/AddVitalFunction', {
+            method: 'POST',
+            body: new URLSearchParams([...formData]),
+            headers: {
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+
+                // Update the chart dynamically
+                const newDate = form.DateTime.value;
+                const newHeartRate = form.HeartRate.value || null;
+                const newSystolicBP = form.SystolicBloodPressure.value || null;
+                const newDiastolicBP = form.DiastolicBloodPressure.value || null;
+                const newRespiratoryRate = form.RespiratoryRate.value || null;
+                const newTemperature = form.Temperature.value || null;
+                const newOxygenSaturation = form.OxygenSaturation.value || null;
+
+                // Add new data points to the chart
+                vitalChart.data.labels.push(newDate);
+                vitalChart.data.datasets[0].data.push(newHeartRate);
+                vitalChart.data.datasets[1].data.push(newSystolicBP);
+                vitalChart.data.datasets[2].data.push(newDiastolicBP);
+                vitalChart.data.datasets[3].data.push(newRespiratoryRate);
+                vitalChart.data.datasets[4].data.push(newTemperature);
+                vitalChart.data.datasets[5].data.push(newOxygenSaturation);
+
+                // Update the chart
+                vitalChart.update();
+
+                form.reset(); // Clear the form
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error("Error adding vital function:", error);
+            alert("An error occurred. Please try again.");
+        });
+    });
+</script>

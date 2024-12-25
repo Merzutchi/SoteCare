@@ -7,6 +7,7 @@ namespace SoteCare.ViewModels
 {
     public class VFunctionChart
     {
+        public int PatientID { get; set; } // Added PatientID property
         public string PatientName { get; set; } // Name of the patient
         public List<string> Dates { get; set; } // X-axis labels (dates/times)
 
