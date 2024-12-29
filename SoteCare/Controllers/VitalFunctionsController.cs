@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -26,7 +27,7 @@ namespace SoteCare.Controllers
             var vitalFunction = new VitalFunctions
             {
                 PatientID = patientId,
-                DateTime = DateTime.Now // Default to the current time
+                DateTime = DateTime.Now
             };
             return View(vitalFunction);
         }
@@ -35,17 +36,21 @@ namespace SoteCare.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult AddVitalFunction([Bind(Include = "PatientID,DateTime,HeartRate,SystolicBloodPressure,DiastolicBloodPressure,RespiratoryRate,Temperature,OxygenSaturation")] VitalFunctions vitalFunction)
         {
-            if (ModelState.IsValid)
+            try
             {
+                if (vitalFunction.DateTime == null)
+                {
+                    return Json(new { success = false, message = "Invalid date and time input." });
+                }
+
                 db.VitalFunctions.Add(vitalFunction);
                 db.SaveChanges();
-
                 var updatedData = db.VitalFunctions
                     .Where(v => v.PatientID == vitalFunction.PatientID)
                     .OrderBy(v => v.DateTime)
                     .Select(v => new
                     {
-                        v.DateTime,
+                        DateTime = v.DateTime.ToString("dd-MM-yyyy HH:mm"), 
                         v.HeartRate,
                         v.SystolicBloodPressure,
                         v.DiastolicBloodPressure
@@ -54,8 +59,11 @@ namespace SoteCare.Controllers
 
                 return Json(new { success = true, data = updatedData });
             }
-
-            return Json(new { success = false, message = "Failed to add vital function." });
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error: {ex.Message}");
+                return Json(new { success = false, message = "An error occurred while saving data." });
+            }
         }
 
         // GET: VitalFunctions/Details/5
@@ -82,8 +90,6 @@ namespace SoteCare.Controllers
         }
 
         // POST: VitalFunctions/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "VitalFunctionID,PatientID,DateTime,HeartRate,SystolicBloodPressure,DiastolicBloodPressure,RespiratoryRate,Temperature,OxygenSaturation")] VitalFunctions vitalFunctions)
@@ -116,8 +122,6 @@ namespace SoteCare.Controllers
         }
 
         // POST: VitalFunctions/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "VitalFunctionID,PatientID,DateTime,HeartRate,SystolicBloodPressure,DiastolicBloodPressure,RespiratoryRate,Temperature,OxygenSaturation")] VitalFunctions vitalFunctions)

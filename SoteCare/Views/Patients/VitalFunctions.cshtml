@@ -17,7 +17,8 @@
 
             <div class="form-group">
                 <label>Date/Time</label>
-                <input type="datetime-local" name="DateTime" class="form-control" required />
+                <input type="datetime-local" id="DateTimeInput" name="DateTime" class="form-control"
+                       value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" required />
             </div>
 
             <div class="form-group">
@@ -57,101 +58,10 @@
     <canvas id="vitalChart" width="800" height="400"></canvas>
 </div>
 
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+<!-- Pass Razor data to JavaScript -->
 <script>
-    document.getElementById("showAddForm").addEventListener("click", function () {
-        document.getElementById("addVitalFunctionForm").style.display = "block";
-    });
-
-    document.getElementById("addVitalForm").addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        const form = e.target;
-        const formData = new FormData(form);
-
-        fetch('/VitalFunctions/AddVitalFunction', {
-            method: 'POST',
-            body: new URLSearchParams([...formData]),
-            headers: {
-                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert(data.message);
-                    location.reload();
-                } else {
-                    alert(data.message);
-                }
-            })
-            .catch(error => console.error('Error:', error));
-    });
-
-    document.addEventListener("DOMContentLoaded", function () {
-        // Prepare Data for the Chart
-        const vitalData = @Html.Raw(Json.Encode(Model));
-
-        const labels = vitalData.Dates;
-        const heartRates = vitalData.HeartRates;
-        const systolicBP = vitalData.SystolicBP;
-        const diastolicBP = vitalData.DiastolicBP;
-
-        // Render Chart.js Line Chart
-        const ctx = document.getElementById('vitalChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [
-                    {
-                        label: 'Heart Rate',
-                        data: heartRates,
-                        borderColor: 'blue',
-                        borderWidth: 2,
-                        fill: false
-                    },
-                    {
-                        label: 'Systolic Blood Pressure',
-                        data: systolicBP,
-                        borderColor: 'red',
-                        borderWidth: 2,
-                        fill: false
-                    },
-                    {
-                        label: 'Diastolic Blood Pressure',
-                        data: diastolicBP,
-                        borderColor: 'green',
-                        borderWidth: 2,
-                        fill: false
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Vital Signs Over Time'
-                    }
-                },
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Date'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Values'
-                        }
-                    }
-                }
-            }
-        });
-    });
+    window.vitalData = @Html.Raw(Json.Encode(Model));
 </script>
+
+<!-- Link External JavaScript -->
+<script src="~/Scripts/vitalfunction.js"></script>
