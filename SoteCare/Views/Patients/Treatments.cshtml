@@ -1,0 +1,37 @@
+﻿@model IEnumerable<SoteCare.Models.Treatment>
+
+<h2>Treatments for @ViewBag.PatientName</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Medication</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Treatment Type</th>
+            <th>Notes</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var treatment in Model)
+        {
+            <tr>
+                <td>@(treatment.Medications?.MedicationName ?? "N/A")</td>
+                <td>@treatment.StartDate.ToString("d")</td>
+                <td>@(treatment.EndDate?.ToString("d") ?? "Ongoing")</td>
+                <td>@treatment.TreatmentType</td>
+                <td>@treatment.Notes</td>
+                <td>
+                    @Html.ActionLink("Details", "Details", "Treatments", new { id = treatment.TreatmentID }, new { @class = "btn btn-info btn-sm" }) |
+                    @Html.ActionLink("Edit", "Edit", "Treatments", new { id = treatment.TreatmentID }, new { @class = "btn btn-warning btn-sm" }) |
+                    @Html.ActionLink("Delete", "Delete", "Treatments", new { id = treatment.TreatmentID }, new { @class = "btn btn-danger btn-sm" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Create", "Treatments", new { patientId = ViewBag.PatientID })" class="btn btn-primary">
+    Add New Treatment
+</a>

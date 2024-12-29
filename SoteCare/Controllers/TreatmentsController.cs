@@ -17,8 +17,12 @@ namespace SoteCare.Controllers
         // GET: Treatments
         public ActionResult Index()
         {
-            var treatment = db.Treatment.Include(t => t.Medications).Include(t => t.Patients);
-            return View(treatment.ToList());
+            var treatments = db.Treatment
+                .Include(t => t.Medications) 
+                .Include(t => t.Patients)   
+                .ToList();
+
+            return View(treatments);
         }
 
         // GET: Treatments/Details/5
@@ -37,16 +41,25 @@ namespace SoteCare.Controllers
         }
 
         // GET: Treatments/Create
-        public ActionResult Create()
+        public ActionResult Create(int? patientId)
         {
+            if (patientId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var patient = db.Patients.Find(patientId);
+            if (patient == null)
+            {
+                return HttpNotFound("Patient not found.");
+            }
+
+            ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
             ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName");
-            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName");
-            return View();
+            return View(new Treatment { PatientID = patient.PatientID, StartDate = DateTime.Now });
         }
 
         // POST: Treatments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "TreatmentID,PatientID,MedicationID,StartDate,EndDate,TreatmentType,Notes")] Treatment treatment)
@@ -55,11 +68,12 @@ namespace SoteCare.Controllers
             {
                 db.Treatment.Add(treatment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Treatments", "Patients", new { id = treatment.PatientID });
             }
 
+            var patient = db.Patients.Find(treatment.PatientID);
+            ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
             ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", treatment.MedicationID);
-            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", treatment.PatientID);
             return View(treatment);
         }
 

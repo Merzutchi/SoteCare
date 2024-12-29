@@ -148,6 +148,33 @@ namespace SoteCare.Controllers
             return View(viewModel);
         }
 
+        // GET: Patients/Treatments/5
+        public ActionResult Treatments(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var patient = db.Patients.Find(id);
+            if (patient == null)
+            {
+                return HttpNotFound("Patient not found.");
+            }
+
+            var treatments = db.Treatment
+                .Include(t => t.Medications) 
+                .Where(t => t.PatientID == id)
+                .OrderByDescending(t => t.StartDate)
+                .ToList();
+
+            ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
+            ViewBag.PatientID = id;
+            ViewBag.ActiveTab = "Treatments";
+
+            return View(treatments);
+        }
+
         // GET: Patients/Create
         public ActionResult Create()
         {
@@ -183,8 +210,6 @@ namespace SoteCare.Controllers
         }
 
         // POST: Patients/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "PatientID,FirstName,LastName,DateOfBirth,Gender,Address,PhoneNumber,Email,EmergencyContactName,EmergencyContactPhone")] Patients patients)
