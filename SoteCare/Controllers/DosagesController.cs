@@ -124,5 +124,3 @@ namespace SoteCare.Controllers
         }
     }
 }
-
-//Ei taida tämäkään tallentaa databasee?
