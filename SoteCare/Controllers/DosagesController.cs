@@ -1,11 +1,12 @@
-﻿using SoteCare.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using SoteCare.Models;
 
 namespace SoteCare.Controllers
 {
@@ -16,8 +17,8 @@ namespace SoteCare.Controllers
         // GET: Dosages
         public ActionResult Index()
         {
-            var dosages = db.Dosages.Include(d => d.Medications).ToList();
-            return View(dosages);
+            var dosages = db.Dosages.Include(d => d.Medications).Include(d => d.Patients);
+            return View(dosages.ToList());
         }
 
         // GET: Dosages/Details/5
@@ -27,34 +28,39 @@ namespace SoteCare.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Dosages dosage = db.Dosages.Include(d => d.Medications).FirstOrDefault(d => d.DosageID == id);
-            if (dosage == null)
+            Dosages dosages = db.Dosages.Find(id);
+            if (dosages == null)
             {
                 return HttpNotFound();
             }
-            return View(dosage);
+            return View(dosages);
         }
 
         // GET: Dosages/Create
         public ActionResult Create()
         {
             ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName");
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName");
             return View();
         }
 
-        // POST: Dosages/Create        //poistin dosage nimikkeen koska sitä ei välttämättä tarvitse kun on jo dosageamount
+        // POST: Dosages/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "DosageID,MedicationID,DosageAmount,Frequency,StartDate,EndDate,RouteOfAdministration,Instructions")] Dosages dosage)
+        public ActionResult Create([Bind(Include = "DosageID,MedicationID,Dosage,Frequency,StartDate,EndDate,RouteOfAdministration,Instructions,DosageAmount,PatientID")] Dosages dosages)
         {
             if (ModelState.IsValid)
             {
-                db.Dosages.Add(dosage);
+                db.Dosages.Add(dosages);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", dosage.MedicationID);
-            return View(dosage);
+
+            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", dosages.MedicationID);
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", dosages.PatientID);
+            return View(dosages);
         }
 
         // GET: Dosages/Edit/5
@@ -64,28 +70,32 @@ namespace SoteCare.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Dosages dosage = db.Dosages.Find(id);
-            if (dosage == null)
+            Dosages dosages = db.Dosages.Find(id);
+            if (dosages == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", dosage.MedicationID);
-            return View(dosage);
+            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", dosages.MedicationID);
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", dosages.PatientID);
+            return View(dosages);
         }
 
-        // POST: Dosages/Edit/5   //sama homma kun create
+        // POST: Dosages/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "DosageID,MedicationID,Frequency,StartDate,EndDate,RouteOfAdministration,Instructions,DosageAmount")] Dosages dosage)
+        public ActionResult Edit([Bind(Include = "DosageID,MedicationID,Dosage,Frequency,StartDate,EndDate,RouteOfAdministration,Instructions,DosageAmount,PatientID")] Dosages dosages)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(dosage).State = EntityState.Modified;
+                db.Entry(dosages).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", dosage.MedicationID);
-            return View(dosage);
+            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", dosages.MedicationID);
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", dosages.PatientID);
+            return View(dosages);
         }
 
         // GET: Dosages/Delete/5
@@ -95,12 +105,12 @@ namespace SoteCare.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Dosages dosage = db.Dosages.Include(d => d.Medications).FirstOrDefault(d => d.DosageID == id);
-            if (dosage == null)
+            Dosages dosages = db.Dosages.Find(id);
+            if (dosages == null)
             {
                 return HttpNotFound();
             }
-            return View(dosage);
+            return View(dosages);
         }
 
         // POST: Dosages/Delete/5
@@ -108,8 +118,8 @@ namespace SoteCare.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Dosages dosage = db.Dosages.Find(id);
-            db.Dosages.Remove(dosage);
+            Dosages dosages = db.Dosages.Find(id);
+            db.Dosages.Remove(dosages);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -124,5 +134,3 @@ namespace SoteCare.Controllers
         }
     }
 }
-
-//Ei taida tämäkään tallentaa databasee?

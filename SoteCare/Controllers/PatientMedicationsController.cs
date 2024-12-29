@@ -17,7 +17,7 @@ namespace SoteCare.Controllers
         // GET: PatientMedications
         public ActionResult Index()
         {
-            var patientMedications = db.PatientMedications.Include(p => p.MedicationLists).Include(p => p.Medications).Include(p => p.Patients);
+            var patientMedications = db.PatientMedications.Include(p => p.MedicationLists).Include(p => p.Medications).Include(p => p.Patients).Include(p => p.Dosages);
             return View(patientMedications.ToList());
         }
 
@@ -42,6 +42,7 @@ namespace SoteCare.Controllers
             ViewBag.MedicationListID = new SelectList(db.MedicationLists, "MedicationListID", "MedicationName");
             ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName");
             ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName");
+            ViewBag.DosageID = new SelectList(db.Dosages, "DosageID", "Dosage");
             return View();
         }
 
@@ -77,9 +78,12 @@ namespace SoteCare.Controllers
             {
                 return HttpNotFound();
             }
+
             ViewBag.MedicationListID = new SelectList(db.MedicationLists, "MedicationListID", "MedicationName", patientMedications.MedicationListID);
             ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", patientMedications.MedicationID);
             ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", patientMedications.PatientID);
+            ViewBag.DosageID = new SelectList(db.Dosages, "DosageID", "Dosage", patientMedications.DosageID);
+
             return View(patientMedications);
         }
 

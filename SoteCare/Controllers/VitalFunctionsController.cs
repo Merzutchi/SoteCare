@@ -21,51 +21,7 @@ namespace SoteCare.Controllers
             var vitalFunctions = db.VitalFunctions.Include(v => v.Patients);
             return View(vitalFunctions.ToList());
         }
-
-        public ActionResult AddVitalFunction(int patientId)
-        {
-            var vitalFunction = new VitalFunctions
-            {
-                PatientID = patientId,
-                DateTime = DateTime.Now
-            };
-            return View(vitalFunction);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public JsonResult AddVitalFunction([Bind(Include = "PatientID,DateTime,HeartRate,SystolicBloodPressure,DiastolicBloodPressure,RespiratoryRate,Temperature,OxygenSaturation")] VitalFunctions vitalFunction)
-        {
-            try
-            {
-                if (vitalFunction.DateTime == null)
-                {
-                    return Json(new { success = false, message = "Invalid date and time input." });
-                }
-
-                db.VitalFunctions.Add(vitalFunction);
-                db.SaveChanges();
-                var updatedData = db.VitalFunctions
-                    .Where(v => v.PatientID == vitalFunction.PatientID)
-                    .OrderBy(v => v.DateTime)
-                    .Select(v => new
-                    {
-                        DateTime = v.DateTime.ToString("dd-MM-yyyy HH:mm"), 
-                        v.HeartRate,
-                        v.SystolicBloodPressure,
-                        v.DiastolicBloodPressure
-                    })
-                    .ToList();
-
-                return Json(new { success = true, data = updatedData });
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Error: {ex.Message}");
-                return Json(new { success = false, message = "An error occurred while saving data." });
-            }
-        }
-
+      
         // GET: VitalFunctions/Details/5
         public ActionResult Details(int? id)
         {
@@ -81,28 +37,70 @@ namespace SoteCare.Controllers
             return View(vitalFunctions);
         }
 
-        // GET: VitalFunctions/Create
-        public ActionResult Create()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult AddVitalFunction(VitalFunctions vitalFunction)
         {
+            if (ModelState.IsValid)
+            {
+                db.VitalFunctions.Add(vitalFunction); 
+                db.SaveChanges(); 
 
-            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName");
-            return View();
+                var newVitalFunction = new
+                {
+                    DateTime = vitalFunction.DateTime.ToString("yyyy-MM-dd HH:mm"),
+                    vitalFunction.HeartRate,
+                    vitalFunction.SystolicBloodPressure,
+                    vitalFunction.DiastolicBloodPressure,
+                    vitalFunction.RespiratoryRate,
+                    vitalFunction.Temperature,
+                    vitalFunction.OxygenSaturation
+                };
+
+                return Json(new { success = true, data = newVitalFunction });
+            }
+            return Json(new { success = false, message = "Validation failed. Please check your input." });
+        }
+
+        // GET: VitalFunctions/Create
+        public ActionResult Create(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var patient = db.Patients.Find(id);
+            if (patient == null)
+            {
+                return HttpNotFound("Patient not found.");
+            }
+
+            var vitalFunction = new VitalFunctions
+            {
+                PatientID = id.Value,
+                DateTime = DateTime.Now 
+            };
+
+            ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
+            return View(vitalFunction);
         }
 
         // POST: VitalFunctions/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "VitalFunctionID,PatientID,DateTime,HeartRate,SystolicBloodPressure,DiastolicBloodPressure,RespiratoryRate,Temperature,OxygenSaturation")] VitalFunctions vitalFunctions)
+        public ActionResult Create([Bind(Include = "PatientID,DateTime,HeartRate,SystolicBloodPressure,DiastolicBloodPressure,RespiratoryRate,Temperature,OxygenSaturation")] VitalFunctions vitalFunction)
         {
             if (ModelState.IsValid)
             {
-                db.VitalFunctions.Add(vitalFunctions);
+                db.VitalFunctions.Add(vitalFunction);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("VitalFunctions", "Patients", new { id = vitalFunction.PatientID });
             }
 
-            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", vitalFunctions.PatientID);
-            return View(vitalFunctions);
+            var patient = db.Patients.Find(vitalFunction.PatientID);
+            ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
+            return View(vitalFunction);
         }
 
         // GET: VitalFunctions/Edit/5

@@ -9,30 +9,33 @@
     }
     else
     {
-<table class="table">
-    <thead>
-        <tr>
-            <th>Medication Name</th>
-            <th>Dosage</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Prescribing Doctor</th>
-            <th>Route of Administration</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@(item.Medications?.MedicationName ?? "Unknown Medication")</td>
-                <td>@(item.Dosages?.DosageAmount ?? "No Dosage")</td>
-                <td>@(item.StartDate?.ToString("yyyy-MM-dd") ?? "N/A")</td>
-                <td>@(item.EndDate?.ToString("yyyy-MM-dd") ?? "N/A")</td>
-                <td>@($"{item.Doctors?.FirstName ?? "Unknown"} {item.Doctors?.LastName}")</td>
-                <td>@(item.Dosages?.RouteOfAdministration ?? "N/A")</td>
-            </tr>
-        }
-    </tbody>
-</table>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Medication Name</th>
+                    <th>Dosage</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Prescribing Doctor</th>
+                    <th>Route of Administration</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@(item.Medications?.MedicationName ?? "Unknown Medication")</td>
+                        <td>@(item.Dosages?.DosageAmount ?? "No Dosage")</td>
+                        <td>@(item.StartDate?.ToString("yyyy-MM-dd") ?? "N/A")</td>
+                        <td>@(item.EndDate?.ToString("yyyy-MM-dd") ?? "N/A")</td>
+                        <td>@($"{item.Doctors?.FirstName ?? "Unknown"} {item.Doctors?.LastName}")</td>
+                        <td>@(item.Dosages?.RouteOfAdministration ?? "N/A")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     }
+    <div>
+        @Html.ActionLink("Back to Patient Details", "Details", "Patients", new { id = ViewBag.PatientID }, null)
+    </div>
 </div>
