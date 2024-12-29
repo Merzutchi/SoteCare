@@ -53,6 +53,7 @@ namespace SoteCare.Controllers
                 return HttpNotFound("No treatment history found for this patient.");
             }
 
+            ViewBag.PatientID = id;
             ViewBag.PatientName = db.Patients.Find(id)?.FirstName + " " + db.Patients.Find(id)?.LastName;
 
             return View(history);
@@ -77,6 +78,7 @@ namespace SoteCare.Controllers
                 return HttpNotFound("No diagnoses found for this patient.");
             }
 
+            ViewBag.PatientID = id; 
             ViewBag.PatientName = db.Patients.Find(id)?.FirstName + " " + db.Patients.Find(id)?.LastName;
 
             return View(diagnoses);
@@ -103,6 +105,7 @@ namespace SoteCare.Controllers
                 return HttpNotFound("No medications found for this patient.");
             }
 
+            ViewBag.PatientID = id;
             ViewBag.PatientName = db.Patients.Find(id)?.FirstName + " " + db.Patients.Find(id)?.LastName;
 
             return View(patientMedications);
@@ -229,8 +232,6 @@ namespace SoteCare.Controllers
             }
             base.Dispose(disposing);
         }
-
-
     }
 }
 

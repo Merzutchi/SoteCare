@@ -34,6 +34,7 @@
         <AssociationConnector Association="PatientRecordModel.FK_Diagnoses_Doctors" />
         <AssociationConnector Association="PatientRecordModel.FK_PatientMedications_Doctors" />
         <AssociationConnector Association="PatientRecordModel.FK_PatientMedications_Dosages" />
+        <AssociationConnector Association="PatientRecordModel.FK_Dosages_Patients" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

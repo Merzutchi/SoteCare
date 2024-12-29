@@ -22,11 +22,15 @@ else
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.DiagnosisDate?.ToString("d")</td>
+                    <td>@(item.DiagnosisDate?.ToString("d"))</td>
                     <td>@item.Notes</td>
                     <td>@item.DoctorName</td>
                 </tr>
             }
         </tbody>
     </table>
+
+    <div>
+        @Html.ActionLink("Back to Patient Details", "Details", "Patients", new { id = ViewBag.PatientID }, new { @class = "btn btn-primary" })
+    </div>
 }

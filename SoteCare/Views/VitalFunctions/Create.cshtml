@@ -1,98 +1,69 @@
 ﻿@model SoteCare.Models.VitalFunctions
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Add Vital Function";
 }
 
-<h2>Create</h2>
-
+<h2>Add Vital Function for @ViewBag.PatientName</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>VitalFunctions</h4>
+        <h4>Vital Function Details</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.HiddenFor(model => model.PatientID)
         <div class="form-group">
-            @Html.LabelFor(model => model.PatientID, "PatientID", htmlAttributes: new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2">Patient</label>
             <div class="col-md-10">
-                @Html.DropDownList("PatientID", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.PatientID, "", new { @class = "text-danger" })
+                <p class="form-control-static">@ViewBag.PatientName</p>
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.DateTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DateTime, new { htmlAttributes = new { @class = "form-control", type = "datetime-local" } })
-                @Html.ValidationMessageFor(model => model.DateTime, "", new { @class = "text-danger" })
-            </div>
+            <label>Date/Time</label>
+            <input type="datetime-local" name="DateTime" class="form-control" value="@Model.DateTime?.ToString(" yyyy-MM-ddTHH:mm")" required />
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.HeartRate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.HeartRate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.HeartRate, "", new { @class = "text-danger" })
-            </div>
+            <label>Heart Rate</label>
+            <input type="number" name="HeartRate" class="form-control" />
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.SystolicBloodPressure, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SystolicBloodPressure, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SystolicBloodPressure, "", new { @class = "text-danger" })
-            </div>
+            <label>Systolic BP</label>
+            <input type="number" name="SystolicBloodPressure" class="form-control" />
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.DiastolicBloodPressure, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DiastolicBloodPressure, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DiastolicBloodPressure, "", new { @class = "text-danger" })
-            </div>
+            <label>Diastolic BP</label>
+            <input type="number" name="DiastolicBloodPressure" class="form-control" />
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.RespiratoryRate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.RespiratoryRate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.RespiratoryRate, "", new { @class = "text-danger" })
-            </div>
+            <label>Respiratory Rate</label>
+            <input type="number" name="RespiratoryRate" class="form-control" />
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Temperature, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Temperature, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Temperature, "", new { @class = "text-danger" })
-            </div>
+            <label>Temperature</label>
+            <input type="number" step="0.1" name="Temperature" class="form-control" />
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.OxygenSaturation, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.OxygenSaturation, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.OxygenSaturation, "", new { @class = "text-danger" })
-            </div>
+            <label>Oxygen Saturation</label>
+            <input type="number" step="0.1" name="OxygenSaturation" class="form-control" />
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="@Url.Action("VitalFunctions", "Patients", new { id = Model.PatientID })" class="btn btn-secondary">Cancel</a>
             </div>
         </div>
     </div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
-
 

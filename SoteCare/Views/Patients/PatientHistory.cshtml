@@ -21,6 +21,8 @@
                 <td>@history.Notes</td>
             </tr>
         }
-    </tbody>
+    </tbody>    
 </table>
-
+<div>
+    @Html.ActionLink("Back to Patient Details", "Details", "Patients", new { id = ViewBag.PatientID }, null)
+</div>
