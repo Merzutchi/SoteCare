@@ -67,6 +67,9 @@
         <canvas id="vitalChart" width="800" height="400"></canvas>
     }
 </div>
+<div class="mt-3">
+    @Html.ActionLink("Back to Patient Details", "Details", "Patients", new { id = ViewBag.PatientID }, new { @class = "btn btn-secondary" })
+</div>
 
 <script>
     window.vitalData = @Html.Raw(Json.Encode(new {
