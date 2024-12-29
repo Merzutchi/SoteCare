@@ -30,11 +30,13 @@ namespace SoteCare.Models
         public string RouteOfAdministration { get; set; }
         public string Instructions { get; set; }
         public string DosageAmount { get; set; }
+        public Nullable<int> PatientID { get; set; }
     
         public virtual Medications Medications { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TreatmentDetails> TreatmentDetails { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientMedications> PatientMedications { get; set; }
+        public virtual Patients Patients { get; set; }
     }
 }
