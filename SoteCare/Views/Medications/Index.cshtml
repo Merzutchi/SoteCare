@@ -8,6 +8,7 @@
             <th>@Html.DisplayNameFor(model => model.MedicationName)</th>
             <th>@Html.DisplayNameFor(model => model.MedicationType)</th>
             <th>@Html.DisplayNameFor(model => model.Description)</th>
+            <th>Dosages</th>  
             <th>Actions</th>
         </tr>
     </thead>
@@ -19,14 +20,26 @@
                 <td>@medication.MedicationType</td>
                 <td>@medication.Description</td>
                 <td>
-                    <button class="btn btn-danger" onclick="showDeleteModal(@medication.MedicationID)">Delete</button>
+                    <!-- Displays the dosages for each medication -->
+                    @foreach (var dosage in medication.Dosages)
+                    {
+                        <p>@dosage.DosageAmount - @dosage.Frequency</p> 
+                    }
+                </td>
+                <td>
+                    <!-- Add Dosage Button -->
+                    <button class="btn btn-success" onclick="showAddDosageModal(@medication.MedicationID)">Add Dosage</button>
+                    
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
+<!-- Add Medication -Button -->
 <button class="btn btn-primary" onclick="showCreateModal()">Add Medication</button>
+
+<!-- Modal -->
 <div id="modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -34,25 +47,50 @@
                 <h5 class="modal-title" id="modalLabel">Action</h5>
             </div>
             <div class="modal-body" id="modalBody">
+                <!-- Content for modals will be loaded dynamically here -->
             </div>
         </div>
     </div>
 </div>
 
 <script>
-	function showDeleteModal(id) {
-    	const url = '@Url.Action("DeletePartial", "Medications", new { id = "__id__" })'.replace('__id__', id);
-    	$("#modalBody").load(url, function () {
-        	$("#modal").modal("show");
-    	});
-}
+    // Show create medication modal
+    function showCreateModal() {
+        const createUrl = '@Url.Action("CreatePartial", "Medications")';
+        $("#modalBody").load(createUrl, function () {
+            $("#modal").modal("show");
+        });
+    }
 
-	function showCreateModal() {
-    	const url = '@Url.Action("CreatePartial", "Medications")';
-    	$("#modalBody").load(url, function () {
-        	$("#modal").modal("show");
-    	});
-	}
+    // Show add dosage modal for a specific medication
+    function showAddDosageModal(medicationId) {
+        const addDosageUrl = '@Url.Action("AddDosagePartial", "Medications", new { medicationId = "__medicationId__" })'.replace('__medicationId__', medicationId);
+        $("#modalBody").load(addDosageUrl, function () {
+            $("#modal").modal("show");
+        });
+    }
+
+    // Handle form submission for AddDosage
+    $("form").submit(function (e) {
+        e.preventDefault();
+
+        var form = $(this);
+        $.ajax({
+            url: form.attr('action'),
+            type: 'POST',
+            data: form.serialize(),
+            success: function (response) {
+                if (response.success) {
+                    $('#modal').modal('hide');
+                    alert(response.message); // Show success message
+                    location.reload(); // Reload the page to reflect changes
+                } else {
+                    alert(response.message); // Show failure message
+                }
+            },
+            error: function () {
+                alert("An error occurred while adding dosage.");
+            }
+        });
+    });
 </script>
-
-

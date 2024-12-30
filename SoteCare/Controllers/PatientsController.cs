@@ -28,12 +28,24 @@ namespace SoteCare.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Patients patients = db.Patients.Find(id);
-            if (patients == null)
+
+            var patient = db.Patients.Find(id);
+            if (patient == null)
             {
                 return HttpNotFound();
             }
-            return View(patients);
+
+            var patientMedications = db.PatientMedications
+                .Where(m => m.PatientID == id)
+                .Include(m => m.Medications)
+                .Include(m => m.Dosages)
+                .ToList();
+
+            ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
+            ViewBag.PatientID = patient.PatientID;
+            ViewBag.PatientMedications = patientMedications; 
+
+            return View(patient);
         }
 
         // GET: PatientHistory
@@ -92,24 +104,26 @@ namespace SoteCare.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+            var patient = db.Patients.Find(id);
+            if (patient == null)
+            {
+                return HttpNotFound("Patient not found.");
+            }
+
             var patientMedications = db.PatientMedications
                 .Where(m => m.PatientID == id)
-                .Include(m => m.Medications) 
-                .Include(m => m.Doctors)     
-                .Include(m => m.Dosages)     
+                .Include(m => m.Medications)
+                .Include(m => m.Dosages)
                 .OrderByDescending(m => m.StartDate)
                 .ToList();
 
-            if (!patientMedications.Any())
-            {
-                return HttpNotFound("No medications found for this patient.");
-            }
-
             ViewBag.PatientID = id;
-            ViewBag.PatientName = db.Patients.Find(id)?.FirstName + " " + db.Patients.Find(id)?.LastName;
+            ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
+            ViewBag.NoRecords = !patientMedications.Any();
 
-            return View(patientMedications);
+            return View(patientMedications); 
         }
+
 
         // GET: VitalFunctions
         public ActionResult VitalFunctions(int? id)

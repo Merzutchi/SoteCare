@@ -274,7 +274,6 @@
     <Content Include="Views\Doctors\Create.cshtml" />
     <Content Include="Views\Medications\Index.cshtml" />
     <Content Include="Views\Medications\DeleteMedication.cshtml" />
-    <Content Include="Views\Medications\CreateMedication.cshtml" />
     <Content Include="Views\MedicationLists\Index.cshtml" />
     <Content Include="Views\MedicationLists\Create.cshtml" />
     <Content Include="Views\MedicationLists\Edit.cshtml" />
@@ -334,6 +333,12 @@
     <Content Include="Views\Dosages\Edit.cshtml" />
     <Content Include="Views\Dosages\Index.cshtml" />
     <Content Include="Views\Patients\Treatments.cshtml" />
+    <Content Include="Views\PatientMedications\AddMedication.cshtml" />
+    <Content Include="Views\PatientMedications\AddDosage.cshtml" />
+    <Content Include="Views\Medications\_AddDosagePartial.cshtml" />
+    <Content Include="Views\Medications\DeletePartial.cshtml" />
+    <Content Include="Views\Medications\CreateMedication.cshtml" />
+    <Content Include="Views\Medications\AddDosage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
