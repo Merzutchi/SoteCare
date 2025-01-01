@@ -14,8 +14,10 @@ public class DiagnosesController : Controller
     // GET: Diagnoses
     public ActionResult Index()
     {
-        var diagnoses = db.Diagnoses.Include(d => d.Patients);
-        return View(diagnoses.ToList());
+        var diagnoses = db.Diagnoses.Include(d => d.Patients)
+                                    .Include(d => d.Doctors) 
+                                    .ToList();
+        return View(diagnoses);
     }
 
     // GET: Diagnoses/Details/5
@@ -34,15 +36,19 @@ public class DiagnosesController : Controller
     }
 
     // GET: Diagnoses/Create
-    public ActionResult Create()
+    public ActionResult Create(int? patientID)
     {
-        ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName");
+        if (patientID == null)
+        {
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+
+        // Pass the PatientID directly to the view
+        ViewBag.PatientID = patientID;
         return View();
     }
 
     // POST: Diagnoses/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to, for
-    // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult Create([Bind(Include = "DiagnosisID,PatientID,DiagnosisName,DiagnosisDate,Notes")] Diagnoses diagnosis)
@@ -51,10 +57,12 @@ public class DiagnosesController : Controller
         {
             db.Diagnoses.Add(diagnosis);
             db.SaveChanges();
-            return RedirectToAction("Index");
+
+            // Redirect to the Diagnoses page for the specific patient after creating the diagnosis
+            return RedirectToAction("Diagnoses", "Patients", new { id = diagnosis.PatientID });
         }
 
-        ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", diagnosis.PatientID);
+        ViewBag.PatientID = diagnosis.PatientID;
         return View(diagnosis);
     }
 
