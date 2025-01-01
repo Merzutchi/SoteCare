@@ -6,11 +6,10 @@
 
 <h2>Edit</h2>
 
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Treatment</h4>
         <hr />
@@ -18,10 +17,12 @@
         @Html.HiddenFor(model => model.TreatmentID)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.PatientID, "PatientID", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.PatientID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("PatientID", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.PatientID, "", new { @class = "text-danger" })
+                <!-- Show the patient's name as read-only -->
+                <input type="text" value="@Model.Patients.FirstName @Model.Patients.LastName" class="form-control" disabled />
+                <!-- Keep the PatientID hidden to include it in form submission -->
+                @Html.HiddenFor(model => model.PatientID)
             </div>
         </div>
 
@@ -74,7 +75,9 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    <a href="@Url.Action("Treatments", "Patients", new { id = ViewBag.PatientID })" class="btn btn-secondary">
+        Back to Treatments
+    </a>
 </div>
 
 @section Scripts {

@@ -338,6 +338,7 @@
     <Content Include="Views\Medications\CreateMedication.cshtml" />
     <Content Include="Views\Medications\AddDosage.cshtml" />
     <Content Include="Views\PatientMedications\Delete.cshtml" />
+    <Content Include="Views\Treatments\DeleteConfirmed.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

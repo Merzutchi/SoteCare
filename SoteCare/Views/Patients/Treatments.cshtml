@@ -32,6 +32,11 @@
     </tbody>
 </table>
 
-<a href="@Url.Action("Create", "Treatments", new { patientId = ViewBag.PatientID })" class="btn btn-primary">
-    Add New Treatment
-</a>
+<div class="d-flex gap-2 mt-3">
+    <a href="@Url.Action("Create", "Treatments", new { patientId = ViewBag.PatientID })" class="btn btn-primary btn-sm">
+        Add New Treatment
+    </a>
+    <a href="@Url.Action("Details", "Patients", new { id = ViewBag.PatientID })" class="btn btn-secondary btn-sm">
+        Back to Patient Info
+    </a>
+</div>

@@ -172,21 +172,19 @@ namespace SoteCare.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+            var treatments = db.Treatment
+                .Where(t => t.PatientID == id)
+                .Include(t => t.Medications)
+                .ToList();
+
             var patient = db.Patients.Find(id);
             if (patient == null)
             {
-                return HttpNotFound("Patient not found.");
+                return HttpNotFound();
             }
-
-            var treatments = db.Treatment
-                .Include(t => t.Medications) 
-                .Where(t => t.PatientID == id)
-                .OrderByDescending(t => t.StartDate)
-                .ToList();
 
             ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
             ViewBag.PatientID = id;
-            ViewBag.ActiveTab = "Treatments";
 
             return View(treatments);
         }

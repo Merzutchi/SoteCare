@@ -25,8 +25,8 @@
                 <td>@item.Medications?.MedicationName ?? "N/A"</td>
                 <td>@item.Notes</td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.TreatmentID }, new { @class = "btn btn-warning btn-sm" }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.TreatmentID }, new { @class = "btn btn-danger btn-sm" })
+                    @Html.ActionLink("Edit", "Edit", new { id = item.TreatmentID, patientId = item.PatientID }, new { @class = "btn btn-warning btn-sm" }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.TreatmentID, patientId = item.PatientID }, new { @class = "btn btn-danger btn-sm" })
                 </td>
             </tr>
         }

@@ -84,19 +84,20 @@ namespace SoteCare.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Treatment treatment = db.Treatment.Find(id);
             if (treatment == null)
             {
                 return HttpNotFound();
             }
+
+            ViewBag.PatientID = treatment.PatientID; // Pass the PatientID to the view
             ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", treatment.MedicationID);
-            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", treatment.PatientID);
+            ViewBag.PatientIDSelect = new SelectList(db.Patients, "PatientID", "FirstName", treatment.PatientID);
             return View(treatment);
         }
 
         // POST: Treatments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "TreatmentID,PatientID,MedicationID,StartDate,EndDate,TreatmentType,Notes")] Treatment treatment)
@@ -105,8 +106,11 @@ namespace SoteCare.Controllers
             {
                 db.Entry(treatment).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                // Redirect to the specific patient's treatment page
+                return RedirectToAction("Treatments", "Patients", new { id = treatment.PatientID });
             }
+
             ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", treatment.MedicationID);
             ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", treatment.PatientID);
             return View(treatment);
@@ -119,15 +123,19 @@ namespace SoteCare.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Treatment treatment = db.Treatment.Find(id);
+
+            Treatment treatment = db.Treatment
+                .Include(t => t.Patients) // Ensure Patients are included
+                .FirstOrDefault(t => t.TreatmentID == id);
+
             if (treatment == null)
             {
                 return HttpNotFound();
             }
+
             return View(treatment);
         }
 
-        // POST: Treatments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -135,9 +143,15 @@ namespace SoteCare.Controllers
             Treatment treatment = db.Treatment.Find(id);
             if (treatment != null)
             {
+                int patientId = treatment.PatientID; // Get the PatientID before deleting
                 db.Treatment.Remove(treatment);
                 db.SaveChanges();
+
+                // Redirect to the patient's treatments page
+                return RedirectToAction("Treatments", "Patients", new { id = patientId });
             }
+
+            // If the treatment is not found, redirect to the general index as a fallback
             return RedirectToAction("Index");
         }
 
