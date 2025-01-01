@@ -1,72 +1,38 @@
 ﻿@model SoteCare.Models.PatientMedications
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Delete Medication";
 }
 
-<h2>Delete</h2>
+<h2>Delete Medication</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Are you sure you want to delete this medication?</h3>
+
 <div>
-    <h4>PatientMedications</h4>
-    <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
+        <dt>Medication Name</dt>
+        <dd>@Model.Medications?.MedicationName ?? "N/A"</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
+        <dt>Start Date</dt>
+        <dd>@Model.StartDate?.ToString("yyyy-MM-dd") ?? "N/A"</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
+        <dt>End Date</dt>
+        <dd>@Model.EndDate?.ToString("yyyy-MM-dd") ?? "N/A"</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DoseStrength)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DoseStrength)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.MedicationLists.MedicationName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.MedicationLists.MedicationName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Medications.MedicationName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Medications.MedicationName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Patients.FirstName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Patients.FirstName)
-        </dd>
-
+        <dt>Patient Name</dt>
+        <dd>@Model.Patients?.FirstName ?? "Unknown"</dd>
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm("Delete", "PatientMedications", FormMethod.Post))
+    {
         @Html.AntiForgeryToken()
 
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+        @Html.HiddenFor(model => model.PatientMedicationID)
+
+        <div>
+            <input type="submit" value="Delete" class="btn btn-danger" />
+            @Html.ActionLink("Cancel", "PatientMedications", "Patients", new { id = Model.PatientID }, new { @class = "btn btn-secondary" })
         </div>
     }
 </div>
+

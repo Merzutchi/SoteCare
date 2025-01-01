@@ -63,4 +63,18 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     });
+
+    // Add form toggle functionality
+    const addButton = document.getElementById("showAddForm");
+    const addForm = document.getElementById("addVitalFunctionForm");
+
+    if (addButton && addForm) {
+        addButton.addEventListener("click", function () {
+            if (addForm.style.display === "none" || addForm.style.display === "") {
+                addForm.style.display = "block";
+            } else {
+                addForm.style.display = "none";
+            }
+        });
+    }
 });

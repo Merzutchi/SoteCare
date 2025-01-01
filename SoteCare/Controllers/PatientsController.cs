@@ -43,7 +43,7 @@ namespace SoteCare.Controllers
 
             ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
             ViewBag.PatientID = patient.PatientID;
-            ViewBag.PatientMedications = patientMedications; 
+            ViewBag.PatientMedications = patientMedications;
 
             return View(patient);
         }
@@ -96,7 +96,7 @@ namespace SoteCare.Controllers
             return View(diagnoses);
         }
 
-        // GET: Medications
+        // GET: PatientMedications for a specific Patient
         public ActionResult PatientMedications(int? id)
         {
             if (id == null)
@@ -104,26 +104,28 @@ namespace SoteCare.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+            // Fetch patient details
             var patient = db.Patients.Find(id);
             if (patient == null)
             {
                 return HttpNotFound("Patient not found.");
             }
 
+            // Fetch medications for the specific patient
             var patientMedications = db.PatientMedications
-                .Where(m => m.PatientID == id)
-                .Include(m => m.Medications)
-                .Include(m => m.Dosages)
-                .OrderByDescending(m => m.StartDate)
+                .Where(pm => pm.PatientID == id)
+                .Include(pm => pm.Medications)
+                .Include(pm => pm.Dosages)
+                .Include(pm => pm.Doctors) // Include related doctor information
                 .ToList();
 
+            // Pass patient details to the view
             ViewBag.PatientID = id;
             ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
-            ViewBag.NoRecords = !patientMedications.Any();
 
-            return View(patientMedications); 
+            // Return the medications view
+            return View(patientMedications);
         }
-
 
         // GET: VitalFunctions
         public ActionResult VitalFunctions(int? id)

@@ -133,8 +133,11 @@ namespace SoteCare.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Treatment treatment = db.Treatment.Find(id);
-            db.Treatment.Remove(treatment);
-            db.SaveChanges();
+            if (treatment != null)
+            {
+                db.Treatment.Remove(treatment);
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 
