@@ -1,4 +1,5 @@
 ﻿using SoteCare.Models;
+using SoteCare.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -27,12 +28,48 @@ namespace SoteCare.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PatientHistory patientHistory = db.PatientHistory.Find(id);
-            if (patientHistory == null)
+            var patient = db.Patients.Find(id);
+            if (patient == null)
             {
                 return HttpNotFound();
             }
-            return View(patientHistory);
+
+            // Fetch related data
+            var diagnoses = db.Diagnoses.Where(d => d.PatientID == id)
+                .Select(d => new DiagnosisViewModel
+                {
+                    DiagnosisName = d.DiagnosisName,
+                    DiagnosisDate = d.DiagnosisDate,
+                    Notes = d.Notes
+                }).ToList();
+
+            var treatments = db.Treatment.Where(t => t.PatientID == id)
+                .Select(t => new TreatmentViewModel
+                {
+                    TreatmentType = t.TreatmentType,
+                    TreatmentDetails = t.Notes,
+                    StartDate = t.StartDate,
+                    EndDate = t.EndDate
+                }).ToList();
+
+            var medications = db.PatientMedications
+                .Where(m => m.PatientID == id)
+                .Select(m => new MedicationViewModel
+                {
+                    MedicationName = m.Medications.MedicationName,
+                    StartDate = m.Medications.Dosages.FirstOrDefault().StartDate
+                }).ToList();
+
+            // Prepare the ViewModel
+            var viewModel = new PHViewModel
+            {
+                PatientName = $"{patient.FirstName} {patient.LastName}",
+                Diagnoses = diagnoses,
+                Treatments = treatments,
+                Medications = medications
+            };
+
+            return View(viewModel);
         }
 
         // GET: PatientHistory/Create
@@ -43,8 +80,6 @@ namespace SoteCare.Controllers
         }
 
         // POST: PatientHistory/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "HistoryID,PatientID,ConditionName,TreatmentDetails,SurgeryDate,Notes")] PatientHistory patientHistory)
@@ -77,8 +112,6 @@ namespace SoteCare.Controllers
         }
 
         // POST: PatientHistory/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "HistoryID,PatientID,ConditionName,TreatmentDetails,SurgeryDate,Notes")] PatientHistory patientHistory)

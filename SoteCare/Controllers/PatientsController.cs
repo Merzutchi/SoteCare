@@ -56,19 +56,52 @@ namespace SoteCare.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var history = db.PatientHistory
-                .Where(h => h.PatientID == id)
-                .ToList();
-
-            if (!history.Any())
+            var patient = db.Patients.Find(id);
+            if (patient == null)
             {
-                return HttpNotFound("No treatment history found for this patient.");
+                return HttpNotFound();
             }
 
-            ViewBag.PatientID = id;
-            ViewBag.PatientName = db.Patients.Find(id)?.FirstName + " " + db.Patients.Find(id)?.LastName;
+            // Set ViewBag.PatientID to be used in the view for the "Back to Patient Details" button
+            ViewBag.PatientID = patient.PatientID;
 
-            return View(history);
+            // Fetch diagnoses, treatments, and medications for the patient
+            var diagnoses = db.Diagnoses.Where(d => d.PatientID == id).ToList();
+            var treatments = db.Treatment.Where(t => t.PatientID == id).ToList();
+            var medications = db.PatientMedications
+                .Where(m => m.PatientID == id)
+                .Select(m => new
+                {
+                    m.Medications.MedicationName,
+                    m.StartDate
+                })
+                .ToList();
+
+            var viewModel = new PHViewModel
+            {
+                PatientName = $"{patient.FirstName} {patient.LastName}",
+                Diagnoses = diagnoses.Select(d => new DiagnosisViewModel
+                {
+                    DiagnosisName = d.DiagnosisName,
+                    DiagnosisDate = d.DiagnosisDate,
+                    Notes = d.Notes
+                }).ToList(),
+                Treatments = treatments.Select(t => new TreatmentViewModel
+                {
+                    TreatmentType = t.TreatmentType,
+                    TreatmentDetails = string.Join(", ", t.TreatmentDetails.Select(td => td.Medications.MedicationName)),
+                    StartDate = t.StartDate,
+                    EndDate = t.EndDate
+                }).ToList(),
+                Medications = medications.Select(m => new MedicationViewModel
+                {
+                    MedicationName = m.MedicationName,
+                    StartDate = m.StartDate ?? DateTime.MinValue
+                }).ToList()
+            };
+
+            ViewBag.ActiveTab = "PatientHistory"; // Set the active tab
+            return View(viewModel);
         }
 
         // GET: Diagnoses

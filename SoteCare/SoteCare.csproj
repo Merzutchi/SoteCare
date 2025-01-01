@@ -195,6 +195,7 @@
       <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\PHViewModel.cs" />
     <Compile Include="ViewModels\VFunctionChart.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -286,7 +287,6 @@
     <Content Include="Views\Nurses\Create.cshtml" />
     <Content Include="Views\PatientHistory\Index.cshtml" />
     <Content Include="Views\PatientHistory\Edit.cshtml" />
-    <Content Include="Views\PatientHistory\Details.cshtml" />
     <Content Include="Views\PatientHistory\Delete.cshtml" />
     <Content Include="Views\PatientHistory\Create.cshtml" />
     <Content Include="Views\Patients\Index.cshtml" />
@@ -338,6 +338,7 @@
     <Content Include="Views\Medications\AddDosage.cshtml" />
     <Content Include="Views\PatientMedications\Delete.cshtml" />
     <Content Include="Views\Treatments\DeleteConfirmed.cshtml" />
+    <Content Include="Views\PatientHistory\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
