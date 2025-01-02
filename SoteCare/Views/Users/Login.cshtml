@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <label for="Username">Username</label>
+        @Html.TextBox("Username")
+    </div>
+    <div>
+        <label for="Password">Password</label>
+        @Html.Password("Password")
+    </div>
+    <div>
+        <button type="submit">Login</button>
+    </div>
+}

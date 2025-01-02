@@ -17,8 +17,12 @@ namespace SoteCare.Controllers
         // GET: Treatments
         public ActionResult Index()
         {
-            var treatment = db.Treatment.Include(t => t.Medications).Include(t => t.Patients);
-            return View(treatment.ToList());
+            var treatments = db.Treatment
+                .Include(t => t.Medications) 
+                .Include(t => t.Patients)   
+                .ToList();
+
+            return View(treatments);
         }
 
         // GET: Treatments/Details/5
@@ -37,16 +41,25 @@ namespace SoteCare.Controllers
         }
 
         // GET: Treatments/Create
-        public ActionResult Create()
+        public ActionResult Create(int? patientId)
         {
+            if (patientId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var patient = db.Patients.Find(patientId);
+            if (patient == null)
+            {
+                return HttpNotFound("Patient not found.");
+            }
+
+            ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
             ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName");
-            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName");
-            return View();
+            return View(new Treatment { PatientID = patient.PatientID, StartDate = DateTime.Now });
         }
 
         // POST: Treatments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "TreatmentID,PatientID,MedicationID,StartDate,EndDate,TreatmentType,Notes")] Treatment treatment)
@@ -55,11 +68,12 @@ namespace SoteCare.Controllers
             {
                 db.Treatment.Add(treatment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Treatments", "Patients", new { id = treatment.PatientID });
             }
 
+            var patient = db.Patients.Find(treatment.PatientID);
+            ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
             ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", treatment.MedicationID);
-            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", treatment.PatientID);
             return View(treatment);
         }
 
@@ -70,19 +84,20 @@ namespace SoteCare.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Treatment treatment = db.Treatment.Find(id);
             if (treatment == null)
             {
                 return HttpNotFound();
             }
+
+            ViewBag.PatientID = treatment.PatientID; // Pass the PatientID to the view
             ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", treatment.MedicationID);
-            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", treatment.PatientID);
+            ViewBag.PatientIDSelect = new SelectList(db.Patients, "PatientID", "FirstName", treatment.PatientID);
             return View(treatment);
         }
 
         // POST: Treatments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "TreatmentID,PatientID,MedicationID,StartDate,EndDate,TreatmentType,Notes")] Treatment treatment)
@@ -91,8 +106,11 @@ namespace SoteCare.Controllers
             {
                 db.Entry(treatment).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                // Redirect to the specific patient's treatment page
+                return RedirectToAction("Treatments", "Patients", new { id = treatment.PatientID });
             }
+
             ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", treatment.MedicationID);
             ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", treatment.PatientID);
             return View(treatment);
@@ -105,22 +123,35 @@ namespace SoteCare.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Treatment treatment = db.Treatment.Find(id);
+
+            Treatment treatment = db.Treatment
+                .Include(t => t.Patients) // Ensure Patients are included
+                .FirstOrDefault(t => t.TreatmentID == id);
+
             if (treatment == null)
             {
                 return HttpNotFound();
             }
+
             return View(treatment);
         }
 
-        // POST: Treatments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Treatment treatment = db.Treatment.Find(id);
-            db.Treatment.Remove(treatment);
-            db.SaveChanges();
+            if (treatment != null)
+            {
+                int patientId = treatment.PatientID; // Get the PatientID before deleting
+                db.Treatment.Remove(treatment);
+                db.SaveChanges();
+
+                // Redirect to the patient's treatments page
+                return RedirectToAction("Treatments", "Patients", new { id = patientId });
+            }
+
+            // If the treatment is not found, redirect to the general index as a fallback
             return RedirectToAction("Index");
         }
 

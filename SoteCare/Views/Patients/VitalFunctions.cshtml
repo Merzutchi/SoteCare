@@ -68,6 +68,10 @@
     }
 </div>
 
+<div class="mt-3">
+    @Html.ActionLink("Back to Patient Details", "Details", "Patients", new { id = ViewBag.PatientID }, new { @class = "btn btn-secondary" })
+</div>
+
 <script>
     window.vitalData = @Html.Raw(Json.Encode(new {
         Dates = Model.Dates,
@@ -75,6 +79,76 @@
         SystolicBP = Model.SystolicBP,
         DiastolicBP = Model.DiastolicBP
     }));
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const addButton = document.getElementById("showAddForm"); // Button to show/hide the form
+        const addForm = document.getElementById("addVitalFunctionForm"); // Form to toggle visibility
+
+        if (addButton && addForm) {
+            addButton.addEventListener("click", function () {
+                if (addForm.style.display === "none" || addForm.style.display === "") {
+                    addForm.style.display = "block"; // Show the form
+                } else {
+                    addForm.style.display = "none"; // Hide the form
+                }
+            });
+        }
+
+        // Chart rendering
+        const ctx = document.getElementById('vitalChart').getContext('2d');
+        window.myVitalChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: window.vitalData.Dates,
+                datasets: [
+                    {
+                        label: 'Heart Rate',
+                        data: window.vitalData.HeartRates,
+                        borderColor: 'blue',
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'Systolic Blood Pressure',
+                        data: window.vitalData.SystolicBP,
+                        borderColor: 'red',
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'Diastolic Blood Pressure',
+                        data: window.vitalData.DiastolicBP,
+                        borderColor: 'green',
+                        borderWidth: 2,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Vital Signs Over Time'
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Values'
+                        }
+                    }
+                }
+            }
+        });
+    });
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

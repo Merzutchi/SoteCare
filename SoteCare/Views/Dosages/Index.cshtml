@@ -41,41 +41,42 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Dosage)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Frequency)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EndDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RouteOfAdministration)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Instructions)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DosageAmount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Medications.MedicationName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Patients.FirstName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.DosageID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.DosageID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.DosageID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dosage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Frequency)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RouteOfAdministration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Instructions)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DosageAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Medications.MedicationName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Patients.FirstName) @Html.DisplayFor(modelItem => item.Patients.LastName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.DosageID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.DosageID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.DosageID })
+            </td>
+        </tr>
+    }
 
 </table>

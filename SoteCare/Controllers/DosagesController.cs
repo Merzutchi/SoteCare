@@ -14,11 +14,15 @@ namespace SoteCare.Controllers
     {
         private PatientRecordDataEntities db = new PatientRecordDataEntities();
 
-        // GET: Dosages
+        // GET: Dosages/Index
         public ActionResult Index()
         {
-            var dosages = db.Dosages.Include(d => d.Medications).Include(d => d.Patients);
-            return View(dosages.ToList());
+            var dosages = db.Dosages
+                .Include(d => d.Medications) 
+                .Include(d => d.Patients)    
+                .ToList();
+
+            return View(dosages);
         }
 
         // GET: Dosages/Details/5
@@ -45,8 +49,6 @@ namespace SoteCare.Controllers
         }
 
         // POST: Dosages/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "DosageID,MedicationID,Dosage,Frequency,StartDate,EndDate,RouteOfAdministration,Instructions,DosageAmount,PatientID")] Dosages dosages)
@@ -55,7 +57,7 @@ namespace SoteCare.Controllers
             {
                 db.Dosages.Add(dosages);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("PatientMedications", "Patients", new { id = dosages.PatientID });  
             }
 
             ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", dosages.MedicationID);

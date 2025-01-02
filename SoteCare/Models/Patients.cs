@@ -35,6 +35,8 @@ namespace SoteCare.Models
         public string Email { get; set; }
         public string EmergencyContactName { get; set; }
         public string EmergencyContactPhone { get; set; }
+        public Nullable<int> NurseID { get; set; }
+        public Nullable<int> DoctorID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Diagnoses> Diagnoses { get; set; }
@@ -48,5 +50,7 @@ namespace SoteCare.Models
         public virtual ICollection<Treatment> Treatment { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Dosages> Dosages { get; set; }
+        public virtual Doctors Doctors { get; set; }
+        public virtual Nurses Nurses { get; set; }
     }
 }

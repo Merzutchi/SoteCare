@@ -11,14 +11,19 @@
     <!-- Top Section -->
     <div class="row mb-4">
         <div class="col-md-8">
-            <h1>Welcome, @User.Identity.Name</h1>
+            <!-- Display logged-in user's full name -->
+            <h1>Welcome, @Session["FullName"]</h1>
             <p>Your healthcare dashboard</p>
         </div>
         <div class="col-md-4 text-right">
             <!-- User Info -->
             <div class="card bg-light p-3">
                 <h5>User</h5>
-                <p>@User.Identity.Name</p>
+                <p>@Session["FullName"]</p> <!-- Display full name here as well -->
+                <form action="@Url.Action("Logout", "Users")" method="post">
+                    @Html.AntiForgeryToken()  
+                    <button type="submit" class="btn btn-danger">Logout</button>
+                </form>
             </div>
         </div>
     </div>

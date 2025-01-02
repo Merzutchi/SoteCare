@@ -14,11 +14,31 @@ namespace SoteCare.Models
     
     public partial class Nurses
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Nurses()
+        {
+            this.Patients = new HashSet<Patients>();
+            this.Users = new HashSet<Users>();
+        }
+    
         public int NurseID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Department { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
+
+        public string FullName
+        {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Patients> Patients { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Users> Users { get; set; }
     }
 }

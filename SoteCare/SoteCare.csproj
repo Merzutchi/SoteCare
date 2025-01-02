@@ -195,6 +195,7 @@
       <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\PHViewModel.cs" />
     <Compile Include="ViewModels\VFunctionChart.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -252,7 +253,6 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\vitalfunction.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -274,7 +274,6 @@
     <Content Include="Views\Doctors\Create.cshtml" />
     <Content Include="Views\Medications\Index.cshtml" />
     <Content Include="Views\Medications\DeleteMedication.cshtml" />
-    <Content Include="Views\Medications\CreateMedication.cshtml" />
     <Content Include="Views\MedicationLists\Index.cshtml" />
     <Content Include="Views\MedicationLists\Create.cshtml" />
     <Content Include="Views\MedicationLists\Edit.cshtml" />
@@ -288,7 +287,6 @@
     <Content Include="Views\Nurses\Create.cshtml" />
     <Content Include="Views\PatientHistory\Index.cshtml" />
     <Content Include="Views\PatientHistory\Edit.cshtml" />
-    <Content Include="Views\PatientHistory\Details.cshtml" />
     <Content Include="Views\PatientHistory\Delete.cshtml" />
     <Content Include="Views\PatientHistory\Create.cshtml" />
     <Content Include="Views\Patients\Index.cshtml" />
@@ -296,7 +294,6 @@
     <Content Include="Views\Patients\Create.cshtml" />
     <Content Include="Views\TreatmentDetails\Index.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
-    <Content Include="Views\Users\Index2.cshtml" />
     <Content Include="Views\Users\Create.cshtml" />
     <Content Include="Views\Users\Delete.cshtml" />
     <Content Include="Views\Users\Details.cshtml" />
@@ -308,7 +305,6 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\PatientMedications\Create.cshtml" />
-    <Content Include="Views\PatientMedications\Delete.cshtml" />
     <Content Include="Views\PatientMedications\Details.cshtml" />
     <Content Include="Views\PatientMedications\Edit.cshtml" />
     <Content Include="Views\PatientMedications\Index.cshtml" />
@@ -333,6 +329,17 @@
     <Content Include="Views\Dosages\Details.cshtml" />
     <Content Include="Views\Dosages\Edit.cshtml" />
     <Content Include="Views\Dosages\Index.cshtml" />
+    <Content Include="Views\Patients\Treatments.cshtml" />
+    <Content Include="Views\PatientMedications\AddMedication.cshtml" />
+    <Content Include="Views\Medications\_AddDosagePartial.cshtml" />
+    <Content Include="Views\Medications\DeletePartial.cshtml" />
+    <Content Include="Views\Medications\CreateMedication.cshtml" />
+    <Content Include="Views\Medications\AddDosage.cshtml" />
+    <Content Include="Views\PatientMedications\Delete.cshtml" />
+    <Content Include="Views\Treatments\DeleteConfirmed.cshtml" />
+    <Content Include="Views\PatientHistory\Details.cshtml" />
+    <Content Include="Views\Users\UserProfile.cshtml" />
+    <Content Include="Views\Users\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

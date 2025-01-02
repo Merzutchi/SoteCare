@@ -1,88 +1,69 @@
 ﻿@model SoteCare.Models.PatientMedications
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Medication";
 }
 
-<h2>Edit</h2>
-
+<h2>Edit Medication</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-<div class="form-horizontal">
-    <h4>PatientMedications</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.PatientMedicationID)
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.PatientID, "PatientID", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownList("PatientID", null, htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.PatientID, "", new { @class = "text-danger" })
+    <div class="form-horizontal">
+        <h4>Patient Medication</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.HiddenFor(model => model.PatientMedicationID)
+        @Html.HiddenFor(model => model.PatientID) <!-- PatientID is hidden -->
+        <!-- Medication Dropdown -->
+        <div class="form-group">
+            @Html.LabelFor(model => model.MedicationID, "Medication", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.MedicationID, (SelectList)ViewBag.MedicationID, "Select Medication", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.MedicationID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <!-- Dosage Dropdown -->
+        <div class="form-group">
+            @Html.LabelFor(model => model.DosageID, "Dosage", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.DosageID, (SelectList)ViewBag.DosageID, "Select Dosage", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.DosageID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <!-- Start Date -->
+        <div class="form-group">
+            @Html.LabelFor(model => model.StartDate, "Start Date", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <!-- End Date -->
+        <div class="form-group">
+            @Html.LabelFor(model => model.EndDate, "End Date", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <!-- Save Button -->
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
         </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.MedicationID, "MedicationID", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownList("MedicationID", null, htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.MedicationID, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.DosageID, "Dosage", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.DosageID, (SelectList)ViewBag.DosageID, "Select Dosage", new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.DosageID, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.MedicationListID, "MedicationListID", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownList("MedicationListID", null, htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.MedicationListID, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.DoseStrength, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.DoseStrength, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.DoseStrength, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />
-        </div>
-    </div>
-</div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "PatientMedications", "Patients", new { id = Model.PatientID }, null)
 </div>
 
 @section Scripts {

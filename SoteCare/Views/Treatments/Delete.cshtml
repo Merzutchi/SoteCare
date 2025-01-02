@@ -1,7 +1,7 @@
 ﻿@model SoteCare.Models.Treatment
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Delete Treatment";
 }
 
 <h2>Delete Treatment</h2>
@@ -16,13 +16,12 @@
     <p><strong>Notes:</strong> @Model.Notes</p>
 </div>
 
-@using (Html.BeginForm("Delete", "Treatment", new { id = Model.TreatmentID }, FormMethod.Post))
+@using (Html.BeginForm("Delete", "Treatments", new { id = Model.TreatmentID }, FormMethod.Post))
 {
     @Html.AntiForgeryToken()
     <button type="submit" class="btn btn-danger">Delete</button>
-    @Html.ActionLink("Cancel", "Index", new { @class = "btn btn-secondary" })
+    @Html.ActionLink("Cancel", "Index", "Treatments", null, new { @class = "btn btn-secondary" })
 }
-
 
 
 

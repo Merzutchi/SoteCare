@@ -1,59 +1,63 @@
-﻿@model SoteCare.Models.PatientHistory
+﻿@model SoteCare.ViewModels.PHViewModel
 
-@{
-    ViewBag.Title = "Details";
-}
+<h2>Patient History for @Model.PatientName</h2>
 
-<h2>Details</h2>
-
-<div>
-    <h4>PatientHistory</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.ConditionName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ConditionName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TreatmentDetails)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TreatmentDetails)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SurgeryDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SurgeryDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Notes)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Notes)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Patients.FirstName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Patients.FirstName)
-        </dd>
-
-    </dl>
+<!-- Diagnoses Section -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h3>Diagnoses</h3>
+    </div>
+    <div class="card-body">
+        @foreach (var diagnosis in Model.Diagnoses)
+        {
+            <div class="list-group">
+                <div class="list-group-item">
+                    <h4>@diagnosis.DiagnosisName</h4>
+                    <p><strong>Diagnosis Date:</strong> @(diagnosis.DiagnosisDate.HasValue ? diagnosis.DiagnosisDate.Value.ToString("dd-MM-yyyy") : "Date not available")</p>
+                    <p><strong>Notes:</strong> @diagnosis.Notes</p>
+                </div>
+            </div>
+        }
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.HistoryID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
 
+<!-- Treatments Section -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h3>Treatments</h3>
+    </div>
+    <div class="card-body">
+        @foreach (var treatment in Model.Treatments)
+        {
+            <div class="list-group">
+                <div class="list-group-item">
+                    <h4>@treatment.TreatmentType</h4>
+                    <p><strong>Details:</strong> @treatment.TreatmentDetails</p>
+                    <p><strong>Start Date:</strong> @treatment.StartDate.ToString("dd-MM-yyyy")</p>
+                    <p><strong>End Date:</strong> @(treatment.EndDate.HasValue ? treatment.EndDate.Value.ToString("dd-MM-yyyy") : "Ongoing")</p>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Medications Section -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h3>Medications</h3>
+    </div>
+    <div class="card-body">
+        @foreach (var medication in Model.Medications)
+        {
+            <div class="list-group">
+                <div class="list-group-item">
+                    <h4>@medication.MedicationName</h4>
+                    <p><strong>Start Date:</strong> @medication.StartDate.ToString("dd-MM-yyyy")</p>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Back Button -->
+<a class="btn btn-secondary" href="@Url.Action("Details", "Patients", new { id = ViewBag.PatientID })">Back to Patient Details</a>

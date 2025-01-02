@@ -7,6 +7,11 @@
 <h2 class="text-center">Patients</h2>
 
 <div class="container">
+    <!-- Add New Patient Button -->
+    <div class="mb-3 text-end">
+        @Html.ActionLink("Add New Patient", "Create", "Patients", null, new { @class = "btn btn-primary" })
+    </div>
+
     <ul class="list-group">
         @foreach (var item in Model)
         {
@@ -18,5 +23,4 @@
         }
     </ul>
 </div>
-
 
