@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -13,11 +15,6 @@ namespace SoteCare.Controllers
     {
         private PatientRecordDataEntities db = new PatientRecordDataEntities();
 
-        // GET: Users
-        public ActionResult Index()
-        {
-            return View(db.Users.ToList());
-        }
         // GET: Users Usernames, passwords
         public ActionResult Index2()
         {
@@ -152,7 +149,92 @@ namespace SoteCare.Controllers
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(string username, string password)
+        {
+            var user = db.Users.SingleOrDefault(u => u.Username == username);
+            if (user != null)
+            {
+                // Compare hashed password
+                if (user.Password == HashPassword(password))
+                {
+                    // Store user info in the session
+                    Session["UserID"] = user.UserID;
+                    Session["FullName"] = user.FullName;
+                    Session["Role"] = user.Role;
+
+                    // Redirect based on role
+                    if (user.Role == "Doctor")
+                    {
+                        return RedirectToAction("DoctorDashboard");
+                    }
+                    else if (user.Role == "Nurse")
+                    {
+                        return RedirectToAction("NurseDashboard");
+                    }
+                    else
+                    {
+                        return RedirectToAction("UserProfile");
+                    }
+                }
+            }
+
+            ViewBag.ErrorMessage = "Invalid username or password";
+            return View(); // Show error if invalid login
+        }
+
+        public ActionResult UserProfile()
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Login");  // Redirect to login page if not logged in
+            }
+
+            var userId = (int)Session["UserID"];
+            var user = db.Users.Find(userId);
+
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(user); // Pass the user object to the view
+        }
+
+        public ActionResult Logout()
+        {
+            Session.Clear();  // Clear the session data
+            return RedirectToAction("Login");  // Redirect to the login page
+        }
+
+
+
+        public static string HashPassword(string password)
+        {
+            using (SHA256 sha256Hash = SHA256.Create())
+            { 
+                // Compute hash from the password string.
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+                // Convert byte array to a string.
+                StringBuilder builder = new StringBuilder();
+                foreach (byte b in bytes)
+                {
+                    builder.Append(b.ToString("x2"));
+                }
+                return builder.ToString();
+            }
+        }
+
+
+
+    protected override void Dispose(bool disposing)
         {
             if (disposing)
             {

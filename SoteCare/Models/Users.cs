@@ -23,5 +23,10 @@ namespace SoteCare.Models
         public string PhoneNumber { get; set; }
         public Nullable<System.DateTime> DateOfBirth { get; set; }
         public Nullable<bool> IsActive { get; set; }
+        public Nullable<int> DoctorID { get; set; }
+        public Nullable<int> NurseID { get; set; }
+    
+        public virtual Doctors Doctors { get; set; }
+        public virtual Nurses Nurses { get; set; }
     }
 }
