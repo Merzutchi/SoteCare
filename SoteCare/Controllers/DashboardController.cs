@@ -14,9 +14,10 @@ namespace SoteCare.Controllers
         // GET: Dashboard
         public ActionResult Index()
         {
+            // Check if user is logged in
             if (Session["Role"] == null)
             {
-                return RedirectToAction("Login", "Users"); // Redirect to login page if no role is found
+                return RedirectToAction("Login", "Users");
             }
 
             string userRole = Session["Role"].ToString();
@@ -55,27 +56,28 @@ namespace SoteCare.Controllers
             // Role-based content
             if (userRole == "Doctor")
             {
-                // Add doctor-specific data here
+                // Fetch patients assigned to the current doctor
                 var doctorPatients = db.Patients.Where(p => p.DoctorID == (int)Session["UserID"]).ToList();
                 ViewBag.DoctorPatients = doctorPatients;
 
-                // Display relevant view for doctors
-                return View("DoctorDashboard");
+                // Return the general dashboard view for doctors (same as for others, but with doctor-specific data)
+                return View("Index"); // Just call Index, as it's within the same controller
             }
             else if (userRole == "Nurse")
             {
-                // Add nurse-specific data here
+                // Fetch patients assigned to the current nurse
                 var nursePatients = db.Patients.Where(p => p.NurseID == (int)Session["UserID"]).ToList();
                 ViewBag.NursePatients = nursePatients;
 
-                // Display relevant view for nurses
-                return View("NurseDashboard");
+                // Return the general dashboard view for nurses
+                return View("Index"); // Same view, just with nurse-specific data
             }
             else
             {
                 // Default view for other roles or no roles
-                return View("GeneralDashboard");
+                return View("Index"); // Default to the general dashboard
             }
         }
     }
 }
+    

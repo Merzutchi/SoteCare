@@ -1,44 +1,61 @@
 ﻿@model SoteCare.Models.Users
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "User Profile";
 }
 
-<h2>Details</h2>
+<h2>@Model.FullName's Profile</h2>
 
-<div>
-    <h4>Users</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        @*<dt>@Html.DisplayNameFor(model => model.Username)</dt>
-            <dd>@Html.DisplayFor(model => model.Username)</dd>
-
-            <dt>@Html.DisplayNameFor(model => model.Password)</dt>
-            <dd>@Html.DisplayFor(model => model.Password)</dd>*@
-
-        <dt>@Html.DisplayNameFor(model => model.FullName)</dt>
-        <dd>@Html.DisplayFor(model => model.FullName)</dd>
-
-        <dt>@Html.DisplayNameFor(model => model.Role)</dt>
-        <dd>@Html.DisplayFor(model => model.Role)</dd>
-
-        <dt>@Html.DisplayNameFor(model => model.Email)</dt>
-        <dd>@Html.DisplayFor(model => model.Email)</dd>
-
-        <dt>@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
-        <dd>@Html.DisplayFor(model => model.PhoneNumber)</dd>
-
-        <dt>@Html.DisplayNameFor(model => model.DateOfBirth)</dt>
-        <dd>@Html.DisplayFor(model => model.DateOfBirth)</dd>
-
-        <dt>@Html.DisplayNameFor(model => model.IsActive)</dt>
-        <dd>@Html.DisplayFor(model => model.IsActive)</dd>
-
-    </dl>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Display user details in a table or any other format you prefer -->
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th colspan="2" class="text-center">User Information</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Full Name</th>
+                        <td>@Model.FullName</td>
+                    </tr>
+                    <tr>
+                        <th>Username</th>
+                        <td>@Model.Username</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>@Model.Email</td>
+                    </tr>
+                    <tr>
+                        <th>Phone Number</th>
+                        <td>@Model.PhoneNumber</td>
+                    </tr>
+                    <tr>
+                        <th>Role</th>
+                        <td>@Model.Role</td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td>
+                            @(Model.IsActive.HasValue ? (Model.IsActive.Value ? "Active" : "Inactive") : "Unknown")
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <!-- Action buttons with icons -->
+            <div class="btn-group">
+                <a href="@Url.Action("Edit", new { id = Model.UserID })" class="btn btn-primary">
+                    <i class="fa fa-edit"></i> Edit
+                </a>
+                <a href="@Url.Action("Index")" class="btn btn-secondary">
+                    <i class="fa fa-arrow-left"></i> Back to List
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.UserID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
-
-
