@@ -112,19 +112,25 @@ namespace SoteCare.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+            var patient = db.Patients.Find(id);
+            if (patient == null)
+            {
+                return HttpNotFound();
+            }
+
             var diagnoses = db.Diagnoses
-                .Include(d => d.Doctors) 
                 .Where(d => d.PatientID == id)
                 .OrderByDescending(d => d.DiagnosisDate)
+                .Include(d => d.Doctors) 
                 .ToList();
+
+            ViewBag.PatientID = id;
+            ViewBag.PatientName = patient.FirstName + " " + patient.LastName;
 
             if (!diagnoses.Any())
             {
-                return HttpNotFound("No diagnoses found for this patient.");
+                ViewBag.Message = "No diagnoses found for this patient.";
             }
-
-            ViewBag.PatientID = id; 
-            ViewBag.PatientName = db.Patients.Find(id)?.FirstName + " " + db.Patients.Find(id)?.LastName;
 
             return View(diagnoses);
         }
