@@ -216,6 +216,7 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\Dashboard.css" />
+    <Content Include="Content\LoggedIn.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -340,6 +341,7 @@
     <Content Include="Views\PatientHistory\Details.cshtml" />
     <Content Include="Views\Users\UserProfile.cshtml" />
     <Content Include="Views\Users\Login.cshtml" />
+    <Content Include="Views\Shared\LoggedIn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
