@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - SoteCare</title>
+    <link rel="stylesheet" href="~/Content/site.css" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidenav">
+        <h4>SoteCare</h4>
+        <input type="text" id="sideSearch" placeholder="Search...">
+
+        <!-- Links -->
+        <a href="@Url.Action("Index", "Dashboard")">Dashboard</a>
+
+        <h6>Patients</h6>
+        <a href="@Url.Action("Index", "Patients")">Patients</a>
+
+        <h6>Medications</h6>
+        <a href="@Url.Action("Index", "Medications")">Medications</a>
+        <a href="@Url.Action("Index", "MedicationLists")">Medication Lists</a>
+
+        <h6>Staff</h6>
+        <a href="@Url.Action("Index", "Doctors")">Doctors</a>
+        <a href="@Url.Action("Index", "Nurses")">Nurses</a>
+        <a href="@Url.Action("Index", "Users")">Users</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        @RenderBody()
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    @RenderSection("styles", required: false)
+</body>
+</html>
+
+@*Logged In view*@
