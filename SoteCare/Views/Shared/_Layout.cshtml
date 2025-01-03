@@ -14,10 +14,21 @@
     <div class="sidenav">
         <h4>SoteCare</h4>
         <input type="text" id="sideSearch" placeholder="Search...">
+
         <!-- Links -->
-            <a href="@Url.Action("Index", "Home")">Home</a>
-            <a href="@Url.Action("Login", "Account")">Login</a>
-            <a href="@Url.Action("Register", "Account")">Register</a>
+        <a href="@Url.Action("Index", "Dashboard")">Dashboard</a>
+
+        <h6>Patients</h6>
+        <a href="@Url.Action("Index", "Patients")">Patients</a>
+
+        <h6>Medications</h6>
+        <a href="@Url.Action("Index", "Medications")">Medications</a>
+        <a href="@Url.Action("Index", "MedicationLists")">Medication Lists</a>
+
+        <h6>Staff</h6>
+        <a href="@Url.Action("Index", "Doctors")">Doctors</a>
+        <a href="@Url.Action("Index", "Nurses")">Nurses</a>
+        <a href="@Url.Action("Index", "Users")">Users</a>
     </div>
 
     <!-- Main Content -->
@@ -31,10 +42,6 @@
     @RenderSection("styles", required: false)
 </body>
 </html>
-
-@*LoggedOut view*@
-
-
 
 @*<script>
         function myFunction() {
