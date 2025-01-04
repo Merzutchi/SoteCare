@@ -14,11 +14,11 @@
         <div class="col-md-12 text-right">
             @if (Session["UserID"] == null)
             {
-            <a href="@Url.Action("Login", "Users")" class="btn btn-primary">Login</a> <!-- Login Button -->
+            <a href="@Url.Action("Login", "Account")" class="btn btn-primary">Login</a> <!-- Login Button -->
             }
             else
             {
-            <a href="@Url.Action("Logout", "Users")" class="btn btn-danger">Logout</a> <!-- Logout Button -->
+            <a href="@Url.Action("Logout", "Account")" class="btn btn-danger">Logout</a> <!-- Logout Button -->
             }
         </div>
     </div>

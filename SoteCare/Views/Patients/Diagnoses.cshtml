@@ -29,13 +29,14 @@ else
             }
         </tbody>
     </table>
-
-    <div>
-        @Html.ActionLink("Takaisin", "Details", "Patients", new { id = ViewBag.PatientID }, new { @class = "btn btn-primary" })
-    </div>
-
-    <!-- Button to create new diagnosis -->
-    <div class="mt-3">
-        @Html.ActionLink("Lisää diagnoosi", "Create", "Diagnoses", new { patientID = ViewBag.PatientID }, new { @class = "btn btn-success" })
-    </div>
 }
+
+<!-- Button to create new diagnosis -->
+<div class="mt-3">
+    @Html.ActionLink("Lisää diagnoosi", "Create", "Diagnoses", new { patientID = ViewBag.PatientID }, new { @class = "btn btn-success" })
+</div>
+
+<div>
+    @Html.ActionLink("Takaisin", "Details", "Patients", new { id = ViewBag.PatientID }, new { @class = "btn btn-primary" })
+</div>
+
