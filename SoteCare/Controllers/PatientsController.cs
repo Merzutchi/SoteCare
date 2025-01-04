@@ -104,7 +104,6 @@ namespace SoteCare.Controllers
             return View(viewModel);
         }
 
-        // GET: Diagnoses
         public ActionResult Diagnoses(int? id)
         {
             if (id == null)
@@ -112,26 +111,31 @@ namespace SoteCare.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+            // Fetch patient by ID
             var patient = db.Patients.Find(id);
             if (patient == null)
             {
                 return HttpNotFound();
             }
 
+            // Fetch the patient's diagnoses, including the related doctors, ordered by DiagnosisDate
             var diagnoses = db.Diagnoses
                 .Where(d => d.PatientID == id)
                 .OrderByDescending(d => d.DiagnosisDate)
-                .Include(d => d.Doctors) 
+                .Include(d => d.Doctors)
                 .ToList();
 
+            // Set ViewBag for patient details
             ViewBag.PatientID = id;
             ViewBag.PatientName = patient.FirstName + " " + patient.LastName;
 
+            // If no diagnoses found, show a message
             if (!diagnoses.Any())
             {
                 ViewBag.Message = "No diagnoses found for this patient.";
             }
 
+            // Return the view with the list of diagnoses
             return View(diagnoses);
         }
 
