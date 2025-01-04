@@ -104,7 +104,6 @@ namespace SoteCare.Controllers
             return View(viewModel);
         }
 
-        // GET: Diagnoses
         public ActionResult Diagnoses(int? id)
         {
             if (id == null)

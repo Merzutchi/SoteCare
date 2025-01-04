@@ -43,22 +43,23 @@ public class DiagnosesController : Controller
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
-        // Pass the PatientID directly to the view
+        // Pass the PatientID to the view
         ViewBag.PatientID = patientID;
-        return View();
+        var diagnosis = new Diagnoses { PatientID = patientID.Value };
+
+        return View(diagnosis);
     }
 
     // POST: Diagnoses/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Create([Bind(Include = "DiagnosisID,PatientID,DiagnosisName,DiagnosisDate,Notes")] Diagnoses diagnosis)
+    public ActionResult Create([Bind(Include = "DiagnosisName, DiagnosisDate, Notes, PatientID")] Diagnoses diagnosis)
     {
         if (ModelState.IsValid)
         {
             db.Diagnoses.Add(diagnosis);
             db.SaveChanges();
 
-            // Redirect to the Diagnoses page for the specific patient after creating the diagnosis
             return RedirectToAction("Diagnoses", "Patients", new { id = diagnosis.PatientID });
         }
 

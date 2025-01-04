@@ -1,0 +1,30 @@
+﻿@model SoteCare.Models.Users
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+@using (Html.BeginForm("Login", "Account", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" name="username" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" name="password" class="form-control" required />
+    </div>
+
+    if (ViewBag.ErrorMessage != null)
+    {
+        <div class="text-danger">@ViewBag.ErrorMessage</div>
+    }
+
+    <button type="submit" class="btn btn-primary">Login</button>
+}
+

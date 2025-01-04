@@ -1,0 +1,20 @@
+﻿@model SoteCare.Models.Users
+
+@{
+    ViewBag.Title = "User Profile";
+}
+
+<h2>User Profile</h2>
+
+<div>
+    <strong>Full Name: </strong>@Model.FullName
+</div>
+<div>
+    <strong>Email: </strong>@Model.Email
+</div>
+<div>
+    <strong>Role: </strong>@Model.Role
+</div>
+<!-- Optionally add an Edit button to allow users to update their profile -->
+<a href="@Url.Action("EditProfile", "Account")" class="btn btn-primary">Edit Profile</a>
+
