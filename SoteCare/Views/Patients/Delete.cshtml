@@ -5,41 +5,52 @@
 }
 
 <div class="container">
-    <h2>Delete Patient</h2>
+    <h2>Poista potilas</h2>
 
     <div class="alert alert-warning">
-        <p>Are you sure you want to delete the following patient?</p>
+        <p>Oletko varma, että haluat poistaa potilaan?</p>
     </div>
 
     <table class="table table-bordered">
         <tr>
-            <th>Full Name</th>
+            <th>Koko nimi</th>
             <td>@Model.FirstName @Model.LastName</td>
         </tr>
         <tr>
-            <th>Date of Birth</th>
+            <th>@Html.DisplayNameFor(model => model.DateOfBirth)</th>
             <td>@Model.DateOfBirth.ToString("dd-MM-yyyy")</td>
         </tr>
         <tr>
-            <th>Gender</th>
+            <th>@Html.DisplayNameFor(model => model.Gender)</th>
             <td>@Model.Gender</td>
         </tr>
         <tr>
-            <th>Email</th>
+            <th>@Html.DisplayNameFor(model => model.Email)</th>
             <td>@Model.Email</td>
         </tr>
         <tr>
-            <th>Phone Number</th>
+            <th>@Html.DisplayNameFor(model => model.PhoneNumber)</th>
             <td>@Model.PhoneNumber</td>
         </tr>
     </table>
 
-    @using (Html.BeginForm("DeleteConfirmed", "Patients", FormMethod.Post))
+    @*@using (Html.BeginForm("DeleteConfirmed", "Patients", new { id = Model.PatientID }, FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.PatientID)
+
+            <button type="submit" class="btn btn-danger">Kyllä, Poista</button>
+            <a href="@Url.Action("Index", "Patients")" class="btn btn-secondary">Cancel</a>
+        }*@
+
+    @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(model => model.PatientID)
 
-        <button type="submit" class="btn btn-danger">Yes, Delete</button>
-        <a href="@Url.Action("Index", "Patients")" class="btn btn-secondary">Cancel</a>
+        <div class="form-actions no-color">
+            <input type="submit" value="Poista" class="btn btn-danger" /> |
+            <a href="@Url.Action("Index", "Patients")" class="btn btn-secondary">Takaisin</a>
+        </div>
     }
 </div>

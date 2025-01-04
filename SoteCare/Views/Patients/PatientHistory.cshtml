@@ -1,11 +1,11 @@
 ﻿@model SoteCare.ViewModels.PHViewModel
 
-<h2>Patient History for @Model.PatientName</h2>
+<h2>Potilaan historia, @Model.PatientName</h2>
 
 <!-- Diagnoses Section -->
 <div class="card mb-4">
     <div class="card-header">
-        <h3>Diagnoses</h3>
+        <h3>Diagnoosi</h3>
     </div>
     <div class="card-body">
         @foreach (var diagnosis in Model.Diagnoses)
@@ -13,8 +13,8 @@
             <div class="list-group">
                 <div class="list-group-item">
                     <h4>@diagnosis.DiagnosisName</h4>
-                    <p><strong>Diagnosis Date:</strong> @(diagnosis.DiagnosisDate.HasValue ? diagnosis.DiagnosisDate.Value.ToString("dd-MM-yyyy") : "Date not available")</p>
-                    <p><strong>Notes:</strong> @diagnosis.Notes</p>
+                    <p><strong>Päivämäärä:</strong> @(diagnosis.DiagnosisDate.HasValue ? diagnosis.DiagnosisDate.Value.ToString("dd-MM-yyyy") : "Date not available")</p>
+                    <p><strong>Muistiinpanot:</strong> @diagnosis.Notes</p>
                 </div>
             </div>
         }
@@ -24,7 +24,7 @@
 <!-- Treatments Section -->
 <div class="card mb-4">
     <div class="card-header">
-        <h3>Treatments</h3>
+        <h3>Hoito</h3>
     </div>
     <div class="card-body">
         @foreach (var treatment in Model.Treatments)
@@ -32,9 +32,9 @@
             <div class="list-group">
                 <div class="list-group-item">
                     <h4>@treatment.TreatmentType</h4>
-                    <p><strong>Details:</strong> @treatment.TreatmentDetails</p>
-                    <p><strong>Start Date:</strong> @treatment.StartDate.ToString("dd-MM-yyyy")</p>
-                    <p><strong>End Date:</strong> @(treatment.EndDate.HasValue ? treatment.EndDate.Value.ToString("dd-MM-yyyy") : "Ongoing")</p>
+                    <p><strong>Tarkennus:</strong> @treatment.TreatmentDetails</p>
+                    <p><strong>Aloitus päivämäärä:</strong> @treatment.StartDate.ToString("dd-MM-yyyy")</p>
+                    <p><strong>Lopetus päivämäärä:</strong> @(treatment.EndDate.HasValue ? treatment.EndDate.Value.ToString("dd-MM-yyyy") : "Ongoing")</p>
                 </div>
             </div>
         }
@@ -44,7 +44,7 @@
 <!-- Medications Section -->
 <div class="card mb-4">
     <div class="card-header">
-        <h3>Medications</h3>
+        <h3>Lääkitys</h3>
     </div>
     <div class="card-body">
         @foreach (var medication in Model.Medications)
@@ -52,12 +52,12 @@
             <div class="list-group">
                 <div class="list-group-item">
                     <h4>@medication.MedicationName</h4>
-                    <p><strong>Start Date:</strong> @medication.StartDate.ToString("dd-MM-yyyy")</p>
+                    <p><strong>Aloitus päivämäärä:</strong> @medication.StartDate.ToString("dd-MM-yyyy")</p>
                 </div>
             </div>
         }
     </div>
 </div>
 <div class="mt-3">
-    @Html.ActionLink("Back to Patient Details", "Details", "Patients", new { id = ViewBag.PatientID }, new { @class = "btn btn-secondary" })
+    @Html.ActionLink("Takaisin", "Details", "Patients", new { id = ViewBag.PatientID }, new { @class = "btn btn-secondary" })
 </div>

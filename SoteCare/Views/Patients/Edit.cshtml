@@ -5,7 +5,7 @@
 }
 
 <div class="container">
-    <h2>Edit Patient</h2>
+    <h2>Muokkaa tietoja</h2>
 
     @using (Html.BeginForm("Edit", "Patients", FormMethod.Post))
     {
@@ -13,60 +13,60 @@
         @Html.HiddenFor(model => model.PatientID)
 
         <div class="form-group">
-            <label for="FirstName">First Name</label>
+            <label for="FirstName">Etunimi</label>
             @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
-            <label for="LastName">Last Name</label>
+            <label for="LastName">Sukunimi</label>
             @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
-            <label for="DateOfBirth">Date of Birth</label>
+            <label for="DateOfBirth">Syntymäaika</label>
             @Html.TextBoxFor(model => model.DateOfBirth, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
             @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
-            <label for="Gender">Gender</label>
+            <label for="Gender">Sukupuoli</label>
             @Html.DropDownListFor(model => model.Gender, new SelectList(new[] { "Male", "Female", "Other" }), new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
-            <label for="Address">Address</label>
+            <label for="Address">Osoite</label>
             @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
-            <label for="PhoneNumber">Phone Number</label>
+            <label for="PhoneNumber">Puhelinnumero</label>
             @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
-            <label for="Email">Email</label>
+            <label for="Email">Sähköposti</label>
             @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
-            <label for="EmergencyContactName">Emergency Contact Name</label>
+            <label for="EmergencyContactName">Hätäyhteyshenkilö</label>
             @Html.TextBoxFor(model => model.EmergencyContactName, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.EmergencyContactName, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
-            <label for="EmergencyContactPhone">Emergency Contact Phone</label>
+            <label for="EmergencyContactPhone">Hätäyhteyshenkilö puhelinnumero</label>
             @Html.TextBoxFor(model => model.EmergencyContactPhone, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.EmergencyContactPhone, "", new { @class = "text-danger" })
         </div>
 
-        <button type="submit" class="btn btn-success">Save Changes</button>
-        <a href="@Url.Action("Index", "Patients")" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-success">Tallenna</button>
+        <a href="@Url.Action("Index", "Patients")" class="btn btn-secondary">Takaisin</a>
     }
 </div>
