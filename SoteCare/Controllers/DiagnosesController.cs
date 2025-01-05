@@ -1,4 +1,5 @@
-﻿using SoteCare.Models;
+﻿using SoteCare.Attributes;
+using SoteCare.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -7,133 +8,162 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
-public class DiagnosesController : Controller
+namespace SoteCare.Controllers
 {
-    private PatientRecordDataEntities db = new PatientRecordDataEntities();
-
-    // GET: Diagnoses
-    public ActionResult Index()
+    [AuthorizeUser]
+    public class DiagnosesController : Controller
     {
-        var diagnoses = db.Diagnoses.Include(d => d.Patients)
-                                    .Include(d => d.Doctors) 
-                                    .ToList();
-        return View(diagnoses);
-    }
+        private PatientRecordDataEntities db = new PatientRecordDataEntities();
 
-    // GET: Diagnoses/Details/5
-    public ActionResult Details(int? id)
-    {
-        if (id == null)
+        // GET: Diagnoses
+        public ActionResult Index()
         {
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        }
-        Diagnoses diagnosis = db.Diagnoses.Find(id);
-        if (diagnosis == null)
-        {
-            return HttpNotFound();
-        }
-        return View(diagnosis);
-    }
-
-    // GET: Diagnoses/Create
-    public ActionResult Create(int? patientID)
-    {
-        if (patientID == null)
-        {
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            var diagnoses = db.Diagnoses.Include(d => d.Patients)
+                                        .Include(d => d.Doctors)
+                                        .ToList();
+            return View(diagnoses);
         }
 
-        // Pass the PatientID to the view
-        ViewBag.PatientID = patientID;
-        var diagnosis = new Diagnoses { PatientID = patientID.Value };
-
-        return View(diagnosis);
-    }
-
-    // POST: Diagnoses/Create
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public ActionResult Create([Bind(Include = "DiagnosisName, DiagnosisDate, Notes, PatientID")] Diagnoses diagnosis)
-    {
-        if (ModelState.IsValid)
+        // GET: Diagnoses/Details/5
+        public ActionResult Details(int? id)
         {
-            db.Diagnoses.Add(diagnosis);
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Diagnoses diagnosis = db.Diagnoses.Find(id);
+            if (diagnosis == null)
+            {
+                return HttpNotFound();
+            }
+            return View(diagnosis);
+        }
+
+        // GET: Diagnoses/Create
+        public ActionResult Create(int? patientID)
+        {
+            if (patientID == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            // Pass the PatientID to the view
+            ViewBag.PatientID = patientID;
+            var diagnosis = new Diagnoses { PatientID = patientID.Value };
+
+            return View(diagnosis);
+        }
+
+        // POST: Diagnoses/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "DiagnosisName, DiagnosisDate, Notes, PatientID")] Diagnoses diagnosis)
+        {
+            if (ModelState.IsValid)
+            {
+                // Get the currently logged-in user
+                var currentUser = db.Users.Find(Session["UserID"]);
+
+                if (currentUser == null)
+                {
+                    return RedirectToAction("Login", "Account"); // Redirect if the user session is invalid
+                }
+
+                // Check if the user is a doctor (Doctor role)
+                if (currentUser.Role == "Doctor")
+                {
+                    var doctor = db.Doctors.FirstOrDefault(d => d.Users.Any(u => u.UserID == currentUser.UserID));
+                    if (doctor != null)
+                    {
+                        diagnosis.DoctorID = doctor.DoctorID;
+                    }
+                    else
+                    {
+                        diagnosis.DoctorID = null;
+                    }
+                }
+                else
+                {
+                    diagnosis.DoctorID = null; // If not a doctor, handle accordingly
+                }
+
+                // Save the diagnosis to the database
+                db.Diagnoses.Add(diagnosis);
+                db.SaveChanges();
+
+                // Redirect to the Diagnoses page for the patient
+                return RedirectToAction("Diagnoses", "Patients", new { id = diagnosis.PatientID });
+            }
+
+            // If model validation failed, return the diagnosis form
+            ViewBag.PatientID = diagnosis.PatientID;
+            return View(diagnosis);
+        }
+
+        // GET: Diagnoses/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Diagnoses diagnosis = db.Diagnoses.Find(id);
+            if (diagnosis == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", diagnosis.PatientID);
+            return View(diagnosis);
+        }
+
+        // POST: Diagnoses/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "DiagnosisID,PatientID,DiagnosisName,DiagnosisDate,Notes")] Diagnoses diagnosis)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(diagnosis).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Diagnoses", "Patients", new { id = diagnosis.PatientID });
+            }
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", diagnosis.PatientID);
+            return View(diagnosis);
+        }
+
+        // GET: Diagnoses/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Diagnoses diagnosis = db.Diagnoses.Find(id);
+            if (diagnosis == null)
+            {
+                return HttpNotFound();
+            }
+            return View(diagnosis);
+        }
+
+        // POST: Diagnoses/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Diagnoses diagnosis = db.Diagnoses.Find(id);
+            db.Diagnoses.Remove(diagnosis);
             db.SaveChanges();
-
             return RedirectToAction("Diagnoses", "Patients", new { id = diagnosis.PatientID });
         }
 
-        ViewBag.PatientID = diagnosis.PatientID;
-        return View(diagnosis);
-    }
-
-    // GET: Diagnoses/Edit/5
-    public ActionResult Edit(int? id)
-    {
-        if (id == null)
+        protected override void Dispose(bool disposing)
         {
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
-        Diagnoses diagnosis = db.Diagnoses.Find(id);
-        if (diagnosis == null)
-        {
-            return HttpNotFound();
-        }
-        ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", diagnosis.PatientID);
-        return View(diagnosis);
-    }
-
-    // POST: Diagnoses/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to, for
-    // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public ActionResult Edit([Bind(Include = "DiagnosisID,PatientID,DiagnosisName,DiagnosisDate,Notes")] Diagnoses diagnosis)
-    {
-        if (ModelState.IsValid)
-        {
-            db.Entry(diagnosis).State = EntityState.Modified;
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-        ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FirstName", diagnosis.PatientID);
-        return View(diagnosis);
-    }
-
-    // GET: Diagnoses/Delete/5
-    public ActionResult Delete(int? id)
-    {
-        if (id == null)
-        {
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        }
-        Diagnoses diagnosis = db.Diagnoses.Find(id);
-        if (diagnosis == null)
-        {
-            return HttpNotFound();
-        }
-        return View(diagnosis);
-    }
-
-    // POST: Diagnoses/Delete/5
-    [HttpPost, ActionName("Delete")]
-    [ValidateAntiForgeryToken]
-    public ActionResult DeleteConfirmed(int id)
-    {
-        Diagnoses diagnosis = db.Diagnoses.Find(id);
-        db.Diagnoses.Remove(diagnosis);
-        db.SaveChanges();
-        return RedirectToAction("Index");
-    }
-
-    protected override void Dispose(bool disposing)
-    {
-        if (disposing)
-        {
-            db.Dispose();
-        }
-        base.Dispose(disposing);
     }
 }
-
-

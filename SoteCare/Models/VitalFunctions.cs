@@ -22,7 +22,8 @@ namespace SoteCare.Models
         public int PatientID { get; set; }
 
         [Display(Name = "P‰iv‰m‰‰r‰")]
-        public System.DateTime DateTime { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime DateTime { get; set; }
 
         [Display(Name = "Syke")]
         public Nullable<int> HeartRate { get; set; }

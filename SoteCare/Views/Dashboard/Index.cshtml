@@ -20,7 +20,7 @@
             <div class="card bg-light p-3">
                 <h5>User</h5>
                 <p>@Session["FullName"]</p> <!-- Display full name here as well -->
-                <form action="@Url.Action("Logout", "Users")" method="post">
+                <form action="@Url.Action("Logout", "Account")" method="post">
                     @Html.AntiForgeryToken()  
                     <button type="submit" class="btn btn-danger">Logout</button>
                 </form>
@@ -107,6 +107,29 @@
                 </ul>
             </div>
         </div>
+        @if ((string)Session["Role"] == "Doctor")
+        {
+            <!-- Display patients assigned to the logged-in doctor -->
+            <h3>My Patients</h3>
+            <ul>
+                @foreach (var patient in ViewBag.DoctorPatients)
+                {
+                    <li>@patient.FirstName @patient.LastName</li>
+                }
+            </ul>
+        }
+
+        @if ((string)Session["Role"] == "Nurse")
+        {
+            <!-- Display patients assigned to the logged-in nurse -->
+            <h3>My Patients</h3>
+            <ul>
+                @foreach (var patient in ViewBag.NursePatients)
+                {
+                    <li>@patient.FirstName @patient.LastName</li>
+                }
+            </ul>
+        }
     </div>
 </div>
 

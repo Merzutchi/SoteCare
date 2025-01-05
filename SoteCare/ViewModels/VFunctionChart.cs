@@ -7,9 +7,9 @@ namespace SoteCare.ViewModels
 {
     public class VFunctionChart
     {
-        public int PatientID { get; set; } // Added PatientID property
+        public int PatientID { get; set; } // Patient ID
         public string PatientName { get; set; } // Name of the patient
-        public List<string> Dates { get; set; } // X-axis labels (dates/times)
+        public List<string> Dates { get; set; } // Dates for the vital functions
 
         // Data for each vital function
         public List<int> HeartRates { get; set; }
@@ -18,6 +18,7 @@ namespace SoteCare.ViewModels
         public List<int> RespiratoryRates { get; set; }
         public List<decimal> Temperatures { get; set; }
         public List<decimal> OxygenSaturations { get; set; }
+        public DateTime DateTime { get; set; }
 
         public VFunctionChart()
         {
@@ -28,6 +29,7 @@ namespace SoteCare.ViewModels
             RespiratoryRates = new List<int>();
             Temperatures = new List<decimal>();
             OxygenSaturations = new List<decimal>();
+            DateTime = DateTime.Now; // Set default to current date and time
         }
     }
 }

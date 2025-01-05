@@ -1,4 +1,5 @@
-﻿using SoteCare.Models;
+﻿using SoteCare.Attributes;
+using SoteCare.Models;
 using SoteCare.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using System.Web.Mvc;
 
 namespace SoteCare.Controllers
 {
+    [AuthorizeUser]
     public class PatientsController : Controller
     {
         private PatientRecordDataEntities db = new PatientRecordDataEntities();

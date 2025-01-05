@@ -1,4 +1,5 @@
-﻿using SoteCare.Models;
+﻿using SoteCare.Attributes;
+using SoteCare.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Web.Mvc;
 
 namespace SoteCare.Controllers
 {
+    [AuthorizeUser]  // Ensure the user is logged in
     public class DashboardController : Controller
     {
         private readonly PatientRecordDataEntities db = new PatientRecordDataEntities();
@@ -14,10 +16,11 @@ namespace SoteCare.Controllers
         // GET: Dashboard
         public ActionResult Index()
         {
-            // Check if user is logged in
+            // Check if user is logged in (This is redundant because of the AuthorizeUser attribute, 
+            // but left here for context on additional logic you might want to do)
             if (Session["Role"] == null)
             {
-                return RedirectToAction("Login", "Users");
+                return RedirectToAction("Login", "Account");
             }
 
             string userRole = Session["Role"].ToString();
@@ -43,7 +46,7 @@ namespace SoteCare.Controllers
                                 .Take(5)
                                 .ToList();
 
-            var doctors = db.Doctors.ToList();
+            var doctors = db.Doctors.ToList();  // This line ensures doctors are fetched
             ViewBag.TotalPatients = totalPatients;
             ViewBag.NewPatients = newPatients;
             ViewBag.TotalMedications = totalMedications;
@@ -51,7 +54,7 @@ namespace SoteCare.Controllers
             ViewBag.ActiveTreatments = activeTreatments;
             ViewBag.CompletedTreatments = completedTreatments;
             ViewBag.RecentPatients = recentPatients;
-            ViewBag.Doctors = doctors;
+            ViewBag.Doctors = doctors;  // Assign doctors to ViewBag
 
             // Role-based content
             if (userRole == "Doctor")
@@ -61,7 +64,7 @@ namespace SoteCare.Controllers
                 ViewBag.DoctorPatients = doctorPatients;
 
                 // Return the general dashboard view for doctors (same as for others, but with doctor-specific data)
-                return View("Index"); // Just call Index, as it's within the same controller
+                return View("Index");
             }
             else if (userRole == "Nurse")
             {
@@ -75,9 +78,10 @@ namespace SoteCare.Controllers
             else
             {
                 // Default view for other roles or no roles
-                return View("Index"); // Default to the general dashboard
+                return View("Index");
             }
         }
     }
 }
-    
+
+

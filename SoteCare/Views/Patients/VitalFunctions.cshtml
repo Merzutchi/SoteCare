@@ -25,9 +25,16 @@
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(model => model.PatientID)
 
+                <!-- DateTime Field -->
                 <div class="form-group">
-                    <label>Date/Time</label>
-                    <input type="datetime-local" id="DateTimeInput" name="DateTime" class="form-control" required />
+                    <label for="DateTime">Date/Time</label>
+                    <!-- Set the default DateTime value to the current time from the model -->
+                    @Html.TextBoxFor(model => model.DateTime, new
+                    {
+                        @class = "form-control",
+                        type = "datetime-local",
+                        value = Model.DateTime.ToString("yyyy-MM-ddTHH:mm")  // Ensure correct formatting
+                    })
                 </div>
 
                 <div class="form-group">
@@ -74,13 +81,21 @@
 
 <script>
     window.vitalData = @Html.Raw(Json.Encode(new {
-        Dates = Model.Dates,
-        HeartRates = Model.HeartRates,
-        SystolicBP = Model.SystolicBP,
-        DiastolicBP = Model.DiastolicBP
-    }));
+    Dates = Model.Dates,
+    HeartRates = Model.HeartRates,
+    SystolicBP = Model.SystolicBP,
+    DiastolicBP = Model.DiastolicBP,
+    Temperatures = Model.Temperatures
+}));
 
     document.addEventListener("DOMContentLoaded", function () {
+        // Automatically set current date and time for the DateTime input
+        const dateTimeInput = document.querySelector("input[name='DateTime']");
+        if (dateTimeInput) {
+            const currentDate = new Date().toISOString().slice(0, 16); // Get the current date and time in the required format
+            dateTimeInput.value = currentDate; // Set the value to the current date
+        }
+
         const addButton = document.getElementById("showAddForm"); // Button to show/hide the form
         const addForm = document.getElementById("addVitalFunctionForm"); // Form to toggle visibility
 
@@ -119,6 +134,13 @@
                         label: 'Diastolic Blood Pressure',
                         data: window.vitalData.DiastolicBP,
                         borderColor: 'green',
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'Temperature',
+                        data: window.vitalData.Temperatures,
+                        borderColor: 'purple',
                         borderWidth: 2,
                         fill: false
                     }

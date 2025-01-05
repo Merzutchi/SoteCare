@@ -6,10 +6,12 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using SoteCare.Attributes;
 using SoteCare.Models;
 
 namespace SoteCare.Controllers
 {
+    [AuthorizeUser]
     public class TreatmentsController : Controller
     {
         private PatientRecordDataEntities db = new PatientRecordDataEntities();

@@ -1,4 +1,6 @@
-﻿using SoteCare.Models;
+﻿using SoteCare.Attributes;
+using SoteCare.Models;
+using SoteCare.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -10,6 +12,7 @@ using System.Web.Mvc;
 
 namespace SoteCare.Controllers
 {
+    [AuthorizeUser]
     public class VitalFunctionsController : Controller
     {
         private PatientRecordDataEntities db = new PatientRecordDataEntities();
@@ -39,27 +42,31 @@ namespace SoteCare.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult AddVitalFunction(VitalFunctions vitalFunction)
+        public ActionResult AddVitalFunction(VitalFunctions vitalFunction)
         {
             if (ModelState.IsValid)
             {
-                db.VitalFunctions.Add(vitalFunction); 
-                db.SaveChanges(); 
-
-                var newVitalFunction = new
+                // Ensure the temperature is correctly parsed and handled
+                if (Request.Form["Temperature"] != null)
                 {
-                    DateTime = vitalFunction.DateTime.ToString("yyyy-MM-dd HH:mm"),
-                    vitalFunction.HeartRate,
-                    vitalFunction.SystolicBloodPressure,
-                    vitalFunction.DiastolicBloodPressure,
-                    vitalFunction.RespiratoryRate,
-                    vitalFunction.Temperature,
-                    vitalFunction.OxygenSaturation
-                };
+                    if (decimal.TryParse(Request.Form["Temperature"], NumberStyles.Any, CultureInfo.InvariantCulture, out decimal temperature))
+                    {
+                        vitalFunction.Temperature = temperature;
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Temperature", "Invalid temperature format.");
+                        return View(vitalFunction);
+                    }
+                }
 
-                return Json(new { success = true, data = newVitalFunction });
+                db.VitalFunctions.Add(vitalFunction);
+                db.SaveChanges();
+
+                return RedirectToAction("VitalFunctions", "Patients", new { id = vitalFunction.PatientID });
             }
-            return Json(new { success = false, message = "Validation failed. Please check your input." });
+
+            return View(vitalFunction);
         }
 
         // GET: VitalFunctions/Create
@@ -79,11 +86,11 @@ namespace SoteCare.Controllers
             var vitalFunction = new VitalFunctions
             {
                 PatientID = id.Value,
-                DateTime = DateTime.Now 
+                DateTime = DateTime.Now // Set the DateTime to the current time
             };
 
             ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
-            return View(vitalFunction);
+            return View(vitalFunction); // Send the model with the DateTime set
         }
 
         // POST: VitalFunctions/Create
