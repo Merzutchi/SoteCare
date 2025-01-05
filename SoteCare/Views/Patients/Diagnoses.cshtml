@@ -24,7 +24,7 @@ else
                 <tr>
                     <td>@(item.DiagnosisDate?.ToString("d") ?? "Date not available")</td> <!-- Default message if no date -->
                     <td>@item.DiagnosisName</td> <!-- Show diagnosis name -->
-                    <td>@item.DoctorName</td>
+                    <td>@(item.Doctors != null ? item.Doctors.FullName : "Doctor not assigned")</td>
                 </tr>
             }
         </tbody>

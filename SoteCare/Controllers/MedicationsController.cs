@@ -1,10 +1,12 @@
-﻿using SoteCare.Models;
+﻿using SoteCare.Attributes;
+using SoteCare.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+[AuthorizeUser]
 public class MedicationsController : Controller
 {
     private readonly PatientRecordDataEntities context = new PatientRecordDataEntities();
