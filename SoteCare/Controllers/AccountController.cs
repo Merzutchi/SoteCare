@@ -1,6 +1,8 @@
 ﻿using SoteCare.Models;
+using SoteCare.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -95,12 +97,12 @@ namespace SoteCare.Controllers
             return View(users);
         }
 
-        // GET: User Profile
+        // GET: Account/UserProfile
         public ActionResult UserProfile()
         {
             if (Session["UserID"] == null)
             {
-                return RedirectToAction("Login");  // Redirect to login page if not logged in
+                return RedirectToAction("Login");  // Redirect to login if user is not logged in
             }
 
             var userId = (int)Session["UserID"];
@@ -111,12 +113,78 @@ namespace SoteCare.Controllers
                 return HttpNotFound();
             }
 
-            // Depending on the user's role, fetch additional information
-            ViewBag.Role = user.Role;
+            var userProfileViewModel = new UserProfileViewModel
+            {
+                UserID = user.UserID,
+                Username = user.Username,
+                FullName = user.FullName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                IsActive = user.IsActive ?? false,
+                Role = user.Role
+            };
 
-            return View(user); // Pass the user object to the view
+            // Fetch assigned patients for the logged-in user (depending on role)
+            if (user.Role == "Doctor")
+            {
+                userProfileViewModel.AssignedPatients = db.Patients
+                    .Where(p => p.DoctorID == user.UserID)  // Assuming DoctorID is the way to relate patients to a doctor
+                    .ToList();
+            }
+            else if (user.Role == "Nurse")
+            {
+                userProfileViewModel.AssignedPatients = db.Patients
+                    .Where(p => p.NurseID == user.UserID)  // Assuming NurseID is the way to relate patients to a nurse
+                    .ToList();
+            }
+
+            return View(userProfileViewModel);
         }
 
+        // POST: Account/UserProfile
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UserProfile(UserProfileViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = db.Users.Find(model.UserID);
+                if (user != null)
+                {
+                    // Update user profile information
+                    user.FullName = model.FullName;
+                    user.Email = model.Email;
+                    user.PhoneNumber = model.PhoneNumber;
+
+                    // If password change is requested, update the password
+                    if (!string.IsNullOrEmpty(model.Password) && model.Password == model.ConfirmPassword)
+                    {
+                        user.Password = HashPassword(model.Password); // Hash the password
+                    }
+
+                    db.SaveChanges();
+                    return RedirectToAction("UserProfile");
+                }
+            }
+
+            // If the model is invalid, return to the form with error messages
+            return View(model);
+        }
+
+        // POST: Account/EditProfile
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditProfile(Users user)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("UserProfile");
+            }
+            return View(user);
+        }
+        
         // Logout action to clear the session and redirect to login
         [HttpPost]
         [ValidateAntiForgeryToken]

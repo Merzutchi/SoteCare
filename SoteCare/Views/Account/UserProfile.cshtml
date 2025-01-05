@@ -1,20 +1,88 @@
-﻿@model SoteCare.Models.Users
+﻿@model SoteCare.ViewModels.UserProfileViewModel
 
-@{
-    ViewBag.Title = "User Profile";
-}
+<h2>@ViewBag.Title</h2>
 
-<h2>User Profile</h2>
+<!-- Tab Navigation -->
+<ul class="nav nav-tabs" id="profileTabs" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" id="assigned-patients-tab" data-toggle="tab" href="#assigned-patients" role="tab" aria-controls="assigned-patients" aria-selected="true">Assigned Patients</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="personal-info-tab" data-toggle="tab" href="#personal-info" role="tab" aria-controls="personal-info" aria-selected="false">Personal Info</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="change-password-tab" data-toggle="tab" href="#change-password" role="tab" aria-controls="change-password" aria-selected="false">Change Password</a>
+    </li>
+</ul>
 
-<div>
-    <strong>Full Name: </strong>@Model.FullName
+<!-- Tab Content -->
+<div class="tab-content" id="profileTabsContent">
+    <!-- Assigned Patients Tab -->
+    <div class="tab-pane fade show active" id="assigned-patients" role="tabpanel" aria-labelledby="assigned-patients-tab">
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">Assigned Patients</h5>
+                @if (Model.AssignedPatients != null && Model.AssignedPatients.Count > 0)
+                {
+                    <ul class="list-group">
+                        @foreach (var patient in Model.AssignedPatients)
+                        {
+                            <li class="list-group-item">
+                                @patient.FirstName @patient.LastName
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>No patients assigned to you.</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Personal Info Tab -->
+    <div class="tab-pane fade" id="personal-info" role="tabpanel" aria-labelledby="personal-info-tab">
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">Personal Information</h5>
+                <p><strong>Username:</strong> @Model.Username</p>
+                <p><strong>Full Name:</strong> @Model.FullName</p>
+                <p><strong>Email:</strong> @Model.Email</p>
+                <p><strong>Phone Number:</strong> @Model.PhoneNumber</p>
+                <p><strong>Role:</strong> @Model.Role</p>
+                <p><strong>Status:</strong> @(Model.IsActive ? "Active" : "Inactive")</p>
+                <a href="@Url.Action("EditProfile", "Account")" class="btn btn-primary">Edit Profile</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Password Tab -->
+    <div class="tab-pane fade" id="change-password" role="tabpanel" aria-labelledby="change-password-tab">
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">Change Password</h5>
+                @using (Html.BeginForm("UserProfile", "Account", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Password, "New Password")
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.ConfirmPassword, "Confirm Password")
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Change Password</button>
+                }
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <strong>Email: </strong>@Model.Email
-</div>
-<div>
-    <strong>Role: </strong>@Model.Role
-</div>
-<!-- Optionally add an Edit button to allow users to update their profile -->
-<a href="@Url.Action("EditProfile", "Account")" class="btn btn-primary">Edit Profile</a>
 
+<!-- Tab JavaScript (Bootstrap JS, required for tabs to work) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>

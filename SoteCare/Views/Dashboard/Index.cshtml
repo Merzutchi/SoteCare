@@ -12,21 +12,24 @@
     <div class="row mb-4">
         <div class="col-md-8">
             <!-- Display logged-in user's full name -->
-            <h1>Welcome, @Session["FullName"]</h1>
+            <h1>Welcome, <a href="@Url.Action("UserProfile", "Account")">@Session["FullName"]</a></h1>
             <p>Your healthcare dashboard</p>
         </div>
         <div class="col-md-4 text-right">
             <!-- User Info -->
             <div class="card bg-light p-3">
                 <h5>User</h5>
-                <p>@Session["FullName"]</p> <!-- Display full name here as well -->
+                <p>
+                    <a href="@Url.Action("UserProfile", "Account")">@Session["FullName"]</a> <!-- Display full name as clickable link -->
+                </p>
                 <form action="@Url.Action("Logout", "Account")" method="post">
-                    @Html.AntiForgeryToken()  
+                    @Html.AntiForgeryToken()
                     <button type="submit" class="btn btn-danger">Logout</button>
                 </form>
             </div>
         </div>
     </div>
+</div>
 
     <!-- Patient Statistics -->
     <div class="row mb-4">
