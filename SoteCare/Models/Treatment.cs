@@ -11,8 +11,7 @@ namespace SoteCare.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Treatment
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,29 +19,15 @@ namespace SoteCare.Models
         {
             this.TreatmentDetails = new HashSet<TreatmentDetails>();
         }
-
-        [Display(Name = "Hoito ID")]
+    
         public int TreatmentID { get; set; }
-
-        [Display(Name = "Potilas ID")]
         public int PatientID { get; set; }
-
-        [Display(Name = "L‰‰ke ID")]
         public Nullable<int> MedicationID { get; set; }
-
-        [Display(Name = "Aloitus p‰iv‰m‰‰r‰")]
         public System.DateTime StartDate { get; set; }
-
-        [Display(Name = "Lopetus p‰iv‰m‰‰r‰")]
         public Nullable<System.DateTime> EndDate { get; set; }
-
         [Display(Name = "Hoito")]
         public string TreatmentType { get; set; }
-
-        [Display(Name = "Muistiinpanot")]
         public string Notes { get; set; }
-
-        [Display(Name = "Diagnoosi ID")]
         public Nullable<int> DiagnosisID { get; set; }
     
         public virtual Medications Medications { get; set; }

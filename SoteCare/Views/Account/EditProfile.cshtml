@@ -25,14 +25,6 @@
         @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
     </div>
 
-    <div class="form-group">
-        <label for="IsActive">Account Status</label>
-        <select name="IsActive" class="form-control">
-            <option value="true" @(Model.IsActive ? "selected" : "")>Active</option>
-            <option value="false" @(Model.IsActive == false ? "selected" : "")>Inactive</option>
-        </select>
-    </div>
-
     <button type="submit" class="btn btn-primary">Save Changes</button>
 }
 
