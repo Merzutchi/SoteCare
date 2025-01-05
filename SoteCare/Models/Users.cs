@@ -40,7 +40,7 @@ namespace SoteCare.Models
         public Nullable<System.DateTime> DateOfBirth { get; set; }
 
         [Display(Name = "Aktiivinen")]
-        public Nullable<bool> IsActive { get; set; }
+        public bool IsActive { get; set; }
 
         [Display(Name = "L‰‰k‰ri ID")]
         public Nullable<int> DoctorID { get; set; }

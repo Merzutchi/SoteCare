@@ -42,7 +42,7 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.IsActive)
-        @Html.CheckBoxFor(model => model.IsActive ?? false, new { @class = "form-check-input" })
+        @Html.CheckBoxFor(model => model.IsActive, new { @class = "form-check-input" })
         @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
     </div>
 

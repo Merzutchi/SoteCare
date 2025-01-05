@@ -67,7 +67,11 @@ namespace SoteCare.Controllers
         // GET: Register
         public ActionResult Register()
         {
-            return View(new Users()); // Pass an empty Users object to the view
+            var model = new Users
+            {
+                IsActive = false // Set a default value for IsActive
+            };
+            return View(model);
         }
 
         // POST: Register
@@ -120,7 +124,7 @@ namespace SoteCare.Controllers
                 FullName = user.FullName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                IsActive = user.IsActive ?? false,
+                IsActive = user.IsActive,
                 Role = user.Role
             };
 
