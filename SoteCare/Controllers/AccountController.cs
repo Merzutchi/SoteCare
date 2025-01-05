@@ -82,6 +82,24 @@ namespace SoteCare.Controllers
                 // Set IsActive to true by default when the user registers
                 users.IsActive = true;
 
+                // Assign the correct DoctorID or NurseID based on the role
+                if (users.Role == "Doctor")
+                {
+                    var doctor = db.Doctors.FirstOrDefault(d => d.FullName == users.FullName); // Or however you find the correct doctor
+                    if (doctor != null)
+                    {
+                        users.DoctorID = doctor.DoctorID;
+                    }
+                }
+                else if (users.Role == "Nurse")
+                {
+                    var nurse = db.Nurses.FirstOrDefault(n => n.FullName == users.FullName); // Or however you find the correct nurse
+                    if (nurse != null)
+                    {
+                        users.NurseID = nurse.NurseID;
+                    }
+                }
+
                 // Hash the password before saving
                 users.Password = HashPassword(users.Password);
 
