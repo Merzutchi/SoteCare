@@ -1,4 +1,5 @@
 ﻿using SoteCare.Models;
+using SoteCare.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

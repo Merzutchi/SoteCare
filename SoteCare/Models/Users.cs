@@ -25,6 +25,8 @@ namespace SoteCare.Models
         public bool IsActive { get; set; }
         public Nullable<int> DoctorID { get; set; }
         public Nullable<int> NurseID { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     
         public virtual Doctors Doctors { get; set; }
         public virtual Nurses Nurses { get; set; }

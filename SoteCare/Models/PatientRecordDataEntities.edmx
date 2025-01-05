@@ -74,7 +74,6 @@
           <Property Name="NurseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="100" />
           <Property Name="LastName" Type="nvarchar" MaxLength="100" />
-          <Property Name="Department" Type="nvarchar" MaxLength="100" />
           <Property Name="PhoneNumber" Type="nvarchar" MaxLength="20" />
           <Property Name="Email" Type="nvarchar" MaxLength="100" />
         </EntityType>
@@ -157,6 +156,8 @@
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="DoctorID" Type="int" />
           <Property Name="NurseID" Type="int" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="255" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="VitalFunctions">
           <Key>
@@ -602,7 +603,6 @@
           <Property Name="NurseID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Department" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Patients" Relationship="PatientRecordModel.FK_Patients_Nurse" FromRole="Nurses" ToRole="Patients" />
@@ -710,6 +710,8 @@
           <Property Name="NurseID" Type="Int32" />
           <NavigationProperty Name="Doctors" Relationship="PatientRecordModel.FK_Users_Doctor" FromRole="Users" ToRole="Doctors" />
           <NavigationProperty Name="Nurses" Relationship="PatientRecordModel.FK_Users_Nurse" FromRole="Users" ToRole="Nurses" />
+          <Property Name="FirstName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="VitalFunctions">
           <Key>
@@ -1176,7 +1178,6 @@
                 <ScalarProperty Name="NurseID" ColumnName="NurseID" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="Department" ColumnName="Department" />
                 <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
               </MappingFragment>
@@ -1254,6 +1255,8 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="PatientRecordModel.Users">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="NurseID" ColumnName="NurseID" />
                 <ScalarProperty Name="DoctorID" ColumnName="DoctorID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
