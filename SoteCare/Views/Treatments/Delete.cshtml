@@ -4,25 +4,25 @@
     ViewBag.Title = "Delete Treatment";
 }
 
-<h2>Delete Treatment</h2>
+<h2>Poista hoito</h2>
 
-<h3>Are you sure you want to delete this treatment?</h3>
+<h3>Oletko varma että haluat poistaa tämän hoidon?</h3>
 
 <div>
-    <p><strong>Patient:</strong> @Model.Patients.FirstName @Model.Patients.LastName</p>
-    <p><strong>Treatment Type:</strong> @Model.TreatmentType</p>
-    <p><strong>Start Date:</strong> @Model.StartDate.ToShortDateString()</p>
-    <p><strong>End Date:</strong> @(Model.EndDate.HasValue ? Model.EndDate.Value.ToShortDateString() : "Ongoing")</p>
-    <p><strong>Notes:</strong> @Model.Notes</p>
+    <p><strong>Potilas:</strong> @Model.Patients.FirstName @Model.Patients.LastName</p>
+    <p><strong>Hoito tyyli??:</strong> @Model.TreatmentType</p>
+    <p><strong>Aloitus päivämäärä:</strong> @Model.StartDate.ToShortDateString()</p>
+    <p><strong>Lopetus päivämäärä:</strong> @(Model.EndDate.HasValue ? Model.EndDate.Value.ToShortDateString() : "Ongoing")</p>
+    <p><strong>Muistiinpanot:</strong> @Model.Notes</p>
 </div>
 
 @using (Html.BeginForm("Delete", "Treatments", new { id = Model.TreatmentID }, FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-    <button type="submit" class="btn btn-danger">Delete</button>
-    @Html.ActionLink("Cancel", "Index", "Treatments", null, new { @class = "btn btn-secondary" })
+    <button type="submit" class="btn btn-danger">Poista</button>
 }
 
+<a href="@Url.Action("Treatments", "Patients", new { id = Model.PatientID })" class="btn btn-secondary">Takaisin</a>
 
 
 @*<h2>Delete</h2>

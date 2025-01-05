@@ -36,7 +36,7 @@ namespace SoteCare.Models
         [Display(Name = "Lopetus p‰iv‰m‰‰r‰")]
         public Nullable<System.DateTime> EndDate { get; set; }
 
-        [Display(Name = "Hoitokeino??")]
+        [Display(Name = "Hoito")]
         public string TreatmentType { get; set; }
 
         [Display(Name = "Muistiinpanot")]
