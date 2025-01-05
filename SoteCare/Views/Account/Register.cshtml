@@ -40,11 +40,6 @@
         @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.IsActive)
-        @Html.CheckBoxFor(model => model.IsActive ?? false, new { @class = "form-check-input" })
-        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
-    </div>
-
+    <!-- No need for IsActive in the registration form. It's set in the controller -->
     <button type="submit" class="btn btn-primary">Register</button>
 }

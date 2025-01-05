@@ -34,7 +34,8 @@ namespace SoteCare.Controllers
         {
             // Find the user from the database
             var user = db.Users.SingleOrDefault(u => u.Username == username);
-            if (user != null)
+
+            if (user != null && user.IsActive)
             {
                 // Compare the hashed password with the one stored in the database
                 if (user.Password == HashPassword(password))
@@ -59,8 +60,9 @@ namespace SoteCare.Controllers
                     }
                 }
             }
-            // Show error message if username or password is incorrect
-            ViewBag.ErrorMessage = "Invalid username or password";
+
+            // Show error message if username/password is incorrect or account is inactive
+            ViewBag.ErrorMessage = "Invalid username or password, or your account is inactive.";
             return View();
         }
 
@@ -77,6 +79,9 @@ namespace SoteCare.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Set IsActive to true by default when the user registers
+                users.IsActive = true;
+
                 // Hash the password before saving
                 users.Password = HashPassword(users.Password);
 
@@ -120,7 +125,7 @@ namespace SoteCare.Controllers
                 FullName = user.FullName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                IsActive = user.IsActive ?? false,
+                IsActive = user.IsActive,
                 Role = user.Role
             };
 
@@ -184,7 +189,29 @@ namespace SoteCare.Controllers
             }
             return View(user);
         }
-        
+
+        // POST: Account/Deactivate
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeactivateAccount()
+        {
+            var userId = (int)Session["UserID"];
+            var user = db.Users.Find(userId);
+
+            if (user != null)
+            {
+                // Set the account as inactive
+                user.IsActive = false;  // Set the account as inactive
+
+                // Save the changes
+                db.SaveChanges();
+            }
+
+            // Log the user out after deactivating the account
+            Session.Clear();
+            return RedirectToAction("Login", "Account");
+        }
+
         // Logout action to clear the session and redirect to login
         [HttpPost]
         [ValidateAntiForgeryToken]

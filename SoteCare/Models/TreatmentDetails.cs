@@ -11,20 +11,12 @@ namespace SoteCare.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class TreatmentDetails
     {
-        [Display(Name = "Hoidon yksityiskohta ID")]
         public int TreatmentDetailID { get; set; }
-
-        [Display(Name = "Hoito ID")]
         public int TreatmentID { get; set; }
-
-        [Display(Name = "L‰‰ke ID")]
         public int MedicationID { get; set; }
-
-        [Display(Name = "Annostelu ID")]
         public Nullable<int> DosageID { get; set; }
     
         public virtual Dosages Dosages { get; set; }

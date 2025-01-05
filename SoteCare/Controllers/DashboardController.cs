@@ -16,17 +16,19 @@ namespace SoteCare.Controllers
         // GET: Dashboard
         public ActionResult Index()
         {
-            // Check if user is logged in (This is redundant because of the AuthorizeUser attribute, 
-            // but left here for context on additional logic you might want to do)
-            if (Session["Role"] == null)
+            // Ensure that the session contains user role and user ID, if not redirect to login
+            if (Session["UserID"] == null || Session["Role"] == null)
             {
                 return RedirectToAction("Login", "Account");
             }
 
+            // Fetch UserID and Role from the session
+            int userId = (int)Session["UserID"];
             string userRole = Session["Role"].ToString();
-            var oneMonthAgo = DateTime.Now.AddMonths(-1);
 
             // General data for all users (Doctors and Nurses)
+            var oneMonthAgo = DateTime.Now.AddMonths(-1);
+
             var totalPatients = db.Patients.Count();
             var newPatients = db.Patients
                                 .Where(p => p.DateOfBirth > oneMonthAgo)
@@ -47,6 +49,7 @@ namespace SoteCare.Controllers
                                 .ToList();
 
             var doctors = db.Doctors.ToList();  // This line ensures doctors are fetched
+
             ViewBag.TotalPatients = totalPatients;
             ViewBag.NewPatients = newPatients;
             ViewBag.TotalMedications = totalMedications;
@@ -54,31 +57,28 @@ namespace SoteCare.Controllers
             ViewBag.ActiveTreatments = activeTreatments;
             ViewBag.CompletedTreatments = completedTreatments;
             ViewBag.RecentPatients = recentPatients;
-            ViewBag.Doctors = doctors;  // Assign doctors to ViewBag
+            ViewBag.Doctors = doctors;
 
             // Role-based content
             if (userRole == "Doctor")
             {
                 // Fetch patients assigned to the current doctor
-                var doctorPatients = db.Patients.Where(p => p.DoctorID == (int)Session["UserID"]).ToList();
+                var doctorPatients = db.Patients.Where(p => p.DoctorID == userId).ToList();
                 ViewBag.DoctorPatients = doctorPatients;
 
-                // Return the general dashboard view for doctors (same as for others, but with doctor-specific data)
                 return View("Index");
             }
             else if (userRole == "Nurse")
             {
                 // Fetch patients assigned to the current nurse
-                var nursePatients = db.Patients.Where(p => p.NurseID == (int)Session["UserID"]).ToList();
+                var nursePatients = db.Patients.Where(p => p.NurseID == userId).ToList();
                 ViewBag.NursePatients = nursePatients;
 
-                // Return the general dashboard view for nurses
-                return View("Index"); // Same view, just with nurse-specific data
+                return View("Index");
             }
             else
             {
-                // Default view for other roles or no roles
-                return View("Index");
+                return View("Index"); // Default view for other roles or no roles
             }
         }
     }
