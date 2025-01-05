@@ -4,11 +4,34 @@
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
+<h2>Poista diagnoosi</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Oletko varma että haluat poistaa tämän diagnoosin?</h3>
+
 <div>
-    <h4>Diagnosis</h4>
+    <p><strong>Potilas:</strong> @Model.Patients.FirstName @Model.Patients.LastName</p>
+    <p><strong>Diagnoosin nimi:</strong> @Model.DiagnosisName</p>
+    <p><strong>Diagnoosin päivämäärä:</strong> @Model.DiagnosisDate</p>
+    <p><strong>Muistiinpanot:</strong> @Model.Notes</p>
+</div>
+
+@using (Html.BeginForm("Delete", "Diagnoses", new { id = Model.DiagnosisID }, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-danger">Poista</button>
+    <a href="@Url.Action("Diagnoses", "Patients", new { id = Model.PatientID })" class="btn btn-secondary">Takaisin</a>
+}
+
+
+
+
+
+
+@*<h2>Poista</h2>
+
+<h3>Oletko varma, että haluat poistaa diagnoosin?</h3>
+<div>
+    <h4>Diagnoosi</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -45,13 +68,22 @@
 
     </dl>
 
-    @using (Html.BeginForm())
+
+
+    @using (Html.BeginForm("Delete", "Diagnoses", new { id = Model.DiagnosisID }, FormMethod.Post))
     {
         @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
-        </div>
+        <button type="submit" class="btn btn-danger">Poista</button>
+        <a href="@Url.Action("Diagnoses", "Patients", new { id = Model.PatientID })" class="btn btn-secondary">Takaisin</a>
     }
-</div>
+
+    @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Poista" class="btn btn-default" /> |
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
+</div>*@

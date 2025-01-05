@@ -10,7 +10,7 @@
 
 <div>
     <p><strong>Potilas:</strong> @Model.Patients.FirstName @Model.Patients.LastName</p>
-    <p><strong>Hoito tyyli??:</strong> @Model.TreatmentType</p>
+    <p><strong>Hoito tyyli:</strong> @Model.TreatmentType</p>
     <p><strong>Aloitus päivämäärä:</strong> @Model.StartDate.ToShortDateString()</p>
     <p><strong>Lopetus päivämäärä:</strong> @(Model.EndDate.HasValue ? Model.EndDate.Value.ToShortDateString() : "Ongoing")</p>
     <p><strong>Muistiinpanot:</strong> @Model.Notes</p>
@@ -19,10 +19,11 @@
 @using (Html.BeginForm("Delete", "Treatments", new { id = Model.TreatmentID }, FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-    <button type="submit" class="btn btn-danger">Poista</button>
+    <button type="submit" class="btn btn-danger">Poista EI TOIMI VIELÄ</button>
+    <a href="@Url.Action("Treatments", "Patients", new { id = Model.PatientID })" class="btn btn-secondary">Takaisin</a>
 }
 
-<a href="@Url.Action("Treatments", "Patients", new { id = Model.PatientID })" class="btn btn-secondary">Takaisin</a>
+
 
 
 @*<h2>Delete</h2>
