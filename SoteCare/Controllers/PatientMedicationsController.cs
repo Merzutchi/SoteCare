@@ -22,8 +22,9 @@ namespace SoteCare.Controllers
         {
             var patientMedications = db.PatientMedications
                 .Include(p => p.Medications)
-                .Include(p => p.Dosages)  
+                .Include(p => p.Dosages)
                 .Include(p => p.Patients)
+                .Include(p => p.Doctors)  // Ensure that Doctors are included here
                 .OrderByDescending(m => m.PatientMedicationID)
                 .ToList();
 
@@ -97,6 +98,9 @@ namespace SoteCare.Controllers
                 return HttpNotFound("Patient not found.");
             }
 
+            // Pass the doctors list to the view
+            ViewBag.Doctors = new SelectList(db.Doctors, "DoctorID", "FullName");
+
             ViewBag.PatientID = id;
             ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
             ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName");
@@ -108,13 +112,13 @@ namespace SoteCare.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddMedication([Bind(Include = "PatientID,MedicationID,DosageID,StartDate,EndDate")] PatientMedications patientMedications)
+        public ActionResult AddMedication([Bind(Include = "PatientID,MedicationID,DosageID,StartDate,EndDate,DoctorID,RouteOfAdministration")] PatientMedications patientMedications)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    // Save the new medication
+                    // Save the new medication, including the selected DoctorID and RouteOfAdministration
                     db.PatientMedications.Add(patientMedications);
                     db.SaveChanges();
 
@@ -129,8 +133,10 @@ namespace SoteCare.Controllers
                 }
             }
 
+            // Repopulate the ViewBag and return to the form if the model is invalid
             ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", patientMedications.MedicationID);
             ViewBag.DosageID = new SelectList(db.Dosages, "DosageID", "DosageAmount", patientMedications.DosageID);
+            ViewBag.Doctors = new SelectList(db.Doctors, "DoctorID", "FullName", patientMedications.DoctorID); // Ensure the doctor list is passed
 
             return View(patientMedications);
         }

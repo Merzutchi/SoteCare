@@ -110,6 +110,7 @@
           <Property Name="DoctorID" Type="int" />
           <Property Name="DosageID" Type="int" />
           <Property Name="Notes" Type="varchar" MaxLength="255" />
+          <Property Name="RouteOfAdministration" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Patients">
           <Key>
@@ -750,6 +751,7 @@
           <NavigationProperty Name="Dosages" Relationship="PatientRecordModel.FK_PatientMedications_Dosages" FromRole="PatientMedications" ToRole="Dosages" />
           <Property Name="Notes" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Doctors" Relationship="PatientRecordModel.FK_PatientMedications_Doctor" FromRole="PatientMedications" ToRole="Doctors" />
+          <Property Name="RouteOfAdministration" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Patients">
           <Key>
@@ -1421,6 +1423,7 @@
           <EntitySetMapping Name="PatientMedications">
             <EntityTypeMapping TypeName="PatientRecordModel.PatientMedications">
               <MappingFragment StoreEntitySet="PatientMedications">
+                <ScalarProperty Name="RouteOfAdministration" ColumnName="RouteOfAdministration" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
                 <ScalarProperty Name="DosageID" ColumnName="DosageID" />
                 <ScalarProperty Name="DoctorID" ColumnName="DoctorID" />

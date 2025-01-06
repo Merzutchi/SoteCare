@@ -24,6 +24,7 @@ namespace SoteCare.Models
         public Nullable<int> DoctorID { get; set; }
         public Nullable<int> DosageID { get; set; }
         public string Notes { get; set; }
+        public string RouteOfAdministration { get; set; }
     
         public virtual MedicationLists MedicationLists { get; set; }
         public virtual Medications Medications { get; set; }

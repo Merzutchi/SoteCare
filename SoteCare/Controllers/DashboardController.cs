@@ -72,6 +72,6 @@ namespace SoteCare.Controllers
 
             return View();
         }
+
     }
 }
-
