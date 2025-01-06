@@ -34,7 +34,8 @@ namespace SoteCare.Controllers
         {
             // Find the user from the database
             var user = db.Users.SingleOrDefault(u => u.Username == username);
-            if (user != null)
+
+            if (user != null && user.IsActive)
             {
                 // Compare the hashed password with the one stored in the database
                 if (user.Password == HashPassword(password))
@@ -59,42 +60,126 @@ namespace SoteCare.Controllers
                     }
                 }
             }
-            // Show error message if username or password is incorrect
-            ViewBag.ErrorMessage = "Invalid username or password";
+
+            // Show error message if username/password is incorrect or account is inactive
+            ViewBag.ErrorMessage = "Invalid username or password, or your account is inactive.";
             return View();
         }
 
-        // GET: Register
-        public ActionResult Register()
+        // GET: Account/RegisterDoctor
+        public ActionResult RegisterDoctor()
         {
-            return View(new Users()); // Pass an empty Users object to the view
+            return View();
         }
 
-        // POST: Register
+        // POST: Account/RegisterDoctor
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register([Bind(Include = "Username,Password,Role,FullName,Email,IsActive")] Users users)
+        public ActionResult RegisterDoctor(DoctorRegistrationViewModel model)
         {
             if (ModelState.IsValid)
             {
-                // Hash the password before saving
-                users.Password = HashPassword(users.Password);
+                // Create a new User for the doctor
+                var user = new Users
+                {
+                    Username = model.Username,
+                    Password = HashPassword(model.Password),
+                    Role = "Doctor", // Set role as doctor
+                    FullName = model.FullName,  // Save the FullName in Users table
+                    Email = model.Email,
+                    PhoneNumber = model.PhoneNumber,
+                    IsActive = true
+                };
 
-                // Add the new user to the database
-                db.Users.Add(users);
+                db.Users.Add(user);
+                db.SaveChanges();
+
+                // Split FullName into FirstName and LastName
+                var nameParts = model.FullName.Split(' ');
+                var firstName = nameParts[0];
+                var lastName = nameParts.Length > 1 ? nameParts[1] : string.Empty;
+
+                // Now create the doctor record
+                var doctor = new Doctors
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Specialization = model.Specialization,
+                    PhoneNumber = model.PhoneNumber,
+                    Email = model.Email
+                };
+
+                db.Doctors.Add(doctor);
+                db.SaveChanges();
+
+                // After saving doctor details, link the User to the Doctor
+                user.DoctorID = doctor.DoctorID;
                 db.SaveChanges();
 
                 // Log the user in after registration
-                Session["UserID"] = users.UserID;
-                Session["FullName"] = users.FullName;
-                Session["Role"] = users.Role;
+                Session["UserID"] = user.UserID;
+                Session["FullName"] = user.FullName;
+                Session["Role"] = user.Role;
 
-                // Redirect the user to the dashboard based on their role
                 return RedirectToAction("Index", "Dashboard");
             }
 
-            // If validation failed, return to the registration form with error messages
-            return View(users);
+            return View(model);
+        }
+
+        // GET: Account/RegisterNurse
+        public ActionResult RegisterNurse()
+        {
+            return View();
+        }
+
+        // POST: Account/RegisterNurse
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RegisterNurse(NurseRegistrationViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Create a new User for the nurse
+                var user = new Users
+                {
+                    Username = model.Username,
+                    Password = HashPassword(model.Password),
+                    Role = "Nurse", // Set role as nurse
+                    FullName = model.FullName,
+                    Email = model.Email,
+                    PhoneNumber = model.PhoneNumber,
+                    IsActive = true
+                };
+
+                db.Users.Add(user);
+                db.SaveChanges();
+
+                // Now create the nurse record
+                var nurse = new Nurses
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    PhoneNumber = model.PhoneNumber,
+                    Email = model.Email
+                };
+
+                db.Nurses.Add(nurse);
+                db.SaveChanges();
+
+                // After saving nurse details, link the User to the Nurse
+                user.NurseID = nurse.NurseID;
+                db.SaveChanges();
+
+                // Log the user in after registration
+                Session["UserID"] = user.UserID;
+                Session["FullName"] = user.FullName;
+                Session["Role"] = user.Role;
+
+                return RedirectToAction("Index", "Dashboard");
+            }
+
+            return View(model);
         }
 
         // GET: Account/UserProfile
@@ -102,7 +187,7 @@ namespace SoteCare.Controllers
         {
             if (Session["UserID"] == null)
             {
-                return RedirectToAction("Login");  // Redirect to login if user is not logged in
+                return RedirectToAction("Login", "Account");  // Redirect if not logged in
             }
 
             var userId = (int)Session["UserID"];
@@ -113,6 +198,7 @@ namespace SoteCare.Controllers
                 return HttpNotFound();
             }
 
+            // Create ViewModel with the user data
             var userProfileViewModel = new UserProfileViewModel
             {
                 UserID = user.UserID,
@@ -120,7 +206,7 @@ namespace SoteCare.Controllers
                 FullName = user.FullName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                IsActive = user.IsActive ?? false,
+                IsActive = user.IsActive,
                 Role = user.Role
             };
 
@@ -128,13 +214,13 @@ namespace SoteCare.Controllers
             if (user.Role == "Doctor")
             {
                 userProfileViewModel.AssignedPatients = db.Patients
-                    .Where(p => p.DoctorID == user.UserID)  // Assuming DoctorID is the way to relate patients to a doctor
+                    .Where(p => p.DoctorID == user.UserID)
                     .ToList();
             }
             else if (user.Role == "Nurse")
             {
                 userProfileViewModel.AssignedPatients = db.Patients
-                    .Where(p => p.NurseID == user.UserID)  // Assuming NurseID is the way to relate patients to a nurse
+                    .Where(p => p.NurseID == user.UserID)
                     .ToList();
             }
 
@@ -171,20 +257,84 @@ namespace SoteCare.Controllers
             return View(model);
         }
 
+        // GET: Account/EditProfile
+        public ActionResult EditProfile()
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Login");  // Redirect to login if user is not logged in
+            }
+
+            var userId = (int)Session["UserID"];
+            var user = db.Users.Find(userId);
+
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Create and populate the ViewModel 
+            var userProfileViewModel = new UserProfileViewModel
+            {
+                UserID = user.UserID,
+                Username = user.Username,
+                FullName = user.FullName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                IsActive = user.IsActive, //still passes IsActive but don't allow editing
+                Role = user.Role
+            };
+
+            return View(userProfileViewModel);  // Pass the ViewModel to the view
+        }
+
         // POST: Account/EditProfile
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditProfile(Users user)
+        public ActionResult EditProfile(UserProfileViewModel model)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(user).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("UserProfile");
+                var user = db.Users.Find(model.UserID);
+                if (user != null)
+                {
+                    // Update user profile information (but not IsActive)
+                    user.FullName = model.FullName;
+                    user.Email = model.Email;
+                    user.PhoneNumber = model.PhoneNumber;
+
+                    db.SaveChanges();
+
+                    // Redirect back to the profile page after saving changes
+                    return RedirectToAction("UserProfile");
+                }
             }
-            return View(user);
+
+            // If the model is invalid, return the form with error messages
+            return View(model);
         }
-        
+
+        // POST: Account/Deactivate
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeactivateAccount()
+        {
+            var userId = (int)Session["UserID"];
+            var user = db.Users.Find(userId);
+
+            if (user != null)
+            {
+                user.IsActive = false;  // Set the account as inactive
+
+                // Save the changes
+                db.SaveChanges();
+            }
+
+            // Log the user out after deactivating the account
+            Session.Clear();
+            return RedirectToAction("Index", "Home");
+        }
+
         // Logout action to clear the session and redirect to login
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -194,7 +344,7 @@ namespace SoteCare.Controllers
             Session.Clear();
 
             // Redirect the user to the login page after logout
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Index", "Home");
         }
 
         //method to hash password

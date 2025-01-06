@@ -62,7 +62,7 @@
                         <td>
                             @Html.ActionLink("Muokkaa", "Edit", "PatientMedications",
                                 new { id = item.PatientMedicationID },
-                                new { @class = "btn btn-warning btn-sm" })
+                                new { @class = "btn btn-warning btn-sm" }) |
 
                             @Html.ActionLink("Poista", "Delete", "PatientMedications",
                                 new { id = item.PatientMedicationID },
@@ -76,9 +76,9 @@
 
     <!-- Buttons for Adding Medication and Returning to Patient Details -->
     <div class="mt-3">
-        @Html.ActionLink("Lisää lääkitys", "AddMedication", "PatientMedications",
+        @Html.ActionLink("Lisää uusi", "AddMedication", "PatientMedications",
             new { id = ViewBag.PatientID },
-            new { @class = "btn btn-primary" })
+            new { @class = "btn btn-success" })
 
         @Html.ActionLink("Takaisin", "Details", "Patients",
             new { id = ViewBag.PatientID },

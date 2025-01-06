@@ -1,5 +1,6 @@
 ﻿using SoteCare.Attributes;
 using SoteCare.Models;
+using SoteCare.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,72 +17,57 @@ namespace SoteCare.Controllers
         // GET: Dashboard
         public ActionResult Index()
         {
-            // Check if user is logged in (This is redundant because of the AuthorizeUser attribute, 
-            // but left here for context on additional logic you might want to do)
-            if (Session["Role"] == null)
+            // Ensure Session["UserID"] is not null and cast it to int
+            int userId = 0;
+            if (Session["UserID"] != null)
             {
-                return RedirectToAction("Login", "Account");
+                userId = (int)Session["UserID"]; // Cast to int
             }
 
-            string userRole = Session["Role"].ToString();
-            var oneMonthAgo = DateTime.Now.AddMonths(-1);
+            // Fetch role from session
+            string userRole = Session["Role"] as string;
 
-            // General data for all users (Doctors and Nurses)
+            // General data for all users
             var totalPatients = db.Patients.Count();
-            var newPatients = db.Patients
-                                .Where(p => p.DateOfBirth > oneMonthAgo)
-                                .Count();
+            ViewBag.TotalPatients = totalPatients;
+
+            var oneMonthAgo = DateTime.Now.AddMonths(-1);
+            var newPatients = db.Patients.Count(p => p.DateOfBirth > oneMonthAgo);
+            ViewBag.NewPatients = newPatients;
 
             var totalMedications = db.Medications.Count();
-            var activeMedications = db.PatientMedications
-                                .Count(m => m.EndDate == null || m.EndDate > DateTime.Now);
-
-            var activeTreatments = db.Treatment
-                                .Count(t => t.EndDate == null || t.EndDate > DateTime.Now);
-            var completedTreatments = db.Treatment
-                                .Count(t => t.EndDate < DateTime.Now);
-
-            var recentPatients = db.Patients
-                                .OrderByDescending(p => p.PatientID)
-                                .Take(5)
-                                .ToList();
-
-            var doctors = db.Doctors.ToList();  // This line ensures doctors are fetched
-            ViewBag.TotalPatients = totalPatients;
-            ViewBag.NewPatients = newPatients;
             ViewBag.TotalMedications = totalMedications;
-            ViewBag.ActiveMedications = activeMedications;
-            ViewBag.ActiveTreatments = activeTreatments;
-            ViewBag.CompletedTreatments = completedTreatments;
-            ViewBag.RecentPatients = recentPatients;
-            ViewBag.Doctors = doctors;  // Assign doctors to ViewBag
 
-            // Role-based content
+            var activeMedications = db.PatientMedications.Count(m => m.EndDate == null || m.EndDate > DateTime.Now);
+            ViewBag.ActiveMedications = activeMedications;
+
+            var activeTreatments = db.Treatment.Count(t => t.EndDate == null || t.EndDate > DateTime.Now);
+            ViewBag.ActiveTreatments = activeTreatments;
+
+            var completedTreatments = db.Treatment.Count(t => t.EndDate < DateTime.Now);
+            ViewBag.CompletedTreatments = completedTreatments;
+
+            var recentPatients = db.Patients.OrderByDescending(p => p.PatientID).Take(5).ToList();
+            ViewBag.RecentPatients = recentPatients;
+
+            var doctors = db.Doctors.ToList();
+            ViewBag.Doctors = doctors;
+
+            // Role-based data
             if (userRole == "Doctor")
             {
-                // Fetch patients assigned to the current doctor
-                var doctorPatients = db.Patients.Where(p => p.DoctorID == (int)Session["UserID"]).ToList();
+                var doctorPatients = db.Patients.Where(p => p.DoctorID == userId).ToList(); // Use userId here
                 ViewBag.DoctorPatients = doctorPatients;
-
-                // Return the general dashboard view for doctors (same as for others, but with doctor-specific data)
-                return View("Index");
             }
-            else if (userRole == "Nurse")
+
+            if (userRole == "Nurse")
             {
-                // Fetch patients assigned to the current nurse
-                var nursePatients = db.Patients.Where(p => p.NurseID == (int)Session["UserID"]).ToList();
+                var nursePatients = db.Patients.Where(p => p.NurseID == userId).ToList(); // Use userId here
                 ViewBag.NursePatients = nursePatients;
+            }
 
-                // Return the general dashboard view for nurses
-                return View("Index"); // Same view, just with nurse-specific data
-            }
-            else
-            {
-                // Default view for other roles or no roles
-                return View("Index");
-            }
+            return View();
         }
     }
 }
-
 

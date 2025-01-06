@@ -7,17 +7,19 @@
 
 
 
-<h2>Treatment Details</h2>
+<h2>Hoito info</h2>
 
 <div>
-    <p><strong>Patient: </strong>@Model.Patients.FirstName @Model.Patients.LastName</p>
-    <p><strong>Treatment Type: </strong>@Model.TreatmentType</p>
-    <p><strong>Start Date: </strong>@Model.StartDate.ToShortDateString()</p>
-    <p><strong>End Date: </strong>@(Model.EndDate.HasValue ? Model.EndDate.Value.ToShortDateString() : "Ongoing")</p>
-    <p><strong>Notes: </strong>@Model.Notes</p>
+    <p><strong>Potilas: </strong>@Model.Patients.FirstName @Model.Patients.LastName</p>
+    <p><strong>Hoito: </strong>@Model.TreatmentType</p>
+    <p><strong>Aloitus päivämäärä: </strong>@Model.StartDate.ToShortDateString()</p>
+    <p><strong>Lopetus päivämäärä: </strong>@(Model.EndDate.HasValue ? Model.EndDate.Value.ToShortDateString() : "Ongoing")</p>
+    <p><strong>Muistiinpanot: </strong>@Model.Notes</p>
 </div>
 
-@Html.ActionLink("Back to List", "Index")
+<div>
+    <a href="@Url.Action("Treatments", "Patients", new { id = Model.PatientID })" class="btn btn-secondary">Takaisin</a>
+</div>
 
 
 
