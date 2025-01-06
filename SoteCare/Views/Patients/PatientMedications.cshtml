@@ -21,8 +21,8 @@
                     <th>@Html.DisplayNameFor(model => model.DoseStrength)</th>
                     <th>@Html.DisplayNameFor(model => model.StartDate)</th>
                     <th>@Html.DisplayNameFor(model => model.EndDate)</th>
-                    <th>Lääkäri</th>
-                    <th>Antoreitti</th>
+                    <th>Lääkäri</th>  <!-- Prescribing Doctor -->
+                    <th>Antoreitti</th> <!-- Route of Administration -->
                     <th>Muutokset</th>
                 </tr>
             </thead>
@@ -33,12 +33,11 @@
                         <!-- Medication Name -->
                         <td>@(item.Medications?.MedicationName ?? "Unknown Medication")</td>
 
-                        <!-- Dosage and Route -->
+                        <!-- Dosage -->
                         <td>
                             @if (item.Dosages != null)
                             {
                                 <p>@item.Dosages.DosageAmount</p>
-                                <p>@item.Dosages.RouteOfAdministration</p>
                             }
                             else
                             {
@@ -53,17 +52,17 @@
                         <td>@(item.EndDate?.ToString("yyyy-MM-dd") ?? "N/A")</td>
 
                         <!-- Prescribing Doctor -->
-                        <td>@($"{item.Doctors?.FirstName ?? "Unknown"} {item.Doctors?.LastName}")</td>
+                        <td>@(item.Doctors != null ? $"{item.Doctors.FirstName} {item.Doctors.LastName}" : "Unknown Doctor")</td>
+
 
                         <!-- Route of Administration -->
-                        <td>@(item.Dosages?.RouteOfAdministration ?? "N/A")</td>
+                        <td>@(item.RouteOfAdministration ?? "N/A")</td>
 
                         <!-- Actions -->
                         <td>
                             @Html.ActionLink("Muokkaa", "Edit", "PatientMedications",
                                 new { id = item.PatientMedicationID },
                                 new { @class = "btn btn-warning btn-sm" }) |
-
                             @Html.ActionLink("Poista", "Delete", "PatientMedications",
                                 new { id = item.PatientMedicationID },
                                 new { @class = "btn btn-danger btn-sm", onclick = "return confirm('Are you sure you want to delete this medication?');" })

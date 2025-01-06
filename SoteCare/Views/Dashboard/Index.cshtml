@@ -2,137 +2,106 @@
     ViewBag.Title = "Dashboard";
 }
 
-@section styles {
-    <link rel="stylesheet" href="~/Content/dashboard.css" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-}
-
-<div class="container-fluid dashboard-container">
-    <!-- Top Section -->
-    <div class="row mb-4">
-        <div class="col-md-8">
-            <!-- Display logged-in user's full name -->
-            <h1>Welcome, <a href="@Url.Action("UserProfile", "Account")">@Session["FullName"]</a></h1>
-            <p>Your healthcare dashboard</p>
-        </div>
-        <div class="col-md-4 text-right">
-            <!-- User Info -->
-            <div class="card bg-light p-3">
-                <h5>User</h5>
-                <p>
-                    <a href="@Url.Action("UserProfile", "Account")">@Session["FullName"]</a> <!-- Display full name as clickable link -->
-                </p>
-                <form action="@Url.Action("Logout", "Account")" method="post">
-                    @Html.AntiForgeryToken()
-                    <button type="submit" class="btn btn-danger">Logout</button>
-                </form>
-            </div>
+<!-- Top Section -->
+<div class="row mb-4">
+    <div class="col-md-8">
+        <!-- Display logged-in user's full name -->
+        <h1>Welcome, <a href="@Url.Action("UserProfile", "Account")">@Session["FullName"]</a></h1>
+        <p>Your healthcare dashboard</p>
+    </div>
+    <div class="col-md-4 text-right">
+        <!-- User Info -->
+        <div class="card bg-light p-3">
+            <h5>User</h5>
+            <p>
+                <a href="@Url.Action("UserProfile", "Account")">@Session["FullName"]</a> <!-- Display full name as clickable link -->
+            </p>
+            <form action="@Url.Action("Logout", "Account")" method="post">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-danger">Logout</button>
+            </form>
         </div>
     </div>
+</div>
 
-    <!-- Patient Statistics -->
-    <div class="row mb-4">
-        <div class="col-md-6">
-            <div class="card text-center bg-light p-3">
-                <h4>Total Patients</h4>
-                <p class="h2">@ViewBag.TotalPatients</p>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card text-center bg-light p-3">
-                <h4>New Patients</h4>
-                <p class="h2">@ViewBag.NewPatients</p>
-            </div>
+<!-- Patient Statistics -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card text-center bg-light p-3">
+            <h4>Total Patients</h4>
+            <p class="h2">@ViewBag.TotalPatients</p>
         </div>
     </div>
+    <div class="col-md-6">
+        <div class="card text-center bg-light p-3">
+            <h4>New Patients</h4>
+            <p class="h2">@ViewBag.NewPatients</p>
+        </div>
+    </div>
+</div>
 
-    <!-- Main Section -->
-    <div class="row">
-        <!-- Left Column (Recent Patients and Cards) -->
-        <div class="col-md-8">
-            <!-- Recent Patients Table -->
-            <h2 class="section-title">Recent Patients</h2>
-            <table class="table table-striped">
-                <thead>
+<!-- Main Section -->
+<div class="row">
+    <!-- Left Column (Recent Patients and Cards) -->
+    <div class="col-md-8">
+        <!-- Recent Patients Table -->
+        <h2 class="section-title">Recent Patients</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Potilaan Nimi</th>
+                    <th>Syntymäaika</th>
+                    <th>Sukupuoli</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var patient in ViewBag.RecentPatients)
+                {
                     <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Date of Birth</th>
-                        <th>Gender</th>
+                        <td>@patient.PatientID</td>
+                        <td>@patient.FirstName @patient.LastName</td>
+                        <td>@patient.DateOfBirth.ToShortDateString()</td>
+                        <td>@patient.Gender</td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var patient in ViewBag.RecentPatients)
-                    {
-                        <tr>
-                            <td>@patient.PatientID</td>
-                            <td>@patient.FirstName @patient.LastName</td>
-                            <td>@patient.DateOfBirth.ToShortDateString()</td>
-                            <td>@patient.Gender</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                }
+            </tbody>
+        </table>
 
-            <!-- Medication Info and Treatment Cards -->
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card bg-info text-white p-3 mb-3">
-                        <h4>Medication Info</h4>
-                        <p>Number of Medications: @ViewBag.TotalMedications</p>
-                        <p>Active Medications: @ViewBag.ActiveMedications</p>
-                    </div>
+        <!-- Medication Info and Treatment Cards -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card bg-info text-white p-3 mb-3">
+                    <h4>Medication Info</h4>
+                    <p>Number of Medications: @ViewBag.TotalMedications</p>
+                    <p>Active Medications: @ViewBag.ActiveMedications</p>
                 </div>
-                <div class="col-md-6">
-                    <div class="card bg-success text-white p-3 mb-3">
-                        <h4>Treatment Info</h4>
-                        <p>Active Treatments: @ViewBag.ActiveTreatments</p>
-                        <p>Completed Treatments: @ViewBag.CompletedTreatments</p>
-                    </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-success text-white p-3 mb-3">
+                    <h4>Treatment Info</h4>
+                    <p>Active Treatments: @ViewBag.ActiveTreatments</p>
+                    <p>Completed Treatments: @ViewBag.CompletedTreatments</p>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Right Column (Doctor List) -->
-        <div class="col-md-4">
-            <h2 class="section-title">Doctor List</h2>
-            <div class="card bg-light p-3">
-                <ul class="list-unstyled">
-                    @foreach (var doctor in ViewBag.Doctors)
-                    {
-                        <li class="mb-2">
-                            <strong>@doctor.FirstName @doctor.LastName</strong>
-                            <br />
-                            Specialization: @doctor.Specialization
-                        </li>
-                    }
-                </ul>
-            </div>
+    <!-- Right Column (Doctor List) -->
+    <div class="col-md-4">
+        <h2 class="section-title">Doctor List</h2>
+        <div class="card bg-light p-3">
+            <ul class="list-unstyled">
+                @foreach (var doctor in ViewBag.Doctors)
+                {
+                    <li class="mb-2">
+                        <strong>@doctor.FirstName @doctor.LastName</strong>
+                        <br />
+                        Specialization: @doctor.Specialization
+                    </li>
+                }
+            </ul>
         </div>
-
-        @if ((string)Session["Role"] == "Doctor")
-        {
-            <!-- Display patients assigned to the logged-in doctor -->
-            <h3>My Patients</h3>
-            <ul>
-                @foreach (var patient in ViewBag.DoctorPatients)
-                {
-                    <li>@patient.FirstName @patient.LastName</li>
-                }
-            </ul>
-        }
-
-        @if ((string)Session["Role"] == "Nurse")
-        {
-            <!-- Display patients assigned to the logged-in nurse -->
-            <h3>My Patients</h3>
-            <ul>
-                @foreach (var patient in ViewBag.NursePatients)
-                {
-                    <li>@patient.FirstName @patient.LastName</li>
-                }
-            </ul>
-        }
     </div>
 </div>
 
@@ -143,6 +112,7 @@
 
 
 
-
 @*user boxiin pitäs lisätä pfp iconi, ja jtn action juttuja*@
 @*pitää centralize kaikki content on vasemmalla puolella*@
+
+

@@ -4,35 +4,37 @@
     ViewBag.Title = "Delete Medication";
 }
 
-<h2>Delete Medication</h2>
+<h2>Poista lääkitys</h2>
 
-<h3>Are you sure you want to delete this medication?</h3>
+<h3>Olet poistamassa lääkityksen.</h3>
 
 <div>
     <dl class="dl-horizontal">
-        <dt>Medication Name</dt>
-        <dd>@Model.Medications?.MedicationName ?? "N/A"</dd>
+        <dt>Lääke:</dt>
+        <dd>@(Model.Medications != null ? Model.Medications.MedicationName : "N/A")</dd>
 
-        <dt>Start Date</dt>
-        <dd>@Model.StartDate?.ToString("yyyy-MM-dd") ?? "N/A"</dd>
+        <dt>Lääkkeen aloituspäivämäärä:</dt>
+        <dd>@(Model.StartDate.HasValue ? Model.StartDate.Value.ToString("yyyy-MM-dd") : "N/A")</dd>  <!-- Updated to handle null dates -->
 
-        <dt>End Date</dt>
-        <dd>@Model.EndDate?.ToString("yyyy-MM-dd") ?? "N/A"</dd>
+        <dt>Lääkkeen lopetuspäivämäärä:</dt>
+        <dd>@(Model.EndDate.HasValue ? Model.EndDate.Value.ToString("yyyy-MM-dd") : "N/A")</dd>  <!-- Updated to handle null dates -->
 
-        <dt>Patient Name</dt>
-        <dd>@Model.Patients?.FirstName ?? "Unknown"</dd>
+        <dt>Potilaan nimi:</dt>
+        <dd>@($"{Model.Patients?.FirstName} {Model.Patients?.LastName}" ?? "Unknown")</dd>
     </dl>
 
-    @using (Html.BeginForm("Delete", "PatientMedications", FormMethod.Post))
+    @using (Html.BeginForm("Delete", "PatientMedications", new { id = Model.PatientMedicationID }, FormMethod.Post))
     {
         @Html.AntiForgeryToken()
 
-        @Html.HiddenFor(model => model.PatientMedicationID)
+        @Html.HiddenFor(model => model.PatientMedicationID) <!-- Ensures the ID is sent in the form -->
 
         <div>
-            <input type="submit" value="Delete" class="btn btn-danger" />
+            <button type="submit" class="btn btn-danger">Poista EI TOIMI</button>
             @Html.ActionLink("Cancel", "PatientMedications", "Patients", new { id = Model.PatientID }, new { @class = "btn btn-secondary" })
         </div>
     }
+
 </div>
+
 

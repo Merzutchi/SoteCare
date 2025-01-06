@@ -20,7 +20,11 @@ namespace SoteCare.Models
         public string TreatmentDetails { get; set; }
         public Nullable<System.DateTime> SurgeryDate { get; set; }
         public string Notes { get; set; }
+        public Nullable<int> NurseID { get; set; }
+        public Nullable<int> DoctorID { get; set; }
     
         public virtual Patients Patients { get; set; }
+        public virtual Nurses Nurses { get; set; }
+        public virtual Doctors Doctors { get; set; }
     }
 }

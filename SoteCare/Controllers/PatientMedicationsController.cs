@@ -22,8 +22,9 @@ namespace SoteCare.Controllers
         {
             var patientMedications = db.PatientMedications
                 .Include(p => p.Medications)
-                .Include(p => p.Dosages)  
+                .Include(p => p.Dosages)
                 .Include(p => p.Patients)
+                .Include(p => p.Doctors)  // Ensure that Doctors are included here
                 .OrderByDescending(m => m.PatientMedicationID)
                 .ToList();
 
@@ -97,6 +98,9 @@ namespace SoteCare.Controllers
                 return HttpNotFound("Patient not found.");
             }
 
+            // Pass the doctors list to the view
+            ViewBag.Doctors = new SelectList(db.Doctors, "DoctorID", "FullName");
+
             ViewBag.PatientID = id;
             ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
             ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName");
@@ -108,13 +112,13 @@ namespace SoteCare.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddMedication([Bind(Include = "PatientID,MedicationID,DosageID,StartDate,EndDate")] PatientMedications patientMedications)
+        public ActionResult AddMedication([Bind(Include = "PatientID,MedicationID,DosageID,StartDate,EndDate,DoctorID,RouteOfAdministration")] PatientMedications patientMedications)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    // Save the new medication
+                    // Save the new medication, including the selected DoctorID and RouteOfAdministration
                     db.PatientMedications.Add(patientMedications);
                     db.SaveChanges();
 
@@ -129,8 +133,10 @@ namespace SoteCare.Controllers
                 }
             }
 
+            // Repopulate the ViewBag and return to the form if the model is invalid
             ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", patientMedications.MedicationID);
             ViewBag.DosageID = new SelectList(db.Dosages, "DosageID", "DosageAmount", patientMedications.DosageID);
+            ViewBag.Doctors = new SelectList(db.Doctors, "DoctorID", "FullName", patientMedications.DoctorID); // Ensure the doctor list is passed
 
             return View(patientMedications);
         }
@@ -183,10 +189,9 @@ namespace SoteCare.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            // Fetch the specific medication record by ID, including related entities
             var patientMedication = db.PatientMedications
-                .Include(pm => pm.Medications) // Include medication details
-                .Include(pm => pm.Patients)    // Include patient details
+                .Include(pm => pm.Medications)
+                .Include(pm => pm.Patients)
                 .FirstOrDefault(pm => pm.PatientMedicationID == id);
 
             if (patientMedication == null)
@@ -197,30 +202,23 @@ namespace SoteCare.Controllers
             return View(patientMedication);
         }
 
+        // POST: PatientMedications/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            // Check if the PatientMedication exists with the given id
             var patientMedication = db.PatientMedications.Find(id);
 
             if (patientMedication == null)
             {
-                // If medication does not exist, return HTTP Not Found
                 return HttpNotFound("The medication record could not be found.");
             }
 
-            // Remove the medication from the database
             db.PatientMedications.Remove(patientMedication);
-            db.SaveChanges(); // Commit the changes to the database
+            db.SaveChanges();
 
-            // Log the deletion for debugging purposes (optional)
-            Debug.WriteLine($"Medication with ID {id} deleted.");
-
-            // Redirect the user to the PatientMedications page for the corresponding patient
             return RedirectToAction("PatientMedications", "Patients", new { id = patientMedication.PatientID });
         }
-
 
         protected override void Dispose(bool disposing)
         {

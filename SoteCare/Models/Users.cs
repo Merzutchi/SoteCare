@@ -14,21 +14,24 @@ namespace SoteCare.Models
     
     public partial class Users
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Users()
+        {
+            this.Nurses = new HashSet<Nurses>();
+            this.Doctors = new HashSet<Doctors>();
+        }
+    
         public int UserID { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public string Role { get; set; }
-        public string FullName { get; set; }
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
-        public Nullable<System.DateTime> DateOfBirth { get; set; }
         public bool IsActive { get; set; }
         public Nullable<int> DoctorID { get; set; }
         public Nullable<int> NurseID { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
     
-        public virtual Doctors Doctors { get; set; }
-        public virtual Nurses Nurses { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Nurses> Nurses { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Doctors> Doctors { get; set; }
     }
 }

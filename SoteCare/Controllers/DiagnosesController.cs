@@ -61,37 +61,38 @@ namespace SoteCare.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Get the currently logged-in user
+                // Gets the currently logged-in user
                 var currentUser = db.Users.Find(Session["UserID"]);
 
                 if (currentUser == null)
                 {
-                    return RedirectToAction("Login", "Account"); // Redirect if the user session is invalid
+                    return RedirectToAction("Login", "Account"); // Redirects if the user session is invalid
                 }
 
-                // Check if the user is a doctor (Doctor role)
+                // Checks if the user is a doctor (Doctor role)
                 if (currentUser.Role == "Doctor")
                 {
-                    var doctor = db.Doctors.FirstOrDefault(d => d.Users.Any(u => u.UserID == currentUser.UserID));
+                    // Finds the doctor based on the UserID
+                    var doctor = db.Doctors.SingleOrDefault(d => d.UserID == currentUser.UserID);
                     if (doctor != null)
                     {
                         diagnosis.DoctorID = doctor.DoctorID;
                     }
                     else
                     {
-                        diagnosis.DoctorID = null;
+                        diagnosis.DoctorID = null;  // If doctor not found, sets DoctorID to null
                     }
                 }
                 else
                 {
-                    diagnosis.DoctorID = null; // If not a doctor, handle accordingly
+                    diagnosis.DoctorID = null; // If not a doctor, sets DoctorID to null
                 }
 
-                // Save the diagnosis to the database
+                // Saves the diagnosis to the database
                 db.Diagnoses.Add(diagnosis);
                 db.SaveChanges();
 
-                // Redirect to the Diagnoses page for the patient
+                // Redirects to the Diagnoses page for the patient
                 return RedirectToAction("Diagnoses", "Patients", new { id = diagnosis.PatientID });
             }
 

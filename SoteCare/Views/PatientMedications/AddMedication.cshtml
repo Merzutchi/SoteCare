@@ -23,6 +23,20 @@
         @Html.ValidationMessageFor(model => model.DosageID, "", new { @class = "text-danger" })
     </div>
 
+    <!-- Route of Administration -->
+    <div class="form-group">
+        @Html.Label("Route of Administration")
+        @Html.TextBoxFor(model => model.RouteOfAdministration, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.RouteOfAdministration, "", new { @class = "text-danger" })
+    </div>
+
+    <!-- Doctor Dropdown -->
+    <div class="form-group">
+        @Html.LabelFor(model => model.DoctorID, "Doctor")
+        @Html.DropDownListFor(model => model.DoctorID, (SelectList)ViewBag.Doctors, "Select Doctor", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.DoctorID, "", new { @class = "text-danger" })
+    </div>
+
     <div class="form-group">
         @Html.LabelFor(model => model.StartDate, "Start Date")
         @Html.TextBoxFor(model => model.StartDate, new { @type = "date", @class = "form-control" })

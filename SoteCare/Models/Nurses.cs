@@ -18,27 +18,25 @@ namespace SoteCare.Models
         public Nurses()
         {
             this.Patients = new HashSet<Patients>();
-            this.Users = new HashSet<Users>();
+            this.VitalFunctions = new HashSet<VitalFunctions>();
+            this.PatientHistory = new HashSet<PatientHistory>();
         }
     
         public int NurseID { get; set; }
+        public Nullable<int> UserID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
-
-        //FullName property
-        public string FullName
-        {
-            get
-            {
-                return FirstName + " " + LastName;
-            }
-        }
-
+        public bool IsActive { get; set; }
+        public string FullName { get; set; }
+    
+        public virtual Users Users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Patients> Patients { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Users> Users { get; set; }
+        public virtual ICollection<VitalFunctions> VitalFunctions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientHistory> PatientHistory { get; set; }
     }
 }
