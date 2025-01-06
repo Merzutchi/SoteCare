@@ -1,8 +1,8 @@
-﻿@model SoteCare.ViewModels.NurseRegistrationViewModel
+﻿@model SoteCare.ViewModels.DoctorRegistrationViewModel
 
-<h2>Register as Nurse</h2>
+<h2>Register as Doctor</h2>
 
-@using (Html.BeginForm("RegisterNurse", "Account", FormMethod.Post))
+@using (Html.BeginForm("RegisterDoctor", "Account", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
@@ -17,8 +17,13 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.FullName)
-        @Html.TextBoxFor(m => m.FullName, new { @class = "form-control" })
+        @Html.LabelFor(m => m.FirstName)
+        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.LastName)
+        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
     </div>
 
     <div class="form-group">
@@ -32,10 +37,9 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Department)
-        @Html.TextBoxFor(m => m.Department, new { @class = "form-control" })
+        @Html.LabelFor(m => m.Specialization)
+        @Html.TextBoxFor(m => m.Specialization, new { @class = "form-control" })
     </div>
 
-    <button type="submit" class="btn btn-primary">Register as Nurse</button>
+    <button type="submit" class="btn btn-primary">Register as Doctor</button>
 }
-
