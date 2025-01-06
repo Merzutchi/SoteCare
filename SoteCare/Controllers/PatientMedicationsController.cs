@@ -189,10 +189,9 @@ namespace SoteCare.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            // Fetch the specific medication record by ID, including related entities
             var patientMedication = db.PatientMedications
-                .Include(pm => pm.Medications) // Include medication details
-                .Include(pm => pm.Patients)    // Include patient details
+                .Include(pm => pm.Medications)
+                .Include(pm => pm.Patients)
                 .FirstOrDefault(pm => pm.PatientMedicationID == id);
 
             if (patientMedication == null)
@@ -203,30 +202,23 @@ namespace SoteCare.Controllers
             return View(patientMedication);
         }
 
+        // POST: PatientMedications/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            // Check if the PatientMedication exists with the given id
             var patientMedication = db.PatientMedications.Find(id);
 
             if (patientMedication == null)
             {
-                // If medication does not exist, return HTTP Not Found
                 return HttpNotFound("The medication record could not be found.");
             }
 
-            // Remove the medication from the database
             db.PatientMedications.Remove(patientMedication);
-            db.SaveChanges(); // Commit the changes to the database
+            db.SaveChanges();
 
-            // Log the deletion for debugging purposes (optional)
-            Debug.WriteLine($"Medication with ID {id} deleted.");
-
-            // Redirect the user to the PatientMedications page for the corresponding patient
             return RedirectToAction("PatientMedications", "Patients", new { id = patientMedication.PatientID });
         }
-
 
         protected override void Dispose(bool disposing)
         {

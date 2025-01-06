@@ -41,11 +41,9 @@ namespace SoteCare.Controllers
         }
 
         // POST: Nurses/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "NurseID,FirstName,LastName,Department,PhoneNumber,Email")] Nurses nurses)
+        public ActionResult Create([Bind(Include = "NurseID,FirstName,LastName,PhoneNumber,Email")] Nurses nurses)
         {
             if (ModelState.IsValid)
             {
@@ -73,11 +71,9 @@ namespace SoteCare.Controllers
         }
 
         // POST: Nurses/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "NurseID,FirstName,LastName,Department,PhoneNumber,Email")] Nurses nurses)
+        public ActionResult Edit([Bind(Include = "NurseID,FirstName,LastName,PhoneNumber,Email")] Nurses nurses)
         {
             if (ModelState.IsValid)
             {
