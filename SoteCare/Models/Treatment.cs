@@ -25,10 +25,10 @@ namespace SoteCare.Models
         public Nullable<int> MedicationID { get; set; }
         public System.DateTime StartDate { get; set; }
         public Nullable<System.DateTime> EndDate { get; set; }
-        [Display(Name = "Hoito")]
         public string TreatmentType { get; set; }
         public string Notes { get; set; }
         public Nullable<int> DiagnosisID { get; set; }
+        public Nullable<int> DoctorID { get; set; }
     
         public virtual Medications Medications { get; set; }
         public virtual Patients Patients { get; set; }

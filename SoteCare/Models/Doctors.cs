@@ -17,26 +17,32 @@ namespace SoteCare.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Doctors()
         {
-            this.Diagnoses = new HashSet<Diagnoses>();
-            this.PatientMedications = new HashSet<PatientMedications>();
             this.Patients = new HashSet<Patients>();
-            this.Users = new HashSet<Users>();
+            this.TreatmentDetails = new HashSet<TreatmentDetails>();
+            this.Diagnoses = new HashSet<Diagnoses>();
+            this.PatientHistory = new HashSet<PatientHistory>();
+            this.PatientMedications = new HashSet<PatientMedications>();
         }
     
         public int DoctorID { get; set; }
+        public Nullable<int> UserID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Specialization { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
+        public bool IsActive { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Diagnoses> Diagnoses { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PatientMedications> PatientMedications { get; set; }
+        public virtual Users Users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Patients> Patients { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Users> Users { get; set; }
+        public virtual ICollection<TreatmentDetails> TreatmentDetails { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Diagnoses> Diagnoses { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientHistory> PatientHistory { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientMedications> PatientMedications { get; set; }
     }
 }

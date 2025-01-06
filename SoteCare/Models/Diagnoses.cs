@@ -29,8 +29,8 @@ namespace SoteCare.Models
         public Nullable<int> DoctorID { get; set; }
     
         public virtual Patients Patients { get; set; }
-        public virtual Doctors Doctors { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Treatment> Treatment { get; set; }
+        public virtual Doctors Doctors { get; set; }
     }
 }

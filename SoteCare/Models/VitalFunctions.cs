@@ -23,7 +23,9 @@ namespace SoteCare.Models
         public Nullable<int> RespiratoryRate { get; set; }
         public Nullable<decimal> Temperature { get; set; }
         public Nullable<decimal> OxygenSaturation { get; set; }
+        public Nullable<int> NurseID { get; set; }
     
         public virtual Patients Patients { get; set; }
+        public virtual Nurses Nurses { get; set; }
     }
 }
