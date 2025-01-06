@@ -99,14 +99,12 @@ namespace SoteCare.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Ensures FullName is not null or empty before splitting
-                var nameParts = string.IsNullOrWhiteSpace(model.FullName) ? new string[] { "" } : model.FullName.Split(' ');
-                var firstName = nameParts[0];
-                var lastName = nameParts.Length > 1 ? nameParts[1] : string.Empty;
+                // Generate the username by combining first and last name
+                var fullName = model.FirstName + " " + model.LastName;
 
                 var user = new Users
                 {
-                    Username = model.Username,
+                    Username = fullName,  // Set FullName as the Username
                     Password = HashPassword(model.Password),
                     Role = "Doctor",
                     IsActive = true
@@ -118,31 +116,31 @@ namespace SoteCare.Controllers
                 // Create the doctor record in the Doctors table
                 var doctor = new Doctors
                 {
-                    FirstName = firstName,
-                    LastName = lastName,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
                     Specialization = model.Specialization,
                     PhoneNumber = model.PhoneNumber,
                     Email = model.Email,
                     UserID = user.UserID,
-                    FullName = firstName + " " + lastName // Set the FullName explicitly
+                    FullName = fullName // Store FullName in Doctor table as well
                 };
 
                 db.Doctors.Add(doctor);
                 db.SaveChanges();
 
-                // After saving the doctor, link the user to the doctor
+                // Link the user to the doctor record
                 user.DoctorID = doctor.DoctorID;
                 db.SaveChanges();
 
                 // Set session variables
                 Session["UserID"] = user.UserID;
-                Session["FullName"] = doctor.FullName;  // Now FullName is correctly set in the session
+                Session["FullName"] = doctor.FullName;  // FullName will be displayed in the session
                 Session["Role"] = user.Role;
 
                 return RedirectToAction("Index", "Dashboard");
             }
 
-            return View(model);
+            return View(model);  // Return to view if validation fails
         }
 
         // GET: Account/RegisterNurse
@@ -157,58 +155,47 @@ namespace SoteCare.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Check if FullName is provided and not null
-                if (string.IsNullOrWhiteSpace(model.FullName))
-                {
-                    ModelState.AddModelError("FullName", "Full Name is required");
-                    return View(model); // Return to view with error
-                }
+                // Generate the username by combining first and last name
+                var fullName = model.FirstName + " " + model.LastName;
 
-                // Split FullName into FirstName and LastName
-                var nameParts = model.FullName.Split(' ');
-                var firstName = nameParts[0];
-                var lastName = nameParts.Length > 1 ? string.Join(" ", nameParts.Skip(1)) : string.Empty; // Join remaining parts to form last name
-
-                // Create a new User for the nurse
                 var user = new Users
                 {
-                    Username = model.Username,
+                    Username = fullName,  // Set FullName as the Username
                     Password = HashPassword(model.Password),
-                    Role = "Nurse",  // Sets role as Nurse
-                    IsActive = true,
-                    // Optional: Save FullName in the Users table if needed
-                    // FullName = model.FullName
+                    Role = "Nurse",
+                    IsActive = true
                 };
 
                 db.Users.Add(user);
                 db.SaveChanges();
 
-                // Create the nurse record
+                // Create the nurse record in the Nurses table
                 var nurse = new Nurses
                 {
-                    FirstName = firstName,
-                    LastName = lastName,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
                     PhoneNumber = model.PhoneNumber,
                     Email = model.Email,
-                    UserID = user.UserID // Links the user to this nurse
+                    UserID = user.UserID,
+                    FullName = fullName // Store FullName in Nurse table as well
                 };
 
                 db.Nurses.Add(nurse);
                 db.SaveChanges();
 
-                // After saving nurse details, link the User to the Nurse
+                // Link the user to the nurse record
                 user.NurseID = nurse.NurseID;
                 db.SaveChanges();
 
-                // Log the user in after registration
+                // Set session variables
                 Session["UserID"] = user.UserID;
-                Session["FullName"] = nurse.FirstName + " " + nurse.LastName;  // Use FirstName and LastName from Nurse model
+                Session["FullName"] = nurse.FullName;  // FullName will be displayed in the session
                 Session["Role"] = user.Role;
 
                 return RedirectToAction("Index", "Dashboard");
             }
 
-            return View(model); // Return the view with error if model is invalid
+            return View(model);  // Return to view if validation fails
         }
 
         // GET: Account/UserProfile

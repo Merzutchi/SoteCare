@@ -6,7 +6,7 @@
 <div class="row mb-4">
     <div class="col-md-8">
         <!-- Display logged-in user's full name -->
-        <h1>Welcome, <a href="@Url.Action("UserProfile", "Account")">@ViewBag.UserFullName</a></h1>
+        <h1>Welcome, <a href="@Url.Action("UserProfile", "Account")">@Session["FullName"]</a></h1>
         <p>Your healthcare dashboard</p>
     </div>
     <div class="col-md-4 text-right">
