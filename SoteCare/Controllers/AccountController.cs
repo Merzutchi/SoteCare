@@ -115,6 +115,7 @@ namespace SoteCare.Controllers
                 db.Users.Add(user);
                 db.SaveChanges();
 
+                // Create the doctor record in the Doctors table
                 var doctor = new Doctors
                 {
                     FirstName = firstName,
@@ -122,18 +123,20 @@ namespace SoteCare.Controllers
                     Specialization = model.Specialization,
                     PhoneNumber = model.PhoneNumber,
                     Email = model.Email,
-                    FullName = firstName + " " + lastName, // Store FullName
-                    UserID = user.UserID
+                    UserID = user.UserID,
+                    FullName = firstName + " " + lastName // Set the FullName explicitly
                 };
 
                 db.Doctors.Add(doctor);
                 db.SaveChanges();
 
+                // After saving the doctor, link the user to the doctor
                 user.DoctorID = doctor.DoctorID;
                 db.SaveChanges();
 
+                // Set session variables
                 Session["UserID"] = user.UserID;
-                Session["FullName"] = doctor.FullName;  // Use FullName from the Doctor model
+                Session["FullName"] = doctor.FullName;  // Now FullName is correctly set in the session
                 Session["Role"] = user.Role;
 
                 return RedirectToAction("Index", "Dashboard");
@@ -402,6 +405,15 @@ namespace SoteCare.Controllers
 
             // If the model is invalid, returns to the form with error messages
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Logout()
+        {
+            // Clear the session data and log the user out
+            Session.Clear();
+            return RedirectToAction("Index", "Home");
         }
 
         //method to hash password

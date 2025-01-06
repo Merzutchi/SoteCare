@@ -17,15 +17,19 @@ namespace SoteCare.Controllers
         // GET: Dashboard
         public ActionResult Index()
         {
-            // Ensure Session["UserID"] is not null and cast it to int
+            // Ensures Session["UserID"] is not null and cast it to int
             int userId = 0;
             if (Session["UserID"] != null)
             {
-                userId = (int)Session["UserID"]; // Cast to int
+                userId = (int)Session["UserID"];
             }
 
-            // Fetch role from session
+            // Fetches role from session
             string userRole = Session["Role"] as string;
+
+            // Fetches FullName from session
+            string userFullName = Session["FullName"] as string;
+            ViewBag.UserFullName = userFullName;  // Passes to ViewBag
 
             // General data for all users
             var totalPatients = db.Patients.Count();
