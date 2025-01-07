@@ -28,12 +28,10 @@
                 <!-- DateTime Field -->
                 <div class="form-group">
                     <label for="DateTime">Date/Time</label>
-                    <!-- Set the default DateTime value to the current time from the model -->
                     @Html.TextBoxFor(model => model.DateTime, new
                     {
                         @class = "form-control",
-                        type = "datetime-local",
-                        value = Model.DateTime.ToString("yyyy-MM-ddTHH:mm")  // Ensure correct formatting
+                        type = "datetime-local"
                     })
                 </div>
 
@@ -132,7 +130,7 @@
 
     document.addEventListener("DOMContentLoaded", function () {
         // Automatically set current date and time for the DateTime input
-        const dateTimeInput = document.querySelector("input[name='DateTime']");
+        const dateTimeInput = document.querySelector("input[type='datetime-local']");
         if (dateTimeInput) {
             const currentDate = new Date().toISOString().slice(0, 16); // Get the current date and time in the required format
             dateTimeInput.value = currentDate; // Set the value to the current date
