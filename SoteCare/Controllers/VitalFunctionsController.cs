@@ -90,7 +90,7 @@ namespace SoteCare.Controllers
             };
 
             ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
-            return View(vitalFunction); // Send the model with the DateTime set
+            return View(vitalFunction); 
         }
 
         // POST: VitalFunctions/Create

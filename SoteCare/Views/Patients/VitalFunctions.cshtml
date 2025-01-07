@@ -18,9 +18,9 @@
     }
     else
     {
-        <button class="btn btn-success mb-3" id="showAddForm">Add New Vital Function</button>
+        <button class="btn btn-success mb-3" id="showAddForm">Lisää</button>
         <div id="addVitalFunctionForm" style="display: none;">
-            @using (Html.BeginForm("AddVitalFunction", "VitalFunctions", FormMethod.Post, new { id = "addVitalForm" }))
+            @using (Html.BeginForm("Create", "VitalFunctions", FormMethod.Post, new { id = "addVitalForm" }))
             {
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(model => model.PatientID)
@@ -36,36 +36,36 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Heart Rate</label>
+                    <label>Syke</label>
                     <input type="number" name="HeartRate" class="form-control" />
                 </div>
 
                 <div class="form-group">
-                    <label>Systolic BP</label>
+                    <label>Systolinen VP</label>
                     <input type="number" name="SystolicBloodPressure" class="form-control" />
                 </div>
 
                 <div class="form-group">
-                    <label>Diastolic BP</label>
+                    <label>Diastolinen VP</label>
                     <input type="number" name="DiastolicBloodPressure" class="form-control" />
                 </div>
 
                 <div class="form-group">
-                    <label>Respiratory Rate</label>
+                    <label>Hengitystiheys</label>
                     <input type="number" name="RespiratoryRate" class="form-control" />
                 </div>
 
                 <div class="form-group">
-                    <label>Temperature</label>
+                    <label>Ruumiinlämpö</label>
                     <input type="number" step="0.1" name="Temperature" class="form-control" />
                 </div>
 
                 <div class="form-group">
-                    <label>Oxygen Saturation</label>
+                    <label>Happisaturaatio</label>
                     <input type="number" step="0.1" name="OxygenSaturation" class="form-control" />
                 </div>
 
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Lisää</button>
             }
         </div>
 
@@ -129,22 +129,22 @@
 }));
 
     document.addEventListener("DOMContentLoaded", function () {
-        // Automatically set current date and time for the DateTime input
+        // Automatically sets current date and time for the DateTime input
         const dateTimeInput = document.querySelector("input[type='datetime-local']");
         if (dateTimeInput) {
-            const currentDate = new Date().toISOString().slice(0, 16); // Get the current date and time in the required format
-            dateTimeInput.value = currentDate; // Set the value to the current date
+            const currentDate = new Date().toISOString().slice(0, 16); // Gets the current date and time in the required format
+            dateTimeInput.value = currentDate; // Sets the value to the current date
         }
 
-        const addButton = document.getElementById("showAddForm"); // Button to show/hide the form
+        const addButton = document.getElementById("showAddForm"); // Button to show/hide form
         const addForm = document.getElementById("addVitalFunctionForm"); // Form to toggle visibility
 
         if (addButton && addForm) {
             addButton.addEventListener("click", function () {
                 if (addForm.style.display === "none" || addForm.style.display === "") {
-                    addForm.style.display = "block"; // Show the form
+                    addForm.style.display = "block"; // Shows the form
                 } else {
-                    addForm.style.display = "none"; // Hide the form
+                    addForm.style.display = "none"; // Hides the form
                 }
             });
         }
