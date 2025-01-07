@@ -28,14 +28,20 @@
                         @foreach (var patient in Model.AssignedPatients)
                         {
                             <li class="list-group-item">
-                                @patient.FirstName @patient.LastName
+                                <strong>@patient.FirstName @patient.LastName</strong>
+                                <br />
+                                Assigned on: @patient.AssignmentDate.ToShortDateString()
+                                <br />
+                                <strong>Assigned by: </strong>@patient.DoctorName <!-- Display doctor's name -->
                             </li>
                         }
                     </ul>
                 }
                 else
                 {
-                    <p>No patients assigned to you.</p>
+                    <div class="alert alert-warning" role="alert">
+                        No patients assigned to you.
+                    </div>
                 }
             </div>
         </div>
@@ -86,3 +92,18 @@
 <!-- Tab JavaScript (Bootstrap JS, required for tabs to work) -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Persist the active tab on page reload
+        let activeTab = window.location.hash;
+        if (activeTab) {
+            $('#profileTabs a[href="' + activeTab + '"]').tab('show');
+        }
+
+        // Update the URL hash when a tab is clicked
+        $('#profileTabs a').on('shown.bs.tab', function (e) {
+            let tabId = $(e.target).attr('href');
+            history.pushState(null, null, tabId);
+        });
+    });
+</script>

@@ -308,6 +308,39 @@ namespace SoteCare.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult AssignToNurse(int patientId)
+        {
+            var patient = db.Patients.Find(patientId);
+            if (patient == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Fetch available nurses for assignment
+            ViewBag.Nurses = db.Nurses.Select(n => new SelectListItem
+            {
+                Value = n.NurseID.ToString(),
+                Text = n.FirstName + " " + n.LastName
+            }).ToList();
+
+            return View(patient);
+        }
+
+        public ActionResult AssignedPatients()
+        {
+            // Gets the logged-in user's ID from the session (nurse)
+            int nurseId = (int)Session["UserID"];
+
+            // Fetches the list of assigned patients for the current nurse
+            var assignedPatients = db.PatientNurseAssignment
+                .Where(a => a.NurseID == nurseId)  // Filters by the logged-in nurse's ID
+                .Select(a => a.Patients)          // Selects the patients assigned to the nurse
+                .ToList();
+
+            // Passes the assigned patients to the view
+            return View(assignedPatients);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

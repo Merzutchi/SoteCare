@@ -28,9 +28,21 @@
             <h6>Staff</h6>
             <a href="@Url.Action("Index", "Doctors")">Doctors</a>
             <a href="@Url.Action("Index", "Nurses")">Nurses</a>
-            <a href="@Url.Action("Index", "Users")">Users</a>
 
-            <a href="@Url.Action("Logout", "Account")">Logout</a>
+            if (Session["Role"].ToString().Equals("Doctor", StringComparison.OrdinalIgnoreCase))
+            {
+                <!-- Assign Patient to Nurse link for Doctors only -->
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("AssignPatientToNurse", "Doctors")">Assign Patient to Nurse</a>
+                </li>
+            }
+
+            <!-- Logout Form (POST method) -->
+            using (Html.BeginForm("Logout", "Account", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <a href="javascript:void(0);" onclick="this.closest('form').submit();">Logout</a>
+            }
         }
         else
         {
@@ -52,7 +64,6 @@
     @RenderSection("styles", required: false)
 </body>
 </html>
-
 @*<script>
         function myFunction() {
             // Declare variables

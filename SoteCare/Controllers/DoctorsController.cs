@@ -1,4 +1,5 @@
-﻿using SoteCare.Models;
+﻿using SoteCare.Attributes;
+using SoteCare.Models;
 using SoteCare.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -42,8 +43,6 @@ namespace SoteCare.Controllers
         }
 
         // POST: Doctors/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "DoctorID,FirstName,LastName,Specialization,PhoneNumber,Email")] Doctors doctors)
@@ -74,8 +73,6 @@ namespace SoteCare.Controllers
         }
 
         // POST: Doctors/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "DoctorID,FirstName,LastName,Specialization,PhoneNumber,Email")] Doctors doctors)
@@ -113,6 +110,65 @@ namespace SoteCare.Controllers
             db.Doctors.Remove(doctors);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        // GET: AssignPatientToNurse
+        [AuthorizeUser(Role = "Doctor")]
+        public ActionResult AssignPatientToNurse()
+        {
+            // Fetches unassigned patients
+            ViewBag.UnassignedPatients = db.Patients
+                .Where(p => !db.PatientNurseAssignment.Any(a => a.PatientID == p.PatientID)) // Patients not assigned
+                .AsEnumerable() // Converts to memory to allow string formatting
+                .Select(p => new SelectListItem
+                {
+                    Value = p.PatientID.ToString(),
+                    Text = $"{p.FirstName} {p.LastName}" // Formatting in memory
+                })
+                .ToList();
+
+            // Fetches available nurses
+            ViewBag.Nurses = db.Nurses
+                .AsEnumerable() // Converts to memory to allow string formatting
+                .Select(n => new SelectListItem
+                {
+                    Value = n.NurseID.ToString(),
+                    Text = $"{n.FirstName} {n.LastName}" // Formatting in memory
+                })
+                .ToList();
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AssignPatientToNurse(int patientId, int nurseId)
+        {
+            if (ModelState.IsValid)
+            {
+                var existingAssignment = db.PatientNurseAssignment.FirstOrDefault(a => a.PatientID == patientId);
+                if (existingAssignment != null)
+                {
+                    existingAssignment.NurseID = nurseId;
+                    existingAssignment.AssignmentDate = DateTime.Now;
+                }
+                else
+                {
+                    db.PatientNurseAssignment.Add(new PatientNurseAssignment
+                    {
+                        PatientID = patientId,
+                        NurseID = nurseId,
+                        AssignmentDate = DateTime.Now
+                    });
+                }
+
+                db.SaveChanges();
+                TempData["SuccessMessage"] = "Patient successfully assigned to nurse!";
+                return RedirectToAction("AssignPatientToNurse");
+            }
+
+            TempData["ErrorMessage"] = "Failed to assign patient to nurse. Please try again.";
+            return RedirectToAction("AssignPatientToNurse");
         }
 
         protected override void Dispose(bool disposing)

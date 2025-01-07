@@ -203,6 +203,7 @@
       <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\AssignPatientToNurseViewModel.cs" />
     <Compile Include="ViewModels\DoctorRegistrationViewModel.cs" />
     <Compile Include="ViewModels\NurseRegistrationViewModel.cs" />
     <Compile Include="ViewModels\PHViewModel.cs" />
@@ -358,9 +359,12 @@
     <Content Include="Views\Account\EditProfile.cshtml" />
     <Content Include="Views\Account\RegisterDoctor.cshtml" />
     <Content Include="Views\Account\RegisterNurse.cshtml" />
+    <Content Include="Views\Doctors\AssignPatientToNurse.cshtml" />
+    <Content Include="Views\Patients\AssignedPatients.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\PatientNurseAssignments\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

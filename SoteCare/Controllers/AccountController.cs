@@ -199,12 +199,11 @@ namespace SoteCare.Controllers
             return View(model);  // Return to view if validation fails
         }
 
-        // GET: Account/UserProfile
         public ActionResult UserProfile()
         {
             if (Session["UserID"] == null)
             {
-                return RedirectToAction("Login", "Account");  // Redirects if not logged in
+                return RedirectToAction("Login", "Account");  // Redirect if not logged in
             }
 
             var userId = (int)Session["UserID"];
@@ -212,10 +211,9 @@ namespace SoteCare.Controllers
 
             if (user == null)
             {
-                return HttpNotFound();
+                return HttpNotFound();  // If user not found, return 404
             }
 
-            //ViewModel with default values
             var userProfileViewModel = new UserProfileViewModel
             {
                 UserID = user.UserID,
@@ -224,15 +222,15 @@ namespace SoteCare.Controllers
                 Role = user.Role
             };
 
-            // Fetches FullName, Email, and PhoneNumber from Doctors or Nurses based on the role
+            // Fetch additional information based on the user's role
             if (user.Role == "Doctor")
             {
                 var doctor = db.Doctors.SingleOrDefault(d => d.UserID == user.UserID);
                 if (doctor != null)
                 {
                     userProfileViewModel.FullName = doctor.FirstName + " " + doctor.LastName;
-                    userProfileViewModel.Email = doctor.Email;  // From Doctors table
-                    userProfileViewModel.PhoneNumber = doctor.PhoneNumber;  // From Doctors table
+                    userProfileViewModel.Email = doctor.Email;
+                    userProfileViewModel.PhoneNumber = doctor.PhoneNumber;
                 }
             }
             else if (user.Role == "Nurse")
@@ -241,12 +239,28 @@ namespace SoteCare.Controllers
                 if (nurse != null)
                 {
                     userProfileViewModel.FullName = nurse.FirstName + " " + nurse.LastName;
-                    userProfileViewModel.Email = nurse.Email;  // From Nurses table
-                    userProfileViewModel.PhoneNumber = nurse.PhoneNumber;  // From Nurses table
+                    userProfileViewModel.Email = nurse.Email;
+                    userProfileViewModel.PhoneNumber = nurse.PhoneNumber;
+
+                    // Fetch assigned patients for this nurse and their doctor's name
+                    var assignedPatients = db.PatientNurseAssignment
+                        .Where(a => a.NurseID == nurse.NurseID)  // Filter by NurseID
+                        .Select(a => new AssignedPatientViewModel
+                        {
+                            FirstName = a.Patients.FirstName,
+                            LastName = a.Patients.LastName,
+                            AssignmentDate = a.AssignmentDate,
+                            // Make sure we fetch the doctor's name correctly from the related doctor
+                            DoctorName = a.Patients.Doctors.FirstName + " " + a.Patients.Doctors.LastName  // Assuming relationship exists between Patient and Doctor
+                        })
+                        .ToList();
+
+                    // Add the list of assigned patients to the ViewModel
+                    userProfileViewModel.AssignedPatients = assignedPatients;
                 }
             }
 
-            return View(userProfileViewModel);
+            return View(userProfileViewModel);  // Pass the ViewModel to the view
         }
 
         // POST: Account/UserProfile
