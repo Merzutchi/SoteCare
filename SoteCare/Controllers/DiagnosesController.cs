@@ -47,8 +47,16 @@ namespace SoteCare.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            // Pass the PatientID to the view
+            // Fetch the patient
+            var patient = db.Patients.Find(patientID);
+            if (patient == null)
+            {
+                return HttpNotFound("Patient not found.");
+            }
+
+            // Pass the PatientID and the list of Doctors to the view
             ViewBag.PatientID = patientID;
+            ViewBag.DoctorID = new SelectList(db.Doctors, "DoctorID", "FullName"); // Populate the Doctor dropdown
             var diagnosis = new Diagnoses { PatientID = patientID.Value };
 
             return View(diagnosis);
@@ -57,47 +65,50 @@ namespace SoteCare.Controllers
         // POST: Diagnoses/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "DiagnosisName, DiagnosisDate, Notes, PatientID")] Diagnoses diagnosis)
+        public ActionResult Create([Bind(Include = "DiagnosisName, DiagnosisDate, Notes, PatientID, DoctorID")] Diagnoses diagnosis)
         {
             if (ModelState.IsValid)
             {
-                // Gets the currently logged-in user
+                // Get the currently logged-in user
                 var currentUser = db.Users.Find(Session["UserID"]);
 
                 if (currentUser == null)
                 {
-                    return RedirectToAction("Login", "Account"); // Redirects if the user session is invalid
+                    return RedirectToAction("Login", "Account"); // Redirect if the user session is invalid
                 }
 
-                // Checks if the user is a doctor (Doctor role)
+                // Check if the user is a doctor (Doctor role)
                 if (currentUser.Role == "Doctor")
                 {
-                    // Finds the doctor based on the UserID
+                    // Find the doctor based on the UserID
                     var doctor = db.Doctors.SingleOrDefault(d => d.UserID == currentUser.UserID);
                     if (doctor != null)
                     {
+                        // Set the doctor for the diagnosis (either from dropdown or current user)
                         diagnosis.DoctorID = doctor.DoctorID;
                     }
                     else
                     {
-                        diagnosis.DoctorID = null;  // If doctor not found, sets DoctorID to null
+                        diagnosis.DoctorID = null;  // If the doctor is not found, set to null
                     }
                 }
                 else
                 {
-                    diagnosis.DoctorID = null; // If not a doctor, sets DoctorID to null
+                    // If not a doctor, the diagnosis will not have a Doctor assigned
+                    diagnosis.DoctorID = null;
                 }
 
-                // Saves the diagnosis to the database
+                // Save the diagnosis to the database
                 db.Diagnoses.Add(diagnosis);
                 db.SaveChanges();
 
-                // Redirects to the Diagnoses page for the patient
+                // Redirect to the Diagnoses page for the patient
                 return RedirectToAction("Diagnoses", "Patients", new { id = diagnosis.PatientID });
             }
 
-            // If model validation failed, return the diagnosis form
+            // If validation failed, return the diagnosis form
             ViewBag.PatientID = diagnosis.PatientID;
+            ViewBag.DoctorID = new SelectList(db.Doctors, "DoctorID", "FullName", diagnosis.DoctorID);
             return View(diagnosis);
         }
 
