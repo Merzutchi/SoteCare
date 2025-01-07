@@ -131,14 +131,16 @@ namespace SoteCare.Controllers
             ViewBag.PatientID = id;
             ViewBag.PatientName = patient.FirstName + " " + patient.LastName;
 
-            // If no diagnoses found, show a message
-            if (!diagnoses.Any())
+            // Pass diagnoses or a message if none are found
+            if (diagnoses.Any())
+            {
+                return View(diagnoses);
+            }
+            else
             {
                 ViewBag.Message = "No diagnoses found for this patient.";
+                return View();  //returns an empty view with a message if no diagnoses exist
             }
-
-            // Return the view with the list of diagnoses
-            return View(diagnoses);
         }
 
         // GET: PatientMedications for a specific Patient

@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<SoteCare.Models.Diagnoses>
 
-<h2>Potilaan diagnoosit</h2>
+<h2>@ViewBag.PatientName's Diagnoses</h2>
 
 @if (!string.IsNullOrEmpty(ViewBag.Message))
 {
@@ -15,7 +15,7 @@ else
             <tr>
                 <th>@Html.DisplayNameFor(model => model.DiagnosisDate)</th>
                 <th>@Html.DisplayNameFor(model => model.DiagnosisName)</th>
-                <th>@Html.DisplayNameFor(model => model.DoctorName)</th>
+                <th>@Html.DisplayNameFor(model => model.DoctorName)</th>  <!-- Corrected to DoctorName -->
                 <th>Muutokset</th>
             </tr>
         </thead>
@@ -24,8 +24,8 @@ else
             {
                 <tr>
                     <td>@(item.DiagnosisDate?.ToString("d") ?? "Date not available")</td> <!-- Default message if no date -->
-                    <td>@item.DiagnosisName</td> <!-- Show diagnosis name -->
-                    <td>@(item.Doctors != null ? item.Doctors.FullName : "Doctor not assigned")</td>
+                    <td>@item.DiagnosisName</td>
+                    <td>@(item.Doctors != null ? item.Doctors.FullName : "Doctor not assigned")</td> <!-- Handling null check for doctor -->
                     <td>@Html.ActionLink("Poista", "Delete", "Diagnoses", new { id = item.DiagnosisID }, new { @class = "btn btn-danger btn-sm" })</td>
                 </tr>
             }
