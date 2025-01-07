@@ -46,7 +46,7 @@ namespace SoteCare.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Ensure the temperature is correctly parsed and handled
+                // Ensures the temperature is correctly parsed and handled
                 if (Request.Form["Temperature"] != null)
                 {
                     if (decimal.TryParse(Request.Form["Temperature"], NumberStyles.Any, CultureInfo.InvariantCulture, out decimal temperature))
@@ -86,10 +86,11 @@ namespace SoteCare.Controllers
             var vitalFunction = new VitalFunctions
             {
                 PatientID = id.Value,
-                DateTime = DateTime.Now // Set the DateTime to the current time
+                DateTime = DateTime.Now // Sets the DateTime to the current time
             };
 
             ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
+
             return View(vitalFunction); 
         }
 
