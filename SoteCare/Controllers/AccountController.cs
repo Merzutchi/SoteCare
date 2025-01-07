@@ -33,7 +33,7 @@ namespace SoteCare.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(string username, string password)
         {
-            // Find the user from the database
+            // Finds the user from the database
             var user = db.Users.SingleOrDefault(u => u.Username == username);
 
             if (user != null && user.IsActive)
@@ -100,12 +100,12 @@ namespace SoteCare.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Generate the username by combining first and last name
+                // Generates the username by combining first and last name
                 var fullName = model.FirstName + " " + model.LastName;
 
                 var user = new Users
                 {
-                    Username = fullName,  // Set FullName as the Username
+                    Username = fullName,  // Sets FullName as the Username
                     Password = HashPassword(model.Password),
                     Role = "Doctor",
                     IsActive = true
@@ -114,7 +114,7 @@ namespace SoteCare.Controllers
                 db.Users.Add(user);
                 db.SaveChanges();
 
-                // Create the doctor record in the Doctors table
+                // Creates the doctor record in the Doctors table
                 var doctor = new Doctors
                 {
                     FirstName = model.FirstName,
@@ -123,17 +123,17 @@ namespace SoteCare.Controllers
                     PhoneNumber = model.PhoneNumber,
                     Email = model.Email,
                     UserID = user.UserID,
-                    FullName = fullName // Store FullName in Doctor table as well
+                    FullName = fullName // Stores FullName in Doctor table as well
                 };
 
                 db.Doctors.Add(doctor);
                 db.SaveChanges();
 
-                // Link the user to the doctor record
+                // Links the user to the doctor record
                 user.DoctorID = doctor.DoctorID;
                 db.SaveChanges();
 
-                // Set session variables
+                // Sets session variables
                 Session["UserID"] = user.UserID;
                 Session["FullName"] = doctor.FullName;  // FullName will be displayed in the session
                 Session["Role"] = user.Role;
@@ -141,7 +141,7 @@ namespace SoteCare.Controllers
                 return RedirectToAction("Index", "Dashboard");
             }
 
-            return View(model);  // Return to view if validation fails
+            return View(model);  // Returns to view if validation fails
         }
 
         // GET: Account/RegisterNurse
@@ -156,12 +156,12 @@ namespace SoteCare.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Generate the username by combining first and last name
+                // Generates the username by combining first and last name
                 var fullName = model.FirstName + " " + model.LastName;
 
                 var user = new Users
                 {
-                    Username = fullName,  // Set FullName as the Username
+                    Username = fullName,  // Sets FullName as the Username
                     Password = HashPassword(model.Password),
                     Role = "Nurse",
                     IsActive = true
@@ -170,7 +170,7 @@ namespace SoteCare.Controllers
                 db.Users.Add(user);
                 db.SaveChanges();
 
-                // Create the nurse record in the Nurses table
+                // Creates the nurse record in the Nurses table
                 var nurse = new Nurses
                 {
                     FirstName = model.FirstName,
@@ -178,17 +178,17 @@ namespace SoteCare.Controllers
                     PhoneNumber = model.PhoneNumber,
                     Email = model.Email,
                     UserID = user.UserID,
-                    FullName = fullName // Store FullName in Nurse table as well
+                    FullName = fullName // Stores FullName in Nurse table 
                 };
 
                 db.Nurses.Add(nurse);
                 db.SaveChanges();
 
-                // Link the user to the nurse record
+                // Links the user to the nurse record
                 user.NurseID = nurse.NurseID;
                 db.SaveChanges();
 
-                // Set session variables
+                // Sets session variables
                 Session["UserID"] = user.UserID;
                 Session["FullName"] = nurse.FullName;  // FullName will be displayed in the session
                 Session["Role"] = user.Role;
@@ -196,14 +196,14 @@ namespace SoteCare.Controllers
                 return RedirectToAction("Index", "Dashboard");
             }
 
-            return View(model);  // Return to view if validation fails
+            return View(model);  // Returns to view if validation fails
         }
 
         public ActionResult UserProfile()
         {
             if (Session["UserID"] == null)
             {
-                return RedirectToAction("Login", "Account");  // Redirect if not logged in
+                return RedirectToAction("Login", "Account");  // Redirects if not logged in
             }
 
             var userId = (int)Session["UserID"];
@@ -211,7 +211,7 @@ namespace SoteCare.Controllers
 
             if (user == null)
             {
-                return HttpNotFound();  // If user not found, return 404
+                return HttpNotFound();  // If user is not found, returns 404
             }
 
             var userProfileViewModel = new UserProfileViewModel
@@ -222,7 +222,7 @@ namespace SoteCare.Controllers
                 Role = user.Role
             };
 
-            // Fetch additional information based on the user's role
+            // Fetches additional information based on the user's role
             if (user.Role == "Doctor")
             {
                 var doctor = db.Doctors.SingleOrDefault(d => d.UserID == user.UserID);
@@ -242,25 +242,26 @@ namespace SoteCare.Controllers
                     userProfileViewModel.Email = nurse.Email;
                     userProfileViewModel.PhoneNumber = nurse.PhoneNumber;
 
-                    // Fetch assigned patients for this nurse and their doctor's name
+                    // Fetches assigned patients for this nurse
                     var assignedPatients = db.PatientNurseAssignment
-                        .Where(a => a.NurseID == nurse.NurseID)  // Filter by NurseID
+                        .Where(a => a.NurseID == nurse.NurseID)  // Filters by NurseID
+                        .Include(a => a.Patients)  // Ensures related Patients are loaded
+                        .Include(a => a.Patients.Doctors)  // Ensures the Doctor is loaded
                         .Select(a => new AssignedPatientViewModel
                         {
                             FirstName = a.Patients.FirstName,
                             LastName = a.Patients.LastName,
                             AssignmentDate = a.AssignmentDate,
-                            // Make sure we fetch the doctor's name correctly from the related doctor
-                            DoctorName = a.Patients.Doctors.FirstName + " " + a.Patients.Doctors.LastName  // Assuming relationship exists between Patient and Doctor
+                            DoctorName = a.Patients.Doctors.FirstName + " " + a.Patients.Doctors.LastName  // Fetches doctor’s name
                         })
                         .ToList();
 
-                    // Add the list of assigned patients to the ViewModel
+                    // Adds the list of assigned patients to the ViewModel
                     userProfileViewModel.AssignedPatients = assignedPatients;
                 }
             }
 
-            return View(userProfileViewModel);  // Pass the ViewModel to the view
+            return View(userProfileViewModel);  // Passes the ViewModel to the view
         }
 
         // POST: Account/UserProfile
@@ -273,16 +274,16 @@ namespace SoteCare.Controllers
                 var user = db.Users.Find(model.UserID);
                 if (user != null)
                 {
-                    // If password change is requested, update the password
+                    // If password change is requested, updates the password
                     if (!string.IsNullOrEmpty(model.Password) && model.Password == model.ConfirmPassword)
                     {
-                        user.Password = HashPassword(model.Password); // Hashes the password
+                        user.Password = HashPassword(model.Password); // Hashes password
                     }
 
                     // Updates user profile information in the Users table
                     db.SaveChanges();
 
-                    // Updates the doctor or nurse table based on role
+                    // Updates doctor or nurse table based on role
                     if (user.Role == "Doctor")
                     {
                         var doctor = db.Doctors.SingleOrDefault(d => d.UserID == user.UserID);
@@ -291,7 +292,7 @@ namespace SoteCare.Controllers
                             doctor.FirstName = model.FullName.Split(' ')[0];  // Splits full name to first name
                             doctor.LastName = model.FullName.Split(' ').Length > 1 ? model.FullName.Split(' ')[1] : string.Empty;  // Split full name to last name
                             doctor.Email = model.Email;  // Updates email
-                            doctor.PhoneNumber = model.PhoneNumber;  // Updates phone number
+                            doctor.PhoneNumber = model.PhoneNumber;  // Updates phonenumber
                         }
                     }
                     else if (user.Role == "Nurse")
@@ -311,7 +312,7 @@ namespace SoteCare.Controllers
                 }
             }
 
-            // If the model is invalid, return to the form with error messages
+            // If the model is invalid, returns to the form with error messages
             return View(model);
         }
 
@@ -340,7 +341,7 @@ namespace SoteCare.Controllers
                 IsActive = user.IsActive  // Don't allow editing IsActive
             };
 
-            // Load email and phone from the relevant table (Doctors or Nurses)
+            // Loads email and phone from the relevant table (Doctors/Nurses)
             if (user.Role == "Doctor")
             {
                 var doctor = db.Doctors.SingleOrDefault(d => d.UserID == user.UserID);
@@ -360,7 +361,7 @@ namespace SoteCare.Controllers
                 }
             }
 
-            return View(userProfileViewModel);  // Pass the ViewModel to the view
+            return View(userProfileViewModel);  // Passes ViewModel to the view
         }
 
         // POST: Account/EditProfile
@@ -373,7 +374,7 @@ namespace SoteCare.Controllers
                 var user = db.Users.Find(model.UserID);
                 if (user != null)
                 {
-                    // Updates user profile information (but not IsActive)
+                    // Updates users profile information (not IsActive)
                     user.Username = model.Username;
 
                     //updates the FullName, Email, and PhoneNumber in the table (Doctors or Nurses)
@@ -413,7 +414,7 @@ namespace SoteCare.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Logout()
         {
-            // Clear the session data and log the user out
+            // Clears session data and logs the user out
             Session.Clear();
             return RedirectToAction("Index", "Home");
         }
@@ -423,10 +424,10 @@ namespace SoteCare.Controllers
         {
             using (SHA256 sha256Hash = SHA256.Create())
             {
-                // Compute hash from the password string
+                // Computes hash from the password string
                 byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
 
-                // Convert byte array to a hex string
+                // Converts byte array to a hex string
                 StringBuilder builder = new StringBuilder();
                 foreach (byte b in bytes)
                 {
@@ -436,7 +437,7 @@ namespace SoteCare.Controllers
             }
         }
 
-        // Dispose the database context when done
+        // Disposes the database context when done
         protected override void Dispose(bool disposing)
         {
             if (disposing)

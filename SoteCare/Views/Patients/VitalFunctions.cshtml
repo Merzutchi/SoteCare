@@ -5,7 +5,7 @@
 }
 
 <div class="container">
-    <h2>Vital Functions for @Model.PatientName</h2>
+    <h2>Potilaan Elintoiminnot, @Model.PatientName</h2>
 
     @if (ViewBag.NoRecords)
     {
@@ -72,6 +72,48 @@
         </div>
 
         <canvas id="vitalChart" width="800" height="400"></canvas>
+
+        <!-- Table for Vital Function Records -->
+        <div class="mt-4">
+            <h3>Lista potilaan Elintoiminnoista</h3>
+
+            @if (Model.Dates.Count > 0)
+            {
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Pvm/Aika</th>
+                            <th>Syke (bpm)</th>
+                            <th>Systolinen VP (mmHg)</th>
+                            <th>Diastolinen VP (mmHg)</th>
+                            <th>Hengitystiheys (Hengitys/min)</th>
+                            <th>Ruumiinlämpö (°C)</th>
+                            <th>Happisaturaatio (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Dates.Count; i++)
+                        {
+                            <tr>
+                                <td>@Model.Dates[i]</td>
+                                <td>@Model.HeartRates[i]</td>
+                                <td>@Model.SystolicBP[i]</td>
+                                <td>@Model.DiastolicBP[i]</td>
+                                <td>@Model.RespiratoryRates[i]</td>
+                                <td>@Model.Temperatures[i]</td>
+                                <td>@Model.OxygenSaturations[i]</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-warning" role="alert">
+                    No vital function records available for this patient.
+                </div>
+            }
+        </div>
     }
 </div>
 
@@ -117,28 +159,28 @@
                 labels: window.vitalData.Dates,
                 datasets: [
                     {
-                        label: 'Heart Rate',
+                        label: 'Syke',
                         data: window.vitalData.HeartRates,
                         borderColor: 'blue',
                         borderWidth: 2,
                         fill: false
                     },
                     {
-                        label: 'Systolic Blood Pressure',
+                        label: 'Systolinen VP',
                         data: window.vitalData.SystolicBP,
                         borderColor: 'red',
                         borderWidth: 2,
                         fill: false
                     },
                     {
-                        label: 'Diastolic Blood Pressure',
+                        label: 'Diastolinen VP',
                         data: window.vitalData.DiastolicBP,
                         borderColor: 'green',
                         borderWidth: 2,
                         fill: false
                     },
                     {
-                        label: 'Temperature',
+                        label: 'Ruumiinlämpö',
                         data: window.vitalData.Temperatures,
                         borderColor: 'purple',
                         borderWidth: 2,
@@ -158,7 +200,7 @@
                     x: {
                         title: {
                             display: true,
-                            text: 'Date'
+                            text: 'Päivämäärä/Aika'
                         }
                     },
                     y: {
