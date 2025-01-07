@@ -46,6 +46,10 @@
         <AssociationConnector Association="PatientRecordModel.FK_Users_DoctorID" />
         <AssociationConnector Association="PatientRecordModel.FK_Users_NurseID" />
         <AssociationConnector Association="PatientRecordModel.FK__Doctors__UserID__25518C17" />
+        <EntityTypeShape EntityType="PatientRecordModel.PatientNurseAssignment" Width="1.5" PointX="15.125" PointY="2.125" />
+        <AssociationConnector Association="PatientRecordModel.FK_PatientNurseAssignment_Doctor" />
+        <AssociationConnector Association="PatientRecordModel.FK_PatientNurseAssignment_Nurse" />
+        <AssociationConnector Association="PatientRecordModel.FK_PatientNurseAssignment_Patient" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

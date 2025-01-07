@@ -17,61 +17,61 @@ namespace SoteCare.Controllers
         // GET: Dashboard
         public ActionResult Index()
         {
-            // Ensures Session["UserID"] is not null and cast it to int
+            // Ensure the user is logged in and retrieve their ID
             int userId = 0;
             if (Session["UserID"] != null)
             {
                 userId = (int)Session["UserID"];
             }
 
-            // Fetches role from session
+            // Fetch role and FullName from session
             string userRole = Session["Role"] as string;
-
-            // Fetches FullName from session
             string userFullName = Session["FullName"] as string;
-            ViewBag.UserFullName = userFullName;  // Passes to ViewBag
+
+            // Pass FullName to ViewBag for display in the dashboard
+            ViewBag.UserFullName = userFullName;
 
             // General data for all users
-            var totalPatients = db.Patients.Count();
-            ViewBag.TotalPatients = totalPatients;
+            ViewBag.TotalPatients = db.Patients.Count();
 
-            var oneMonthAgo = DateTime.Now.AddMonths(-1);
-            var newPatients = db.Patients.Count(p => p.DateOfBirth > oneMonthAgo);
-            ViewBag.NewPatients = newPatients;
+            // Fix for AddMonths: Calculate the date in memory
+            DateTime oneMonthAgo = DateTime.Now.AddMonths(-1);
+            ViewBag.NewPatients = db.Patients.Count(p => p.DateOfBirth > oneMonthAgo);
 
-            var totalMedications = db.Medications.Count();
-            ViewBag.TotalMedications = totalMedications;
+            ViewBag.TotalMedications = db.Medications.Count();
+            ViewBag.ActiveMedications = db.PatientMedications.Count(m => m.EndDate == null || m.EndDate > DateTime.Now);
+            ViewBag.ActiveTreatments = db.Treatment.Count(t => t.EndDate == null || t.EndDate > DateTime.Now);
+            ViewBag.CompletedTreatments = db.Treatment.Count(t => t.EndDate < DateTime.Now);
 
-            var activeMedications = db.PatientMedications.Count(m => m.EndDate == null || m.EndDate > DateTime.Now);
-            ViewBag.ActiveMedications = activeMedications;
+            // Recent patients for dashboard display
+            ViewBag.RecentPatients = db.Patients
+                .OrderByDescending(p => p.PatientID)
+                .Take(5)
+                .ToList();
 
-            var activeTreatments = db.Treatment.Count(t => t.EndDate == null || t.EndDate > DateTime.Now);
-            ViewBag.ActiveTreatments = activeTreatments;
+            // List of all doctors for general dashboard data
+            ViewBag.Doctors = db.Doctors.ToList();
 
-            var completedTreatments = db.Treatment.Count(t => t.EndDate < DateTime.Now);
-            ViewBag.CompletedTreatments = completedTreatments;
-
-            var recentPatients = db.Patients.OrderByDescending(p => p.PatientID).Take(5).ToList();
-            ViewBag.RecentPatients = recentPatients;
-
-            var doctors = db.Doctors.ToList();
-            ViewBag.Doctors = doctors;
-
-            // Role-based data
+            // Role-specific data
             if (userRole == "Doctor")
             {
-                var doctorPatients = db.Patients.Where(p => p.DoctorID == userId).ToList(); // Use userId here
+                // Fetch patients assigned to the logged-in doctor
+                var doctorPatients = db.Patients
+                    .Where(p => p.DoctorID == userId)
+                    .ToList();
                 ViewBag.DoctorPatients = doctorPatients;
             }
-
-            if (userRole == "Nurse")
+            else if (userRole == "Nurse")
             {
-                var nursePatients = db.Patients.Where(p => p.NurseID == userId).ToList(); // Use userId here
+                // Fetch patients assigned to the logged-in nurse
+                var nursePatients = db.PatientNurseAssignment
+                    .Where(a => a.NurseID == userId)  // Match NurseID with logged-in user ID
+                    .Select(a => a.Patients)          // Fetch the related Patient records
+                    .ToList();
                 ViewBag.NursePatients = nursePatients;
             }
 
             return View();
         }
-
     }
 }

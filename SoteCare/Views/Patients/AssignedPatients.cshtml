@@ -1,0 +1,25 @@
+﻿@model IEnumerable<SoteCare.Models.Patients>
+
+<h2>Assigned Patients</h2>
+
+@if (Model.Any())
+{
+    <ul class="list-group">
+        @foreach (var patient in Model)
+        {
+            <li class="list-group-item">
+                <strong>@patient.FirstName @patient.LastName</strong>
+                <br />
+                <span>Phone: @patient.PhoneNumber</span>
+                <br />
+                <span>Email: @patient.Email</span>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <div class="alert alert-warning">
+        No patients assigned to you.
+    </div>
+}

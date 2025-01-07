@@ -21,6 +21,13 @@ namespace SoteCare.ViewModels
         public string ConfirmPassword { get; set; }
 
         // Assigned Patients
-        public List<SoteCare.Models.Patients> AssignedPatients { get; set; }
+        public List<AssignedPatientViewModel> AssignedPatients { get; set; }
     }
-}
+    public class AssignedPatientViewModel
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public DateTime AssignmentDate { get; set; }
+        public string DoctorName { get; set; }  // Doctor's name who assigned the patient
+    }
+}   
