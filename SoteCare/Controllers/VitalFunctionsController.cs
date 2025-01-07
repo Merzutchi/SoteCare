@@ -24,7 +24,44 @@ namespace SoteCare.Controllers
             var vitalFunctions = db.VitalFunctions.Include(v => v.Patients);
             return View(vitalFunctions.ToList());
         }
-      
+
+        // GET: Patients/VitalFunctions
+        public ActionResult VitalFunctions(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var vitalFunctions = db.VitalFunctions
+                .Where(v => v.PatientID == id)
+                .OrderBy(v => v.DateTime)
+                .ToList();
+
+            var patient = db.Patients.Find(id);
+            if (patient == null)
+            {
+                return HttpNotFound("Patient not found.");
+            }
+
+            var viewModel = new VFunctionChart
+            {
+                PatientID = id.Value,
+                PatientName = $"{patient.FirstName} {patient.LastName}",
+                Dates = vitalFunctions.Select(v => v.DateTime.ToString("dd-MM-yyyy HH:mm")).ToList(),
+                HeartRates = vitalFunctions.Select(v => v.HeartRate ?? 0).ToList(),
+                SystolicBP = vitalFunctions.Select(v => v.SystolicBloodPressure ?? 0).ToList(),
+                DiastolicBP = vitalFunctions.Select(v => v.DiastolicBloodPressure ?? 0).ToList(),
+                RespiratoryRates = vitalFunctions.Select(v => v.RespiratoryRate ?? 0).ToList(),
+                Temperatures = vitalFunctions.Select(v => v.Temperature ?? 0).ToList(),
+                OxygenSaturations = vitalFunctions.Select(v => v.OxygenSaturation ?? 0).ToList()
+            };
+
+            ViewBag.PatientID = id;
+            ViewBag.NoRecords = !vitalFunctions.Any();
+            return View(viewModel);
+        }
+
         // GET: VitalFunctions/Details/5
         public ActionResult Details(int? id)
         {
