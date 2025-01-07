@@ -174,7 +174,7 @@ namespace SoteCare.Controllers
             return View(patientMedications);
         }
 
-        // GET: VitalFunctions
+        // GET: Patients/VitalFunctions
         public ActionResult VitalFunctions(int? id)
         {
             if (id == null)
