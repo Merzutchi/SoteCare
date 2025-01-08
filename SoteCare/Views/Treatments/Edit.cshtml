@@ -66,17 +66,16 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Tallenna" class="btn btn-default" />
-            </div>
-        </div>
     </div>
 }
 
-<div>
-    <a href="@Url.Action("Treatments", "Patients", new { id = ViewBag.PatientID })" class="btn btn-secondary">Takaisin</a>
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" value="Tallenna" class="btn btn-primary" />
+        @Html.ActionLink("Takaisin", "Treatments", "Patients", new { id = Model.PatientID }, new { @class = "btn btn-secondary" })
+    </div>
 </div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

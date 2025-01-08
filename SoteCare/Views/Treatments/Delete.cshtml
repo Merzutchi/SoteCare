@@ -19,7 +19,7 @@
 @using (Html.BeginForm("Delete", "Treatments", new { id = Model.TreatmentID }, FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-    <button type="submit" class="btn btn-danger">Poista EI TOIMI VIELÄ</button>
+    <button type="submit" class="btn btn-danger">Poista</button>
     <a href="@Url.Action("Treatments", "Patients", new { id = Model.PatientID })" class="btn btn-secondary">Takaisin</a>
 }
 

@@ -164,10 +164,20 @@ namespace SoteCare.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Diagnoses diagnosis = db.Diagnoses.Find(id);
-            db.Diagnoses.Remove(diagnosis);
-            db.SaveChanges();
-            return RedirectToAction("Diagnoses", "Patients", new { id = diagnosis.PatientID });
+            if (diagnosis != null)
+            {
+                int patientId = (int)diagnosis.PatientID; // Get the PatientID before deleting
+                db.Diagnoses.Remove(diagnosis);
+                db.SaveChanges();
+
+                // Redirect to the patient's diagnoses page
+                return RedirectToAction("Diagnoses", "Patients", new { id = patientId });
+            }
+
+            // If the diagnose is not found, redirect to the general index as a fallback
+            return RedirectToAction("Index");
         }
+        
 
         protected override void Dispose(bool disposing)
         {
