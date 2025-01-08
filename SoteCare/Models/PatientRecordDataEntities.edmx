@@ -1236,7 +1236,7 @@
           <Property Name="DoctorID" Type="Int32" />
           <Property Name="NurseID" Type="Int32" />
           <NavigationProperty Name="Doctors" Relationship="PatientRecordModel.FK__Doctors__UserID__25518C17" FromRole="Users" ToRole="Doctors" />
-        </EntityType>
+          </EntityType>
         <EntityType Name="Doctors">
           <Key>
             <PropertyRef Name="DoctorID" />

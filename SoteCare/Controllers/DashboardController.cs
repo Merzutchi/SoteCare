@@ -17,7 +17,6 @@ namespace SoteCare.Controllers
         // GET: Dashboard
         public ActionResult Index()
         {
-            // Ensure the user is logged in and retrieve their ID
             int userId = 0;
             if (Session["UserID"] != null)
             {
@@ -60,6 +59,26 @@ namespace SoteCare.Controllers
                     .Where(p => p.DoctorID == userId)
                     .ToList();
                 ViewBag.DoctorPatients = doctorPatients;
+
+                // Fetch recent observations created by the logged-in doctor
+                var doctorObservations = db.Observations
+                    .Where(o => o.CreatedBy == userId)
+                    .OrderByDescending(o => o.CreatedDate)
+                    .Take(5) // Limits to the 5 most recent observations
+                    .Select(o => new ObservationViewModel
+                    {
+                        ObservationID = o.ObservationID,
+                        ObservationText = o.ObservationText,
+                        // Fetch the creator's full name from Doctors table
+                        CreatedByName = db.Users
+                            .Where(u => u.UserID == o.CreatedBy)
+                            .Join(db.Doctors, u => u.UserID, d => d.UserID, (u, d) => new { u, d })
+                            .Select(x => x.d.FirstName + " " + x.d.LastName) // Accessing the Doctor's FirstName and LastName
+                            .FirstOrDefault(),
+                        CreatedDate = o.CreatedDate ?? DateTime.Now
+                    })
+                    .ToList();
+                ViewBag.Observations = doctorObservations;
             }
             else if (userRole == "Nurse")
             {
@@ -69,6 +88,26 @@ namespace SoteCare.Controllers
                     .Select(a => a.Patients)          // Fetch the related Patient records
                     .ToList();
                 ViewBag.NursePatients = nursePatients;
+
+                // Fetch recent observations assigned to the logged-in nurse
+                var nurseObservations = db.Observations
+                    .Where(o => o.AssignedTo == userId)
+                    .OrderByDescending(o => o.CreatedDate)
+                    .Take(5) // Limits to the 5 most recent observations
+                    .Select(o => new ObservationViewModel
+                    {
+                        ObservationID = o.ObservationID,
+                        ObservationText = o.ObservationText,
+                        // Fetch the creator's full name from Nurses table
+                        CreatedByName = db.Users
+                            .Where(u => u.UserID == o.CreatedBy)
+                            .Join(db.Nurses, u => u.UserID, n => n.UserID, (u, n) => new { u, n })
+                            .Select(x => x.n.FirstName + " " + x.n.LastName) // Accessing the Nurse's FirstName and LastName
+                            .FirstOrDefault(),
+                        CreatedDate = o.CreatedDate ?? DateTime.Now
+                    })
+                    .ToList();
+                ViewBag.Observations = nurseObservations;
             }
 
             return View();
