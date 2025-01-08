@@ -84,7 +84,7 @@ namespace SoteCare.Controllers
             }
 
             // Shows error message if username/password is incorrect or account is inactive
-            ViewBag.ErrorMessage = "Invalid username or password, or your account is inactive.";
+            ViewBag.ErrorMessage = "Virheellinen käyttäjänimi tai salasana, tai sinun käyttäjänimi ei ole käytössä.";
             return View();
         }
 

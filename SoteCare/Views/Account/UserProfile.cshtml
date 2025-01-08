@@ -5,13 +5,13 @@
 <!-- Tab Navigation -->
 <ul class="nav nav-tabs" id="profileTabs" role="tablist">
     <li class="nav-item">
-        <a class="nav-link active" id="assigned-patients-tab" data-toggle="tab" href="#assigned-patients" role="tab" aria-controls="assigned-patients" aria-selected="true">Assigned Patients</a>
+        <a class="nav-link active" id="assigned-patients-tab" data-toggle="tab" href="#assigned-patients" role="tab" aria-controls="assigned-patients" aria-selected="true">Määrätyt potilaat</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="personal-info-tab" data-toggle="tab" href="#personal-info" role="tab" aria-controls="personal-info" aria-selected="false">Personal Info</a>
+        <a class="nav-link" id="personal-info-tab" data-toggle="tab" href="#personal-info" role="tab" aria-controls="personal-info" aria-selected="false">Henkilötiedot</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="change-password-tab" data-toggle="tab" href="#change-password" role="tab" aria-controls="change-password" aria-selected="false">Change Password</a>
+        <a class="nav-link" id="change-password-tab" data-toggle="tab" href="#change-password" role="tab" aria-controls="change-password" aria-selected="false">Vaihda salasana</a>
     </li>
 </ul>
 
@@ -21,7 +21,7 @@
     <div class="tab-pane fade show active" id="assigned-patients" role="tabpanel" aria-labelledby="assigned-patients-tab">
         <div class="card mt-3">
             <div class="card-body">
-                <h5 class="card-title">Assigned Patients</h5>
+                <h5 class="card-title">Määrätyt potilaat</h5>
                 @if (Model.AssignedPatients != null && Model.AssignedPatients.Count > 0)
                 {
                     <ul class="list-group">
@@ -30,9 +30,9 @@
                             <li class="list-group-item">
                                 <strong>@patient.FirstName @patient.LastName</strong>
                                 <br />
-                                Assigned on: @patient.AssignmentDate.ToShortDateString()
+                                Määräyksen päivämäärä: @patient.AssignmentDate.ToShortDateString()
                                 <br />
-                                <strong>Assigned by: </strong>@patient.DoctorName  <!-- Displays doctor's name -->
+                                <strong>Määrännyt: </strong>@patient.DoctorName  <!-- Displays doctor's name -->
                             </li>
                         }
                     </ul>
@@ -40,7 +40,7 @@
                 else
                 {
                     <div class="alert alert-warning" role="alert">
-                        No patients assigned to you.
+                        Ei määrättyjä potilaita.
                     </div>
                 }
             </div>
@@ -51,14 +51,14 @@
     <div class="tab-pane fade" id="personal-info" role="tabpanel" aria-labelledby="personal-info-tab">
         <div class="card mt-3">
             <div class="card-body">
-                <h5 class="card-title">Personal Information</h5>
-                <p><strong>Username:</strong> @Model.Username</p>
-                <p><strong>Full Name:</strong> @Model.FullName</p>
-                <p><strong>Email:</strong> @Model.Email</p>
-                <p><strong>Phone Number:</strong> @Model.PhoneNumber</p>
-                <p><strong>Role:</strong> @Model.Role</p>
-                <p><strong>Status:</strong> @(Model.IsActive ? "Active" : "Inactive")</p>
-                <a href="@Url.Action("EditProfile", "Account")" class="btn btn-primary">Edit Profile</a>
+                <h5 class="card-title">Henkilötiedot</h5>
+                <p><strong>Käyttäjätunnus:</strong> @Model.Username</p>
+                <p><strong>Koko nimi:</strong> @Model.FullName</p>
+                <p><strong>Sähköposti:</strong> @Model.Email</p>
+                <p><strong>Puhelinnumero:</strong> @Model.PhoneNumber</p>
+                <p><strong>Rooli:</strong> @Model.Role</p>
+                <p><strong>Status:</strong> @(Model.IsActive ? "Aktiivinen" : "Ei aktiivinen")</p>
+                <a href="@Url.Action("EditProfile", "Account")" class="btn btn-primary">Muokkaa</a>
             </div>
         </div>
     </div>
@@ -67,22 +67,24 @@
     <div class="tab-pane fade" id="change-password" role="tabpanel" aria-labelledby="change-password-tab">
         <div class="card mt-3">
             <div class="card-body">
-                <h5 class="card-title">Change Password</h5>
+                <h5 class="card-title">Vaihda salasana</h5>
                 @using (Html.BeginForm("UserProfile", "Account", FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
 
                     <div class="form-group">
-                        @Html.LabelFor(m => m.Password, "New Password")
+                        @Html.LabelFor(m => m.Password, "Uusi salasana")
                         @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(m => m.ConfirmPassword, "Confirm Password")
+                        @Html.LabelFor(m => m.ConfirmPassword, "Vahvista salasana")
                         @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
                     </div>
 
-                    <button type="submit" class="btn btn-success">Change Password</button>
+                    <div class="card mt-3">
+                        <button type="submit" class="btn btn-success">Vaihda salasana</button>
+                    </div>
                 }
             </div>
         </div>

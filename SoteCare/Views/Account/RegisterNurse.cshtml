@@ -1,6 +1,6 @@
 ﻿@model SoteCare.ViewModels.NurseRegistrationViewModel
 
-<h2>Register as Nurse</h2>
+<h2>Rekisteröidy hoitajana</h2>
 
 @using (Html.BeginForm("RegisterNurse", "Account", FormMethod.Post))
 {
@@ -31,5 +31,7 @@
         @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
     </div>
 
-    <button type="submit" class="btn btn-primary">Register as Nurse</button>
+    <div class="mt-lg-1">
+        <button type="submit" class="btn btn-info">Rekisteröidy</button>
+    </div>
 }

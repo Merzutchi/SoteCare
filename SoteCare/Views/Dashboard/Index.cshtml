@@ -6,19 +6,19 @@
 <div class="row mb-4">
     <div class="col-md-8">
         <!-- Display logged-in user's full name -->
-        <h1>Welcome, <a href="@Url.Action("UserProfile", "Account")">@Session["FullName"]</a></h1>
-        <p>Your healthcare dashboard</p>
+        <h1>Tervetuloa, <a href="@Url.Action("UserProfile", "Account")">@Session["FullName"]</a></h1>
+        <p>Tässä SoteCare dashboard</p>
     </div>
     <div class="col-md-4 text-right">
         <!-- User Info -->
-        <div class="card bg-light p-3">
-            <h5>User</h5>
+        <div class="text-center card bg-light p-3">
+            <h5>Käyttäjä</h5>
             <p>
                 <a href="@Url.Action("UserProfile", "Account")">@Session["FullName"]</a> <!-- Display full name as clickable link -->
             </p>
             <form action="@Url.Action("Logout", "Account")" method="post">
                 @Html.AntiForgeryToken()
-                <button type="submit" class="btn btn-danger">Logout</button>
+                <button type="submit" class="btn btn-danger">Kirjaudu ulos</button>
             </form>
         </div>
     </div>
@@ -28,13 +28,13 @@
 <div class="row mb-4">
     <div class="col-md-6">
         <div class="card text-center bg-light p-3">
-            <h4>Total Patients</h4>
+            <h4>Potilaita yhteensä</h4>
             <p class="h2">@ViewBag.TotalPatients</p>
         </div>
     </div>
     <div class="col-md-6">
         <div class="card text-center bg-light p-3">
-            <h4>New Patients</h4>
+            <h4>Uudet potilaat</h4>
             <p class="h2">@ViewBag.NewPatients</p>
         </div>
     </div>
@@ -70,34 +70,34 @@
 
         <!-- Medication Info and Treatment Cards -->
         <div class="row">
-            <div class="col-md-6">
+            <div class="text-center col-md-6">
                 <div class="card bg-info text-white p-3 mb-3">
-                    <h4>Medication Info</h4>
-                    <p>Number of Medications: @ViewBag.TotalMedications</p>
-                    <p>Active Medications: @ViewBag.ActiveMedications</p>
+                    <h4>Lääke Info</h4>
+                    <p>Lääkitysten määrä: @ViewBag.TotalMedications</p>
+                    <p>Aktiiviset lääkitykset: @ViewBag.ActiveMedications</p>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="text-center col-md-6">
                 <div class="card bg-success text-white p-3 mb-3">
-                    <h4>Treatment Info</h4>
-                    <p>Active Treatments: @ViewBag.ActiveTreatments</p>
-                    <p>Completed Treatments: @ViewBag.CompletedTreatments</p>
+                    <h4>Hoito Info</h4>
+                    <p>Aktiiviset hoidot: @ViewBag.ActiveTreatments</p>
+                    <p>Valmistuneet hoidot: @ViewBag.CompletedTreatments</p>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Right Column (Doctor List) -->
-    <div class="col-md-4">
-        <h2 class="section-title">Doctor List</h2>
-        <div class="card bg-light p-3">
+    <div class="text-center col-md-4">
+        <h2 class="section-title">Lääkäri lista</h2>
+        <div class="card text-center bg-light  p-3">
             <ul class="list-unstyled">
                 @foreach (var doctor in ViewBag.Doctors)
                 {
                     <li class="mb-2">
                         <strong>@doctor.FirstName @doctor.LastName</strong>
                         <br />
-                        Specialization: @doctor.Specialization
+                        Erikoisuus: @doctor.Specialization
                     </li>
                 }
             </ul>

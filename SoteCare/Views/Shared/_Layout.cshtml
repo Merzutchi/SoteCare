@@ -18,38 +18,38 @@
         @if (Session["Role"] != null)
         {
             <a href="@Url.Action("Index", "Dashboard")">Dashboard</a>
-            <h6>Patients</h6>
-            <a href="@Url.Action("Index", "Patients")">Patients</a>
+            <h6>Potilaat</h6>
+            <a href="@Url.Action("Index", "Patients")">Potilaat</a>
 
-            <h6>Medications</h6>
-            <a href="@Url.Action("Index", "Medications")">Medications</a>
-            <a href="@Url.Action("Index", "MedicationLists")">Medication Lists</a>
+            <h6>Lääkkeet</h6>
+            <a href="@Url.Action("Index", "Medications")">Lääkkeet</a>
+            <a href="@Url.Action("Index", "MedicationLists")">Medication Lists pois?</a>
 
-            <h6>Staff</h6>
-            <a href="@Url.Action("Index", "Doctors")">Doctors</a>
-            <a href="@Url.Action("Index", "Nurses")">Nurses</a>
+            <h6>Henkilökunta</h6>
+            <a href="@Url.Action("Index", "Doctors")">Lääkärit</a>
+            <a href="@Url.Action("Index", "Nurses")">Hoitajat</a>
 
             if (Session["Role"].ToString().Equals("Doctor", StringComparison.OrdinalIgnoreCase))
             {
                 <!-- Assign Patient to Nurse link for Doctors only -->
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("AssignPatientToNurse", "Doctors")">Assign Patient to Nurse</a>
-                </li>
+                <div class="nav-item">
+                    <a class="nav-link" href="@Url.Action("AssignPatientToNurse", "Doctors")">Määritä potilas hoitajalle</a>
+                </div>
             }
 
             <!-- Logout Form (POST method) -->
             using (Html.BeginForm("Logout", "Account", FormMethod.Post))
             {
                 @Html.AntiForgeryToken()
-                <a href="javascript:void(0);" onclick="this.closest('form').submit();">Logout</a>
+                <a href="javascript:void(0);" onclick="this.closest('form').submit();">Kirjaudu ulos</a>
             }
         }
         else
         {
             <!-- Links visible to logged-out users -->
-            <a href="@Url.Action("Login", "Account")">Login</a>
-            <a href="@Url.Action("RegisterDoctor", "Account")">Register as Doctor</a>
-            <a href="@Url.Action("RegisterNurse", "Account")">Register as Nurse</a>
+            <a href="@Url.Action("Login", "Account")">Kirjaudu sisään</a>
+            <a href="@Url.Action("RegisterDoctor", "Account")">Rekisteröidy lääkärinä</a>
+            <a href="@Url.Action("RegisterNurse", "Account")">Rekisteröidy hoitajana</a>
         }
     </div>
 

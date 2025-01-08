@@ -4,19 +4,19 @@
     ViewBag.Title = "Login";
 }
 
-<h2>Login</h2>
+<h2>SoteCare, Kirjaudu sisään</h2>
 
 @using (Html.BeginForm("Login", "Account", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
     <div class="form-group">
-        <label for="username">Username</label>
+        <label for="username">Käyttäjätunnus (Etunimi Sukunimi)</label>
         <input type="text" name="username" class="form-control" required />
     </div>
 
     <div class="form-group">
-        <label for="password">Password</label>
+        <label for="password">Salasana</label>
         <input type="password" name="password" class="form-control" required />
     </div>
 
@@ -25,6 +25,8 @@
         <div class="text-danger">@ViewBag.ErrorMessage</div>
     }
 
-    <button type="submit" class="btn btn-primary">Login</button>
+    <div class="mt-lg-1">
+        <button type="submit" class="btn btn-info">Kirjaudu sisään &raquo;</button>
+    </div>
 }
 
