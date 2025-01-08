@@ -25,8 +25,9 @@ namespace SoteCare.Models
             this.PatientMedications = new HashSet<PatientMedications>();
             this.PatientNurseAssignment = new HashSet<PatientNurseAssignment>();
         }
-    
+        [Display(Name = "Lääkäri")]
         public int DoctorID { get; set; }
+        [Display(Name = "Käyttäjä")]
         public Nullable<int> UserID { get; set; }
         [Display(Name = "Etunimi")]
         public string FirstName { get; set; }
@@ -38,7 +39,7 @@ namespace SoteCare.Models
         public string PhoneNumber { get; set; }
         [Display(Name = "Sähköposti")]
         public string Email { get; set; }
-        [Display(Name = "")]
+        [Display(Name = "Aktiivisuus")]
         public bool IsActive { get; set; }
         [Display(Name = "Koko nimi")]
         public string FullName { get; set; }
