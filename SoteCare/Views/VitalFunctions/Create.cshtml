@@ -51,7 +51,7 @@
 
         <div class="form-group">
             <label>Temperature</label>
-            <input type="number" step="0.1" name="Temperature" class="form-control" placeholder="e.g., 36.5" />
+            <input type="text" name="Temperature" class="form-control" placeholder="e.g., 36.5 or 36,5" required />
             @Html.ValidationMessage("Temperature", "", new { @class = "text-danger" })
         </div>
 
@@ -81,7 +81,8 @@
         const temperatureInput = document.querySelector('input[name="Temperature"]');
         if (temperatureInput) {
             temperatureInput.addEventListener('input', function () {
-                this.value = this.value.replace(',', '.'); 
+                this.value = this.value.replace(',', '.'); // Replaces commas with dots
+                this.value = this.value.replace(/[^0-9.]/g, ''); // Removes non-numeric characters
             });
         }
     });

@@ -104,24 +104,17 @@ namespace SoteCare.Controllers
                 // Use the helper to parse the Temperature field
                 if (Request.Form["Temperature"] != null)
                 {
-                    var temperature = ParseDecimal(Request.Form["Temperature"]);
-                    if (temperature.HasValue)
+                    var rawTemperature = Request.Form["Temperature"].Replace(',', '.'); // Normalizes commas to dots
+                    if (decimal.TryParse(rawTemperature, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal temperature))
                     {
-                        vitalFunction.Temperature = temperature.Value;
+                        vitalFunction.Temperature = temperature;
                     }
                     else
                     {
-                        // Add validation error for invalid temperature
-                        ModelState.AddModelError("Temperature", "Invalid temperature format. Use a valid number.");
-
-                        // Retrieve patient details and return the model with validation error
-                        var patient = db.Patients.Find(vitalFunction.PatientID);
-                        ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
-                        return View(vitalFunction);
+                        ModelState.AddModelError("Temperature", "Invalid temperature format. Please enter a valid number.");
                     }
                 }
 
-                // Save the valid vitalFunction to the database
                 db.VitalFunctions.Add(vitalFunction);
                 db.SaveChanges();
                 return RedirectToAction("VitalFunctions", "Patients", new { id = vitalFunction.PatientID });
