@@ -4,14 +4,14 @@
     ViewBag.Title = "Add Vital Function";
 }
 
-<h2>Add Vital Function for @ViewBag.PatientName</h2>
+<h2>Elintoiminnot, @ViewBag.PatientName</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Vital Function Details</h4>
+        <h4>Lisää potilaan elintoimintotietoja</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -50,8 +50,8 @@
         </div>
 
         <div class="form-group">
-            <label>Temperature</label>
-            <input type="text" name="Temperature" class="form-control" placeholder="e.g., 36.5 or 36,5" required />
+            <label>Ruumiinlämpö</label>
+            <input type="text" name="Temperature" class="form-control" placeholder="esim., 36.5 tai 36,5" required />
             @Html.ValidationMessage("Temperature", "", new { @class = "text-danger" })
         </div>
 

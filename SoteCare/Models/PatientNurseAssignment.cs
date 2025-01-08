@@ -11,13 +11,19 @@ namespace SoteCare.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class PatientNurseAssignment
     {
+        [Display(Name = "M‰‰r‰ys")]
         public int AssignmentID { get; set; }
+        [Display(Name = "Potilas")]
         public int PatientID { get; set; }
+        [Display(Name = "Hoitaja")]
         public int NurseID { get; set; }
+        [Display(Name = "L‰‰k‰ri")]
         public Nullable<int> DoctorID { get; set; }
+        [Display(Name = "M‰‰r‰ysp‰iv‰m‰‰r‰")]
         public System.DateTime AssignmentDate { get; set; }
     
         public virtual Doctors Doctors { get; set; }
