@@ -62,12 +62,10 @@ namespace SoteCare.Controllers
             if (patient == null)
             {
                 return HttpNotFound();
-            }
-
-            // Set ViewBag.PatientID to be used in the view for the "Back to Patient Details" button
+            }            
             ViewBag.PatientID = patient.PatientID;
 
-            // Fetch diagnoses, treatments, and medications for the patient
+            // Fetches diagnoses, treatments, and medications for the patient
             var diagnoses = db.Diagnoses.Where(d => d.PatientID == id).ToList();
             var treatments = db.Treatment.Where(t => t.PatientID == id).ToList();
             var medications = db.PatientMedications
@@ -102,7 +100,7 @@ namespace SoteCare.Controllers
                 }).ToList()
             };
 
-            ViewBag.ActiveTab = "PatientHistory"; // Set the active tab
+            ViewBag.ActiveTab = "PatientHistory"; // Sets the active tab
             return View(viewModel);
         }
 
@@ -113,25 +111,24 @@ namespace SoteCare.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            // Fetch patient by ID
+            // Fetches patient by ID
             var patient = db.Patients.Find(id);
             if (patient == null)
             {
                 return HttpNotFound();
             }
 
-            // Fetch the patient's diagnoses, including the related doctors, ordered by DiagnosisDate
+            // Fetches the patient's diagnoses, related doctors, ordered by DiagnosisDate
             var diagnoses = db.Diagnoses
                 .Where(d => d.PatientID == id)
                 .OrderByDescending(d => d.DiagnosisDate)
                 .Include(d => d.Doctors)
                 .ToList();
 
-            // Set ViewBag for patient details
             ViewBag.PatientID = id;
             ViewBag.PatientName = patient.FirstName + " " + patient.LastName;
 
-            // Pass diagnoses or a message if none are found
+            // Passes diagnoses or a message if none are found
             if (diagnoses.Any())
             {
                 return View(diagnoses);
@@ -158,19 +155,18 @@ namespace SoteCare.Controllers
                 return HttpNotFound("Patient not found.");
             }
 
-            // Fetch medications for the specific patient
+            // Fetches medications for the specific patient
             var patientMedications = db.PatientMedications
                 .Where(pm => pm.PatientID == id)
                 .Include(pm => pm.Medications)
                 .Include(pm => pm.Dosages)
-                .Include(pm => pm.Doctors) // Include related doctor information
+                .Include(pm => pm.Doctors) // Includes related doctor information
                 .ToList();
 
-            // Pass patient details to the view
             ViewBag.PatientID = id;
             ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
 
-            // Return the medications view
+            // Returns the medications view
             return View(patientMedications);
         }
 
@@ -318,7 +314,7 @@ namespace SoteCare.Controllers
                 return HttpNotFound();
             }
 
-            // Fetch available nurses for assignment
+            // Fetches available nurses for assignment
             ViewBag.Nurses = db.Nurses.Select(n => new SelectListItem
             {
                 Value = n.NurseID.ToString(),
