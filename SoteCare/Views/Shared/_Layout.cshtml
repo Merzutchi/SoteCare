@@ -17,7 +17,7 @@
         <!-- Links visible to logged-in users only -->
         @if (Session["Role"] != null)
         {
-            <a href="@Url.Action("Index", "Dashboard")">Dashboard</a>
+            <a href="@Url.Action("Index", "Dashboard")">Ohjausnäkymä</a>
             <h6>Potilaat</h6>
             <a href="@Url.Action("Index", "Patients")">Potilaat</a>
 
