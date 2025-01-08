@@ -8,8 +8,9 @@
             <th>@Html.DisplayNameFor(model => model.MedicationName)</th>
             <th>@Html.DisplayNameFor(model => model.MedicationType)</th>
             <th>@Html.DisplayNameFor(model => model.Description)</th>
-            <th>Dosages</th>  
-            <th>Actions</th>
+            <th>Annostelu</th>  
+            <th>Lisää annostelu</th>
+            <th>Poisto</th>
         </tr>
     </thead>
     <tbody>
@@ -23,14 +24,15 @@
                     <!-- Displays the dosages for each medication -->
                     @foreach (var dosage in medication.Dosages)
                     {
-                        <p>@dosage.DosageAmount - @dosage.Frequency</p> 
+                        <p>@dosage.DosageAmount - @dosage.Frequency</p>
                     }
                 </td>
                 <td>
                     <!-- Add Dosage Button -->
-                    <button class="btn btn-success" onclick="showAddDosageModal(@medication.MedicationID)">Add Dosage</button>
+                    <button class="btn btn-success" onclick="showAddDosageModal(@medication.MedicationID)">Lisää annostelu</button>
                     
                 </td>
+                <td>@Html.ActionLink("Poista EI IHA TOIMI VIEL täysin", "Delete", "Medications", new { id = medication.MedicationID }, new { @class = "btn btn-danger" })</td>
             </tr>
         }
     </tbody>

@@ -1,0 +1,44 @@
+﻿@model SoteCare.Models.Medications
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Lääkkeen poistaminen</h2>
+
+
+<div>
+
+    <h4>Oletko varma, että haluat poistaa lääkkeen?</h4>
+    <br />
+    <p><strong>Lääkken nimi:</strong> @Model.MedicationName</p>
+    <p><strong>Lääkityksen muoto:</strong> @Model.MedicationType</p>
+    <p><strong>Lääkkeen kuvaus:</strong> @Model.Description</p>
+
+    @*<dt>@Html.DisplayNameFor(model => model.MedicationName)</dt>
+        <dd>@Html.DisplayFor(model => model.MedicationName)</dd>
+        <dt>@Html.DisplayNameFor(model => model.DoctorID)</dt>
+        <dd>@Html.DisplayFor(model => model.DoctorID)</dd>
+        <dt>@Html.DisplayNameFor(model => model.RefillStatus)</dt>
+        <dd>@Html.DisplayFor(model => model.RefillStatus)</dd>
+        <dt>@Html.DisplayNameFor(model => model.MedicationStatus)</dt>
+        <dd>@Html.DisplayFor(model => model.MedicationStatus)</dd>
+        <dt>@Html.DisplayNameFor(model => model.Allergies)</dt>
+        <dd>@Html.DisplayFor(model => model.Allergies)</dd>
+        <dt>@Html.DisplayNameFor(model => model.Comments)</dt>
+        <dd>@Html.DisplayFor(model => model.Comments)</dd>
+        <dt>@Html.DisplayNameFor(model => model.MedicationType)</dt>
+        <dd>@Html.DisplayFor(model => model.MedicationType)</dd>
+        <dt>@Html.DisplayNameFor(model => model.Description)</dt>
+        <dd>@Html.DisplayFor(model => model.Description)</dd>
+        <dt>@Html.DisplayNameFor(model => model.MedicationLists.MedicationName)</dt>
+        <dd>@Html.DisplayFor(model => model.MedicationLists.MedicationName)</dd>*@
+
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-danger">Poista</button>
+        <a href="@Url.Action("Index", "Medications", new { id = Model.MedicationID })" class="btn btn-secondary">Takaisin</a>
+    }
+</div>

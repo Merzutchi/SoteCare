@@ -205,19 +205,22 @@ namespace SoteCare.Controllers
         // POST: PatientMedications/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+
         public ActionResult DeleteConfirmed(int id)
         {
-            var patientMedication = db.PatientMedications.Find(id);
-
-            if (patientMedication == null)
+            PatientMedications patientMedications = db.PatientMedications.Find(id);
+            if (patientMedications != null)
             {
-                return HttpNotFound("The medication record could not be found.");
+                int patientId = (int)patientMedications.PatientID; // Get the PatientID before deleting
+                db.PatientMedications.Remove(patientMedications);
+                db.SaveChanges();
+
+                // Redirect to the patient's patient medication page
+                return RedirectToAction("PatientMedications", "Patients", new { id = patientId });
             }
 
-            db.PatientMedications.Remove(patientMedication);
-            db.SaveChanges();
-
-            return RedirectToAction("PatientMedications", "Patients", new { id = patientMedication.PatientID });
+            // If the patient medication is not found, redirect to the general index as a fallback
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

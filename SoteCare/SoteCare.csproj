@@ -361,6 +361,7 @@
     <Content Include="Views\Account\RegisterNurse.cshtml" />
     <Content Include="Views\Doctors\AssignPatientToNurse.cshtml" />
     <Content Include="Views\Patients\AssignedPatients.cshtml" />
+    <Content Include="Views\Medications\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -60,12 +60,10 @@
 
                         <!-- Actions -->
                         <td>
-                            @Html.ActionLink("Muokkaa", "Edit", "PatientMedications",
-                                new { id = item.PatientMedicationID },
-                                new { @class = "btn btn-warning btn-sm" }) |
+
                             @Html.ActionLink("Poista", "Delete", "PatientMedications",
                                 new { id = item.PatientMedicationID },
-                                new { @class = "btn btn-danger btn-sm", onclick = "return confirm('Are you sure you want to delete this medication?');" })
+                                new { @class = "btn btn-danger btn-sm" })
                         </td>
                     </tr>
                 }
