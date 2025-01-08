@@ -10,10 +10,10 @@
     @if (ViewBag.NoRecords)
     {
         <div class="alert alert-warning">
-            No vital signs recorded for this patient.
+            Ei tallennettuja elintoimintoja potilaalle.
         </div>
         <a href="@Url.Action("Create", "VitalFunctions", new { id = ViewBag.PatientID })" class="btn btn-primary">
-            Add Vital Function
+            Lisää Elintoimintoja
         </a>
     }
     else
@@ -27,7 +27,7 @@
 
                 <!-- DateTime Field -->
                 <div class="form-group">
-                    <label for="DateTime">Date/Time</label>
+                    <label for="DateTime">Päivämäärä ja Aika</label>
                     @Html.TextBoxFor(model => model.DateTime, new
                     {
                         @class = "form-control",
@@ -56,8 +56,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Temperature</label>
-                    <input type="text" name="Temperature" class="form-control" placeholder="e.g., 36.5" required />
+                    <label>Ruumiinlämpö</label>
+                    <input type="text" name="Temperature" class="form-control" placeholder="e, 36.5" required />
                     @Html.ValidationMessage("Temperature", "", new { @class = "text-danger" })
                 </div>
 
@@ -109,7 +109,7 @@
             else
             {
                 <div class="alert alert-warning" role="alert">
-                    No vital function records available for this patient.
+                    Ei tallennettuja elintoimintoja.
                 </div>
             }
         </div>
