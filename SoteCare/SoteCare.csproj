@@ -209,7 +209,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AssignPatientToNurseViewModel.cs" />
     <Compile Include="ViewModels\DoctorRegistrationViewModel.cs" />
+    <Compile Include="ViewModels\NurseDropdownViewModel.cs" />
     <Compile Include="ViewModels\NurseRegistrationViewModel.cs" />
+    <Compile Include="ViewModels\ObservationViewModel.cs" />
     <Compile Include="ViewModels\PHViewModel.cs" />
     <Compile Include="ViewModels\UserProfileViewModel.cs" />
     <Compile Include="ViewModels\VFunctionChart.cs" />
@@ -365,10 +367,11 @@
     <Content Include="Views\Account\RegisterNurse.cshtml" />
     <Content Include="Views\Doctors\AssignPatientToNurse.cshtml" />
     <Content Include="Views\Patients\AssignedPatients.cshtml" />
+    <Content Include="Views\Observation\Create.cshtml" />
+    <Content Include="Views\Observation\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Observation\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

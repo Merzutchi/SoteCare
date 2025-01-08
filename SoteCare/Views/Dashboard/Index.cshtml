@@ -5,7 +5,7 @@
 <!-- Top Section -->
 <div class="row mb-4">
     <div class="col-md-8">
-        <!-- Display logged-in user's full name -->
+        <!-- logged-in user's full name -->
         <h1>Welcome, <a href="@Url.Action("UserProfile", "Account")">@Session["FullName"]</a></h1>
         <p>Your healthcare dashboard</p>
     </div>
@@ -14,7 +14,7 @@
         <div class="card bg-light p-3">
             <h5>User</h5>
             <p>
-                <a href="@Url.Action("UserProfile", "Account")">@Session["FullName"]</a> <!-- Display full name as clickable link -->
+                <a href="@Url.Action("UserProfile", "Account")">@Session["FullName"]</a> <!-- name as clickable link -->
             </p>
             <form action="@Url.Action("Logout", "Account")" method="post">
                 @Html.AntiForgeryToken()
@@ -68,7 +68,7 @@
             </tbody>
         </table>
 
-        <!-- Medication Info and Treatment Cards -->
+        <!-- Medication Info, Treatment Cards -->
         <div class="row">
             <div class="col-md-6">
                 <div class="card bg-info text-white p-3 mb-3">
@@ -87,8 +87,40 @@
         </div>
     </div>
 
-    <!-- Right Column (Doctor List) -->
+    <!-- Right Column (Observations and Doctor List) -->
     <div class="col-md-4">
+        <!-- Observations Section -->
+        <h2 class="section-title">Huomiot</h2>
+        <div class="card bg-light p-3 mb-4">
+            @if (ViewBag.Observations != null && ViewBag.Observations.Count > 0)
+            {
+                <table class="table table-bordered table-sm">
+                    <thead>
+                        <tr>
+                            <th>Created By</th>
+                            <th>Observation</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var observation in ViewBag.Observations)
+                        {
+                            <tr>
+                                <td>@(observation.Users != null ? observation.Users.FirstName + " " + observation.Users.LastName : "Unknown User")</td>
+                                <td>@observation.ObservationText</td>
+                                <td>@observation.CreatedDate.ToString("dd/MM/yyyy")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>Ei käytössä.</p>
+            }
+        </div>
+
+        <!-- Doctors List Section -->
         <h2 class="section-title">Doctor List</h2>
         <div class="card bg-light p-3">
             <ul class="list-unstyled">

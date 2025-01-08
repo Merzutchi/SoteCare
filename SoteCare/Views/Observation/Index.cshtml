@@ -1,0 +1,39 @@
+﻿@model List<SoteCare.ViewModels.ObservationViewModel>
+
+@{
+    ViewBag.Title = "My Observations";
+}
+
+<h2>My Observations</h2>
+
+@if (Model.Count > 0)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Observation ID</th>
+                <th>Observation</th>
+                <th>Created By</th>
+                <th>Created Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var observation in Model)
+            {
+                <tr>
+                    <td>@observation.ObservationID</td>
+                    <td>@observation.ObservationText</td>
+                    <td>@observation.CreatedByName</td>
+                    <td>@observation.CreatedDate.ToShortDateString()</td>
+                    <td>@(observation.IsCompleted ? "Completed" : "Pending")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No observations available.</p>
+}
+
