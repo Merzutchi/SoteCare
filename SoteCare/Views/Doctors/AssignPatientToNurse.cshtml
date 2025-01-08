@@ -4,7 +4,7 @@
     ViewBag.Title = "Assign Patient to Nurse";
 }
 
-<h2>Assign Patient to Nurse</h2>
+<h2>Määritä potilas hoitajalle</h2>
 
 @if (TempData["SuccessMessage"] != null)
 {
@@ -23,7 +23,7 @@
             @Html.AntiForgeryToken() <!-- This generates the required hidden anti-forgery field -->
 
             <div class="form-group">
-                <label for="patientId">Select Patient</label>
+                <label for="patientId">Valitse potilas</label>
                 <select id="patientId" name="patientId" class="form-control">
                     @if (ViewBag.UnassignedPatients != null && ViewBag.UnassignedPatients.Count > 0)
                     {
@@ -34,13 +34,13 @@
                     }
                     else
                     {
-                        <option disabled>No unassigned patients available</option>
+                        <option disabled>Potilaita ei tarjolla tällä hetkellä.</option>
                     }
                 </select>
             </div>
 
             <div class="form-group">
-                <label for="nurseId">Select Nurse</label>
+                <label for="nurseId">Valitse hoitaja</label>
                 <select id="nurseId" name="nurseId" class="form-control">
                     @if (ViewBag.Nurses != null && ViewBag.Nurses.Count > 0)
                     {
@@ -51,12 +51,12 @@
                     }
                     else
                     {
-                        <option disabled>No nurses available</option>
+                        <option disabled>Hoitajia ei tarjolla tällä hetkellä.</option>
                     }
                 </select>
             </div>
 
-            <button type="submit" class="btn btn-primary">Assign</button>
+            <button type="submit" class="btn btn-primary">Määritä potilas</button>
         }
     </div>
 </div>
