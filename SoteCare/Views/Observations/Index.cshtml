@@ -1,0 +1,42 @@
+﻿@model List<SoteCare.ViewModels.ObservationViewModel>
+
+<h2>Observation List</h2>
+
+<!-- Create Button -->
+<a href="@Url.Action("Create", "Observations")" class="btn btn-primary mb-3">Create New Observation</a>
+
+@if (Model.Count > 0)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Observation Text</th>
+                <th>Created By</th>
+                <th>Created Date</th>
+                <th>Actions</th> <!-- For Delete Button -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var observation in Model)
+            {
+                <tr>
+                    <td>@observation.ObservationText</td>
+                    <td>@observation.CreatedByName</td>
+                    <td>@observation.CreatedDate.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <!-- Delete Button -->
+                        @using (Html.BeginForm("Delete", "Observations", new { id = observation.ObservationID }, FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No observations available.</p>
+}

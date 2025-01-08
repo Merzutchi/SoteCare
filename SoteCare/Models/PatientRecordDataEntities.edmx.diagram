@@ -50,6 +50,9 @@
         <AssociationConnector Association="PatientRecordModel.FK_PatientNurseAssignment_Doctor" />
         <AssociationConnector Association="PatientRecordModel.FK_PatientNurseAssignment_Nurse" />
         <AssociationConnector Association="PatientRecordModel.FK_PatientNurseAssignment_Patient" />
+        <EntityTypeShape EntityType="PatientRecordModel.Observations" Width="1.5" PointX="15.5" PointY="17" />
+        <AssociationConnector Association="PatientRecordModel.FK_Observations_AssignedTo" />
+        <AssociationConnector Association="PatientRecordModel.FK_Observations_CreatedBy" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

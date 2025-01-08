@@ -83,6 +83,17 @@
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="FullName" Type="nvarchar" MaxLength="200" />
         </EntityType>
+        <EntityType Name="Observations">
+          <Key>
+            <PropertyRef Name="ObservationID" />
+          </Key>
+          <Property Name="ObservationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="AssignedTo" Type="int" Nullable="false" />
+          <Property Name="ObservationText" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsCompleted" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="PatientHistory">
           <Key>
             <PropertyRef Name="HistoryID" />
@@ -319,6 +330,30 @@
             </Principal>
             <Dependent Role="Medications">
               <PropertyRef Name="MedicationListID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Observations_AssignedTo">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Observations" Type="Self.Observations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Observations">
+              <PropertyRef Name="AssignedTo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Observations_CreatedBy">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Observations" Type="Self.Observations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Observations">
+              <PropertyRef Name="CreatedBy" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -573,6 +608,7 @@
           <EntitySet Name="MedicationLists" EntityType="Self.MedicationLists" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Medications" EntityType="Self.Medications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Nurses" EntityType="Self.Nurses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Observations" EntityType="Self.Observations" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientHistory" EntityType="Self.PatientHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientMedications" EntityType="Self.PatientMedications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientNurseAssignment" EntityType="Self.PatientNurseAssignment" Schema="dbo" store:Type="Tables" />
@@ -624,6 +660,14 @@
           <AssociationSet Name="FK_Medications_MedicationLists" Association="Self.FK_Medications_MedicationLists">
             <End Role="MedicationLists" EntitySet="MedicationLists" />
             <End Role="Medications" EntitySet="Medications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Observations_AssignedTo" Association="Self.FK_Observations_AssignedTo">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Observations" EntitySet="Observations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Observations_CreatedBy" Association="Self.FK_Observations_CreatedBy">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Observations" EntitySet="Observations" />
           </AssociationSet>
           <AssociationSet Name="FK_PatientHistory_Doctor" Association="Self.FK_PatientHistory_Doctor">
             <End Role="Doctors" EntitySet="Doctors" />
@@ -1186,6 +1230,15 @@
             <End Role="Patients" EntitySet="Patients" />
             <End Role="PatientNurseAssignment" EntitySet="PatientNurseAssignment" />
           </AssociationSet>
+          <EntitySet Name="Observations" EntityType="PatientRecordModel.Observations" />
+          <AssociationSet Name="FK_Observations_AssignedTo" Association="PatientRecordModel.FK_Observations_AssignedTo">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Observations" EntitySet="Observations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Observations_CreatedBy" Association="PatientRecordModel.FK_Observations_CreatedBy">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Observations" EntitySet="Observations" />
+          </AssociationSet>
           </EntityContainer>
         <Association Name="FK_PatientMedications_Dosages">
           <End Type="PatientRecordModel.Dosages" Role="Dosages" Multiplicity="0..1" />
@@ -1236,6 +1289,8 @@
           <Property Name="DoctorID" Type="Int32" />
           <Property Name="NurseID" Type="Int32" />
           <NavigationProperty Name="Doctors" Relationship="PatientRecordModel.FK__Doctors__UserID__25518C17" FromRole="Users" ToRole="Doctors" />
+          <NavigationProperty Name="Observations" Relationship="PatientRecordModel.FK_Observations_AssignedTo" FromRole="Users" ToRole="Observations" />
+          <NavigationProperty Name="Observations1" Relationship="PatientRecordModel.FK_Observations_CreatedBy" FromRole="Users" ToRole="Observations" />
         </EntityType>
         <EntityType Name="Doctors">
           <Key>
@@ -1469,6 +1524,43 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Observations">
+          <Key>
+            <PropertyRef Name="ObservationID" />
+          </Key>
+          <Property Name="ObservationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="AssignedTo" Type="Int32" Nullable="false" />
+          <Property Name="ObservationText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsCompleted" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Users" Relationship="PatientRecordModel.FK_Observations_AssignedTo" FromRole="Observations" ToRole="Users" />
+          <NavigationProperty Name="Users1" Relationship="PatientRecordModel.FK_Observations_CreatedBy" FromRole="Observations" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK_Observations_AssignedTo">
+          <End Type="PatientRecordModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="PatientRecordModel.Observations" Role="Observations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Observations">
+              <PropertyRef Name="AssignedTo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Observations_CreatedBy">
+          <End Type="PatientRecordModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="PatientRecordModel.Observations" Role="Observations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Observations">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1671,6 +1763,18 @@
                 <ScalarProperty Name="NurseID" ColumnName="NurseID" />
                 <ScalarProperty Name="PatientID" ColumnName="PatientID" />
                 <ScalarProperty Name="AssignmentID" ColumnName="AssignmentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Observations">
+            <EntityTypeMapping TypeName="PatientRecordModel.Observations">
+              <MappingFragment StoreEntitySet="Observations">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsCompleted" ColumnName="IsCompleted" />
+                <ScalarProperty Name="ObservationText" ColumnName="ObservationText" />
+                <ScalarProperty Name="AssignedTo" ColumnName="AssignedTo" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ObservationID" ColumnName="ObservationID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

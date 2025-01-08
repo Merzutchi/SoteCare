@@ -1,0 +1,20 @@
+﻿@model SoteCare.Models.Observations
+
+@{
+    ViewBag.Title = "Create Observation";
+}
+
+<h2>Lisää Huomio</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="ObservationText">Huomautus</label>
+        <textarea name="ObservationText" id="ObservationText" class="form-control" rows="4" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Lisää</button>
+    <a href="@Url.Action("Index", "Dashboard")" class="btn btn-secondary">Peruu</a>
+}

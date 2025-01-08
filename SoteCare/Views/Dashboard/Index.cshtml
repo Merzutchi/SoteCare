@@ -72,14 +72,14 @@
         <div class="row">
             <div class="text-center col-md-6">
                 <div class="card bg-info text-white p-3 mb-3">
-                    <h4>Lääke Info</h4>
+                    <h4>Lääkkeet</h4>
                     <p>Lääkitysten määrä: @ViewBag.TotalMedications</p>
                     <p>Aktiiviset lääkitykset: @ViewBag.ActiveMedications</p>
                 </div>
             </div>
             <div class="text-center col-md-6">
                 <div class="card bg-success text-white p-3 mb-3">
-                    <h4>Hoito Info</h4>
+                    <h4>Hoidot</h4>
                     <p>Aktiiviset hoidot: @ViewBag.ActiveTreatments</p>
                     <p>Valmistuneet hoidot: @ViewBag.CompletedTreatments</p>
                 </div>
@@ -87,9 +87,40 @@
         </div>
     </div>
 
-    <!-- Right Column (Doctor List) -->
+    <!-- Right Column (Recent Observations and Doctor List) -->
     <div class="text-center col-md-4">
-        <h2 class="section-title">Lääkäri lista</h2>
+        <h2 class="section-title">Huomautukset</h2>
+        <div class="card bg-light p-3 mb-4">
+            @if (ViewBag.RecentObservations != null && ViewBag.RecentObservations.Count > 0)
+            {
+                <table class="table table-bordered table-sm">
+                    <thead>
+                        <tr>
+                            <th>Observation</th>
+                            <th>Created By</th>
+                            <th>Created Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var observation in ViewBag.RecentObservations)
+                        {
+                            <tr>
+                                <td>@observation.ObservationText</td>
+                                <td>@observation.CreatedByName</td>
+                                <td>@observation.CreatedDate.ToString("dd/MM/yyyy")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>No recent observations available.</p>
+            }
+        </div>
+
+        <!-- Doctor List Section -->
+        <h2 class="section-title">Lääkärit</h2>
         <div class="card text-center bg-light  p-3">
             <ul class="list-unstyled">
                 @foreach (var doctor in ViewBag.Doctors)
@@ -109,7 +140,6 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 }
-
 
 
 @*user boxiin pitäs lisätä pfp iconi, ja jtn action juttuja*@
