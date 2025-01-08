@@ -4,7 +4,7 @@
     ViewBag.Title = "Add Medication";
 }
 
-<h2>Add Medication for @ViewBag.PatientName</h2>
+<h2>Lisää lääke potilaalle, @ViewBag.PatientName</h2>
 
 @using (Html.BeginForm("AddMedication", "PatientMedications", FormMethod.Post))
 {
@@ -12,42 +12,42 @@
     @Html.HiddenFor(model => model.PatientID)
 
     <div class="form-group">
-        @Html.LabelFor(model => model.MedicationID, "Medication")
-        @Html.DropDownListFor(model => model.MedicationID, (SelectList)ViewBag.MedicationID, "Select Medication", new { @class = "form-control" })
+        @Html.LabelFor(model => model.MedicationID, "Lääke")
+        @Html.DropDownListFor(model => model.MedicationID, (SelectList)ViewBag.MedicationID, "Valitse lääke", new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.MedicationID, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.DosageID, "Dosage")
-        @Html.DropDownListFor(model => model.DosageID, (SelectList)ViewBag.DosageID, "Select Dosage", new { @class = "form-control" })
+        @Html.LabelFor(model => model.DosageID, "Annostelu")
+        @Html.DropDownListFor(model => model.DosageID, (SelectList)ViewBag.DosageID, "Valitse annostelu", new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.DosageID, "", new { @class = "text-danger" })
     </div>
 
     <!-- Route of Administration -->
     <div class="form-group">
-        @Html.Label("Route of Administration")
+        @Html.Label("Annostelureitti")
         @Html.TextBoxFor(model => model.RouteOfAdministration, new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.RouteOfAdministration, "", new { @class = "text-danger" })
     </div>
 
     <!-- Doctor Dropdown -->
     <div class="form-group">
-        @Html.LabelFor(model => model.DoctorID, "Doctor")
-        @Html.DropDownListFor(model => model.DoctorID, (SelectList)ViewBag.Doctors, "Select Doctor", new { @class = "form-control" })
+        @Html.LabelFor(model => model.DoctorID, "Lääkäri")
+        @Html.DropDownListFor(model => model.DoctorID, (SelectList)ViewBag.Doctors, "Valitse lääkäri", new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.DoctorID, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.StartDate, "Start Date")
+        @Html.LabelFor(model => model.StartDate, "Aloitus päivämäärä")
         @Html.TextBoxFor(model => model.StartDate, new { @type = "date", @class = "form-control" })
         @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.EndDate, "End Date")
+        @Html.LabelFor(model => model.EndDate, "Lopetus päivämäärä")
         @Html.TextBoxFor(model => model.EndDate, new { @type = "date", @class = "form-control" })
         @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
     </div>
-
-    <button type="submit" class="btn btn-primary">Add Medication</button>
+    <br />
+    <button type="submit" class="btn btn-success">Lisää lääke</button>
 }

@@ -1,6 +1,6 @@
 ﻿@model SoteCare.Models.Medications
 
-<h3>Create Medication</h3>
+<h3>Lisää lääke</h3>
 
 @using (Html.BeginForm("Create", "Medications", FormMethod.Post))
 {
@@ -23,7 +23,7 @@
         @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
     </div>
-
-    <button type="submit" class="btn btn-primary">Create</button>
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    <br />
+    <button type="submit" class="btn btn-primary">Lisää</button>
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Peruuta</button>
 }

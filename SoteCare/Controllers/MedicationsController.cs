@@ -105,16 +105,24 @@ public class MedicationsController : Controller
     [ValidateAntiForgeryToken]
     public ActionResult DeleteConfirmed(int id)
     {
-        Medications medications = db.Medications.Find(id);
-        if (medications != null)
-        {
-            int medicationId = medications.MedicationID; // Get the MedicationID before deleting
-            db.Medications.Remove(medications);
-            db.SaveChanges();
+        var medications = context.Medications
+        .Include("Dosages")
+        .FirstOrDefault(m => m.MedicationID == id);
 
-            // Redirect to the patient's treatments page
-            return RedirectToAction("Index", "Medications", new { id = medicationId });
+        if (medications == null)
+        {
+            return HttpNotFound();
         }
+
+        // Remove related Dosages first
+        context.Dosages.RemoveRange(medications.Dosages);
+
+        // Remove the Medications record
+        context.Medications.Remove(medications);
+
+        // Save changes
+        context.SaveChanges();
+
         return RedirectToAction("Index");
     }
 
