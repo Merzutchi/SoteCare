@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace SoteCare.Controllers
 {
-    [AuthorizeUser]  // Ensure the user is logged in
+    [AuthorizeUser]  // Ensures the user is logged in
     public class DashboardController : Controller
     {
         private readonly PatientRecordDataEntities db = new PatientRecordDataEntities();
@@ -23,17 +23,15 @@ namespace SoteCare.Controllers
                 userId = (int)Session["UserID"];
             }
 
-            // Fetch role and FullName from session
+            // Fetches user role and FullName from session
             string userRole = Session["Role"] as string;
             string userFullName = Session["FullName"] as string;
 
-            // Pass FullName to ViewBag for display in the dashboard
+            // Passes FullName to ViewBag to display in dashboard
             ViewBag.UserFullName = userFullName;
 
             // General data for all users
             ViewBag.TotalPatients = db.Patients.Count();
-
-            // Fix for AddMonths: Calculate the date in memory
             DateTime oneMonthAgo = DateTime.Now.AddMonths(-1);
             ViewBag.NewPatients = db.Patients.Count(p => p.DateOfBirth > oneMonthAgo);
 
@@ -54,7 +52,7 @@ namespace SoteCare.Controllers
             // Role-specific data
             if (userRole == "Doctor")
             {
-                // Fetch patients assigned to the logged-in doctor
+                // Fetches patients assigned to the logged-in doctor
                 var doctorPatients = db.Patients
                     .Where(p => p.DoctorID == userId)
                     .ToList();
@@ -62,10 +60,10 @@ namespace SoteCare.Controllers
             }
             else if (userRole == "Nurse")
             {
-                // Fetch patients assigned to the logged-in nurse
+                // Fetches patients assigned to the logged-in nurse
                 var nursePatients = db.PatientNurseAssignment
-                    .Where(a => a.NurseID == userId)  // Match NurseID with logged-in user ID
-                    .Select(a => a.Patients)          // Fetch the related Patient records
+                    .Where(a => a.NurseID == userId)  
+                    .Select(a => a.Patients)         
                     .ToList();
                 ViewBag.NursePatients = nursePatients;
             }

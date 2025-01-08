@@ -138,7 +138,7 @@ namespace SoteCare.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Use the helper to parse the Temperature field
+                // Uses helper to parse Temperature field
                 if (Request.Form["Temperature"] != null)
                 {
                     var rawTemperature = Request.Form["Temperature"].Replace(',', '.'); // Normalizes commas to dots
@@ -157,7 +157,7 @@ namespace SoteCare.Controllers
                 return RedirectToAction("VitalFunctions", "Patients", new { id = vitalFunction.PatientID });
             }
 
-            // Handle invalid ModelState and reload the form with patient details
+            // Handles invalid ModelState and reload the form with patient details
             var patientDetails = db.Patients.Find(vitalFunction.PatientID);
             ViewBag.PatientName = $"{patientDetails.FirstName} {patientDetails.LastName}";
             return View(vitalFunction);

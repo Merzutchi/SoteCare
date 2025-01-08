@@ -11,19 +11,31 @@ namespace SoteCare.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class PatientMedications
     {
+        [Display(Name = "L‰‰kitys")]
         public int PatientMedicationID { get; set; }
+        [Display(Name = "Potilas")]
         public Nullable<int> PatientID { get; set; }
+        [Display(Name = "L‰‰ke")]
         public Nullable<int> MedicationID { get; set; }
+        [Display(Name = "Aloitusp‰iv‰m‰‰r‰")]
         public Nullable<System.DateTime> StartDate { get; set; }
+        [Display(Name = "P‰‰ttymisp‰iv‰m‰‰r‰")]
         public Nullable<System.DateTime> EndDate { get; set; }
+        [Display(Name = "L‰‰kelista")]
         public Nullable<int> MedicationListID { get; set; }
+        [Display(Name = "Annoksen vahvuus")]
         public Nullable<decimal> DoseStrength { get; set; }
+        [Display(Name = "L‰‰k‰ri")]
         public Nullable<int> DoctorID { get; set; }
+        [Display(Name = "Annos")]
         public Nullable<int> DosageID { get; set; }
+        [Display(Name = "Huomiot")]
         public string Notes { get; set; }
+        [Display(Name = "Antotapa")]
         public string RouteOfAdministration { get; set; }
     
         public virtual MedicationLists MedicationLists { get; set; }

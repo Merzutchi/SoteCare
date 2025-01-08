@@ -20,9 +20,11 @@ namespace SoteCare.Models
         {
             this.TreatmentDetails = new HashSet<TreatmentDetails>();
         }
-    
+        [Display(Name = "Hoito")]
         public int TreatmentID { get; set; }
+        [Display(Name = "Potilas")]
         public int PatientID { get; set; }
+        [Display(Name = "L‰‰ke")]
         public Nullable<int> MedicationID { get; set; }
 
         [Display(Name = "Aloitus p‰iv‰m‰‰r‰")]
@@ -36,7 +38,9 @@ namespace SoteCare.Models
 
         [Display(Name = "Muistiinpanot")]
         public string Notes { get; set; }
+        [Display(Name = "Diagnoosi")]
         public Nullable<int> DiagnosisID { get; set; }
+        [Display(Name = "L‰‰k‰ri")]
         public Nullable<int> DoctorID { get; set; }
     
         public virtual Medications Medications { get; set; }

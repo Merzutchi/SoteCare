@@ -11,7 +11,8 @@ namespace SoteCare.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Dosages
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -23,12 +24,19 @@ namespace SoteCare.Models
     
         public int DosageID { get; set; }
         public int MedicationID { get; set; }
+        [Display(Name = "Annostus")]
         public string Dosage { get; set; }
+        [Display(Name = "Annosv‰li")]
         public string Frequency { get; set; }
+        [Display(Name = "Aloitusp‰iv‰m‰‰r‰")]
         public System.DateTime StartDate { get; set; }
+        [Display(Name = "P‰‰ttymisp‰iv‰m‰‰r‰")]
         public Nullable<System.DateTime> EndDate { get; set; }
+        [Display(Name = "Antotapa")]
         public string RouteOfAdministration { get; set; }
+        [Display(Name = "Ohjeet")]
         public string Instructions { get; set; }
+        [Display(Name = "Annostusm‰‰r‰")]
         public string DosageAmount { get; set; }
         public Nullable<int> PatientID { get; set; }
     

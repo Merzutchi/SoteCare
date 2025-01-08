@@ -20,7 +20,7 @@
     <div class="card-body">
         @using (Html.BeginForm("AssignPatientToNurse", "Doctors", FormMethod.Post))
         {
-            @Html.AntiForgeryToken() <!-- This generates the required hidden anti-forgery field -->
+            @Html.AntiForgeryToken() 
 
             <div class="form-group">
                 <label for="patientId">Valitse potilas</label>
@@ -34,7 +34,7 @@
                     }
                     else
                     {
-                        <option disabled>Potilaita ei tarjolla tällä hetkellä.</option>
+                        <option disabled>Ei näytettäviä potilaita.</option>
                     }
                 </select>
             </div>
@@ -51,7 +51,7 @@
                     }
                     else
                     {
-                        <option disabled>Hoitajia ei tarjolla tällä hetkellä.</option>
+                        <option disabled>Ei näytettäviä hoitajia.</option>
                     }
                 </select>
             </div>
