@@ -87,38 +87,8 @@
         </div>
     </div>
 
-    <!-- Right Column (Recent Observations and Doctor List) -->
-    <div class="text-center col-md-4">
-        <h2 class="section-title">Huomautukset</h2>
-        <div class="card bg-light p-3 mb-4">
-            @if (ViewBag.RecentObservations != null && ViewBag.RecentObservations.Count > 0)
-            {
-                <table class="table table-bordered table-sm">
-                    <thead>
-                        <tr>
-                            <th>Observation</th>
-                            <th>Created By</th>
-                            <th>Created Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var observation in ViewBag.RecentObservations)
-                        {
-                            <tr>
-                                <td>@observation.ObservationText</td>
-                                <td>@observation.CreatedByName</td>
-                                <td>@observation.CreatedDate.ToString("dd/MM/yyyy")</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            }
-            else
-            {
-                <p>No recent observations available.</p>
-            }
-        </div>
-
+    <!-- Right Column (Doctor List) -->
+    <div class="text-center col-md-4">     
         <!-- Doctor List Section -->
         <h2 class="section-title">Lääkärit</h2>
         <div class="card text-center bg-light  p-3">
