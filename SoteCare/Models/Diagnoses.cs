@@ -11,7 +11,8 @@ namespace SoteCare.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Diagnoses
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,9 +23,17 @@ namespace SoteCare.Models
     
         public int DiagnosisID { get; set; }
         public Nullable<int> PatientID { get; set; }
+
+        [Display(Name = "Diagnoosi")]
         public string DiagnosisName { get; set; }
+
+        [Display(Name = "Diagnoosin p‰iv‰m‰‰r‰")]
         public Nullable<System.DateTime> DiagnosisDate { get; set; }
+
+        [Display(Name = "Muistiinpanot")]
         public string Notes { get; set; }
+
+        [Display(Name = "L‰‰k‰ri")]
         public string DoctorName { get; set; }
         public Nullable<int> DoctorID { get; set; }
     

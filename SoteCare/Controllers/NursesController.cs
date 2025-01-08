@@ -102,13 +102,39 @@ namespace SoteCare.Controllers
         // POST: Nurses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+
         public ActionResult DeleteConfirmed(int id)
         {
-            Nurses nurses = db.Nurses.Find(id);
+            var nurses = db.Nurses
+            .Include("PatientNurseAssignment")
+            .FirstOrDefault(m => m.NurseID == id);
+
+            if (nurses == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Remove related PatientNurseAssignment first
+            db.PatientNurseAssignment.RemoveRange(nurses.PatientNurseAssignment);
+
+            // Remove the Nurse record
             db.Nurses.Remove(nurses);
+
+            // Save changes
             db.SaveChanges();
+
             return RedirectToAction("Index");
         }
+
+
+
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    Nurses nurses = db.Nurses.Find(id);
+        //    db.Nurses.Remove(nurses);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
 
         protected override void Dispose(bool disposing)
         {

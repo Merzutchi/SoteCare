@@ -19,7 +19,6 @@
 
         <!-- Display Patient's Name -->
         <div class="form-group">
-            <label class="control-label col-md-2">Patient</label>
             <div class="col-md-10">
                 <p class="form-control-static">@ViewBag.PatientName</p>
             </div>
@@ -47,7 +46,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.DoctorID, "Doctor", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.DoctorID, (SelectList)ViewBag.DoctorID, "Select Doctor", new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.DoctorID, (SelectList)ViewBag.DoctorID, "Valitse lääkäri", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.DoctorID, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -60,11 +59,11 @@
                 @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        <br />
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-primary" />
-                @Html.ActionLink("Back", "Diagnoses", "Patients", new { id = Model.PatientID }, new { @class = "btn btn-secondary" })
+                <input type="submit" value="Tallenna" class="btn btn-primary" />
+                @Html.ActionLink("Takaisin", "Diagnoses", "Patients", new { id = Model.PatientID }, new { @class = "btn btn-secondary" })
             </div>
         </div>
     </div>

@@ -52,7 +52,7 @@
                 @Html.DropDownListFor(
                     model => model.MedicationID,
                     (SelectList)ViewBag.MedicationID,
-                    "Select Medication",
+                    "Valitse lääkitys",
                     new { @class = "form-control" }
                 )
                 @Html.ValidationMessageFor(model => model.MedicationID, "", new { @class = "text-danger" })

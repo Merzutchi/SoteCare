@@ -49,5 +49,9 @@
         @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
     </div>
     <br />
+
     <button type="submit" class="btn btn-success">Lisää lääke</button>
+    <a href="@Url.Action("Details", "Patients", new { id = ViewBag.PatientID })" class="btn btn-secondary">
+        Takaisin
+    </a>
 }

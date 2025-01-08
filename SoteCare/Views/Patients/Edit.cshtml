@@ -66,6 +66,7 @@
             @Html.ValidationMessageFor(model => model.EmergencyContactPhone, "", new { @class = "text-danger" })
         </div>
 
+        <br />
         <button type="submit" class="btn btn-success">Tallenna</button>
         <a href="@Url.Action("Index", "Patients")" class="btn btn-secondary">Takaisin</a>
     }

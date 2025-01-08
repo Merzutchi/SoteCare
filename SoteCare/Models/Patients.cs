@@ -11,7 +11,8 @@ namespace SoteCare.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Patients
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -27,14 +28,32 @@ namespace SoteCare.Models
         }
     
         public int PatientID { get; set; }
+
+        [Display(Name = "Etunimi")]
         public string FirstName { get; set; }
+
+        [Display(Name = "Sukunimi")]
         public string LastName { get; set; }
+
+        [Display(Name = "Syntymäaika")]
         public System.DateTime DateOfBirth { get; set; }
+
+        [Display(Name = "Sukupuoli")]
         public string Gender { get; set; }
+
+        [Display(Name = "Osoite")]
         public string Address { get; set; }
+
+        [Display(Name = "Puhelinnumero")]
         public string PhoneNumber { get; set; }
+
+        [Display(Name = "Sähköposti")]
         public string Email { get; set; }
+
+        [Display(Name = "Hätäyhteyshenkilö")]
         public string EmergencyContactName { get; set; }
+
+        [Display(Name = "Hätäyhteyshenkilön puhelinnumero")]
         public string EmergencyContactPhone { get; set; }
         public Nullable<int> NurseID { get; set; }
         public Nullable<int> DoctorID { get; set; }
