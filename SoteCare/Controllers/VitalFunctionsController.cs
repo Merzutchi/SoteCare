@@ -241,6 +241,19 @@ namespace SoteCare.Controllers
             }
             return null;
         }
+
+        [HttpPost]
+        public ActionResult SaveVitalFunction(VitalFunctions model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Save the valid model (Temperature will be parsed correctly)
+                return RedirectToAction("Success");
+            }
+
+            // If invalid, re-render the form
+            return View(model);
+        }
     }
 }
 

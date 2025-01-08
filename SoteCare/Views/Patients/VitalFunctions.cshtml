@@ -94,7 +94,7 @@
                         @for (int i = 0; i < Model.Dates.Count; i++)
                         {
                             <tr>
-                                <td>@Model.Dates[i]</td>
+                                <td>@Model.Dates[i].ToString()</td>
                                 <td>@Model.HeartRates[i]</td>
                                 <td>@Model.SystolicBP[i]</td>
                                 <td>@Model.DiastolicBP[i]</td>
@@ -150,7 +150,22 @@
             });
         }
 
-        // Input normalization for Temperature
+        // Input normalization1 for Temperature
+        document.querySelector("form").addEventListener("submit", function (e) {
+            const temperatureInput = document.querySelector("[name='Temperature']");
+            const temperatureValue = temperatureInput.value.trim();
+
+            // Allow both `.` and `,` as decimal separators
+            const validTemperature = /^(\d+([.,]\d{1,2})?)$/;
+
+            if (!validTemperature.test(temperatureValue)) {
+                e.preventDefault();
+                alert("Please enter a valid temperature (e.g., 36.5 or 36,5).");
+            }
+        });
+
+
+        // Input normalization2 for Temperature
         const temperatureInput = document.querySelector('input[name="Temperature"]');
         if (temperatureInput) {
             temperatureInput.addEventListener('input', function () {
