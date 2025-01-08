@@ -4,9 +4,11 @@
 
 <main>
     <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
+        <h1 id="title">SoteCare</h1>
+        <hr />
+        <p class="lead">Tervetuloa käyttämään SoteCare ohjelmistoa! Tehty osana careerian toisen lukukauden Scrum ja ohjelmistotuotannon menetelmät kurssia.</p>
+        <hr />
+        <p><a href="https://careeria.fi" class="btn btn-lg btn-info">Careerian sivuille &raquo;</a></p>
     </section>
 
     <!-- Add a row with the login button in the right corner -->
@@ -14,7 +16,7 @@
         <div class="col-md-12 text-right">
             @if (Session["UserID"] == null)
             {
-            <a href="@Url.Action("Login", "Account")" class="btn btn-primary">Login</a> <!-- Login Button -->
+            <a href="@Url.Action("Login", "Account")" class="btn btn-lg btn-info">Kirjaudu sisään tästä &raquo;</a> <!-- Login Button -->
             }
         </div>
     </div>
