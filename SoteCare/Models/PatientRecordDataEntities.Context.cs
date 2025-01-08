@@ -39,6 +39,5 @@ namespace SoteCare.Models
         public virtual DbSet<Doctors> Doctors { get; set; }
         public virtual DbSet<Nurses> Nurses { get; set; }
         public virtual DbSet<PatientNurseAssignment> PatientNurseAssignment { get; set; }
-        public virtual DbSet<Observations> Observations { get; set; }
     }
 }

@@ -135,7 +135,6 @@
     <Compile Include="Controllers\MedicationsController.cs" />
     <Compile Include="Controllers\MedicationListsController.cs" />
     <Compile Include="Controllers\NursesController.cs" />
-    <Compile Include="Controllers\ObservationsController.cs" />
     <Compile Include="Controllers\PatientHistoryController.cs" />
     <Compile Include="Controllers\PatientMedicationsController.cs" />
     <Compile Include="Controllers\PatientsController.cs" />
@@ -162,9 +161,6 @@
       <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Nurses.cs">
-      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Observations.cs">
       <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PatientHistory.cs">
@@ -210,7 +206,6 @@
     <Compile Include="ViewModels\AssignPatientToNurseViewModel.cs" />
     <Compile Include="ViewModels\DoctorRegistrationViewModel.cs" />
     <Compile Include="ViewModels\NurseRegistrationViewModel.cs" />
-    <Compile Include="ViewModels\ObservationViewModel.cs" />
     <Compile Include="ViewModels\PHViewModel.cs" />
     <Compile Include="ViewModels\UserProfileViewModel.cs" />
     <Compile Include="ViewModels\VFunctionChart.cs" />
@@ -367,11 +362,6 @@
     <Content Include="Views\Doctors\AssignPatientToNurse.cshtml" />
     <Content Include="Views\Patients\AssignedPatients.cshtml" />
     <Content Include="Views\Medications\Delete.cshtml" />
-    <Content Include="Views\Observations\Create.cshtml" />
-    <Content Include="Views\Observations\Delete.cshtml" />
-    <Content Include="Views\Observations\Details.cshtml" />
-    <Content Include="Views\Observations\Edit.cshtml" />
-    <Content Include="Views\Observations\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
