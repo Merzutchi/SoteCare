@@ -122,12 +122,12 @@
 
 <script>
     window.vitalData = @Html.Raw(Json.Encode(new {
-    Dates = Model.Dates,
-    HeartRates = Model.HeartRates,
-    SystolicBP = Model.SystolicBP,
-    DiastolicBP = Model.DiastolicBP,
-    Temperatures = Model.Temperatures
-}));
+        Dates = Model.Dates,
+        HeartRates = Model.HeartRates,
+        SystolicBP = Model.SystolicBP,
+        DiastolicBP = Model.DiastolicBP,
+        Temperatures = Model.Temperatures
+    }));
 
     document.addEventListener("DOMContentLoaded", function () {
         // Automatically sets current date and time for the DateTime input
@@ -149,8 +149,18 @@
                 }
             });
         }
-        // Function to format temperature values
-        const formatTemperature = (temp) => temp !== null ? parseFloat(temp).toFixed(1) : null;
+
+        // Input normalization for Temperature
+        const temperatureInput = document.querySelector('input[name="Temperature"]');
+        if (temperatureInput) {
+            temperatureInput.addEventListener('input', function () {
+                this.value = this.value.replace(',', '.'); // Replaces commas with dots
+                this.value = this.value.replace(/[^0-9.]/g, ''); // Removes invalid characters
+            });
+        }
+
+        // Format temperature values for the chart
+        const formatTemperature = (temp) => (temp !== null ? parseFloat(temp).toFixed(1) : null);
         const formattedTemperatures = window.vitalData.Temperatures.map(formatTemperature);
 
         // Chart rendering
