@@ -33,7 +33,7 @@
         <AssociationConnector Association="PatientRecordModel.FK_Treatment_Diagnosis" />
         <EntityTypeShape EntityType="PatientRecordModel.Users" Width="1.5" PointX="13.25" PointY="5.75" />
         <EntityTypeShape EntityType="PatientRecordModel.Doctors" Width="1.5" PointX="16.5" PointY="6" />
-        <EntityTypeShape EntityType="PatientRecordModel.Nurses" Width="1.5" PointX="15" PointY="11.875" />
+        <EntityTypeShape EntityType="PatientRecordModel.Nurses" Width="1.5" PointX="14.125" PointY="11" />
         <AssociationConnector Association="PatientRecordModel.FK__Nurses__UserID__282DF8C2" />
         <AssociationConnector Association="PatientRecordModel.FK_Patients_DoctorID" />
         <AssociationConnector Association="PatientRecordModel.FK_TreatmentDetails_DoctorID" />
