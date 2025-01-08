@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="798a424d486d4b9c91172fdf0a350486" Name="Diagram1" ZoomLevel="60">
+      <Diagram DiagramId="798a424d486d4b9c91172fdf0a350486" Name="Diagram1" ZoomLevel="79">
         <EntityTypeShape EntityType="PatientRecordModel.Diagnoses" Width="1.5" PointX="8.25" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordModel.Dosages" Width="1.5" PointX="7.875" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordModel.MedicationLists" Width="1.5" PointX="1.125" PointY="5.25" IsExpanded="true" />
@@ -31,7 +31,7 @@
         <AssociationConnector Association="PatientRecordModel.FK_PatientMedications_Dosages" />
         <AssociationConnector Association="PatientRecordModel.FK_Dosages_Patients" />
         <AssociationConnector Association="PatientRecordModel.FK_Treatment_Diagnosis" />
-        <EntityTypeShape EntityType="PatientRecordModel.Users" Width="1.5" PointX="13.25" PointY="5.75" />
+        <EntityTypeShape EntityType="PatientRecordModel.Users" Width="1.5" PointX="12.125" PointY="12.75" />
         <EntityTypeShape EntityType="PatientRecordModel.Doctors" Width="1.5" PointX="16.5" PointY="6" />
         <EntityTypeShape EntityType="PatientRecordModel.Nurses" Width="1.5" PointX="15" PointY="11.875" />
         <AssociationConnector Association="PatientRecordModel.FK__Nurses__UserID__282DF8C2" />
@@ -50,10 +50,10 @@
         <AssociationConnector Association="PatientRecordModel.FK_PatientNurseAssignment_Doctor" />
         <AssociationConnector Association="PatientRecordModel.FK_PatientNurseAssignment_Nurse" />
         <AssociationConnector Association="PatientRecordModel.FK_PatientNurseAssignment_Patient" />
-        <EntityTypeShape EntityType="PatientRecordModel.Observations" Width="1.5" PointX="10.625" PointY="14" />
-        <AssociationConnector Association="PatientRecordModel.FK__Observati__Assig__3D2915A8" />
-        <AssociationConnector Association="PatientRecordModel.FK__Observati__Creat__3C34F16F" />
-      </Diagram>
+        <EntityTypeShape EntityType="PatientRecordModel.Observations" Width="1.5" PointX="9.5" PointY="13.5" />
+        <AssociationConnector Association="PatientRecordModel.FK_Observations_AssignedTo" />
+        <AssociationConnector Association="PatientRecordModel.FK_Observations_CreatedBy" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

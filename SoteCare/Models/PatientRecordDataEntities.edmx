@@ -249,30 +249,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Observati__Assig__3D2915A8">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Observations" Type="Self.Observations" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Observations">
-              <PropertyRef Name="AssignedTo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Observati__Creat__3C34F16F">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Observations" Type="Self.Observations" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Observations">
-              <PropertyRef Name="CreatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__PatientHi__Patie__3F466844">
           <End Role="Patients" Type="Self.Patients" Multiplicity="1" />
           <End Role="PatientHistory" Type="Self.PatientHistory" Multiplicity="*" />
@@ -354,6 +330,30 @@
             </Principal>
             <Dependent Role="Medications">
               <PropertyRef Name="MedicationListID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Observations_AssignedTo">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Observations" Type="Self.Observations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Observations">
+              <PropertyRef Name="AssignedTo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Observations_CreatedBy">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Observations" Type="Self.Observations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Observations">
+              <PropertyRef Name="CreatedBy" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -633,14 +633,6 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Nurses" EntitySet="Nurses" />
           </AssociationSet>
-          <AssociationSet Name="FK__Observati__Assig__3D2915A8" Association="Self.FK__Observati__Assig__3D2915A8">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Observations" EntitySet="Observations" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Observati__Creat__3C34F16F" Association="Self.FK__Observati__Creat__3C34F16F">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Observations" EntitySet="Observations" />
-          </AssociationSet>
           <AssociationSet Name="FK__PatientHi__Patie__3F466844" Association="Self.FK__PatientHi__Patie__3F466844">
             <End Role="Patients" EntitySet="Patients" />
             <End Role="PatientHistory" EntitySet="PatientHistory" />
@@ -668,6 +660,14 @@
           <AssociationSet Name="FK_Medications_MedicationLists" Association="Self.FK_Medications_MedicationLists">
             <End Role="MedicationLists" EntitySet="MedicationLists" />
             <End Role="Medications" EntitySet="Medications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Observations_AssignedTo" Association="Self.FK_Observations_AssignedTo">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Observations" EntitySet="Observations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Observations_CreatedBy" Association="Self.FK_Observations_CreatedBy">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Observations" EntitySet="Observations" />
           </AssociationSet>
           <AssociationSet Name="FK_PatientHistory_Doctor" Association="Self.FK_PatientHistory_Doctor">
             <End Role="Doctors" EntitySet="Doctors" />
@@ -1231,11 +1231,11 @@
             <End Role="PatientNurseAssignment" EntitySet="PatientNurseAssignment" />
           </AssociationSet>
           <EntitySet Name="Observations" EntityType="PatientRecordModel.Observations" />
-          <AssociationSet Name="FK__Observati__Assig__3D2915A8" Association="PatientRecordModel.FK__Observati__Assig__3D2915A8">
+          <AssociationSet Name="FK_Observations_AssignedTo" Association="PatientRecordModel.FK_Observations_AssignedTo">
             <End Role="Users" EntitySet="Users" />
             <End Role="Observations" EntitySet="Observations" />
           </AssociationSet>
-          <AssociationSet Name="FK__Observati__Creat__3C34F16F" Association="PatientRecordModel.FK__Observati__Creat__3C34F16F">
+          <AssociationSet Name="FK_Observations_CreatedBy" Association="PatientRecordModel.FK_Observations_CreatedBy">
             <End Role="Users" EntitySet="Users" />
             <End Role="Observations" EntitySet="Observations" />
           </AssociationSet>
@@ -1289,9 +1289,9 @@
           <Property Name="DoctorID" Type="Int32" />
           <Property Name="NurseID" Type="Int32" />
           <NavigationProperty Name="Doctors" Relationship="PatientRecordModel.FK__Doctors__UserID__25518C17" FromRole="Users" ToRole="Doctors" />
-          <NavigationProperty Name="Observations" Relationship="PatientRecordModel.FK__Observati__Assig__3D2915A8" FromRole="Users" ToRole="Observations" />
-          <NavigationProperty Name="Observations1" Relationship="PatientRecordModel.FK__Observati__Creat__3C34F16F" FromRole="Users" ToRole="Observations" />
-        </EntityType>
+          <NavigationProperty Name="Observations" Relationship="PatientRecordModel.FK_Observations_AssignedTo" FromRole="Users" ToRole="Observations" />
+          <NavigationProperty Name="Observations1" Relationship="PatientRecordModel.FK_Observations_CreatedBy" FromRole="Users" ToRole="Observations" />
+          </EntityType>
         <EntityType Name="Doctors">
           <Key>
             <PropertyRef Name="DoctorID" />
@@ -1534,10 +1534,10 @@
           <Property Name="ObservationText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IsCompleted" Type="Boolean" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Users" Relationship="PatientRecordModel.FK__Observati__Assig__3D2915A8" FromRole="Observations" ToRole="Users" />
-          <NavigationProperty Name="Users1" Relationship="PatientRecordModel.FK__Observati__Creat__3C34F16F" FromRole="Observations" ToRole="Users" />
+          <NavigationProperty Name="Users" Relationship="PatientRecordModel.FK_Observations_AssignedTo" FromRole="Observations" ToRole="Users" />
+          <NavigationProperty Name="Users1" Relationship="PatientRecordModel.FK_Observations_CreatedBy" FromRole="Observations" ToRole="Users" />
         </EntityType>
-        <Association Name="FK__Observati__Assig__3D2915A8">
+        <Association Name="FK_Observations_AssignedTo">
           <End Type="PatientRecordModel.Users" Role="Users" Multiplicity="1" />
           <End Type="PatientRecordModel.Observations" Role="Observations" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1549,7 +1549,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Observati__Creat__3C34F16F">
+        <Association Name="FK_Observations_CreatedBy">
           <End Type="PatientRecordModel.Users" Role="Users" Multiplicity="1" />
           <End Type="PatientRecordModel.Observations" Role="Observations" Multiplicity="*" />
           <ReferentialConstraint>
