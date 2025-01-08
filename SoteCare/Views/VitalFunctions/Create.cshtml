@@ -50,8 +50,9 @@
         </div>
 
         <div class="form-group">
-            <label>Ruumiinlämpö</label>
-            <input type="number" step="0.1" name="Temperature" class="form-control" />
+            <label>Temperature</label>
+            <input type="number" step="0.1" name="Temperature" class="form-control" placeholder="e.g., 36.5" />
+            @Html.ValidationMessage("Temperature", "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
@@ -86,3 +87,6 @@
     });
 
 </script>
+
+
+@*create action*@

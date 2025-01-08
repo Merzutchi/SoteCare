@@ -77,34 +77,34 @@ namespace SoteCare.Controllers
             return View(vitalFunctions);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AddVitalFunction(VitalFunctions vitalFunction)
-        {
-            if (ModelState.IsValid)
-            {
-                // Ensures the temperature is correctly parsed and handled
-                if (Request.Form["Temperature"] != null)
-                {
-                    if (decimal.TryParse(Request.Form["Temperature"], NumberStyles.Any, CultureInfo.InvariantCulture, out decimal temperature))
-                    {
-                        vitalFunction.Temperature = temperature;
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("Temperature", "Invalid temperature format.");
-                        return View(vitalFunction);
-                    }
-                }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult AddVitalFunction(VitalFunctions vitalFunction)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        // Ensures the temperature is correctly parsed and handled
+        //        if (Request.Form["Temperature"] != null)
+        //        {
+        //            if (decimal.TryParse(Request.Form["Temperature"], NumberStyles.Any, CultureInfo.InvariantCulture, out decimal temperature))
+        //            {
+        //                vitalFunction.Temperature = temperature;
+        //            }
+        //            else
+        //            {
+        //                ModelState.AddModelError("Temperature", "Invalid temperature format.");
+        //                return View(vitalFunction);
+        //            }
+        //        }
 
-                db.VitalFunctions.Add(vitalFunction);
-                db.SaveChanges();
+        //        db.VitalFunctions.Add(vitalFunction);
+        //        db.SaveChanges();
 
-                return RedirectToAction("VitalFunctions", "Patients", new { id = vitalFunction.PatientID });
-            }
+        //        return RedirectToAction("VitalFunctions", "Patients", new { id = vitalFunction.PatientID });
+        //    }
 
-            return View(vitalFunction);
-        }
+        //    return View(vitalFunction);
+        //}
 
         // GET: VitalFunctions/Create
         public ActionResult Create(int? id)
@@ -138,13 +138,35 @@ namespace SoteCare.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Use the helper to parse the Temperature field
+                if (Request.Form["Temperature"] != null)
+                {
+                    var temperature = ParseDecimal(Request.Form["Temperature"]);
+                    if (temperature.HasValue)
+                    {
+                        vitalFunction.Temperature = temperature.Value;
+                    }
+                    else
+                    {
+                        // Add validation error for invalid temperature
+                        ModelState.AddModelError("Temperature", "Invalid temperature format. Use a valid number.");
+
+                        // Retrieve patient details and return the model with validation error
+                        var patient = db.Patients.Find(vitalFunction.PatientID);
+                        ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
+                        return View(vitalFunction);
+                    }
+                }
+
+                // Save the valid vitalFunction to the database
                 db.VitalFunctions.Add(vitalFunction);
                 db.SaveChanges();
                 return RedirectToAction("VitalFunctions", "Patients", new { id = vitalFunction.PatientID });
             }
 
-            var patient = db.Patients.Find(vitalFunction.PatientID);
-            ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
+            // Handle invalid ModelState and reload the form with patient details
+            var patientDetails = db.Patients.Find(vitalFunction.PatientID);
+            ViewBag.PatientName = $"{patientDetails.FirstName} {patientDetails.LastName}";
             return View(vitalFunction);
         }
 
@@ -212,6 +234,19 @@ namespace SoteCare.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private decimal? ParseDecimal(string input)
+        {
+            if (!string.IsNullOrEmpty(input))
+            {
+                var normalizedInput = input.Replace(',', '.'); 
+                if (decimal.TryParse(normalizedInput, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal result))
+                {
+                    return result;
+                }
+            }
+            return null;
         }
     }
 }
