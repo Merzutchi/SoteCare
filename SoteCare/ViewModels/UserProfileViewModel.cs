@@ -29,6 +29,7 @@ namespace SoteCare.ViewModels
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime AssignmentDate { get; set; }
-        public string DoctorName { get; set; }  // Doctor's name who assigned the patient
+        public string PatientName { get; set; }
+        public string DoctorName { get; set; }  
     }
 }   

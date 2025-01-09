@@ -313,29 +313,65 @@ namespace SoteCare.Controllers
             {
                 return HttpNotFound();
             }
+            int doctorId = (int)Session["UserID"];
+            var doctor = db.Doctors.SingleOrDefault(d => d.UserID == doctorId);
+            if (doctor == null)
+            {
+                return HttpNotFound(); 
+            }
 
-            // Fetches available nurses for assignment
             ViewBag.Nurses = db.Nurses.Select(n => new SelectListItem
             {
                 Value = n.NurseID.ToString(),
                 Text = n.FirstName + " " + n.LastName
             }).ToList();
-
             return View(patient);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AssignToNurse(int patientId, int nurseId)
+        {
+            var patient = db.Patients.Find(patientId);
+            if (patient == null)
+            {
+                return HttpNotFound();  
+            }
+            int doctorId = (int)Session["UserID"];
+            var doctor = db.Doctors.SingleOrDefault(d => d.UserID == doctorId);
+            if (doctor == null)
+            {
+                return HttpNotFound();  
+            }
+            var assignment = new PatientNurseAssignment
+            {
+                PatientID = patient.PatientID,
+                NurseID = nurseId,
+                DoctorID = doctor.DoctorID,  
+                AssignmentDate = DateTime.Now
+            };
+
+            db.PatientNurseAssignment.Add(assignment);
+            db.SaveChanges();
+
+            return RedirectToAction("AssignedPatients");
         }
 
         public ActionResult AssignedPatients()
         {
-            // Gets the logged-in user's ID from the session (nurse)
             int nurseId = (int)Session["UserID"];
-
-            // Fetches the list of assigned patients for the current nurse
             var assignedPatients = db.PatientNurseAssignment
-                .Where(a => a.NurseID == nurseId)  // Filters by the logged-in nurse's ID
-                .Select(a => a.Patients)          // Selects the patients assigned to the nurse
+                .Where(a => a.NurseID == nurseId) 
+                .Select(a => new AssignedPatientViewModel
+                {
+                    PatientName = a.Patients.FirstName + " " + a.Patients.LastName,
+                    AssignmentDate = a.AssignmentDate,
+                    DoctorName = a.Patients.Doctors != null
+                                ? a.Patients.Doctors.FirstName + " " + a.Patients.Doctors.LastName
+                                : "Ei määrättyä lääkäriä." 
+                })
                 .ToList();
 
-            // Passes the assigned patients to the view
             return View(assignedPatients);
         }
 
