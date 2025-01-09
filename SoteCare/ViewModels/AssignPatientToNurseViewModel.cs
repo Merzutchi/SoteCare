@@ -10,5 +10,5 @@ namespace SoteCare.ViewModels
     {
         public List<SelectListItem> UnassignedPatients { get; set; }
         public List<SelectListItem> Nurses { get; set; }
-    }
+    }    
 }
