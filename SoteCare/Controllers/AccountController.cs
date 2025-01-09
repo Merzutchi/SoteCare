@@ -223,17 +223,15 @@ namespace SoteCare.Controllers
 
                     // Fetches assigned patients for this nurse
                     var assignedPatients = db.PatientNurseAssignment
-                        .Where(a => a.NurseID == nurse.NurseID)
-                        .Include(a => a.Patients)
-                        .Include(a => a.Patients.Doctors)
+                        .Where(a => a.NurseID == nurse.NurseID)  // Filters by NurseID
+                        .Include(a => a.Patients)  // Ensures related Patients are loaded
+                        .Include(a => a.Doctors)  // Ensures the Doctor is loaded
                         .Select(a => new AssignedPatientViewModel
                         {
                             FirstName = a.Patients.FirstName,
                             LastName = a.Patients.LastName,
                             AssignmentDate = a.AssignmentDate,
-                            DoctorName = a.Patients.Doctors != null
-                                        ? a.Patients.Doctors.FirstName + " " + a.Patients.Doctors.LastName
-                                        : "Ei määrättyä lääkäriä"  
+                            DoctorName = a.Doctors.FirstName + " " + a.Doctors.LastName  // Fetches doctor’s name
                         })
                         .ToList();
 

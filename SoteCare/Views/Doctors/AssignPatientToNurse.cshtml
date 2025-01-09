@@ -20,7 +20,7 @@
     <div class="card-body">
         @using (Html.BeginForm("AssignPatientToNurse", "Doctors", FormMethod.Post))
         {
-            @Html.AntiForgeryToken() 
+            @Html.AntiForgeryToken()
 
             <div class="form-group">
                 <label for="patientId">Valitse potilas</label>
@@ -38,7 +38,7 @@
                     }
                 </select>
             </div>
-
+            <br />
             <div class="form-group">
                 <label for="nurseId">Valitse hoitaja</label>
                 <select id="nurseId" name="nurseId" class="form-control">
@@ -52,6 +52,23 @@
                     else
                     {
                         <option disabled>Ei näytettäviä hoitajia.</option>
+                    }
+                </select>
+            </div>
+            <br />
+            <div class="form-group">
+                <label for="doctorId">Valitse lääkäri</label>
+                <select id="doctorId" name="doctorId" class="form-control">
+                    @if (ViewBag.Doctors != null && ViewBag.Doctors.Count > 0)
+                    {
+                        foreach (var doctor in ViewBag.Doctors as List<SelectListItem>)
+                        {
+                            <option value="@doctor.Value">@doctor.Text</option>
+                        }
+                    }
+                    else
+                    {
+                        <option disabled>Ei näytettäviä lääkäreitä.</option>
                     }
                 </select>
             </div>

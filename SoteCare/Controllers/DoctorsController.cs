@@ -137,18 +137,29 @@ namespace SoteCare.Controllers
                 })
                 .ToList();
 
+            // Fetches available doctors
+            ViewBag.Doctors = db.Doctors
+                .AsEnumerable() // Converts to memory to allow string formatting
+                .Select(d => new SelectListItem
+                {
+                    Value = d.DoctorID.ToString(),
+                    Text = $"{d.FirstName} {d.LastName}" // Formatting in memory
+                })
+                .ToList();
+
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AssignPatientToNurse(int patientId, int nurseId)
+        public ActionResult AssignPatientToNurse(int patientId, int nurseId, int doctorId)
         {
             if (ModelState.IsValid)
             {
                 var existingAssignment = db.PatientNurseAssignment.FirstOrDefault(a => a.PatientID == patientId);
                 if (existingAssignment != null)
                 {
+                    existingAssignment.DoctorID = doctorId;
                     existingAssignment.NurseID = nurseId;
                     existingAssignment.AssignmentDate = DateTime.Now;
                 }
@@ -157,17 +168,18 @@ namespace SoteCare.Controllers
                     db.PatientNurseAssignment.Add(new PatientNurseAssignment
                     {
                         PatientID = patientId,
+                        DoctorID = doctorId,
                         NurseID = nurseId,
                         AssignmentDate = DateTime.Now
                     });
                 }
 
                 db.SaveChanges();
-                TempData["SuccessMessage"] = "Patient successfully assigned to nurse!";
+                TempData["SuccessMessage"] = "Potilas määrätty onnistuneesti!";
                 return RedirectToAction("AssignPatientToNurse");
             }
 
-            TempData["ErrorMessage"] = "Failed to assign patient to nurse. Please try again.";
+            TempData["ErrorMessage"] = "Ei onnistunut määräämään potilasta. Yritä uudelleen.";
             return RedirectToAction("AssignPatientToNurse");
         }
 

@@ -17,7 +17,7 @@
         <!-- Links visible to logged-in users only -->
         @if (Session["Role"] != null)
         {
-            <a href="@Url.Action("Index", "Dashboard")">Ohjausnäkymä</a>
+            <a href="@Url.Action("Index", "Dashboard")">Ohjausnäkymä | SoteCare</a>
             <h6>Potilaat</h6>
             <a href="@Url.Action("Index", "Patients")">Potilaat</a>
 
@@ -29,25 +29,29 @@
             <a href="@Url.Action("Index", "Doctors")">Lääkärit</a>
             <a href="@Url.Action("Index", "Nurses")">Hoitajat</a>
 
-            if (Session["Role"].ToString().Equals("Doctor", StringComparison.OrdinalIgnoreCase))
-            {
-                <!-- Assign Patient to Nurse link for Doctors only -->
-                <div class="nav-item">
-                    <a class="nav-link" href="@Url.Action("AssignPatientToNurse", "Doctors")">Määritä potilas hoitajalle</a>
-                </div>
-            }
-
             <!-- Logout Form (POST method) -->
+            <h6>Kirjautuminen</h6>
             using (Html.BeginForm("Logout", "Account", FormMethod.Post))
             {
                 @Html.AntiForgeryToken()
                 <a href="javascript:void(0);" onclick="this.closest('form').submit();">Kirjaudu ulos</a>
+            }
+
+
+            if (Session["Role"].ToString().Equals("Doctor", StringComparison.OrdinalIgnoreCase))
+            {
+                <!-- Assign Patient to Nurse link for Doctors only -->
+                <h6>Potilaan määritys</h6>
+                <div class="nav-item">
+                    <a class="nav-link" href="@Url.Action("AssignPatientToNurse", "Doctors")">Määritä potilas hoitajalle</a>
+                </div>
             }
         }
         else
         {
             <!-- Links visible to logged-out users -->
             <a href="@Url.Action("Login", "Account")">Kirjaudu sisään</a>
+            <hr />
             <a href="@Url.Action("RegisterDoctor", "Account")">Rekisteröidy lääkärinä</a>
             <a href="@Url.Action("RegisterNurse", "Account")">Rekisteröidy hoitajana</a>
         }
@@ -64,49 +68,3 @@
     @RenderSection("styles", required: false)
 </body>
 </html>
-@*<script>
-        function myFunction() {
-            // Declare variables
-            var input, filter, ul, li, a, i;
-            input = document.getElementById("mySearch");
-            filter = input.value.toUpperCase();
-            ul = document.getElementById("myMenu");
-            li = ul.getElementsByTagName("li");
-
-            // Loop through all list items, and hide those who don't match the search query
-            for (i = 0; i < li.length; i++) {
-                a = li[i].getElementsByTagName("a")[0];
-                if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                    li[i].style.display = "";
-                } else {
-                    li[i].style.display = "none";
-                }
-            }
-        }
-    </script>*@
-
-
-@*<body>
-        <div class="sidenav">
-            <h2>SoteCare</h2>
-            @if (User.Identity.IsAuthenticated)
-            {
-                <hr />
-                <p>Welcome, @User.Identity.Name</p>
-                <hr />
-                @Html.ActionLink("Dashboard", "Index", "Dashboard")
-                @Html.ActionLink("Patients", "Index", "Patients")
-                @Html.ActionLink("Medications", "Index", "Medications")
-                @Html.ActionLink("Logout", "Logout", "Account")
-            }
-            else
-            {
-                @Html.ActionLink("Login", "Login", "Account")
-                @Html.ActionLink("Register", "Register", "Account")
-            }
-        </div>
-
-        <div class="content">
-            @RenderBody()
-        </div>
-    </body> for logged in view*@  
