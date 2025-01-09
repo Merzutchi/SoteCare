@@ -107,6 +107,7 @@ public class MedicationsController : Controller
     {
         var medications = context.Medications
         .Include("Dosages")
+        .Include("PatientMedications")
         .FirstOrDefault(m => m.MedicationID == id);
 
         if (medications == null)
@@ -117,6 +118,9 @@ public class MedicationsController : Controller
         // Remove related Dosages first
         context.Dosages.RemoveRange(medications.Dosages);
 
+        // Remove related PatientMedications first
+        context.PatientMedications.RemoveRange(medications.PatientMedications);
+
         // Remove the Medications record
         context.Medications.Remove(medications);
 
@@ -125,6 +129,7 @@ public class MedicationsController : Controller
 
         return RedirectToAction("Index");
     }
+
 
     protected override void Dispose(bool disposing)
     {

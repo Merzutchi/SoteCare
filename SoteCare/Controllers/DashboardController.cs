@@ -32,8 +32,10 @@ namespace SoteCare.Controllers
 
             // General data for all users
             ViewBag.TotalPatients = db.Patients.Count();
-            DateTime oneMonthAgo = DateTime.Now.AddMonths(-1);
-            ViewBag.NewPatients = db.Patients.Count(p => p.DateOfBirth > oneMonthAgo);
+            DateTime fewDaysAgo = DateTime.Now.AddDays(-2); // Adjust -2 to the number of days you want
+            ViewBag.NewPatients = db.Patients.Count(p => p.DateOfBirth > fewDaysAgo);
+            //DateTime oneMonthAgo = DateTime.Now.AddMonths(-1);
+            //ViewBag.NewPatients = db.Patients.Count(p => p.DateOfBirth > oneMonthAgo);
 
             ViewBag.TotalMedications = db.Medications.Count();
             ViewBag.ActiveMedications = db.PatientMedications.Count(m => m.EndDate == null || m.EndDate > DateTime.Now);

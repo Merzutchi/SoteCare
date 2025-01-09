@@ -280,6 +280,8 @@ namespace SoteCare.Controllers
             return View(patients);
         }
 
+
+
         // GET: Patients/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -300,9 +302,44 @@ namespace SoteCare.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Patients patients = db.Patients.Find(id);
+            var patients = db.Patients
+            .Include("VitalFunctions")
+            .Include(p => p.PatientNurseAssignment)
+            .Include(p => p.Diagnoses)
+            .Include(p => p.PatientMedications)
+            .Include(p => p.PatientHistory)
+            .Include(p => p.Treatment)
+            .FirstOrDefault(p => p.PatientID == id);
+
+            if (patients == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Remove related Vitalfunctions first
+            db.VitalFunctions.RemoveRange(patients.VitalFunctions);
+
+            // Remove related PatientNurseAssignment records first
+            db.PatientNurseAssignment.RemoveRange(patients.PatientNurseAssignment);
+
+            // Remove related Diagnoses first
+            db.Diagnoses.RemoveRange(patients.Diagnoses);
+
+            // Remove related PatientMedications first
+            db.PatientMedications.RemoveRange(patients.PatientMedications);
+
+            // Remove related PatientHistory first
+            db.PatientHistory.RemoveRange(patients.PatientHistory);
+
+            // Remove related Treatment first
+            db.Treatment.RemoveRange(patients.Treatment);
+
+            // Remove the Patients record
             db.Patients.Remove(patients);
+
+            // Save changes
             db.SaveChanges();
+
             return RedirectToAction("Index");
         }
 

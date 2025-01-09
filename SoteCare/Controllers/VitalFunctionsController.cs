@@ -138,6 +138,7 @@ namespace SoteCare.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 // Uses helper to parse Temperature field
                 if (Request.Form["Temperature"] != null)
                 {
