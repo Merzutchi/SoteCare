@@ -31,7 +31,8 @@ namespace SoteCare.Models
         public Nullable<int> DosageID { get; set; }
         [Display(Name = "Muistiinpanot")]
         public string Notes { get; set; }
-    
+        public int? MedicationListID { get; set; } //EI SAA POISTAA TAI TULEE ERRORIA
+
         public virtual Medications Medications { get; set; }
         public virtual Patients Patients { get; set; }
         public virtual Dosages Dosages { get; set; }
