@@ -7,7 +7,6 @@
       <Diagram DiagramId="798a424d486d4b9c91172fdf0a350486" Name="Diagram1" ZoomLevel="60">
         <EntityTypeShape EntityType="PatientRecordModel.Diagnoses" Width="1.5" PointX="8.25" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordModel.Dosages" Width="1.5" PointX="7.875" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="PatientRecordModel.MedicationLists" Width="1.5" PointX="1.125" PointY="5.25" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordModel.Medications" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordModel.PatientHistory" Width="1.5" PointX="7.125" PointY="11.5" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordModel.PatientMedications" Width="1.5" PointX="11.25" PointY="7.375" IsExpanded="true" />
@@ -18,8 +17,6 @@
         <AssociationConnector Association="PatientRecordModel.FK__Diagnoses__Patie__74AE54BC" ManuallyRouted="false" />
         <AssociationConnector Association="PatientRecordModel.FK__Dosages__Medicat__6FE99F9F" ManuallyRouted="false" />
         <AssociationConnector Association="PatientRecordModel.FK_TreatmentDetails_Dosage" ManuallyRouted="false" />
-        <AssociationConnector Association="PatientRecordModel.FK_Medications_MedicationLists" ManuallyRouted="false" />
-        <AssociationConnector Association="PatientRecordModel.FK_PatientMedications_MedicationLists" ManuallyRouted="false" />
         <AssociationConnector Association="PatientRecordModel.FK__PatientMe__Medic__787EE5A0" ManuallyRouted="false" />
         <AssociationConnector Association="PatientRecordModel.FK_Treatment_Medication" ManuallyRouted="false" />
         <AssociationConnector Association="PatientRecordModel.FK_TreatmentDetails_Medication" ManuallyRouted="false" />

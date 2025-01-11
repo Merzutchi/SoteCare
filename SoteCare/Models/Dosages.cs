@@ -21,12 +21,11 @@ namespace SoteCare.Models
             this.TreatmentDetails = new HashSet<TreatmentDetails>();
             this.PatientMedications = new HashSet<PatientMedications>();
         }
-    
+        [Display(Name = "Annos")]
         public int DosageID { get; set; }
+        [Display(Name = "L‰‰ke")]
         public int MedicationID { get; set; }
-        [Display(Name = "Annostus")]
-        public string Dosage { get; set; }
-        [Display(Name = "Annosv‰li")]
+        [Display(Name = "Annostiheys")]
         public string Frequency { get; set; }
         [Display(Name = "Aloitusp‰iv‰m‰‰r‰")]
         public System.DateTime StartDate { get; set; }
@@ -36,8 +35,9 @@ namespace SoteCare.Models
         public string RouteOfAdministration { get; set; }
         [Display(Name = "Ohjeet")]
         public string Instructions { get; set; }
-        [Display(Name = "Annostusm‰‰r‰")]
+        [Display(Name = "Annosm‰‰r‰")]
         public string DosageAmount { get; set; }
+        [Display(Name = "Potilas")]
         public Nullable<int> PatientID { get; set; }
     
         public virtual Medications Medications { get; set; }

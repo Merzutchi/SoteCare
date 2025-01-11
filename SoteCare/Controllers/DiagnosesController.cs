@@ -47,17 +47,20 @@ namespace SoteCare.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            // Fetch the patient
+            // Hae potilas
             var patient = db.Patients.Find(patientID);
             if (patient == null)
             {
-                return HttpNotFound("Patient not found.");
+                return HttpNotFound("Potilasta ei löydy.");
             }
 
-            // Pass the PatientID and the list of Doctors to the view
-            ViewBag.PatientID = patientID;
-            ViewBag.DoctorID = new SelectList(db.Doctors, "DoctorID", "FullName"); // Populate the Doctor dropdown
+            ViewBag.DoctorID = new SelectList(
+                db.Doctors.Select(d => new { d.DoctorID, FullName = d.FirstName + " " + d.LastName }),
+                "DoctorID",
+                "FullName"
+            );
             var diagnosis = new Diagnoses { PatientID = patientID.Value };
+            ViewBag.PatientName = patient.FirstName + " " + patient.LastName;
 
             return View(diagnosis);
         }
@@ -69,46 +72,19 @@ namespace SoteCare.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Get the currently logged-in user
-                var currentUser = db.Users.Find(Session["UserID"]);
-
-                if (currentUser == null)
-                {
-                    return RedirectToAction("Login", "Account"); // Redirect if the user session is invalid
-                }
-
-                // Check if the user is a doctor (Doctor role)
-                if (currentUser.Role == "Doctor")
-                {
-                    // Find the doctor based on the UserID
-                    var doctor = db.Doctors.SingleOrDefault(d => d.UserID == currentUser.UserID);
-                    if (doctor != null)
-                    {
-                        // Set the doctor for the diagnosis (either from dropdown or current user)
-                        diagnosis.DoctorID = doctor.DoctorID;
-                    }
-                    else
-                    {
-                        diagnosis.DoctorID = null;  // If the doctor is not found, set to null
-                    }
-                }
-                else
-                {
-                    // If not a doctor, the diagnosis will not have a Doctor assigned
-                    diagnosis.DoctorID = null;
-                }
-
-                // Save the diagnosis to the database
                 db.Diagnoses.Add(diagnosis);
                 db.SaveChanges();
 
-                // Redirect to the Diagnoses page for the patient
+                // Palauttaa käyttäjän diagnoosien listaukseen
                 return RedirectToAction("Diagnoses", "Patients", new { id = diagnosis.PatientID });
             }
+            ViewBag.DoctorID = new SelectList(
+                db.Doctors.Select(d => new { d.DoctorID, FullName = d.FirstName + " " + d.LastName }),
+                "DoctorID",
+                "FullName",
+                diagnosis.DoctorID
+            );
 
-            // If validation failed, return the diagnosis form
-            ViewBag.PatientID = diagnosis.PatientID;
-            ViewBag.DoctorID = new SelectList(db.Doctors, "DoctorID", "FullName", diagnosis.DoctorID);
             return View(diagnosis);
         }
 
@@ -173,7 +149,6 @@ namespace SoteCare.Controllers
                 // Redirect to the patient's diagnoses page
                 return RedirectToAction("Diagnoses", "Patients", new { id = patientId });
             }
-
             // If the diagnose is not found, redirect to the general index as a fallback
             return RedirectToAction("Index");
         }

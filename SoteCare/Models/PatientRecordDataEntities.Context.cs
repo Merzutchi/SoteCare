@@ -27,7 +27,6 @@ namespace SoteCare.Models
     
         public virtual DbSet<Diagnoses> Diagnoses { get; set; }
         public virtual DbSet<Dosages> Dosages { get; set; }
-        public virtual DbSet<MedicationLists> MedicationLists { get; set; }
         public virtual DbSet<Medications> Medications { get; set; }
         public virtual DbSet<PatientHistory> PatientHistory { get; set; }
         public virtual DbSet<PatientMedications> PatientMedications { get; set; }

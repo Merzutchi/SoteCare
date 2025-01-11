@@ -15,17 +15,17 @@ namespace SoteCare.Models
 
     public partial class PatientHistory
     {
-        [Display(Name = "Historia")]
+        [Display(Name = "Potilashistoria")]
         public int HistoryID { get; set; }
         [Display(Name = "Potilas")]
         public int PatientID { get; set; }
-        [Display(Name = "Oireen nimi")]
+        [Display(Name = "Sairauden nimi")]
         public string ConditionName { get; set; }
-        [Display(Name = "Hoidon tiedot")]
+        [Display(Name = "Hoidon aloitusp‰iv‰m‰‰r‰")]
         public string TreatmentDetails { get; set; }
         [Display(Name = "Leikkausp‰iv‰m‰‰r‰")]
         public Nullable<System.DateTime> SurgeryDate { get; set; }
-        [Display(Name = "Huomiot")]
+        [Display(Name = "Muistiinpanot")]
         public string Notes { get; set; }
         [Display(Name = "Hoitaja")]
         public Nullable<int> NurseID { get; set; }

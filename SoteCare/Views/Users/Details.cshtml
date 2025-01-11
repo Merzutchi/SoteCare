@@ -4,7 +4,7 @@
     ViewBag.Title = "User Profile";
 }
 
-<h2>@Model.FullName's Profile</h2>
+@*<h2>@Model.FullName's Profile</h2>*@
 
 <div class="container">
     <div class="row">
@@ -18,7 +18,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <th>Full Name</th>
+                        @*<th>Full Name</th>
                         <td>@Model.FullName</td>
                     </tr>
                     <tr>
@@ -32,16 +32,16 @@
                     <tr>
                         <th>Phone Number</th>
                         <td>@Model.PhoneNumber</td>
-                    </tr>
+                    </tr>*@
                     <tr>
                         <th>Role</th>
                         <td>@Model.Role</td>
                     </tr>
                     <tr>
                         <th>Status</th>
-                        <td>
+                        @*<td>
                             @(Model.IsActive.HasValue ? (Model.IsActive.Value ? "Active" : "Inactive") : "Unknown")
-                        </td>
+                        </td>*@
                     </tr>
                 </tbody>
             </table>
