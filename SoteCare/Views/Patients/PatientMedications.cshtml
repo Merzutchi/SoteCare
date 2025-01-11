@@ -3,7 +3,6 @@
 <div class="container">
     <h2>Potilaan lääkitys, @ViewBag.PatientName</h2>
 
-    <!-- If no medications exist for this patient -->
     @if (!Model.Any())
     {
         <p class="alert alert-info">
@@ -13,16 +12,15 @@
     }
     else
     {
-        <!-- Table to display medications -->
         <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>Lääkkeen nimi</th>
-                    <th>@Html.DisplayNameFor(model => model.DoseStrength)</th>
-                    <th>@Html.DisplayNameFor(model => model.StartDate)</th>
-                    <th>@Html.DisplayNameFor(model => model.EndDate)</th>
-                    <th>Lääkäri</th>  <!-- Prescribing Doctor -->
-                    <th>Annostelureitti</th> <!-- Route of Administration -->
+                    <th>Annos</th>
+                    <th>Alkupäivä</th>
+                    <th>Loppupäivä</th>
+                    <th>Lääkäri</th>
+                    <th>Annostelureitti</th>
                     <th>Muutokset</th>
                 </tr>
             </thead>
@@ -30,37 +28,29 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <!-- Medication Name -->
-                        <td>@(item.Medications?.MedicationName ?? "Unknown Medication")</td>
-
-                        <!-- Dosage -->
+                        <!-- Lääkkeen nimi -->
+                        <td>@(item.Medications?.MedicationName ?? "Tuntematon lääke")</td>
+                        <!-- Annos -->
+                        <td>@(item.Dosages?.DosageAmount ?? "Annosta ei saatavilla")</td>
+                        <!-- Alkupäivä -->
+                        <td>@(item.StartDate?.ToString("yyyy-MM-dd") ?? "Ei määritelty")</td>
+                        <!-- Loppupäivä -->
+                        <td>@(item.EndDate?.ToString("yyyy-MM-dd") ?? "Ei määritelty")</td>
+                        <!-- Lääkäri -->
                         <td>
-                            @if (item.Dosages != null)
+                            @if (item.Doctors != null)
                             {
-                                <p>@item.Dosages.DosageAmount</p>
+                                @($"{item.Doctors.FirstName} {item.Doctors.LastName}")
                             }
                             else
                             {
-                                <p>No Dosage Available</p>
+                                @("Lääkäriä ei määritelty")
                             }
                         </td>
-
-                        <!-- Start Date -->
-                        <td>@(item.StartDate?.ToString("yyyy-MM-dd") ?? "N/A")</td>
-
-                        <!-- End Date -->
-                        <td>@(item.EndDate?.ToString("yyyy-MM-dd") ?? "N/A")</td>
-
-                        <!-- Prescribing Doctor -->
-                        <td>@(item.Doctors != null ? $"{item.Doctors.FirstName} {item.Doctors.LastName}" : "Unknown Doctor")</td>
-
-
-                        <!-- Route of Administration -->
-                        <td>@(item.RouteOfAdministration ?? "N/A")</td>
-
-                        <!-- Actions -->
+                        <!-- Annostelureitti -->
+                        <td>@(item.Dosages?.RouteOfAdministration ?? "Tietoa ei saatavilla")</td>
+                        <!-- Toiminnot -->
                         <td>
-
                             @Html.ActionLink("Poista", "Delete", "PatientMedications",
                                 new { id = item.PatientMedicationID },
                                 new { @class = "btn btn-danger btn-sm" })
@@ -71,7 +61,6 @@
         </table>
     }
 
-    <!-- Buttons for Adding Medication and Returning to Patient Details -->
     <div class="mt-3">
         @Html.ActionLink("Lisää uusi", "AddMedication", "PatientMedications",
             new { id = ViewBag.PatientID },

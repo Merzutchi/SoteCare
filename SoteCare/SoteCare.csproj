@@ -133,7 +133,6 @@
     <Compile Include="Controllers\DosagesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MedicationsController.cs" />
-    <Compile Include="Controllers\MedicationListsController.cs" />
     <Compile Include="Controllers\NursesController.cs" />
     <Compile Include="Controllers\PatientHistoryController.cs" />
     <Compile Include="Controllers\PatientMedicationsController.cs" />
@@ -142,6 +141,7 @@
     <Compile Include="Controllers\TreatmentsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\VitalFunctionsController.cs" />
+    <Compile Include="DecimalModelBinder.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -152,9 +152,6 @@
       <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Dosages.cs">
-      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\MedicationLists.cs">
       <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Medications.cs">
@@ -287,10 +284,6 @@
     <Content Include="Views\Doctors\Create.cshtml" />
     <Content Include="Views\Medications\Index.cshtml" />
     <Content Include="Views\Medications\DeleteMedication.cshtml" />
-    <Content Include="Views\MedicationLists\Index.cshtml" />
-    <Content Include="Views\MedicationLists\Create.cshtml" />
-    <Content Include="Views\MedicationLists\Edit.cshtml" />
-    <Content Include="Views\MedicationLists\Delete.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Nurses\Index.cshtml" />
@@ -365,7 +358,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\PatientNurseAssignments\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

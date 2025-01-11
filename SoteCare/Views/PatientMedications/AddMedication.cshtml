@@ -6,7 +6,7 @@
 
 <h2>Lisää lääke potilaalle, @ViewBag.PatientName</h2>
 
-@using (Html.BeginForm("AddMedication", "PatientMedications", FormMethod.Post))
+@using (Html.BeginForm("Create", "PatientMedications", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.PatientID)
@@ -26,8 +26,8 @@
     <!-- Route of Administration -->
     <div class="form-group">
         @Html.Label("Annostelureitti")
-        @Html.TextBoxFor(model => model.RouteOfAdministration, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.RouteOfAdministration, "", new { @class = "text-danger" })
+        @Html.TextBoxFor(model => model.Dosages.RouteOfAdministration, new { @class = "form-control" })
+        @Html.ValidationMessage("Dosages.RouteOfAdministration", "", new { @class = "text-danger" })
     </div>
 
     <!-- Doctor Dropdown -->
