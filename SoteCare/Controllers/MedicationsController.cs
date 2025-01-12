@@ -10,6 +10,7 @@ using System.Web.Mvc;
 [AuthorizeUser]
 public class MedicationsController : Controller
 {
+    private PatientRecordDataEntities db = new PatientRecordDataEntities();
     private readonly PatientRecordDataEntities context = new PatientRecordDataEntities();
 
     // GET: Index for Medications
@@ -88,7 +89,7 @@ public class MedicationsController : Controller
         {
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
-        Medications medications = context.Medications
+        Medications medications = db.Medications
             .Include("Dosages") // Ensure Dosages are included
             .FirstOrDefault(m => m.MedicationID == id);
 

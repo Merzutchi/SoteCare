@@ -26,12 +26,16 @@ namespace SoteCare.Models
         public int PatientID { get; set; }
         [Display(Name = "L‰‰ke")]
         public Nullable<int> MedicationID { get; set; }
-        [Display(Name = "Aloitusp‰iv‰m‰‰r‰")]
+
+        [Display(Name = "Aloitus p‰iv‰m‰‰r‰")]
         public System.DateTime StartDate { get; set; }
-        [Display(Name = "P‰‰ttymisp‰iv‰m‰‰r‰")]
+
+        [Display(Name = "Lopetus p‰iv‰m‰‰r‰")]
         public Nullable<System.DateTime> EndDate { get; set; }
-        [Display(Name = "Hoitolaji")]
+
+        [Display(Name = "Hoito")]
         public string TreatmentType { get; set; }
+
         [Display(Name = "Muistiinpanot")]
         public string Notes { get; set; }
         [Display(Name = "Diagnoosi")]

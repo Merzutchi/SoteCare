@@ -15,7 +15,7 @@ namespace SoteCare.Models
 
     public partial class PatientMedications
     {
-        [Display(Name = "Potilaan L‰‰kitys")]
+        [Display(Name = "L‰‰kitys")]
         public int PatientMedicationID { get; set; }
         [Display(Name = "Potilas")]
         public Nullable<int> PatientID { get; set; }
@@ -25,14 +25,20 @@ namespace SoteCare.Models
         public Nullable<System.DateTime> StartDate { get; set; }
         [Display(Name = "P‰‰ttymisp‰iv‰m‰‰r‰")]
         public Nullable<System.DateTime> EndDate { get; set; }
+        [Display(Name = "L‰‰kelista")]
+        public Nullable<int> MedicationListID { get; set; }
+        [Display(Name = "Annoksen vahvuus")]
+        public Nullable<decimal> DoseStrength { get; set; }
         [Display(Name = "L‰‰k‰ri")]
         public Nullable<int> DoctorID { get; set; }
         [Display(Name = "Annos")]
         public Nullable<int> DosageID { get; set; }
-        [Display(Name = "Muistiinpanot")]
+        [Display(Name = "Huomiot")]
         public string Notes { get; set; }
-        public int? MedicationListID { get; set; } //EI SAA POISTAA TAI TULEE ERRORIA (OHJELMA EI TOIMI)    
-
+        [Display(Name = "Antotapa")]
+        public string RouteOfAdministration { get; set; }
+    
+        public virtual MedicationLists MedicationLists { get; set; }
         public virtual Medications Medications { get; set; }
         public virtual Patients Patients { get; set; }
         public virtual Dosages Dosages { get; set; }

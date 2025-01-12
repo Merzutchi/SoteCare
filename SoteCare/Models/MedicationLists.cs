@@ -13,38 +13,27 @@ namespace SoteCare.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public partial class Dosages
+    public partial class MedicationLists
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Dosages()
+        public MedicationLists()
         {
-            this.TreatmentDetails = new HashSet<TreatmentDetails>();
+            this.Medications = new HashSet<Medications>();
             this.PatientMedications = new HashSet<PatientMedications>();
         }
     
-        public int DosageID { get; set; }
-        public int MedicationID { get; set; }
-        [Display(Name = "Annostus")]
-        public string Dosage { get; set; }
-        [Display(Name = "Annosv‰li")]
-        public string Frequency { get; set; }
-        [Display(Name = "Aloitusp‰iv‰m‰‰r‰")]
-        public System.DateTime StartDate { get; set; }
-        [Display(Name = "P‰‰ttymisp‰iv‰m‰‰r‰")]
-        public Nullable<System.DateTime> EndDate { get; set; }
-        [Display(Name = "Antotapa")]
-        public string RouteOfAdministration { get; set; }
-        [Display(Name = "Ohjeet")]
-        public string Instructions { get; set; }
-        [Display(Name = "Annostusm‰‰r‰")]
-        public string DosageAmount { get; set; }
-        public Nullable<int> PatientID { get; set; }
+        [Display(Name = "")]
+        public int MedicationListID { get; set; }
+        [Display(Name = "L‰‰kenimi")]
+        public string MedicationName { get; set; }
+        [Display(Name = "")]
+        public string MedicationType { get; set; }
+        [Display(Name = "")]
+        public string Description { get; set; }
     
-        public virtual Medications Medications { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TreatmentDetails> TreatmentDetails { get; set; }
+        public virtual ICollection<Medications> Medications { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientMedications> PatientMedications { get; set; }
-        public virtual Patients Patients { get; set; }
     }
 }

@@ -23,27 +23,31 @@ namespace SoteCare.Models
             this.Treatment = new HashSet<Treatment>();
             this.TreatmentDetails = new HashSet<TreatmentDetails>();
         }
-        [Display(Name = "L‰‰ke")]
+    
+        [Display(Name = "L‰‰kitys")]
         public int MedicationID { get; set; }
-        [Display(Name = "L‰‰kkeen nimi")]
+        [Display(Name = "L‰‰kenimi")]
         public string MedicationName { get; set; }
         [Display(Name = "L‰‰k‰ri")]
         public Nullable<int> DoctorID { get; set; }
-        [Display(Name = "Uusintatila")]
+        [Display(Name = "T‰ydennystila")]
         public string RefillStatus { get; set; }
-        [Display(Name = "L‰‰kityksen tila")]
+        [Display(Name = "L‰‰kken tila")]
         public string MedicationStatus { get; set; }
         [Display(Name = "Allergiat")]
         public string Allergies { get; set; }
         [Display(Name = "Kommentit")]
         public string Comments { get; set; }
-        [Display(Name = "L‰‰kityksen tyyppi")]
+        [Display(Name = "L‰‰kelista")]
+        public Nullable<int> MedicationListID { get; set; }
+        [Display(Name = "L‰‰kelaji")]
         public string MedicationType { get; set; }
-        [Display(Name = "Kuvaus")]
+        [Display(Name = "Tarkennus")]
         public string Description { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Dosages> Dosages { get; set; }
+        public virtual MedicationLists MedicationLists { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientMedications> PatientMedications { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

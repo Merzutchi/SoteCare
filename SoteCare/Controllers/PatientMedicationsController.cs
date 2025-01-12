@@ -15,7 +15,7 @@ namespace SoteCare.Controllers
     [AuthorizeUser]
     public class PatientMedicationsController : Controller
     {
-        private readonly PatientRecordDataEntities db = new PatientRecordDataEntities();
+        private PatientRecordDataEntities db = new PatientRecordDataEntities();
 
         // GET: PatientMedications
         public ActionResult Index()
@@ -24,7 +24,7 @@ namespace SoteCare.Controllers
                 .Include(p => p.Medications)
                 .Include(p => p.Dosages)
                 .Include(p => p.Patients)
-                .Include(p => p.Doctors)
+                .Include(p => p.Doctors)  // Ensure that Doctors are included here
                 .OrderByDescending(m => m.PatientMedicationID)
                 .ToList();
 
@@ -34,156 +34,157 @@ namespace SoteCare.Controllers
         // GET: PatientMedications/Details/5
         public ActionResult Details(int? id)
         {
-            if (!id.HasValue)
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            var patientMedications = db.PatientMedications.Find(id.Value);
+            PatientMedications patientMedications = db.PatientMedications.Find(id);
             if (patientMedications == null)
             {
-                return HttpNotFound("Patient medication not found.");
+                return HttpNotFound();
             }
-
             return View(patientMedications);
         }
 
         // GET: PatientMedications/Create
         public ActionResult Create(int? id)
         {
-            if (!id.HasValue)
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var patient = db.Patients.Find(id.Value);
+            var patient = db.Patients.Find(id);
             if (patient == null)
             {
                 return HttpNotFound("Patient not found.");
             }
 
-            ViewBag.PatientID = id;
+            ViewBag.PatientID = id; 
             ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
-            PopulateDropdowns();
+            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName");
+            ViewBag.DosageID = new SelectList(db.Dosages, "DosageID", "DosageAmount");
 
-            return View(new PatientMedications { PatientID = id.Value });
+            return View();
         }
 
+        // POST: PatientMedications/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(PatientMedications patientMedications)
+        public ActionResult Create([Bind(Include = "PatientMedicationID,PatientID,MedicationID,StartDate,EndDate,MedicationListID,DoseStrength, DosageID")] PatientMedications patientMedications)
         {
             if (ModelState.IsValid)
             {
-                try
-                {
-                    db.PatientMedications.Add(patientMedications);
-                    db.SaveChanges();
-
-                    return RedirectToAction("PatientMedications", "Patients", new { id = patientMedications.PatientID });
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"Error while saving patient medication: {ex.Message}");
-                    ModelState.AddModelError("", "An error occurred while saving the medication.");
-                }
+                db.PatientMedications.Add(patientMedications);
+                db.SaveChanges();
+                return RedirectToAction("PatientMedications", "Patients", new { id = patientMedications.PatientID });
             }
 
-            PopulateDropdowns(patientMedications);
+            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", patientMedications.MedicationID);
+            ViewBag.DosageID = new SelectList(db.Dosages, "DosageID", "DosageAmount", patientMedications.DosageID);
             return View(patientMedications);
         }
 
-        // GET: PatientMedications/AddMedication
         public ActionResult AddMedication(int? id)
         {
-            if (!id.HasValue)
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var patient = db.Patients.Find(id.Value);
+            var patient = db.Patients.Find(id);
             if (patient == null)
             {
                 return HttpNotFound("Patient not found.");
             }
 
+            // Pass the doctors list to the view
+            ViewBag.Doctors = new SelectList(db.Doctors, "DoctorID", "FullName");
+
             ViewBag.PatientID = id;
             ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
-            PopulateDropdowns();
+            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName");
+            ViewBag.DosageID = new SelectList(db.Dosages, "DosageID", "DosageAmount");
 
+            // Return empty model for the form
             return View(new PatientMedications { PatientID = id.Value });
         }
 
-        // POST: PatientMedications/AddMedication
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddMedication(PatientMedications patientMedications)
+        public ActionResult AddMedication([Bind(Include = "PatientID,MedicationID,DosageID,StartDate,EndDate,DoctorID,RouteOfAdministration")] PatientMedications patientMedications)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
+                    // Save the new medication, including the selected DoctorID and RouteOfAdministration
                     db.PatientMedications.Add(patientMedications);
                     db.SaveChanges();
 
+                    // Redirect to the patient medications list
                     return RedirectToAction("PatientMedications", "Patients", new { id = patientMedications.PatientID });
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine($"Error while saving patient medication: {ex.Message}");
-                    ModelState.AddModelError("", "An error occurred while saving the medication.");
+                    // Log exception and return an error
+                    Debug.WriteLine($"Error saving medication: {ex.Message}");
+                    ModelState.AddModelError("", "An error occurred while saving the medication. Please try again.");
                 }
             }
 
-            PopulateDropdowns(patientMedications);
+            // Repopulate the ViewBag and return to the form if the model is invalid
+            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", patientMedications.MedicationID);
+            ViewBag.DosageID = new SelectList(db.Dosages, "DosageID", "DosageAmount", patientMedications.DosageID);
+            ViewBag.Doctors = new SelectList(db.Doctors, "DoctorID", "FullName", patientMedications.DoctorID); // Ensure the doctor list is passed
+
             return View(patientMedications);
         }
 
+        // GET: PatientMedications/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (!id.HasValue)
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var patientMedications = db.PatientMedications.Find(id.Value);
+            PatientMedications patientMedications = db.PatientMedications.Find(id);
             if (patientMedications == null)
             {
-                return HttpNotFound("Patient medication not found.");
+                return HttpNotFound();
             }
 
-            PopulateDropdowns(patientMedications);
+            // Populate dropdowns for Medication and Dosage
+            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", patientMedications.MedicationID);
+            ViewBag.DosageID = new SelectList(db.Dosages, "DosageID", "DosageAmount", patientMedications.DosageID);
+
             return View(patientMedications);
         }
 
+        // POST: PatientMedications/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(PatientMedications patientMedications)
+        public ActionResult Edit([Bind(Include = "PatientMedicationID, PatientID, MedicationID, DosageID, StartDate, EndDate, MedicationListID, DoseStrength")] PatientMedications patientMedications)
         {
             if (ModelState.IsValid)
             {
-                try
-                {
-                    db.Entry(patientMedications).State = EntityState.Modified;
-                    db.SaveChanges();
-
-                    return RedirectToAction("PatientMedications", "Patients", new { id = patientMedications.PatientID });
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"Error while updating patient medication: {ex.Message}");
-                    ModelState.AddModelError("", "An error occurred while updating the medication.");
-                }
+                db.Entry(patientMedications).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("PatientMedications", "Patients", new { id = patientMedications.PatientID });
             }
 
-            PopulateDropdowns(patientMedications);
+            // Re-populate dropdowns if ModelState is invalid
+            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", patientMedications.MedicationID);
+            ViewBag.DosageID = new SelectList(db.Dosages, "DosageID", "DosageAmount", patientMedications.DosageID);
+
             return View(patientMedications);
         }
 
         // GET: PatientMedications/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (!id.HasValue)
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -191,55 +192,35 @@ namespace SoteCare.Controllers
             var patientMedication = db.PatientMedications
                 .Include(pm => pm.Medications)
                 .Include(pm => pm.Patients)
-                .FirstOrDefault(pm => pm.PatientMedicationID == id.Value);
+                .FirstOrDefault(pm => pm.PatientMedicationID == id);
 
             if (patientMedication == null)
             {
-                return HttpNotFound("Patient medication not found.");
+                return HttpNotFound("The medication record could not be found.");
             }
 
             return View(patientMedication);
         }
 
+        // POST: PatientMedications/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+
         public ActionResult DeleteConfirmed(int id)
         {
-            var patientMedications = db.PatientMedications.Find(id);
+            PatientMedications patientMedications = db.PatientMedications.Find(id);
             if (patientMedications != null)
             {
-                try
-                {
-                    int patientId = (int)patientMedications.PatientID;
-                    db.PatientMedications.Remove(patientMedications);
-                    db.SaveChanges();
+                int patientId = (int)patientMedications.PatientID; // Get the PatientID before deleting
+                db.PatientMedications.Remove(patientMedications);
+                db.SaveChanges();
 
-                    return RedirectToAction("PatientMedications", "Patients", new { id = patientId });
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"Error while deleting patient medication: {ex.Message}");
-                    ModelState.AddModelError("", "An error occurred while deleting the medication.");
-                }
+                // Redirect to the patient's patient medication page
+                return RedirectToAction("PatientMedications", "Patients", new { id = patientId });
             }
 
+            // If the patient medication is not found, redirect to the general index as a fallback
             return RedirectToAction("Index");
-        }
-
-        private void PopulateDropdowns(PatientMedications model = null)
-        {
-            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", model?.MedicationID);
-            ViewBag.DosageID = new SelectList(db.Dosages, "DosageID", "DosageAmount", model?.DosageID);
-            ViewBag.Doctors = new SelectList(
-                db.Doctors.Select(d => new
-                {
-                    d.DoctorID,
-                    DoctorName = d.FirstName + " " + d.LastName // Yhdistetään etunimi ja sukunimi
-                }),
-                "DoctorID",
-                "DoctorName",
-                model?.DoctorID
-            );
         }
 
         protected override void Dispose(bool disposing)

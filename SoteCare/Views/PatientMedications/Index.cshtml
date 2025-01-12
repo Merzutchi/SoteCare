@@ -11,8 +11,10 @@
     <thead>
         <tr>
             <th>Potilaan nimi</th>
+            <th>@Html.DisplayNameFor(model => model.MedicationLists.MedicationName)</th>
             <th>@Html.DisplayNameFor(model => model.StartDate)</th>
             <th>@Html.DisplayNameFor(model => model.EndDate)</th>
+            <th>@Html.DisplayNameFor(model => model.DoseStrength)</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -22,8 +24,10 @@
             <tr>
                 <td>@item.Patients.FirstName @item.Patients.LastName</td>
                 <td>@item.Medications.MedicationName</td>
+                <td>@item.Dosages.Dosage</td>
                 <td>@item.StartDate</td>
                 <td>@item.EndDate</td>
+                <td>@item.DoseStrength</td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.PatientMedicationID }) |
                     @Html.ActionLink("Details", "Details", new { id = item.PatientMedicationID }) |

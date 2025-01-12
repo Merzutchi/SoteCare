@@ -37,7 +37,7 @@ namespace SoteCare.Controllers
 
             if (user != null && user.IsActive)
             {
-                if (user.Password == HashPassword(password))
+                if (user.Password == HashPassword(password))  
                 {
                     Session["UserID"] = user.UserID;
                     Session["Role"] = user.Role;
@@ -61,25 +61,24 @@ namespace SoteCare.Controllers
                     }
                     else
                     {
-                        Session["FullName"] = "User";
+                        Session["FullName"] = "User"; 
                     }
-
-                    return RedirectToAction("Index", "Dashboard");
+                    if (user.Role == "Doctor")
+                    {
+                        return RedirectToAction("Index", "Dashboard");
+                    }
+                    else if (user.Role == "Nurse")
+                    {
+                        return RedirectToAction("Index", "Dashboard");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");  
+                    }
                 }
             }
-
             ViewBag.ErrorMessage = "Virheellinen käyttäjänimi tai salasana, tai sinun käyttäjänimi ei ole käytössä.";
             return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Logout()
-        {
-            // Kirjautumisen uloskirjautuminen
-            Session.Clear(); // Poistaa istunnon tiedot
-            FormsAuthentication.SignOut(); // Poistaa kirjautumisen evästeen
-            return RedirectToAction("Index", "Home"); // Ohjaa kirjautumissivulle
         }
 
         // GET: Account/RegisterDoctor
@@ -94,9 +93,11 @@ namespace SoteCare.Controllers
         {
             if (ModelState.IsValid)
             {
+                var fullName = model.FirstName + " " + model.LastName;
+
                 var user = new Users
                 {
-                    Username = model.FirstName + " " + model.LastName,
+                    Username = fullName,  
                     Password = HashPassword(model.Password),
                     Role = "Doctor",
                     IsActive = true
@@ -104,7 +105,6 @@ namespace SoteCare.Controllers
 
                 db.Users.Add(user);
                 db.SaveChanges();
-
                 var doctor = new Doctors
                 {
                     FirstName = model.FirstName,
@@ -112,7 +112,8 @@ namespace SoteCare.Controllers
                     Specialization = model.Specialization,
                     PhoneNumber = model.PhoneNumber,
                     Email = model.Email,
-                    UserID = user.UserID
+                    UserID = user.UserID,
+                    FullName = fullName 
                 };
 
                 db.Doctors.Add(doctor);
@@ -122,7 +123,7 @@ namespace SoteCare.Controllers
                 db.SaveChanges();
 
                 Session["UserID"] = user.UserID;
-                Session["FullName"] = doctor.FirstName + " " + doctor.LastName;
+                Session["FullName"] = doctor.FullName;
                 Session["Role"] = user.Role;
 
                 return RedirectToAction("Index", "Dashboard");
@@ -142,9 +143,10 @@ namespace SoteCare.Controllers
         {
             if (ModelState.IsValid)
             {
+                var fullName = model.FirstName + " " + model.LastName;
                 var user = new Users
                 {
-                    Username = model.FirstName + " " + model.LastName,
+                    Username = fullName,  
                     Password = HashPassword(model.Password),
                     Role = "Nurse",
                     IsActive = true
@@ -152,14 +154,14 @@ namespace SoteCare.Controllers
 
                 db.Users.Add(user);
                 db.SaveChanges();
-
                 var nurse = new Nurses
                 {
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     PhoneNumber = model.PhoneNumber,
                     Email = model.Email,
-                    UserID = user.UserID
+                    UserID = user.UserID,
+                    FullName = fullName 
                 };
 
                 db.Nurses.Add(nurse);
@@ -169,12 +171,12 @@ namespace SoteCare.Controllers
                 db.SaveChanges();
 
                 Session["UserID"] = user.UserID;
-                Session["FullName"] = nurse.FirstName + " " + nurse.LastName;
+                Session["FullName"] = nurse.FullName;  
                 Session["Role"] = user.Role;
 
                 return RedirectToAction("Index", "Dashboard");
             }
-            return View(model);
+            return View(model);  
         }
 
         public ActionResult UserProfile()
@@ -219,16 +221,17 @@ namespace SoteCare.Controllers
                     userProfileViewModel.Email = nurse.Email;
                     userProfileViewModel.PhoneNumber = nurse.PhoneNumber;
 
+                    // Fetches assigned patients for this nurse
                     var assignedPatients = db.PatientNurseAssignment
-                        .Where(a => a.NurseID == nurse.NurseID)
-                        .Include(a => a.Patients)
-                        .Include(a => a.Doctors)
+                        .Where(a => a.NurseID == nurse.NurseID)  // Filters by NurseID
+                        .Include(a => a.Patients)  // Ensures related Patients are loaded
+                        .Include(a => a.Doctors)  // Ensures the Doctor is loaded
                         .Select(a => new AssignedPatientViewModel
                         {
                             FirstName = a.Patients.FirstName,
                             LastName = a.Patients.LastName,
                             AssignmentDate = a.AssignmentDate,
-                            DoctorName = a.Doctors.FirstName + " " + a.Doctors.LastName
+                            DoctorName = a.Doctors.FirstName + " " + a.Doctors.LastName  // Fetches doctor’s name
                         })
                         .ToList();
 
@@ -238,11 +241,158 @@ namespace SoteCare.Controllers
             return View(userProfileViewModel);
         }
 
+        // POST: Account/UserProfile
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UserProfile(UserProfileViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = db.Users.Find(model.UserID);
+                if (user != null)
+                {
+                    if (!string.IsNullOrEmpty(model.Password) && model.Password == model.ConfirmPassword)
+                    {
+                        user.Password = HashPassword(model.Password); // Hashes password
+                    }
+
+                    db.SaveChanges();
+                    if (user.Role == "Doctor")
+                    {
+                        var doctor = db.Doctors.SingleOrDefault(d => d.UserID == user.UserID);
+                        if (doctor != null)
+                        {
+                            doctor.FirstName = model.FullName.Split(' ')[0];  
+                            doctor.LastName = model.FullName.Split(' ').Length > 1 ? model.FullName.Split(' ')[1] : string.Empty;  // Split full name to last name
+                            doctor.Email = model.Email;  // Updates email
+                            doctor.PhoneNumber = model.PhoneNumber;  // Updates phonenumber
+                        }
+                    }
+                    else if (user.Role == "Nurse")
+                    {
+                        var nurse = db.Nurses.SingleOrDefault(n => n.UserID == user.UserID);
+                        if (nurse != null)
+                        {
+                            nurse.FirstName = model.FullName.Split(' ')[0];  // Splits full name to first name
+                            nurse.LastName = model.FullName.Split(' ').Length > 1 ? model.FullName.Split(' ')[1] : string.Empty;  // Split full name to last name
+                            nurse.Email = model.Email;  
+                            nurse.PhoneNumber = model.PhoneNumber;  
+                        }
+                    }
+
+                    db.SaveChanges();
+                    return RedirectToAction("UserProfile");
+                }
+            }
+            return View(model);
+        }
+
+        // GET: Account/EditProfile
+        public ActionResult EditProfile()
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Login");  
+            }
+
+            var userId = (int)Session["UserID"];
+            var user = db.Users.Find(userId);
+
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            //populates the ViewModel 
+            var userProfileViewModel = new UserProfileViewModel
+            {
+                UserID = user.UserID,
+                Username = user.Username,
+                Role = user.Role,
+                IsActive = user.IsActive  
+            };
+
+            if (user.Role == "Doctor")
+            {
+                var doctor = db.Doctors.SingleOrDefault(d => d.UserID == user.UserID);
+                if (doctor != null)
+                {
+                    userProfileViewModel.Email = doctor.Email;
+                    userProfileViewModel.PhoneNumber = doctor.PhoneNumber;
+                }
+            }
+            else if (user.Role == "Nurse")
+            {
+                var nurse = db.Nurses.SingleOrDefault(n => n.UserID == user.UserID);
+                if (nurse != null)
+                {
+                    userProfileViewModel.Email = nurse.Email;
+                    userProfileViewModel.PhoneNumber = nurse.PhoneNumber;
+                }
+            }
+
+            return View(userProfileViewModel);  
+        }
+
+        // POST: Account/EditProfile
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditProfile(UserProfileViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = db.Users.Find(model.UserID);
+                if (user != null)
+                {
+                    user.Username = model.Username;
+                    if (user.Role == "Doctor")
+                    {
+                        var doctor = db.Doctors.SingleOrDefault(d => d.UserID == user.UserID);
+                        if (doctor != null)
+                        {
+                            doctor.FirstName = model.FullName.Split(' ')[0]; 
+                            doctor.LastName = model.FullName.Split(' ').Length > 1 ? model.FullName.Split(' ')[1] : string.Empty;  // Last name from FullName
+                            doctor.Email = model.Email;
+                            doctor.PhoneNumber = model.PhoneNumber;
+                        }
+                    }
+                    else if (user.Role == "Nurse")
+                    {
+                        var nurse = db.Nurses.SingleOrDefault(n => n.UserID == user.UserID);
+                        if (nurse != null)
+                        {
+                            nurse.FirstName = model.FullName.Split(' ')[0];
+                            nurse.LastName = model.FullName.Split(' ').Length > 1 ? model.FullName.Split(' ')[1] : string.Empty;  // Last name from FullName
+                            nurse.Email = model.Email;
+                            nurse.PhoneNumber = model.PhoneNumber;
+                        }
+                    }
+
+                    db.SaveChanges();
+                    return RedirectToAction("UserProfile");
+                }
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Logout()
+        {
+            // Clears session data logs user out
+            Session.Clear();
+            return RedirectToAction("Index", "Home");
+        }
+
+        //method to hash password
         public static string HashPassword(string password)
         {
             using (SHA256 sha256Hash = SHA256.Create())
             {
+                // Computes hash from the password string
                 byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+                // Converts byte array to a hex string
                 StringBuilder builder = new StringBuilder();
                 foreach (byte b in bytes)
                 {
@@ -251,7 +401,6 @@ namespace SoteCare.Controllers
                 return builder.ToString();
             }
         }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

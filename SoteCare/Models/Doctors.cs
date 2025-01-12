@@ -41,6 +41,8 @@ namespace SoteCare.Models
         public string Email { get; set; }
         [Display(Name = "Aktiivisuus")]
         public bool IsActive { get; set; }
+        [Display(Name = "Koko nimi")]
+        public string FullName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Patients> Patients { get; set; }

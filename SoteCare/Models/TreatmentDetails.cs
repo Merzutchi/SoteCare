@@ -15,7 +15,7 @@ namespace SoteCare.Models
 
     public partial class TreatmentDetails
     {
-        [Display(Name = "Hoidon tiedot")]
+        [Display(Name = "Hoitotieto")]
         public int TreatmentDetailID { get; set; }
         [Display(Name = "Hoito")]
         public int TreatmentID { get; set; }
@@ -23,7 +23,7 @@ namespace SoteCare.Models
         public int MedicationID { get; set; }
         [Display(Name = "Annos")]
         public Nullable<int> DosageID { get; set; }
-        [Display(Name = "l‰‰k‰ri")]
+        [Display(Name = "L‰‰k‰ri")]
         public Nullable<int> DoctorID { get; set; }
     
         public virtual Dosages Dosages { get; set; }

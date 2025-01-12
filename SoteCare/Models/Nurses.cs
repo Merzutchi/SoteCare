@@ -23,6 +23,7 @@ namespace SoteCare.Models
             this.PatientHistory = new HashSet<PatientHistory>();
             this.PatientNurseAssignment = new HashSet<PatientNurseAssignment>();
         }
+    
         [Display(Name = "Hoitaja")]
         public int NurseID { get; set; }
         [Display(Name = "Käyttäjä")]
@@ -37,6 +38,8 @@ namespace SoteCare.Models
         public string Email { get; set; }
         [Display(Name = "Aktiivisuus")]
         public bool IsActive { get; set; }
+        [Display(Name = "Koko nimi")]
+        public string FullName { get; set; }
     
         public virtual Users Users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
