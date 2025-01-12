@@ -41,6 +41,7 @@ namespace SoteCare.Controllers
                 .Where(m => m.PatientID == id)
                 .Include(m => m.Medications)
                 .Include(m => m.Dosages)
+                .Include(m => m.Doctors) 
                 .ToList();
 
             ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";

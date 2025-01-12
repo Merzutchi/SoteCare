@@ -1,14 +1,13 @@
-﻿using System;
+﻿using SoteCare.Attributes;
+using SoteCare.Models;
+using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using SoteCare.Attributes;
-using SoteCare.Models;
 
 namespace SoteCare.Controllers
 {
@@ -62,7 +61,7 @@ namespace SoteCare.Controllers
                 return HttpNotFound("Patient not found.");
             }
 
-            ViewBag.PatientID = id;
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FullName", id.Value);
             ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
             PopulateDropdowns();
 
@@ -89,6 +88,7 @@ namespace SoteCare.Controllers
                 }
             }
 
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FullName", patientMedications.PatientID);
             PopulateDropdowns(patientMedications);
             return View(patientMedications);
         }
@@ -135,6 +135,7 @@ namespace SoteCare.Controllers
                 }
             }
 
+            ViewBag.PatientID = new SelectList(db.Patients, "PatientID", "FullName", patientMedications.PatientID);
             PopulateDropdowns(patientMedications);
             return View(patientMedications);
         }
