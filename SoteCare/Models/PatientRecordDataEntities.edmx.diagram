@@ -4,16 +4,16 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="798a424d486d4b9c91172fdf0a350486" Name="Diagram1" ZoomLevel="60">
+      <Diagram DiagramId="798a424d486d4b9c91172fdf0a350486" Name="Diagram1" ZoomLevel="55">
         <EntityTypeShape EntityType="PatientRecordModel.Diagnoses" Width="1.5" PointX="8.25" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordModel.Dosages" Width="1.5" PointX="7.875" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordModel.Medications" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PatientRecordModel.PatientHistory" Width="1.5" PointX="7.125" PointY="11.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="PatientRecordModel.PatientMedications" Width="1.5" PointX="11.25" PointY="7.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="PatientRecordModel.Patients" Width="1.5" PointX="5.5" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordModel.PatientHistory" Width="1.5" PointX="9.25" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordModel.PatientMedications" Width="1.5" PointX="12.75" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordModel.Patients" Width="1.5" PointX="5.5" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordModel.Treatment" Width="1.5" PointX="11.125" PointY="2.875" IsExpanded="true" />
         <EntityTypeShape EntityType="PatientRecordModel.TreatmentDetails" Width="1.5" PointX="13" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="PatientRecordModel.VitalFunctions" Width="1.5" PointX="3.25" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordModel.VitalFunctions" Width="1.5" PointX="4" PointY="10.625" IsExpanded="true" />
         <AssociationConnector Association="PatientRecordModel.FK__Diagnoses__Patie__74AE54BC" ManuallyRouted="false" />
         <AssociationConnector Association="PatientRecordModel.FK__Dosages__Medicat__6FE99F9F" ManuallyRouted="false" />
         <AssociationConnector Association="PatientRecordModel.FK_TreatmentDetails_Dosage" ManuallyRouted="false" />
@@ -28,9 +28,9 @@
         <AssociationConnector Association="PatientRecordModel.FK_PatientMedications_Dosages" />
         <AssociationConnector Association="PatientRecordModel.FK_Dosages_Patients" />
         <AssociationConnector Association="PatientRecordModel.FK_Treatment_Diagnosis" />
-        <EntityTypeShape EntityType="PatientRecordModel.Users" Width="1.5" PointX="13.25" PointY="5.75" />
-        <EntityTypeShape EntityType="PatientRecordModel.Doctors" Width="1.5" PointX="16.5" PointY="6" />
-        <EntityTypeShape EntityType="PatientRecordModel.Nurses" Width="1.5" PointX="14.125" PointY="11" />
+        <EntityTypeShape EntityType="PatientRecordModel.Users" Width="1.5" PointX="18.75" PointY="7.625" />
+        <EntityTypeShape EntityType="PatientRecordModel.Doctors" Width="1.5" PointX="18.875" PointY="1.25" />
+        <EntityTypeShape EntityType="PatientRecordModel.Nurses" Width="1.5" PointX="15.875" PointY="10.875" />
         <AssociationConnector Association="PatientRecordModel.FK__Nurses__UserID__282DF8C2" />
         <AssociationConnector Association="PatientRecordModel.FK_Patients_DoctorID" />
         <AssociationConnector Association="PatientRecordModel.FK_TreatmentDetails_DoctorID" />

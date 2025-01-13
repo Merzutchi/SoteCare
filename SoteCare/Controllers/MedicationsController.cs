@@ -57,12 +57,29 @@ public class MedicationsController : Controller
     {
         if (ModelState.IsValid)
         {
-            context.Dosages.Add(dosage);
-            context.SaveChanges();
-            return Json(new { success = true, message = "Dosage added successfully." });
+            try
+            {
+                // Ensure MedicationID is valid
+                var medicationExists = context.Medications.Any(m => m.MedicationID == dosage.MedicationID);
+                if (!medicationExists)
+                {
+                    return Json(new { success = false, message = "Invalid medication ID." });
+                }
+
+                // Add dosage to the database
+                context.Dosages.Add(dosage);
+                context.SaveChanges();
+                return Json(new { success = true, message = "Dosage added successfully." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error while saving dosage: " + ex.Message });
+            }
         }
 
-        return Json(new { success = false, message = "Failed to add dosage. Please check the details." });
+        // If ModelState is not valid, return validation errors
+        var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+        return Json(new { success = false, message = string.Join(", ", errors) });
     }
 
     // POST: Create Medication

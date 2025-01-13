@@ -1,14 +1,14 @@
-﻿using System;
+﻿using SoteCare.Attributes;
+using SoteCare.Models;
+using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using SoteCare.Attributes;
-using SoteCare.Models;
 
 namespace SoteCare.Controllers
 {
@@ -17,18 +17,17 @@ namespace SoteCare.Controllers
     {
         private readonly PatientRecordDataEntities db = new PatientRecordDataEntities();
 
-        // GET: PatientMedications
         public ActionResult Index()
         {
             var patientMedications = db.PatientMedications
-                .Include(p => p.Medications)
-                .Include(p => p.Dosages)
-                .Include(p => p.Patients)
-                .Include(p => p.Doctors)
+                .Include(p => p.Medications) // Ensure related data like medications are loaded
+                .Include(p => p.Dosages) // Include dosage information as well
+                .Include(p => p.Patients) // Include patient info
+                .Include(p => p.Doctors) // Include doctor info
                 .OrderByDescending(m => m.PatientMedicationID)
                 .ToList();
 
-            return View(patientMedications);
+            return View(patientMedications); // Pass the data to the view
         }
 
         // GET: PatientMedications/Details/5
@@ -64,7 +63,17 @@ namespace SoteCare.Controllers
 
             ViewBag.PatientID = id;
             ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
-            PopulateDropdowns();
+            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName");
+            ViewBag.DosageID = new SelectList(db.Dosages, "DosageID", "DosageAmount");
+            ViewBag.Doctors = new SelectList(
+                db.Doctors.Select(d => new
+                {
+                    d.DoctorID,
+                    DoctorName = d.FirstName + " " + d.LastName
+                }),
+                "DoctorID",
+                "DoctorName"
+            );
 
             return View(new PatientMedications { PatientID = id.Value });
         }
@@ -75,67 +84,21 @@ namespace SoteCare.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Ensure patientMedications contains valid data
                 try
                 {
                     db.PatientMedications.Add(patientMedications);
                     db.SaveChanges();
-
                     return RedirectToAction("PatientMedications", "Patients", new { id = patientMedications.PatientID });
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine($"Error while saving patient medication: {ex.Message}");
                     ModelState.AddModelError("", "An error occurred while saving the medication.");
+                    // Log the error for debugging purposes
+                    Debug.WriteLine($"Error: {ex.Message}");
                 }
             }
-
-            PopulateDropdowns(patientMedications);
-            return View(patientMedications);
-        }
-
-        // GET: PatientMedications/AddMedication
-        public ActionResult AddMedication(int? id)
-        {
-            if (!id.HasValue)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            var patient = db.Patients.Find(id.Value);
-            if (patient == null)
-            {
-                return HttpNotFound("Patient not found.");
-            }
-
-            ViewBag.PatientID = id;
-            ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
-            PopulateDropdowns();
-
-            return View(new PatientMedications { PatientID = id.Value });
-        }
-
-        // POST: PatientMedications/AddMedication
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AddMedication(PatientMedications patientMedications)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    db.PatientMedications.Add(patientMedications);
-                    db.SaveChanges();
-
-                    return RedirectToAction("PatientMedications", "Patients", new { id = patientMedications.PatientID });
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"Error while saving patient medication: {ex.Message}");
-                    ModelState.AddModelError("", "An error occurred while saving the medication.");
-                }
-            }
-
-            PopulateDropdowns(patientMedications);
+            // Return the view with validation errors
             return View(patientMedications);
         }
 
@@ -234,13 +197,13 @@ namespace SoteCare.Controllers
                 db.Doctors.Select(d => new
                 {
                     d.DoctorID,
-                    DoctorName = d.FirstName + " " + d.LastName // Yhdistetään etunimi ja sukunimi
+                    DoctorName = d.FirstName + " " + d.LastName 
                 }),
                 "DoctorID",
-                "DoctorName",
-                model?.DoctorID
+                "DoctorName", model?.DoctorID
             );
         }
+
 
         protected override void Dispose(bool disposing)
         {
