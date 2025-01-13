@@ -11,7 +11,8 @@ namespace SoteCare.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;  // Add this for Display attribute
+
     public partial class Medications
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,23 +23,43 @@ namespace SoteCare.Models
             this.Treatment = new HashSet<Treatment>();
             this.TreatmentDetails = new HashSet<TreatmentDetails>();
         }
-    
+
+        [Display(Name = "L‰‰ke")]
         public int MedicationID { get; set; }
+
+        [Display(Name = "L‰‰kkeen nimi")]
         public string MedicationName { get; set; }
+
+        [Display(Name = "L‰‰k‰ri")]
         public Nullable<int> DoctorID { get; set; }
+
+        [Display(Name = "Toistotila")]
         public string RefillStatus { get; set; }
+
+        [Display(Name = "L‰‰kkeen tila")]
         public string MedicationStatus { get; set; }
+
+        [Display(Name = "Allergiat")]
         public string Allergies { get; set; }
+
+        [Display(Name = "Kommentit")]
         public string Comments { get; set; }
+
+        [Display(Name = "L‰‰ketyyppi")]
         public string MedicationType { get; set; }
+
+        [Display(Name = "Kuvaus")]
         public string Description { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Dosages> Dosages { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientMedications> PatientMedications { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Treatment> Treatment { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TreatmentDetails> TreatmentDetails { get; set; }
     }

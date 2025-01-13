@@ -6,12 +6,12 @@
 //     Manual changes to this file will be overwritten if the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-
 namespace SoteCare.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;  // Add this for Display attribute
+
     public partial class Diagnoses
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -19,17 +19,31 @@ namespace SoteCare.Models
         {
             this.Treatment = new HashSet<Treatment>();
         }
-    
+
+        [Display(Name = "Diagnoosi")]
         public int DiagnosisID { get; set; }
+
+        [Display(Name = "Potilas")]
         public Nullable<int> PatientID { get; set; }
+
+        [Display(Name = "Diagnoosi")]
         public string DiagnosisName { get; set; }
+
+        [Display(Name = "Diagnoosip‰iv‰m‰‰r‰")]
         public Nullable<System.DateTime> DiagnosisDate { get; set; }
+
+        [Display(Name = "Huomautukset")]
         public string Notes { get; set; }
+
+        [Display(Name = "L‰‰k‰ri")]
         public Nullable<int> DoctorID { get; set; }
-    
+
         public virtual Patients Patients { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Treatment> Treatment { get; set; }
+
         public virtual Doctors Doctors { get; set; }
     }
 }
+

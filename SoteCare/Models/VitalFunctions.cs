@@ -11,20 +11,40 @@ namespace SoteCare.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;  // Add this for Display attribute
+
     public partial class VitalFunctions
     {
+        [Display(Name = "Elintoiminto")]
         public int VitalFunctionID { get; set; }
+
+        [Display(Name = "Potilas")]
         public int PatientID { get; set; }
+
+        [Display(Name = "Päivämäärä ja aika")]
         public System.DateTime DateTime { get; set; }
+
+        [Display(Name = "Syke")]
         public Nullable<int> HeartRate { get; set; }
+
+        [Display(Name = "Systolinen verenpaine")]
         public Nullable<int> SystolicBloodPressure { get; set; }
+
+        [Display(Name = "Diastolinen verenpaine")]
         public Nullable<int> DiastolicBloodPressure { get; set; }
+
+        [Display(Name = "Hengitystaajuus")]
         public Nullable<int> RespiratoryRate { get; set; }
+
+        [Display(Name = "Ruumiinlämpötila")]
         public Nullable<decimal> Temperature { get; set; }
+
+        [Display(Name = "Happisaturaatio")]
         public Nullable<decimal> OxygenSaturation { get; set; }
+
+        [Display(Name = "Hoitaja")]
         public Nullable<int> NurseID { get; set; }
-    
+
         public virtual Patients Patients { get; set; }
         public virtual Nurses Nurses { get; set; }
     }

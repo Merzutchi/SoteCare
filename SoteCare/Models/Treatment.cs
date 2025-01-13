@@ -11,7 +11,8 @@ namespace SoteCare.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;  // Add this for Display attribute
+
     public partial class Treatment
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -19,21 +20,40 @@ namespace SoteCare.Models
         {
             this.TreatmentDetails = new HashSet<TreatmentDetails>();
         }
-    
+
+        [Display(Name = "Hoito")]
         public int TreatmentID { get; set; }
+
+        [Display(Name = "Potilas")]
         public int PatientID { get; set; }
+
+        [Display(Name = "L‰‰ke")]
         public Nullable<int> MedicationID { get; set; }
+
+        [Display(Name = "Aloitusp‰iv‰m‰‰r‰")]
         public System.DateTime StartDate { get; set; }
+
+        [Display(Name = "Lopetusp‰iv‰m‰‰r‰")]
         public Nullable<System.DateTime> EndDate { get; set; }
+
+        [Display(Name = "Hoito tyypi")]
         public string TreatmentType { get; set; }
+
+        [Display(Name = "Huomautukset")]
         public string Notes { get; set; }
+
+        [Display(Name = "Diagnoosi ")]
         public Nullable<int> DiagnosisID { get; set; }
+
+        [Display(Name = "L‰‰k‰ri")]
         public Nullable<int> DoctorID { get; set; }
-    
+
         public virtual Medications Medications { get; set; }
         public virtual Patients Patients { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TreatmentDetails> TreatmentDetails { get; set; }
+
         public virtual Diagnoses Diagnoses { get; set; }
     }
 }
