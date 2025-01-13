@@ -24,23 +24,22 @@
 
 <script>// Handles form submission for AddDosage
     $("form").submit(function (e) {
-        e.preventDefault(); 
+        e.preventDefault();  // Prevent the default form submission
         var form = $(this);
         $.ajax({
-            url: form.attr('action'),
-            type: form.attr('method'),
-            data: form.serialize(),
+            url: form.attr('action'),  // Form action (AddDosage method)
+            type: form.attr('method'),  // Form method (POST)
+            data: form.serialize(),  // Serialize form data
             success: function (response) {
                 if (response.success) {
-                    $('#modal').modal('hide');
-                    /*alert(response.message);*/ 
-                    location.reload(); 
+                    $('#modal').modal('hide');  // Hide the modal on success
+                    location.reload();  // Reload the page to reflect the changes
                 } else {
-                    alert(response.message);
+                    alert(response.message);  // Show error message
                 }
             },
             error: function () {
-                alert("Tapahtui virhe lisättyä annosta.");
+                alert("Tapahtui virhe lisättyä annosta.");  // Show error message on failure
             }
         });
     });

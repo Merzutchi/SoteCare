@@ -156,19 +156,29 @@ namespace SoteCare.Controllers
                 return HttpNotFound("Patient not found.");
             }
 
-            // Fetches medications for the specific patient
+            // Fetch medications for the specific patient
             var patientMedications = db.PatientMedications
                 .Where(pm => pm.PatientID == id)
                 .Include(pm => pm.Medications)
                 .Include(pm => pm.Dosages)
-                .Include(pm => pm.Doctors) // Includes related doctor information
+                .Include(pm => pm.Doctors)
                 .ToList();
+
+            var medicationViewModels = patientMedications.Select(pm => new PatientMedicationViewModel
+            {
+                PatientMedicationID = pm.PatientMedicationID,
+                MedicationName = pm.Medications?.MedicationName ?? "Tuntematon lääke",
+                DosageAmount = pm.Dosages?.DosageAmount ?? "Annosta ei saatavilla",
+                StartDate = pm.StartDate?.ToString("dd-MM-yyyy") ?? "Ei määritelty",
+                EndDate = pm.EndDate?.ToString("dd-MM-yyyy") ?? "Ei määritelty",
+                DoctorName = pm.Doctors != null ? $"{pm.Doctors.FirstName} {pm.Doctors.LastName}" : "Lääkäriä ei määritelty",
+                RouteOfAdministration = pm.Dosages?.RouteOfAdministration ?? "Tietoa ei saatavilla"
+            }).ToList();
 
             ViewBag.PatientID = id;
             ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
 
-            // Returns the medications view
-            return View(patientMedications);
+            return View(medicationViewModels); 
         }
 
         // GET: Patients/VitalFunctions
