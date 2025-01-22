@@ -141,7 +141,6 @@
     <Compile Include="Controllers\TreatmentsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\VitalFunctionsController.cs" />
-    <Compile Include="DecimalModelBinder.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

@@ -123,7 +123,7 @@ namespace SoteCare.Controllers
             var vitalFunction = new VitalFunctions
             {
                 PatientID = id.Value,
-                DateTime = DateTime.Now // Sets the DateTime to the current time
+                DateTime = DateTime.Now.AddHours(+2) // Sets the DateTime to the current time
             };
 
             ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";

@@ -30,7 +30,7 @@ namespace SoteCare.ViewModels
             RespiratoryRates = new List<int>();
             Temperatures = new List<decimal>();
             OxygenSaturations = new List<decimal>();
-            DateTime = DateTime.Now; // Sets default to current date and time
+            DateTime = DateTime.Now.AddHours(+2); // Sets default to current date and time
         }
     }
 }
