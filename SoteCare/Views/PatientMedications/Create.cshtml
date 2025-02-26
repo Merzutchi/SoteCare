@@ -1,7 +1,7 @@
 ﻿@model SoteCare.Models.PatientMedications
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Lisää lääkitys";
 }
 
 <h2>Lisää lääke potilaalle, @ViewBag.PatientName</h2>
@@ -41,26 +41,33 @@
         @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
     </div>
 
-    <!-- 📌 Kerta-annos -->
+    <!-- Kerta-annos -->
     <div class="form-group">
         @Html.LabelFor(model => model.SingleDose, "Kerta-annos (mg/ml)")
         @Html.TextBoxFor(model => model.SingleDose, new { @class = "form-control", placeholder = "Esim. 500mg tai 10ml" })
         @Html.ValidationMessageFor(model => model.SingleDose, "", new { @class = "text-danger" })
     </div>
 
-    <!-- 📌 Lääkkeen antamisajat -->
+    <!-- Kuinka monta kertaa päivässä lääke annetaan -->
     <div class="form-group">
-        @Html.LabelFor(model => model.AdministrationTimes, "Annosteluajat (08:00, 14:00, 20:00)")
+        @Html.LabelFor(model => model.DailyFrequency, "Kuinka monta kertaa päivässä annetaan?")
+        @Html.TextBoxFor(model => model.DailyFrequency, new { @class = "form-control", type = "number", min = "1", placeholder = "Esim. 3 kertaa päivässä" })
+        @Html.ValidationMessageFor(model => model.DailyFrequency, "", new { @class = "text-danger" })
+    </div>
+
+    <!-- Lääkkeen antamisajat -->
+    <div class="form-group">
+        @Html.LabelFor(model => model.AdministrationTimes, "Lääkkeen antamisajat (esim. 08:00, 14:00, 20:00)")
         @Html.TextBoxFor(model => model.AdministrationTimes, new { @class = "form-control", placeholder = "Syötä kellonajat pilkulla erotettuna" })
         @Html.ValidationMessageFor(model => model.AdministrationTimes, "", new { @class = "text-danger" })
     </div>
 
-    <!-- 📌 Lääkkeen tyyppi -->
+    <!-- Lääkkeen tyyppi -->
     <div class="form-group">
         @Html.LabelFor(model => model.MedicationType, "Lääkkeen tyyppi")
         @Html.DropDownListFor(model => model.MedicationType,
-                 new SelectList(new List<string> { "Säännöllinen", "Tarvittaessa" }, Model.MedicationType),
-                 new { @class = "form-control" })
+            new SelectList(new List<string> { "Säännöllinen", "Tarvittaessa" }, Model.MedicationType),
+            new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.MedicationType, "", new { @class = "text-danger" })
     </div>
 
@@ -69,4 +76,3 @@
         Takaisin
     </a>
 }
-

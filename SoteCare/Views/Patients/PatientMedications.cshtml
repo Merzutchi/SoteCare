@@ -58,10 +58,6 @@
         @Html.ActionLink("Lisää uusi", "Create", "PatientMedications",
                                new { id = ViewBag.PatientID },
                                new { @class = "btn btn-success" })
-
-        @Html.ActionLink("Takaisin", "Details", "Patients",
-                               new { id = ViewBag.PatientID },
-                               new { @class = "btn btn-secondary" })
     </div>
 
     <!--  Lääkityksen tyyppi -->
@@ -123,6 +119,12 @@
         {
             <p class="lead">Ei määriteltyjä tarvittavia lääkkeitä</p>
         }
+    </div>
+
+    <div>
+        @Html.ActionLink("Takaisin", "Details", "Patients",
+                            new { id = ViewBag.PatientID },
+                            new { @class = "btn btn-secondary" })
     </div>
 </div>
 
