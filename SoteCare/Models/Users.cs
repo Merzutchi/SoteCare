@@ -11,8 +11,7 @@ namespace SoteCare.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;  // Add this for Display attribute
-
+    
     public partial class Users
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,31 +20,17 @@ namespace SoteCare.Models
             this.Nurses = new HashSet<Nurses>();
             this.Doctors = new HashSet<Doctors>();
         }
-
-        [Display(Name = "K‰ytt‰j‰")]
+    
         public int UserID { get; set; }
-
-        [Display(Name = "K‰ytt‰j‰tunnus")]
         public string Username { get; set; }
-
-        [Display(Name = "Salasana")]
         public string Password { get; set; }
-
-        [Display(Name = "Rooli")]
         public string Role { get; set; }
-
-        [Display(Name = "Aktiivinen")]
         public bool IsActive { get; set; }
-
-        [Display(Name = "L‰‰k‰ri")]
         public Nullable<int> DoctorID { get; set; }
-
-        [Display(Name = "Hoitajan")]
         public Nullable<int> NurseID { get; set; }
-
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Nurses> Nurses { get; set; }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Doctors> Doctors { get; set; }
     }

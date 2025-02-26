@@ -149,14 +149,14 @@ namespace SoteCare.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            // Fetch patient details
+            // Haetaan potilaan tiedot
             var patient = db.Patients.Find(id);
             if (patient == null)
             {
                 return HttpNotFound("Patient not found.");
             }
 
-            // Fetch medications for the specific patient
+            // Haetaan potilaan lääkitykset ja niiden liittyvät tiedot
             var patientMedications = db.PatientMedications
                 .Where(pm => pm.PatientID == id)
                 .Include(pm => pm.Medications)
@@ -164,21 +164,26 @@ namespace SoteCare.Controllers
                 .Include(pm => pm.Doctors)
                 .ToList();
 
+            // Muunnetaan tiedot näkymämalliksi
             var medicationViewModels = patientMedications.Select(pm => new PatientMedicationViewModel
             {
                 PatientMedicationID = pm.PatientMedicationID,
                 MedicationName = pm.Medications?.MedicationName ?? "Tuntematon lääke",
                 DosageAmount = pm.Dosages?.DosageAmount ?? "Annosta ei saatavilla",
-                StartDate = pm.StartDate?.ToString("dd-MM-yyyy") ?? "Ei määritelty",
-                EndDate = pm.EndDate?.ToString("dd-MM-yyyy") ?? "Ei määritelty",
+                SingleDose = pm.SingleDose ?? "Ei määritelty",
+                DailyFrequency = pm.DailyFrequency.HasValue ? pm.DailyFrequency.Value : (int?)null,
+                AdministrationTimes = !string.IsNullOrEmpty(pm.AdministrationTimes) ? pm.AdministrationTimes : "Ei määritelty",
+                StartDate = pm.StartDate,
+                EndDate = pm.EndDate,
                 DoctorName = pm.Doctors != null ? $"{pm.Doctors.FirstName} {pm.Doctors.LastName}" : "Lääkäriä ei määritelty",
-                RouteOfAdministration = pm.Dosages?.RouteOfAdministration ?? "Tietoa ei saatavilla"
+                RouteOfAdministration = pm.Dosages?.RouteOfAdministration ?? "Tietoa ei saatavilla",
+                MedicationType = pm.MedicationType ?? "Ei määritelty"
             }).ToList();
 
             ViewBag.PatientID = id;
             ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
 
-            return View(medicationViewModels); 
+            return View(medicationViewModels);
         }
 
         // GET: Patients/VitalFunctions

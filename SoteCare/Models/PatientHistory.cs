@@ -11,38 +11,20 @@ namespace SoteCare.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;  // Add this for Display attribute
-
+    
     public partial class PatientHistory
     {
-        [Display(Name = "Historia")]
         public int HistoryID { get; set; }
-
-        [Display(Name = "Potilas")]
         public int PatientID { get; set; }
-
-        [Display(Name = "Oireiden nimi")]
         public string ConditionName { get; set; }
-
-        [Display(Name = "Hoito-ohjeet")]
         public string TreatmentDetails { get; set; }
-
-        [Display(Name = "Leikkausp‰iv‰m‰‰r‰")]
         public Nullable<System.DateTime> SurgeryDate { get; set; }
-
-        [Display(Name = "Huomautukset")]
         public string Notes { get; set; }
-
-        [Display(Name = "Hoitaja")]
         public Nullable<int> NurseID { get; set; }
-
-        [Display(Name = "L‰‰k‰ri")]
         public Nullable<int> DoctorID { get; set; }
-
+    
         public virtual Patients Patients { get; set; }
-
         public virtual Nurses Nurses { get; set; }
-
         public virtual Doctors Doctors { get; set; }
     }
 }

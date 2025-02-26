@@ -11,8 +11,7 @@ namespace SoteCare.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;  // Add this for Display attribute
-
+    
     public partial class Doctors
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -25,48 +24,27 @@ namespace SoteCare.Models
             this.PatientMedications = new HashSet<PatientMedications>();
             this.PatientNurseAssignment = new HashSet<PatientNurseAssignment>();
         }
-
-        [Display(Name = "Lääkäri")]
+    
         public int DoctorID { get; set; }
-
-        [Display(Name = "Käyttäjätunnus")]
         public Nullable<int> UserID { get; set; }
-
-        [Display(Name = "Etunimi")]
         public string FirstName { get; set; }
-
-        [Display(Name = "Sukunimi")]
         public string LastName { get; set; }
-
-        [Display(Name = "Erikoisala")]
         public string Specialization { get; set; }
-
-        [Display(Name = "Puhelinnumero")]
         public string PhoneNumber { get; set; }
-
-        [Display(Name = "Sähköposti")]
         public string Email { get; set; }
-
-        [Display(Name = "aktiivisuus")]
         public bool IsActive { get; set; }
-
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Patients> Patients { get; set; }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TreatmentDetails> TreatmentDetails { get; set; }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Diagnoses> Diagnoses { get; set; }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientHistory> PatientHistory { get; set; }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientMedications> PatientMedications { get; set; }
-
         public virtual Users Users { get; set; }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientNurseAssignment> PatientNurseAssignment { get; set; }
     }

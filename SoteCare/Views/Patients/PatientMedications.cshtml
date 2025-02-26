@@ -1,5 +1,11 @@
 ﻿@model IEnumerable<SoteCare.ViewModels.PatientMedicationViewModel>
 
+@{
+    // Haetaan säännölliset ja tarvittavat lääkkeet
+    var säännöllisetLääkkeet = Model.Where(m => m.MedicationType != null && m.MedicationType == "Säännöllinen").ToList();
+    var tarvittavatLääkkeet = Model.Where(m => m.MedicationType != null && m.MedicationType == "Tarvittaessa").ToList();
+}
+
 <div class="container">
     <h2>Potilaan lääkitys, @ViewBag.PatientName</h2>
 
@@ -12,15 +18,17 @@
     }
     else
     {
+        <!-- Lääkkeet -->
         <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>Lääkkeen nimi</th>
-                    <th>Annos</th>
+                    <th>Kerta-annos</th>
+                    <th>Kerrat päivässä</th>
+                    <th>Antoajat</th>
                     <th>Alkupäivä</th>
                     <th>Loppupäivä</th>
                     <th>Lääkäri</th>
-                    <th>Annostelureitti</th>
                     <th>Muutokset</th>
                 </tr>
             </thead>
@@ -28,23 +36,17 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <!-- Lääkkeen nimi -->
                         <td>@(item.MedicationName)</td>
-                        <!-- Annos -->
-                        <td>@(item.DosageAmount)</td>
-                        <!-- Alkupäivä -->
-                        <td>@(item.StartDate)</td>
-                        <!-- Loppupäivä -->
-                        <td>@(item.EndDate)</td>
-                        <!-- Lääkäri -->
+                        <td>@(item.SingleDose ?? "Ei määritelty")</td>
+                        <td>@(item.DailyFrequency.HasValue ? item.DailyFrequency.Value.ToString() + " kertaa päivässä" : "Ei määritelty")</td>
+                        <td>@(string.IsNullOrEmpty(item.AdministrationTimes) ? "Ei määritelty" : item.AdministrationTimes)</td>
+                        <td>@(item.StartDate?.ToString("dd-MM-yyyy") ?? "Ei määritelty")</td>
+                        <td>@(item.EndDate?.ToString("dd-MM-yyyy") ?? "Ei määritelty")</td>
                         <td>@(item.DoctorName)</td>
-                        <!-- Annostelureitti -->
-                        <td>@(item.RouteOfAdministration)</td>
-                        <!-- Toiminnot -->
                         <td>
                             @Html.ActionLink("Poista", "Delete", "PatientMedications",
-                                     new { id = item.PatientMedicationID },
-                                     new { @class = "btn btn-danger btn-sm" })
+                                                    new { id = item.PatientMedicationID },
+                                                    new { @class = "btn btn-danger btn-sm" })
                         </td>
                     </tr>
                 }
@@ -54,11 +56,73 @@
 
     <div class="mt-3">
         @Html.ActionLink("Lisää uusi", "Create", "PatientMedications",
-                 new { id = ViewBag.PatientID },
-                 new { @class = "btn btn-success" })
+                               new { id = ViewBag.PatientID },
+                               new { @class = "btn btn-success" })
 
         @Html.ActionLink("Takaisin", "Details", "Patients",
-                 new { id = ViewBag.PatientID },
-                 new { @class = "btn btn-secondary" })
+                               new { id = ViewBag.PatientID },
+                               new { @class = "btn btn-secondary" })
+    </div>
+
+    <!--  Lääkityksen tyyppi -->
+    <div class="mt-5 p-4 border rounded bg-light">
+        <h2 class="text-primary">Säännölliset lääkkeet</h2>
+        @if (säännöllisetLääkkeet.Any())
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Lääkkeen nimi</th>
+                        <th>Kerta-annos</th>
+                        <th>Kerrat päivässä</th>
+                        <th>Antoajat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in säännöllisetLääkkeet)
+                    {
+                        <tr>
+                            <td>@item.MedicationName</td>
+                            <td>@(item.SingleDose ?? "Ei määritelty")</td>
+                            <td>@(item.DailyFrequency.HasValue ? item.DailyFrequency.Value.ToString() + " kertaa päivässä" : "Ei määritelty")</td>
+                            <td>@(string.IsNullOrEmpty(item.AdministrationTimes) ? "Ei määritelty" : item.AdministrationTimes)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="lead">Ei määriteltyjä säännöllisiä lääkkeitä</p>
+        }
+    </div>
+
+    <div class="mt-4 p-4 border rounded bg-light">
+        <h2 class="text-danger">Tarvittaessa otettavat lääkkeet</h2>
+        @if (tarvittavatLääkkeet.Any())
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Lääkkeen nimi</th>
+                        <th>Kerta-annos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in tarvittavatLääkkeet)
+                    {
+                        <tr>
+                            <td>@item.MedicationName</td>
+                            <td>@(item.SingleDose ?? "Ei määritelty")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="lead">Ei määriteltyjä tarvittavia lääkkeitä</p>
+        }
     </div>
 </div>
+

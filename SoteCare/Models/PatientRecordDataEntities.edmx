@@ -94,6 +94,10 @@
           <Property Name="DoctorID" Type="int" />
           <Property Name="DosageID" Type="int" />
           <Property Name="Notes" Type="varchar" MaxLength="255" />
+          <Property Name="AdministrationTimes" Type="nvarchar" MaxLength="255" />
+          <Property Name="DailyFrequency" Type="int" />
+          <Property Name="MedicationType" Type="nvarchar" MaxLength="50" />
+          <Property Name="SingleDose" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="PatientNurseAssignment">
           <Key>
@@ -770,6 +774,10 @@
           <NavigationProperty Name="Dosages" Relationship="PatientRecordModel.FK_PatientMedications_Dosages" FromRole="PatientMedications" ToRole="Dosages" />
           <Property Name="Notes" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Doctors" Relationship="PatientRecordModel.FK_PatientMedications_Doctor" FromRole="PatientMedications" ToRole="Doctors" />
+          <Property Name="AdministrationTimes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DailyFrequency" Type="Int32" />
+          <Property Name="MedicationType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SingleDose" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Patients">
           <Key>
@@ -1458,6 +1466,10 @@
           <EntitySetMapping Name="PatientMedications">
             <EntityTypeMapping TypeName="PatientRecordModel.PatientMedications">
               <MappingFragment StoreEntitySet="PatientMedications">
+                <ScalarProperty Name="SingleDose" ColumnName="SingleDose" />
+                <ScalarProperty Name="MedicationType" ColumnName="MedicationType" />
+                <ScalarProperty Name="DailyFrequency" ColumnName="DailyFrequency" />
+                <ScalarProperty Name="AdministrationTimes" ColumnName="AdministrationTimes" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
                 <ScalarProperty Name="DosageID" ColumnName="DosageID" />
                 <ScalarProperty Name="DoctorID" ColumnName="DoctorID" />

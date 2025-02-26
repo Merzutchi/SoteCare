@@ -75,7 +75,14 @@ namespace SoteCare.Controllers
                 "DoctorName"
             );
 
-            return View(new PatientMedications { PatientID = id.Value });
+            // Lääkkeen tyyppi (Säännöllinen / Tarvittaessa)
+            ViewBag.MedicationType = new SelectList(new List<string> { "Säännöllinen", "Tarvittaessa" });
+
+            return View(new PatientMedications
+            {
+                PatientID = id.Value,
+                MedicationType = "Säännöllinen" // Oletuksena säännöllinen, mutta käyttäjä voi muuttaa
+            });
         }
 
         [HttpPost]
@@ -84,7 +91,6 @@ namespace SoteCare.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Ensure patientMedications contains valid data
                 try
                 {
                     db.PatientMedications.Add(patientMedications);
@@ -93,12 +99,12 @@ namespace SoteCare.Controllers
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", "An error occurred while saving the medication.");
-                    // Log the error for debugging purposes
-                    Debug.WriteLine($"Error: {ex.Message}");
+                    ModelState.AddModelError("", "Virhe tallennettaessa lääkettä.");
+                    Debug.WriteLine($"Virhe: {ex.Message}");
                 }
             }
-            // Return the view with validation errors
+
+            PopulateDropdowns(patientMedications);
             return View(patientMedications);
         }
 
