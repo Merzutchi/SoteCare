@@ -1,7 +1,7 @@
 ﻿@model SoteCare.Models.Treatment
 
 @{
-    ViewBag.Title = "Add Treatment";
+    ViewBag.Title = "Lisää hoito";
 }
 
 <h2>Lisää hoito potilaalle, @ViewBag.PatientName</h2>
@@ -10,10 +10,13 @@
 {
     @Html.AntiForgeryToken()
 
-    <!-- Hidden input for PatientID -->
     @Html.HiddenFor(model => model.PatientID)
 
     <div class="form-horizontal">
+        <h4>Hoitotiedot</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
         <div class="form-group">
             <label class="control-label col-md-2">Potilas</label>
             <div class="col-md-10">
@@ -22,7 +25,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.TreatmentType, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.TreatmentType, "Hoitotyyppi", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.TreatmentType, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.TreatmentType, "", new { @class = "text-danger" })
@@ -30,7 +33,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.StartDate, "Aloituspäivämäärä", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
                 @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
@@ -38,7 +41,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.EndDate, "Lopetuspäivämäärä", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
                 @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
@@ -46,9 +49,8 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.MedicationID, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.MedicationID, "Lääkitys", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <!-- Dropdown for medications -->
                 @Html.DropDownListFor(
                     model => model.MedicationID,
                     (SelectList)ViewBag.MedicationID,
@@ -60,7 +62,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Notes, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Notes, "Muistiinpanot", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.TextAreaFor(model => model.Notes, new { @class = "form-control", rows = 4 })
                 @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })

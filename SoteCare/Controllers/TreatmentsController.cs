@@ -53,7 +53,7 @@ namespace SoteCare.Controllers
             var patient = db.Patients.Find(patientId);
             if (patient == null)
             {
-                return HttpNotFound("Patient not found.");
+                return HttpNotFound("Potilasta ei löytynyt.");
             }
 
             ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";

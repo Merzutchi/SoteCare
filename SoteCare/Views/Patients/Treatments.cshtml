@@ -5,11 +5,11 @@
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th>@Html.DisplayNameFor(model => model.Medications.MedicationName)</th>
-            <th>@Html.DisplayNameFor(model => model.StartDate)</th>
-            <th>@Html.DisplayNameFor(model => model.EndDate)</th>
-            <th>@Html.DisplayNameFor(model => model.TreatmentType)</th>
-            <th>@Html.DisplayNameFor(model => model.Notes)</th>
+            <th>Lääkkeen nimi</th>
+            <th>Aloituspäivämäärä</th>
+            <th>Loppupäivämäärä</th>
+            <th>Hoitotyyppi</th>
+            <th>Muistiinpanot</th>
             <th>Muutokset</th>
         </tr>
     </thead>
@@ -19,7 +19,7 @@
             <tr>
                 <td>@(treatment.Medications?.MedicationName ?? "N/A")</td>
                 <td>@treatment.StartDate.ToString("d")</td>
-                <td>@(treatment.EndDate?.ToString("d") ?? "Ongoing")</td>
+                <td>@(treatment.EndDate?.ToString("d") ?? "Jatkuva")</td>
                 <td>@treatment.TreatmentType</td>
                 <td>@treatment.Notes</td>
                 <td>

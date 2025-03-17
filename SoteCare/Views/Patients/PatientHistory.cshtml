@@ -2,10 +2,10 @@
 
 <h2>Potilaan historia, @Model.PatientName</h2>
 
-<!-- Diagnoses Section -->
+<!-- Diagnoosit -osio -->
 <div class="card mb-4">
     <div class="card-header">
-        <h3>Diagnoosi</h3>
+        <h3>Diagnoosit</h3>
     </div>
     <div class="card-body">
         @foreach (var diagnosis in Model.Diagnoses)
@@ -13,7 +13,7 @@
             <div class="list-group">
                 <div class="list-group-item">
                     <h4>@diagnosis.DiagnosisName</h4>
-                    <p><strong>Päivämäärä:</strong> @(diagnosis.DiagnosisDate.HasValue ? diagnosis.DiagnosisDate.Value.ToString("dd-MM-yyyy") : "Date not available")</p>
+                    <p><strong>Diagnoosin päivämäärä:</strong> @(diagnosis.DiagnosisDate.HasValue ? diagnosis.DiagnosisDate.Value.ToString("dd-MM-yyyy") : "Päivämäärää ei ole")</p>
                     <p><strong>Muistiinpanot:</strong> @diagnosis.Notes</p>
                 </div>
             </div>
@@ -21,10 +21,10 @@
     </div>
 </div>
 
-<!-- Treatments Section -->
+<!-- Hoidot -osio -->
 <div class="card mb-4">
     <div class="card-header">
-        <h3>Hoito</h3>
+        <h3>Hoidot</h3>
     </div>
     <div class="card-body">
         @foreach (var treatment in Model.Treatments)
@@ -33,15 +33,15 @@
                 <div class="list-group-item">
                     <h4>@treatment.TreatmentType</h4>
                     <p><strong>Tarkennus:</strong> @treatment.TreatmentDetails</p>
-                    <p><strong>Aloitus päivämäärä:</strong> @treatment.StartDate.ToString("dd-MM-yyyy")</p>
-                    <p><strong>Lopetus päivämäärä:</strong> @(treatment.EndDate.HasValue ? treatment.EndDate.Value.ToString("dd-MM-yyyy") : "Ongoing")</p>
+                    <p><strong>Aloituspäivämäärä:</strong> @treatment.StartDate.ToString("dd-MM-yyyy")</p>
+                    <p><strong>Lopetuspäivämäärä:</strong> @(treatment.EndDate.HasValue ? treatment.EndDate.Value.ToString("dd-MM-yyyy") : "Käynnissä")</p>
                 </div>
             </div>
         }
     </div>
 </div>
 
-<!-- Medications Section -->
+<!-- Lääkitys -osio -->
 <div class="card mb-4">
     <div class="card-header">
         <h3>Lääkitys</h3>
@@ -52,12 +52,12 @@
             <div class="list-group">
                 <div class="list-group-item">
                     <h4>@medication.MedicationName</h4>
-                    <p><strong>Aloitus päivämäärä:</strong> @medication.StartDate.ToString("dd-MM-yyyy")</p>
+                    <p><strong>Aloituspäivämäärä:</strong> @medication.StartDate.ToString("dd-MM-yyyy")</p>
                 </div>
             </div>
         }
     </div>
 </div>
-<div class="mt-3">
-    @Html.ActionLink("Takaisin", "Details", "Patients", new { id = ViewBag.PatientID }, new { @class = "btn btn-secondary" })
-</div>
+
+<!-- Takaisin-painike -->
+<a class="btn btn-secondary" href="@Url.Action("Details", "Patients", new { id = ViewBag.PatientID })">Takaisin</a>

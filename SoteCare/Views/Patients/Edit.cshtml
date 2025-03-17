@@ -32,7 +32,7 @@
 
         <div class="form-group">
             <label for="Gender">Sukupuoli</label>
-            @Html.DropDownListFor(model => model.Gender, new SelectList(new[] { "Male", "Female", "Other" }), new { @class = "form-control" })
+            @Html.DropDownListFor(model => model.Gender, new SelectList(new[] { "Mies", "Nainen", "Muu" }), new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
         </div>
 

@@ -25,62 +25,62 @@ public class MedicationsController : Controller
         return PartialView("CreateMedication");
     }
 
-    public ActionResult AddDosagePartial(int medicationId)
-    {
-        var medication = context.Medications.Find(medicationId);
-        if (medication == null)
-        {
-            return HttpNotFound();
-        }
+    //public ActionResult AddDosagePartial(int medicationId)
+    //{
+    //    var medication = context.Medications.Find(medicationId);
+    //    if (medication == null)
+    //    {
+    //        return HttpNotFound();
+    //    }
 
-        ViewBag.MedicationName = medication.MedicationName;
-        var dosage = new Dosages { MedicationID = medicationId };
-        return PartialView("_AddDosagePartial", dosage);  
-    }
+    //    ViewBag.MedicationName = medication.MedicationName;
+    //    var dosage = new Dosages { MedicationID = medicationId };
+    //    return PartialView("_AddDosagePartial", dosage);  
+    //}
 
-    public ActionResult AddDosage(int medicationId)
-    {
-        var medication = context.Medications.Find(medicationId);
-        if (medication == null)
-        {
-            return HttpNotFound();
-        }
+    //public ActionResult AddDosage(int medicationId)
+    //{
+    //    var medication = context.Medications.Find(medicationId);
+    //    if (medication == null)
+    //    {
+    //        return HttpNotFound();
+    //    }
 
-        ViewBag.MedicationName = medication.MedicationName;
-        var dosage = new Dosages { MedicationID = medicationId };
-        return PartialView("_AddDosagePartial", dosage);
-    }
+    //    ViewBag.MedicationName = medication.MedicationName;
+    //    var dosage = new Dosages { MedicationID = medicationId };
+    //    return PartialView("_AddDosagePartial", dosage);
+    //}
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public ActionResult AddDosage(Dosages dosage)
-    {
-        if (ModelState.IsValid)
-        {
-            try
-            {
-                // Ensure MedicationID is valid
-                var medicationExists = context.Medications.Any(m => m.MedicationID == dosage.MedicationID);
-                if (!medicationExists)
-                {
-                    return Json(new { success = false, message = "Invalid medication ID." });
-                }
+    //[HttpPost]
+    //[ValidateAntiForgeryToken]
+    //public ActionResult AddDosage(Dosages dosage)
+    //{
+    //    if (ModelState.IsValid)
+    //    {
+    //        try
+    //        {
+    //            // Ensure MedicationID is valid
+    //            var medicationExists = context.Medications.Any(m => m.MedicationID == dosage.MedicationID);
+    //            if (!medicationExists)
+    //            {
+    //                return Json(new { success = false, message = "Invalid medication ID." });
+    //            }
 
-                // Add dosage to the database
-                context.Dosages.Add(dosage);
-                context.SaveChanges();
-                return Json(new { success = true, message = "Dosage added successfully." });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = "Error while saving dosage: " + ex.Message });
-            }
-        }
+    //            // Add dosage to the database
+    //            context.Dosages.Add(dosage);
+    //            context.SaveChanges();
+    //            return Json(new { success = true, message = "Dosage added successfully." });
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            return Json(new { success = false, message = "Error while saving dosage: " + ex.Message });
+    //        }
+    //    }
 
-        // If ModelState is not valid, return validation errors
-        var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-        return Json(new { success = false, message = string.Join(", ", errors) });
-    }
+    //    // If ModelState is not valid, return validation errors
+    //    var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+    //    return Json(new { success = false, message = string.Join(", ", errors) });
+    //}
 
     // POST: Create Medication
     [HttpPost]

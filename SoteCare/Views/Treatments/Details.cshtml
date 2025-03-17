@@ -13,7 +13,7 @@
     <p><strong>Potilas: </strong>@Model.Patients.FirstName @Model.Patients.LastName</p>
     <p><strong>Hoito: </strong>@Model.TreatmentType</p>
     <p><strong>Aloitus päivämäärä: </strong>@Model.StartDate.ToShortDateString()</p>
-    <p><strong>Lopetus päivämäärä: </strong>@(Model.EndDate.HasValue ? Model.EndDate.Value.ToShortDateString() : "Ongoing")</p>
+    <p><strong>Lopetus päivämäärä: </strong>@(Model.EndDate.HasValue ? Model.EndDate.Value.ToShortDateString() : "Jatkuva")</p>
     <p><strong>Muistiinpanot: </strong>@Model.Notes</p>
 </div>
 

@@ -21,7 +21,7 @@
                 <td>@item.Patients.FirstName @item.Patients.LastName</td>
                 <td>@item.TreatmentType</td>
                 <td>@item.StartDate.ToString("d")</td>
-                <td>@(item.EndDate?.ToString("d") ?? "Ongoing")</td>
+                <td>@(item.EndDate?.ToString("d") ?? "Jatkuva")</td>
                 <td>@item.Medications?.MedicationName ?? "N/A"</td>
                 <td>@item.Notes</td>
                 <td>

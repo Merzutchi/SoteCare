@@ -20,14 +20,14 @@ namespace SoteCare.Controllers
         public ActionResult Index()
         {
             var patientMedications = db.PatientMedications
-                .Include(p => p.Medications) // Ensure related data like medications are loaded
-                .Include(p => p.Dosages) // Include dosage information as well
-                .Include(p => p.Patients) // Include patient info
-                .Include(p => p.Doctors) // Include doctor info
+                .Include(p => p.Medications) // Ensures related data like medications are loaded
+                .Include(p => p.Dosages) // Includes dosage information as well
+                .Include(p => p.Patients) // Includes patient info
+                .Include(p => p.Doctors) // Includes doctor info
                 .OrderByDescending(m => m.PatientMedicationID)
                 .ToList();
 
-            return View(patientMedications); // Pass the data to the view
+            return View(patientMedications); // Passes the data to the view
         }
 
         // GET: PatientMedications/Details/5
@@ -41,7 +41,7 @@ namespace SoteCare.Controllers
             var patientMedications = db.PatientMedications.Find(id.Value);
             if (patientMedications == null)
             {
-                return HttpNotFound("Patient medication not found.");
+                return HttpNotFound("Lääkitys potilaalle ei löytynyt.");
             }
 
             return View(patientMedications);
@@ -58,21 +58,21 @@ namespace SoteCare.Controllers
             var patient = db.Patients.Find(id.Value);
             if (patient == null)
             {
-                return HttpNotFound("Patient not found.");
+                return HttpNotFound("Potilasta ei löytynyt.");
             }
 
             ViewBag.PatientID = id;
             ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
-            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName");
-            ViewBag.DosageID = new SelectList(db.Dosages, "DosageID", "DosageAmount");
+            ViewBag.MedicationID = new SelectList(db.Medications, "Lääke", "Lääkenimi");
+            ViewBag.DosageID = new SelectList(db.Dosages, "Annos", "Annosmäärä");
             ViewBag.Doctors = new SelectList(
                 db.Doctors.Select(d => new
                 {
                     d.DoctorID,
                     DoctorName = d.FirstName + " " + d.LastName
                 }),
-                "DoctorID",
-                "DoctorName"
+                "Lääkäri",
+                "Lääkärin nimi"
             );
 
             // Lääkkeen tyyppi (Säännöllinen / Tarvittaessa)
@@ -118,7 +118,7 @@ namespace SoteCare.Controllers
             var patientMedications = db.PatientMedications.Find(id.Value);
             if (patientMedications == null)
             {
-                return HttpNotFound("Patient medication not found.");
+                return HttpNotFound("Lääkitys ei saatavilla.");
             }
 
             PopulateDropdowns(patientMedications);
@@ -141,7 +141,7 @@ namespace SoteCare.Controllers
                 catch (Exception ex)
                 {
                     Debug.WriteLine($"Error while updating patient medication: {ex.Message}");
-                    ModelState.AddModelError("", "An error occurred while updating the medication.");
+                    ModelState.AddModelError("", "Tapahtui virhe päivittäessä lääkkeen.");
                 }
             }
 
@@ -164,7 +164,7 @@ namespace SoteCare.Controllers
 
             if (patientMedication == null)
             {
-                return HttpNotFound("Patient medication not found.");
+                return HttpNotFound("Lääke ei löydetty.");
             }
 
             return View(patientMedication);
@@ -197,16 +197,16 @@ namespace SoteCare.Controllers
 
         private void PopulateDropdowns(PatientMedications model = null)
         {
-            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", model?.MedicationID);
-            ViewBag.DosageID = new SelectList(db.Dosages, "DosageID", "DosageAmount", model?.DosageID);
+            ViewBag.MedicationID = new SelectList(db.Medications, "Lääke", "Lääkenimi", model?.MedicationID);
+            ViewBag.DosageID = new SelectList(db.Dosages, "Annos", "Annosmäärä", model?.DosageID);
             ViewBag.Doctors = new SelectList(
                 db.Doctors.Select(d => new
                 {
                     d.DoctorID,
                     DoctorName = d.FirstName + " " + d.LastName 
                 }),
-                "DoctorID",
-                "DoctorName", model?.DoctorID
+                "Lääkäri",
+                "Lääkärin nimi", model?.DoctorID
             );
         }
 

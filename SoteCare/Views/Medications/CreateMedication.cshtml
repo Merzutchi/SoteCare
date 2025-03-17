@@ -7,19 +7,19 @@
     @Html.AntiForgeryToken()
 
     <div class="form-group">
-        @Html.LabelFor(m => m.MedicationName)
+        @Html.LabelFor(m => m.MedicationName, "Lääkkeen nimi")
         @Html.TextBoxFor(m => m.MedicationName, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.MedicationName, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.MedicationType)
+        @Html.LabelFor(m => m.MedicationType, "Lääketyyppi")
         @Html.TextBoxFor(m => m.MedicationType, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.MedicationType, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Description)
+        @Html.LabelFor(m => m.Description, "Kuvaus")
         @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
     </div>
@@ -27,3 +27,6 @@
     <button type="submit" class="btn btn-primary">Lisää</button>
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Peruuta</button>
 }
+
+
+@*LabelFor: Lisäsin toisen parametrin, jossa on kentän suomenkielinen nimi.*@

@@ -5,12 +5,10 @@
 <table class="table">
     <thead>
         <tr>
-            <th>@Html.DisplayNameFor(model => model.MedicationName)</th>
-            <th>@Html.DisplayNameFor(model => model.MedicationType)</th>
-            <th>@Html.DisplayNameFor(model => model.Description)</th>
-            <th>Annostelu</th>  
-            <th>Lisää annostelu</th>
-            <th>Poisto</th>
+            <th>Lääkkeen nimi</th>
+            <th>Lääketyyppi</th>
+            <th>Kuvaus</th>
+            <th>Poista</th>
         </tr>
     </thead>
     <tbody>
@@ -20,18 +18,6 @@
                 <td>@medication.MedicationName</td>
                 <td>@medication.MedicationType</td>
                 <td>@medication.Description</td>
-                <td>
-                    <!-- Displays the dosages for each medication -->
-                    @foreach (var dosage in medication.Dosages)
-                    {
-                        <p>@dosage.DosageAmount - @dosage.Frequency</p>
-                    }
-                </td>
-                <td>
-                    <!-- Add Dosage Button -->
-                    <button class="btn btn-success" onclick="showAddDosageModal(@medication.MedicationID)">Lisää annostelu</button>
-                    
-                </td>
                 <td>@Html.ActionLink("Poista", "Delete", "Medications", new { id = medication.MedicationID }, new { @class = "btn btn-danger" })</td>
             </tr>
         }
@@ -66,7 +52,7 @@
         });
     }
 
-    // Show add dosage modal for a specific medication
+    @*// Show add dosage modal for a specific medication
     function showAddDosageModal(medicationId) {
         const addDosageUrl = '@Url.Action("AddDosagePartial", "Medications", new { medicationId = "__medicationId__" })'.replace('__medicationId__', medicationId);
         $("#modalBody").load(addDosageUrl, function () {
@@ -96,5 +82,5 @@
                 alert("An error occurred while adding dosage.");
             }
         });
-    });
+    });*@
 </script>

@@ -143,7 +143,7 @@ namespace SoteCare.Controllers
             }
             else
             {
-                ViewBag.Message = "No diagnoses found for this patient.";
+                ViewBag.Message = "Potilaalla ei ole diagnooseja.";
                 return View();  //returns an empty view with a message if no diagnoses exist
             }
         }
