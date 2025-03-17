@@ -47,6 +47,9 @@
         <AssociationConnector Association="PatientRecordModel.FK_PatientNurseAssignment_Doctor" />
         <AssociationConnector Association="PatientRecordModel.FK_PatientNurseAssignment_Nurse" />
         <AssociationConnector Association="PatientRecordModel.FK_PatientNurseAssignment_Patient" />
+        <EntityTypeShape EntityType="PatientRecordModel.PatientRooms" Width="1.5" PointX="3.625" PointY="6.625" />
+        <EntityTypeShape EntityType="PatientRecordModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="0.75" />
+        <AssociationConnector Association="PatientRecordModel.FK_Patients_PatientRooms" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

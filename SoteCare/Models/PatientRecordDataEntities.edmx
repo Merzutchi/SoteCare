@@ -109,6 +109,14 @@
           <Property Name="DoctorID" Type="int" />
           <Property Name="AssignmentDate" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="PatientRooms">
+          <Key>
+            <PropertyRef Name="RoomID" />
+          </Key>
+          <Property Name="RoomID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoomNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="BedCount" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Patients">
           <Key>
             <PropertyRef Name="PatientID" />
@@ -125,6 +133,17 @@
           <Property Name="EmergencyContactPhone" Type="nvarchar" MaxLength="20" />
           <Property Name="NurseID" Type="int" />
           <Property Name="DoctorID" Type="int" />
+          <Property Name="RoomID" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="Treatment">
           <Key>
@@ -429,6 +448,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Patients_PatientRooms">
+          <End Role="PatientRooms" Type="Self.PatientRooms" Multiplicity="0..1" />
+          <End Role="Patients" Type="Self.Patients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PatientRooms">
+              <PropertyRef Name="RoomID" />
+            </Principal>
+            <Dependent Role="Patients">
+              <PropertyRef Name="RoomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Treatment_Diagnosis">
           <End Role="Diagnoses" Type="Self.Diagnoses" Multiplicity="0..1" />
           <End Role="Treatment" Type="Self.Treatment" Multiplicity="*" />
@@ -562,7 +593,9 @@
           <EntitySet Name="PatientHistory" EntityType="Self.PatientHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientMedications" EntityType="Self.PatientMedications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientNurseAssignment" EntityType="Self.PatientNurseAssignment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PatientRooms" EntityType="Self.PatientRooms" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patients" EntityType="Self.Patients" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Treatment" EntityType="Self.Treatment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TreatmentDetails" EntityType="Self.TreatmentDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
@@ -645,6 +678,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_Patients_NurseID" Association="Self.FK_Patients_NurseID">
             <End Role="Nurses" EntitySet="Nurses" />
+            <End Role="Patients" EntitySet="Patients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Patients_PatientRooms" Association="Self.FK_Patients_PatientRooms">
+            <End Role="PatientRooms" EntitySet="PatientRooms" />
             <End Role="Patients" EntitySet="Patients" />
           </AssociationSet>
           <AssociationSet Name="FK_Treatment_Diagnosis" Association="Self.FK_Treatment_Diagnosis">
@@ -804,6 +841,8 @@
           <NavigationProperty Name="Doctors" Relationship="PatientRecordModel.FK_Patients_DoctorID" FromRole="Patients" ToRole="Doctors" />
           <NavigationProperty Name="Nurses" Relationship="PatientRecordModel.FK_Patients_NurseID" FromRole="Patients" ToRole="Nurses" />
           <NavigationProperty Name="PatientNurseAssignment" Relationship="PatientRecordModel.FK_PatientNurseAssignment_Patient" FromRole="Patients" ToRole="PatientNurseAssignment" />
+          <Property Name="RoomID" Type="Int32" />
+          <NavigationProperty Name="PatientRooms" Relationship="PatientRecordModel.FK_Patients_PatientRooms" FromRole="Patients" ToRole="PatientRooms" />
         </EntityType>
         <EntityType Name="Treatment">
           <Key>
@@ -1120,6 +1159,12 @@
             <End Role="Patients" EntitySet="Patients" />
             <End Role="PatientNurseAssignment" EntitySet="PatientNurseAssignment" />
           </AssociationSet>
+          <EntitySet Name="PatientRooms" EntityType="PatientRecordModel.PatientRooms" />
+          <EntitySet Name="sysdiagrams" EntityType="PatientRecordModel.sysdiagrams" />
+          <AssociationSet Name="FK_Patients_PatientRooms" Association="PatientRecordModel.FK_Patients_PatientRooms">
+            <End Role="PatientRooms" EntitySet="PatientRooms" />
+            <End Role="Patients" EntitySet="Patients" />
+          </AssociationSet>
           </EntityContainer>
         <Association Name="FK_PatientMedications_Dosages">
           <End Type="PatientRecordModel.Dosages" Role="Dosages" Multiplicity="0..1" />
@@ -1401,6 +1446,37 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="PatientRooms">
+          <Key>
+            <PropertyRef Name="RoomID" />
+          </Key>
+          <Property Name="RoomID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoomNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BedCount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Patients" Relationship="PatientRecordModel.FK_Patients_PatientRooms" FromRole="PatientRooms" ToRole="Patients" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_Patients_PatientRooms">
+          <End Type="PatientRecordModel.PatientRooms" Role="PatientRooms" Multiplicity="0..1" />
+          <End Type="PatientRecordModel.Patients" Role="Patients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PatientRooms">
+              <PropertyRef Name="RoomID" />
+            </Principal>
+            <Dependent Role="Patients">
+              <PropertyRef Name="RoomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1484,6 +1560,7 @@
           <EntitySetMapping Name="Patients">
             <EntityTypeMapping TypeName="PatientRecordModel.Patients">
               <MappingFragment StoreEntitySet="Patients">
+                <ScalarProperty Name="RoomID" ColumnName="RoomID" />
                 <ScalarProperty Name="DoctorID" ColumnName="DoctorID" />
                 <ScalarProperty Name="NurseID" ColumnName="NurseID" />
                 <ScalarProperty Name="PatientID" ColumnName="PatientID" />
@@ -1589,6 +1666,26 @@
                 <ScalarProperty Name="NurseID" ColumnName="NurseID" />
                 <ScalarProperty Name="PatientID" ColumnName="PatientID" />
                 <ScalarProperty Name="AssignmentID" ColumnName="AssignmentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PatientRooms">
+            <EntityTypeMapping TypeName="PatientRecordModel.PatientRooms">
+              <MappingFragment StoreEntitySet="PatientRooms">
+                <ScalarProperty Name="BedCount" ColumnName="BedCount" />
+                <ScalarProperty Name="RoomNumber" ColumnName="RoomNumber" />
+                <ScalarProperty Name="RoomID" ColumnName="RoomID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="PatientRecordModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
