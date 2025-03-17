@@ -52,7 +52,6 @@ namespace SoteCare.Controllers
             return View(patient);
         }
 
-        // GET: PatientHistory
         public ActionResult PatientHistory(int? id)
         {
             if (id == null)
@@ -64,14 +63,21 @@ namespace SoteCare.Controllers
             if (patient == null)
             {
                 return HttpNotFound();
-            }            
+            }
             ViewBag.PatientID = patient.PatientID;
 
             // Fetches diagnoses, treatments, and medications for the patient
-            var diagnoses = db.Diagnoses.Where(d => d.PatientID == id).ToList();
-            var treatments = db.Treatment.Where(t => t.PatientID == id).ToList();
+            var diagnoses = db.Diagnoses
+                .Where(d => d.PatientID == id)
+                .OrderByDescending(d => d.DiagnosisDate)  // Uusimmat ensin
+                .ToList();
+            var treatments = db.Treatment
+                .Where(t => t.PatientID == id)
+                .OrderByDescending(t => t.StartDate)  // Uusimmat ensin
+                .ToList();
             var medications = db.PatientMedications
                 .Where(m => m.PatientID == id)
+                .OrderByDescending(m => m.StartDate)  // Uusimmat ensin
                 .Select(m => new
                 {
                     m.Medications.MedicationName,
