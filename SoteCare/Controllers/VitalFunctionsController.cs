@@ -134,35 +134,34 @@ namespace SoteCare.Controllers
         // POST: VitalFunctions/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PatientID,DateTime,HeartRate,SystolicBloodPressure,DiastolicBloodPressure,RespiratoryRate,Temperature,OxygenSaturation")] VitalFunctions vitalFunction)
+        public ActionResult Create([Bind(Include = "PatientID,DateTime,HeartRate,SystolicBloodPressure,DiastolicBloodPressure,RespiratoryRate,Temperature,OxygenSaturation,BloodSugar")] VitalFunctions vitalFunction)
         {
             if (ModelState.IsValid)
             {
-                
-                // Uses helper to parse Temperature field
-                if (Request.Form["Temperature"] != null)
+                // Normalisoi verisokerin syöte (korvaa pilkut pisteillä)
+                if (Request.Form["BloodSugar"] != null)
                 {
-                    var rawTemperature = Request.Form["Temperature"].Replace(',', '.'); // Normalizes commas to dots
-                    if (decimal.TryParse(rawTemperature, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal temperature))
+                    var rawBloodSugar = Request.Form["BloodSugar"].Replace(',', '.');
+                    if (decimal.TryParse(rawBloodSugar, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal bloodSugar))
                     {
-                        vitalFunction.Temperature = temperature;
+                        vitalFunction.BloodSugar = bloodSugar;
                     }
                     else
                     {
-                        ModelState.AddModelError("Temperature", "Invalid temperature format. Please enter a valid number.");
+                        ModelState.AddModelError("BloodSugar", "Syötä kelvollinen verisokerin arvo.");
+                        return View(vitalFunction);
                     }
                 }
-
                 db.VitalFunctions.Add(vitalFunction);
                 db.SaveChanges();
                 return RedirectToAction("VitalFunctions", "Patients", new { id = vitalFunction.PatientID });
             }
 
-            // Handles invalid ModelState and reload the form with patient details
             var patientDetails = db.Patients.Find(vitalFunction.PatientID);
             ViewBag.PatientName = $"{patientDetails.FirstName} {patientDetails.LastName}";
             return View(vitalFunction);
         }
+
 
         // GET: VitalFunctions/Edit/5
         public ActionResult Edit(int? id)

@@ -59,7 +59,15 @@
             <label>Happisaturaatio</label>
             <input type="number" step="0.1" name="OxygenSaturation" class="form-control" />
         </div>
+
+        <!-- Uusi kenttä: Verisokeri -->
+        <div class="form-group">
+            <label>Verisokeri (mmol/l)</label>
+            <input type="text" name="BloodSugar" class="form-control" placeholder="esim. 5.4" required />
+            @Html.ValidationMessage("BloodSugar", "", new { @class = "text-danger" })
+        </div>
         <br />
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <button type="submit" class="btn btn-primary">Tallenna</button>
@@ -73,20 +81,20 @@
     document.addEventListener("DOMContentLoaded", function () {
         const dateTimeInput = document.getElementById('DateTime');
         if (dateTimeInput && !dateTimeInput.value) {
-            const currentDate = new Date().toISOString().slice(0, 16); // Gets the current date and time in required format
-            dateTimeInput.value = currentDate; // Sets the value to current date
+            const currentDate = new Date().toISOString().slice(0, 16);
+            dateTimeInput.value = currentDate;
         }
     });
+
     document.addEventListener("DOMContentLoaded", function () {
         const temperatureInput = document.querySelector('input[name="Temperature"]');
         if (temperatureInput) {
             temperatureInput.addEventListener('input', function () {
-                this.value = this.value.replace(',', '.'); // Replaces commas with dots
-                this.value = this.value.replace(/[^0-9.]/g, ''); // Removes non-numeric characters
+                this.value = this.value.replace(',', '.');
+                this.value = this.value.replace(/[^0-9.]/g, '');
             });
         }
     });
-
 </script>
 
 

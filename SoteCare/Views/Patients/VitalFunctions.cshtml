@@ -65,6 +65,11 @@
                     <label>Happisaturaatio</label>
                     <input type="number" step="0.1" name="OxygenSaturation" class="form-control" />
                 </div>
+                <div class="form-group">
+                    <label>Verisokeri (mmol/l)</label>
+                    <input type="text" name="BloodSugar" class="form-control" placeholder="esim. 5.4" required />
+                    @Html.ValidationMessage("BloodSugar", "", new { @class = "text-danger" })
+                </div>
                 <br />
                 <button type="submit" class="btn btn-primary">Lisää</button>
             }
@@ -94,6 +99,7 @@
                             <th>Hengitystiheys (Hengitys/min)</th>
                             <th>Ruumiinlämpö (°C)</th>
                             <th>Happisaturaatio (%)</th>
+                            <th>Verisokeri (mmol/l)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -107,6 +113,7 @@
                                 <td>@Model.RespiratoryRates[i]</td>
                                 <td>@(Model.Temperatures[i].ToString("0.#"))</td>
                                 <td>@Model.OxygenSaturations[i]</td>
+                                <td>@Model.BloodSugars[i]</td>
                             </tr>
                         }
                     </tbody>
@@ -129,51 +136,47 @@
         HeartRates = Model.HeartRates,
         SystolicBP = Model.SystolicBP,
         DiastolicBP = Model.DiastolicBP,
-        Temperatures = Model.Temperatures
+        Temperatures = Model.Temperatures,
+        BloodSugars = Model.BloodSugars
     }));
 
     document.addEventListener("DOMContentLoaded", function () {
         // Automatically sets current date and time for the DateTime input
         const dateTimeInput = document.querySelector("input[type='datetime-local']");
         if (dateTimeInput) {
-            const currentDate = new Date().toISOString().slice(0, 16); // Gets the current date and time in the required format
-            dateTimeInput.value = currentDate; // Sets the value to the current date
+            const currentDate = new Date().toISOString().slice(0, 16);
+            dateTimeInput.value = currentDate;
         }
 
-        const addButton = document.getElementById("showAddForm"); // Button to show/hide form
-        const addForm = document.getElementById("addVitalFunctionForm"); // Form to toggle visibility
+        const addButton = document.getElementById("showAddForm");
+        const addForm = document.getElementById("addVitalFunctionForm");
 
         if (addButton && addForm) {
             addButton.addEventListener("click", function () {
                 if (addForm.style.display === "none" || addForm.style.display === "") {
-                    addForm.style.display = "block"; // Shows the form
+                    addForm.style.display = "block";
                 } else {
-                    addForm.style.display = "none"; // Hides the form
+                    addForm.style.display = "none";
                 }
             });
         }
 
-        // Input normalization1 for Temperature
+        // Input normalization for Temperature
         document.querySelector("form").addEventListener("submit", function (e) {
             const temperatureInput = document.querySelector("[name='Temperature']");
             const temperatureValue = temperatureInput.value.trim();
-
-            // Allow both `.` and `,` as decimal separators
             const validTemperature = /^(\d+([.,]\d{1,2})?)$/;
-
             if (!validTemperature.test(temperatureValue)) {
                 e.preventDefault();
                 alert("Please enter a valid temperature (e.g., 36.5 or 36,5).");
             }
         });
 
-
-        // Input normalization2 for Temperature
         const temperatureInput = document.querySelector('input[name="Temperature"]');
         if (temperatureInput) {
             temperatureInput.addEventListener('input', function () {
-                this.value = this.value.replace(',', '.'); // Replaces commas with dots
-                this.value = this.value.replace(/[^0-9.]/g, ''); // Removes invalid characters
+                this.value = this.value.replace(',', '.');
+                this.value = this.value.replace(/[^0-9.]/g, '');
             });
         }
 
@@ -181,7 +184,6 @@
         const formatTemperature = (temp) => (temp !== null ? parseFloat(temp).toFixed(1) : null);
         const formattedTemperatures = window.vitalData.Temperatures.map(formatTemperature);
 
-        // Chart rendering
         const ctx = document.getElementById('vitalChart').getContext('2d');
         window.myVitalChart = new Chart(ctx, {
             type: 'line',
@@ -215,6 +217,13 @@
                         borderColor: 'purple',
                         borderWidth: 2,
                         fill: false
+                    },
+                    {
+                        label: 'Verisokeri',
+                        data: window.vitalData.BloodSugars,
+                        borderColor: 'orange',
+                        borderWidth: 2,
+                        fill: false
                     }
                 ]
             },
@@ -223,7 +232,7 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Vital Signs Over Time'
+                        text: 'Elintoimintojen mittaukset'
                     }
                 },
                 scales: {
@@ -236,7 +245,7 @@
                     y: {
                         title: {
                             display: true,
-                            text: 'Values'
+                            text: 'Arvot'
                         }
                     }
                 }
@@ -247,3 +256,4 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="~/Scripts/vitalfunction.js"></script>
+

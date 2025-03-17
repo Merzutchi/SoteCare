@@ -208,7 +208,7 @@ namespace SoteCare.Controllers
 
             var viewModel = new VFunctionChart
             {
-                PatientID = id.Value, 
+                PatientID = id.Value,
                 PatientName = $"{patient.FirstName} {patient.LastName}",
                 Dates = vitalFunctions.Select(v => v.DateTime.ToString("dd-MM-yyyy HH:mm")).ToList(),
                 HeartRates = vitalFunctions.Select(v => v.HeartRate ?? 0).ToList(),
@@ -216,7 +216,8 @@ namespace SoteCare.Controllers
                 DiastolicBP = vitalFunctions.Select(v => v.DiastolicBloodPressure ?? 0).ToList(),
                 RespiratoryRates = vitalFunctions.Select(v => v.RespiratoryRate ?? 0).ToList(),
                 Temperatures = vitalFunctions.Select(v => v.Temperature ?? 0).ToList(),
-                OxygenSaturations = vitalFunctions.Select(v => v.OxygenSaturation ?? 0).ToList()
+                OxygenSaturations = vitalFunctions.Select(v => v.OxygenSaturation ?? 0).ToList(),
+                BloodSugars = vitalFunctions.Select(v => v.BloodSugar ?? 0).ToList() // Uusi rivi verisokerille
             };
 
             ViewBag.PatientID = id;
