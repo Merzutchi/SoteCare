@@ -183,7 +183,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PatientRecordDataEntities.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\PatientRooms.cs">
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Patients.cs">
+      <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagrams.cs">
       <DependentUpon>PatientRecordDataEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Treatment.cs">

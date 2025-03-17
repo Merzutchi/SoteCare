@@ -1,6 +1,7 @@
 ﻿using SoteCare.Attributes;
 using SoteCare.Models;
 using SoteCare.ViewModels;
+using System.Data.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,9 +45,11 @@ namespace SoteCare.Controllers
 
             // Recent patients for dashboard display
             ViewBag.RecentPatients = db.Patients
-                .OrderByDescending(p => p.PatientID)
-                .Take(5)
-                .ToList();
+                    .Include(p => p.PatientRooms) // Lataa potilaan huonetiedot
+                    .OrderByDescending(p => p.PatientID)
+                    .Take(5)
+                    .ToList();
+
 
             // List of all doctors for general dashboard data
             ViewBag.Doctors = db.Doctors.ToList();
