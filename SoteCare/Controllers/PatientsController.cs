@@ -260,11 +260,29 @@ namespace SoteCare.Controllers
             {
                 return HttpNotFound();
             }
-
-            // Asetetaan aktiivinen välilehti "Contact"
             ViewBag.ActiveTab = "Contact";
 
             return View(patient);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateAllergiesRisk(int patientId, string allergies, string riskInfo)
+        {
+            // Haetaan potilasta tietokannasta
+            var patient = db.Patients.Find(patientId);
+            if (patient == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Tallentaa allergiat ja riskitiedot
+            patient.Allergies = allergies;
+            patient.RiskInfo = riskInfo;
+            db.SaveChanges();
+
+            // Palauttaa takaisin potilaan "Details" -näkymään
+            return RedirectToAction("Details", new { id = patientId });
         }
 
         // GET: Patients/Create
