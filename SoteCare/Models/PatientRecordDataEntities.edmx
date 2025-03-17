@@ -197,6 +197,7 @@
           <Property Name="Temperature" Type="decimal" Precision="5" Scale="2" />
           <Property Name="OxygenSaturation" Type="decimal" Precision="5" Scale="2" />
           <Property Name="NurseID" Type="int" />
+          <Property Name="BloodSugar" Type="decimal" Precision="5" Scale="2" />
         </EntityType>
         <Association Name="FK__Diagnoses__Patie__74AE54BC">
           <End Role="Patients" Type="Self.Patients" Multiplicity="0..1" />
@@ -896,6 +897,7 @@
           <NavigationProperty Name="Patients" Relationship="Self.FK__VitalFunc__Patie__398D8EEE" FromRole="VitalFunctions" ToRole="Patients" />
           <Property Name="NurseID" Type="Int32" />
           <NavigationProperty Name="Nurses" Relationship="PatientRecordModel.FK_VitalFunctions_NurseID" FromRole="VitalFunctions" ToRole="Nurses" />
+          <Property Name="BloodSugar" Type="Decimal" Precision="5" Scale="2" />
         </EntityType>
         <Association Name="FK__Diagnoses__Patie__74AE54BC">
           <End Role="Patients" Type="Self.Patients" Multiplicity="0..1" />
@@ -1611,6 +1613,7 @@
           <EntitySetMapping Name="VitalFunctions">
             <EntityTypeMapping TypeName="PatientRecordModel.VitalFunctions">
               <MappingFragment StoreEntitySet="VitalFunctions">
+                <ScalarProperty Name="BloodSugar" ColumnName="BloodSugar" />
                 <ScalarProperty Name="NurseID" ColumnName="NurseID" />
                 <ScalarProperty Name="VitalFunctionID" ColumnName="VitalFunctionID" />
                 <ScalarProperty Name="PatientID" ColumnName="PatientID" />
