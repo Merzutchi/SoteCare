@@ -20,7 +20,8 @@ namespace SoteCare.Controllers
         // GET: Patients
         public ActionResult Index()
         {
-            return View(db.Patients.ToList());
+            var patients = db.Patients.Include(p => p.PatientRooms).ToList();
+            return View(patients);
         }
 
         // GET: Patients/Details/5
@@ -248,15 +249,34 @@ namespace SoteCare.Controllers
             return View(treatments);
         }
 
+        public ActionResult Contact(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var patient = db.Patients.Find(id);
+            if (patient == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Asetetaan aktiivinen välilehti "Contact"
+            ViewBag.ActiveTab = "Contact";
+
+            return View(patient);
+        }
+
         // GET: Patients/Create
         public ActionResult Create()
         {
+            ViewBag.RoomID = new SelectList(db.PatientRooms, "RoomID", "RoomNumber");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PatientID,FirstName,LastName,DateOfBirth,Gender,Address,PhoneNumber,Email,EmergencyContactName,EmergencyContactPhone")] Patients patients)
+        public ActionResult Create([Bind(Include = "PatientID,FirstName,LastName,DateOfBirth,Gender,Address,PhoneNumber,Email,EmergencyContactName,EmergencyContactPhone,RoomID")] Patients patients)
         {
             if (ModelState.IsValid)
             {
@@ -265,6 +285,8 @@ namespace SoteCare.Controllers
                 return RedirectToAction("Index");
             }
 
+            // Jos tallennus epäonnistuu, täytetään RoomID dropdown
+            ViewBag.RoomID = new SelectList(db.PatientRooms, "RoomID", "RoomNumber", patients.RoomID);
             return View(patients);
         }
 
@@ -279,13 +301,14 @@ namespace SoteCare.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.RoomID = new SelectList(db.PatientRooms, "RoomID", "RoomNumber", patients.RoomID);
             return View(patients);
         }
 
         // POST: Patients/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PatientID,FirstName,LastName,DateOfBirth,Gender,Address,PhoneNumber,Email,EmergencyContactName,EmergencyContactPhone")] Patients patients)
+        public ActionResult Edit([Bind(Include = "PatientID,FirstName,LastName,DateOfBirth,Gender,Address,PhoneNumber,Email,EmergencyContactName,EmergencyContactPhone,RoomID")] Patients patients)
         {
             if (ModelState.IsValid)
             {
@@ -293,10 +316,9 @@ namespace SoteCare.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.RoomID = new SelectList(db.PatientRooms, "RoomID", "RoomNumber", patients.RoomID);
             return View(patients);
         }
-
-
 
         // GET: Patients/Delete/5
         public ActionResult Delete(int? id)
@@ -332,28 +354,28 @@ namespace SoteCare.Controllers
                 return HttpNotFound();
             }
 
-            // Remove related Vitalfunctions first
+            // Removes related Vitalfunctions first
             db.VitalFunctions.RemoveRange(patients.VitalFunctions);
 
-            // Remove related PatientNurseAssignment records first
+            // Removes related PatientNurseAssignment records first
             db.PatientNurseAssignment.RemoveRange(patients.PatientNurseAssignment);
 
-            // Remove related Diagnoses first
+            // Removes related Diagnoses first
             db.Diagnoses.RemoveRange(patients.Diagnoses);
 
-            // Remove related PatientMedications first
+            // Removes related PatientMedications first
             db.PatientMedications.RemoveRange(patients.PatientMedications);
 
-            // Remove related PatientHistory first
+            // Remove srelated PatientHistory first
             db.PatientHistory.RemoveRange(patients.PatientHistory);
 
-            // Remove related Treatment first
+            // Removes related Treatments first
             db.Treatment.RemoveRange(patients.Treatment);
 
-            // Remove the Patients record
+            // Removes the Patient record
             db.Patients.Remove(patients);
 
-            // Save changes
+            // Saves changes
             db.SaveChanges();
 
             return RedirectToAction("Index");

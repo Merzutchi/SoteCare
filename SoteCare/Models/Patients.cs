@@ -39,6 +39,8 @@ namespace SoteCare.Models
         public Nullable<int> NurseID { get; set; }
         public Nullable<int> DoctorID { get; set; }
         public Nullable<int> RoomID { get; set; }
+        public string Allergies { get; set; }
+        public string RiskInfo { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Diagnoses> Diagnoses { get; set; }

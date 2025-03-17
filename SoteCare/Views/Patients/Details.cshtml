@@ -22,6 +22,9 @@
         <li class="@(ViewBag.ActiveTab == "VitalFunctions" ? "active" : "")">
             <a class="nav-link" href="@Url.Action("VitalFunctions", "Patients", new { id = Model.PatientID })">Elintoiminnot</a>
         </li>
+        <li class="@(ViewBag.ActiveTab == "Contact" ? "active" : "")">
+            <a class="nav-link" href="@Url.Action("Contact", "Patients", new { id = Model.PatientID })">Yhteystiedot</a>
+        </li>
     </ul>
 
     <!-- Main Content for Basic Info -->
@@ -36,26 +39,7 @@
                     <th>@Html.DisplayNameFor(model => model.Gender)</th>
                     <td>@Model.Gender</td>
                 </tr>
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model.Address)</th>
-                    <td>@Model.Address</td>
-                </tr>
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model.PhoneNumber)</th>
-                    <td>@Model.PhoneNumber</td>
-                </tr>
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model.Email)</th>
-                    <td>@Model.Email</td>
-                </tr>
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model.EmergencyContactName)</th>
-                    <td>@Model.EmergencyContactName</td>
-                </tr>
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model.EmergencyContactPhone)</th>
-                    <td>@Model.EmergencyContactPhone</td>
-                </tr>
+                
             </table>
         </div>
     </div>

@@ -1,0 +1,28 @@
+﻿@model SoteCare.Models.Patients
+
+<div class="container">
+    <h2>Potilaan yhteystiedot</h2>
+
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>Puhelinnumero</th>
+            <td>@Model.PhoneNumber</td>
+        </tr>
+        <tr>
+            <th>Sähköposti</th>
+            <td>@Model.Email</td>
+        </tr>
+        <tr>
+            <th>Hätäyhteyshenkilö</th>
+            <td>@Model.EmergencyContactName</td>
+        </tr>
+        <tr>
+            <th>Hätäyhteyshenkilön puhelin</th>
+            <td>@Model.EmergencyContactPhone</td>
+        </tr>
+    </table>
+
+    <div class="mt-3">
+        <a href="@Url.Action("Details", "Patients", new { id = Model.PatientID })" class="btn btn-secondary">Takaisin</a>
+    </div>
+</div>

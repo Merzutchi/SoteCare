@@ -134,6 +134,8 @@
           <Property Name="NurseID" Type="int" />
           <Property Name="DoctorID" Type="int" />
           <Property Name="RoomID" Type="int" />
+          <Property Name="Allergies" Type="nvarchar(max)" />
+          <Property Name="RiskInfo" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -843,6 +845,8 @@
           <NavigationProperty Name="PatientNurseAssignment" Relationship="PatientRecordModel.FK_PatientNurseAssignment_Patient" FromRole="Patients" ToRole="PatientNurseAssignment" />
           <Property Name="RoomID" Type="Int32" />
           <NavigationProperty Name="PatientRooms" Relationship="PatientRecordModel.FK_Patients_PatientRooms" FromRole="Patients" ToRole="PatientRooms" />
+          <Property Name="Allergies" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RiskInfo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Treatment">
           <Key>
@@ -1560,6 +1564,8 @@
           <EntitySetMapping Name="Patients">
             <EntityTypeMapping TypeName="PatientRecordModel.Patients">
               <MappingFragment StoreEntitySet="Patients">
+                <ScalarProperty Name="RiskInfo" ColumnName="RiskInfo" />
+                <ScalarProperty Name="Allergies" ColumnName="Allergies" />
                 <ScalarProperty Name="RoomID" ColumnName="RoomID" />
                 <ScalarProperty Name="DoctorID" ColumnName="DoctorID" />
                 <ScalarProperty Name="NurseID" ColumnName="NurseID" />
