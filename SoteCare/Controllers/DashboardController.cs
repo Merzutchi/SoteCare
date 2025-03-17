@@ -45,9 +45,9 @@ namespace SoteCare.Controllers
 
             // Recent patients for dashboard display
             ViewBag.RecentPatients = db.Patients
-                    .Include(p => p.PatientRooms) // Lataa potilaan huonetiedot
+                    .Include(p => p.PatientRooms) // Lataa potilaan huonetietoja
                     .OrderByDescending(p => p.PatientID)
-                    .Take(5)
+                    .Take(10)
                     .ToList();
 
 

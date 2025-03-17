@@ -281,7 +281,7 @@ namespace SoteCare.Controllers
             patient.RiskInfo = riskInfo;
             db.SaveChanges();
 
-            // Palauttaa takaisin potilaan "Details" -näkymään
+            // Palaa takaisin potilaan "Details" -näkymään
             return RedirectToAction("Details", new { id = patientId });
         }
 
