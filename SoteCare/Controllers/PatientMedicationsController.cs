@@ -63,16 +63,16 @@ namespace SoteCare.Controllers
 
             ViewBag.PatientID = id;
             ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
-            ViewBag.MedicationID = new SelectList(db.Medications, "Lääke", "Lääkenimi");
-            ViewBag.DosageID = new SelectList(db.Dosages, "Annos", "Annosmäärä");
+            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName");
+            ViewBag.DosageID = new SelectList(db.Dosages, "DosageID", "DosageAmount");
             ViewBag.Doctors = new SelectList(
                 db.Doctors.Select(d => new
                 {
                     d.DoctorID,
                     DoctorName = d.FirstName + " " + d.LastName
                 }),
-                "Lääkäri",
-                "Lääkärin nimi"
+                "DoctorID",
+                "DoctorName"
             );
 
             // Lääkkeen tyyppi (Säännöllinen / Tarvittaessa)
@@ -197,19 +197,18 @@ namespace SoteCare.Controllers
 
         private void PopulateDropdowns(PatientMedications model = null)
         {
-            ViewBag.MedicationID = new SelectList(db.Medications, "Lääke", "Lääkenimi", model?.MedicationID);
-            ViewBag.DosageID = new SelectList(db.Dosages, "Annos", "Annosmäärä", model?.DosageID);
+            ViewBag.MedicationID = new SelectList(db.Medications, "MedicationID", "MedicationName", model?.MedicationID);
+            ViewBag.DosageID = new SelectList(db.Dosages, "DosageID", "DosageAmount", model?.DosageID);
             ViewBag.Doctors = new SelectList(
                 db.Doctors.Select(d => new
                 {
                     d.DoctorID,
-                    DoctorName = d.FirstName + " " + d.LastName 
+                    DoctorName = d.FirstName + " " + d.LastName
                 }),
-                "Lääkäri",
-                "Lääkärin nimi", model?.DoctorID
+                "DoctorID",
+                "DoctorName", model?.DoctorID
             );
         }
-
 
         protected override void Dispose(bool disposing)
         {

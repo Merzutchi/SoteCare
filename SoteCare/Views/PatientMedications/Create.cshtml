@@ -12,7 +12,7 @@
     @Html.HiddenFor(model => model.PatientID)
 
     <div class="form-group">
-        @Html.LabelFor(model => model.MedicationID, "Lääke")
+        @Html.LabelFor(model => model.MedicationID, "MedicationName")
         @Html.DropDownListFor(model => model.MedicationID, (SelectList)ViewBag.MedicationID, "Valitse lääke", new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.MedicationID, "", new { @class = "text-danger" })
     </div>
