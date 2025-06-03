@@ -26,19 +26,19 @@ namespace SoteCare.Models
         }
     
         public virtual DbSet<Diagnoses> Diagnoses { get; set; }
+        public virtual DbSet<Doctors> Doctors { get; set; }
         public virtual DbSet<Dosages> Dosages { get; set; }
         public virtual DbSet<Medications> Medications { get; set; }
+        public virtual DbSet<Nurses> Nurses { get; set; }
         public virtual DbSet<PatientHistory> PatientHistory { get; set; }
         public virtual DbSet<PatientMedications> PatientMedications { get; set; }
-        public virtual DbSet<Patients> Patients { get; set; }
-        public virtual DbSet<Treatment> Treatment { get; set; }
-        public virtual DbSet<TreatmentDetails> TreatmentDetails { get; set; }
-        public virtual DbSet<VitalFunctions> VitalFunctions { get; set; }
-        public virtual DbSet<Users> Users { get; set; }
-        public virtual DbSet<Doctors> Doctors { get; set; }
-        public virtual DbSet<Nurses> Nurses { get; set; }
         public virtual DbSet<PatientNurseAssignment> PatientNurseAssignment { get; set; }
         public virtual DbSet<PatientRooms> PatientRooms { get; set; }
+        public virtual DbSet<Patients> Patients { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
+        public virtual DbSet<Treatment> Treatment { get; set; }
+        public virtual DbSet<TreatmentDetails> TreatmentDetails { get; set; }
+        public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<VitalFunctions> VitalFunctions { get; set; }
     }
 }

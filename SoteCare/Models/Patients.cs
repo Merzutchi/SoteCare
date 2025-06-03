@@ -18,12 +18,12 @@ namespace SoteCare.Models
         public Patients()
         {
             this.Diagnoses = new HashSet<Diagnoses>();
+            this.Dosages = new HashSet<Dosages>();
             this.PatientHistory = new HashSet<PatientHistory>();
             this.PatientMedications = new HashSet<PatientMedications>();
+            this.PatientNurseAssignment = new HashSet<PatientNurseAssignment>();
             this.VitalFunctions = new HashSet<VitalFunctions>();
             this.Treatment = new HashSet<Treatment>();
-            this.Dosages = new HashSet<Dosages>();
-            this.PatientNurseAssignment = new HashSet<PatientNurseAssignment>();
         }
     
         public int PatientID { get; set; }
@@ -44,20 +44,20 @@ namespace SoteCare.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Diagnoses> Diagnoses { get; set; }
+        public virtual Doctors Doctors { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Dosages> Dosages { get; set; }
+        public virtual Nurses Nurses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientHistory> PatientHistory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientMedications> PatientMedications { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientNurseAssignment> PatientNurseAssignment { get; set; }
+        public virtual PatientRooms PatientRooms { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VitalFunctions> VitalFunctions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Treatment> Treatment { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Dosages> Dosages { get; set; }
-        public virtual Doctors Doctors { get; set; }
-        public virtual Nurses Nurses { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PatientNurseAssignment> PatientNurseAssignment { get; set; }
-        public virtual PatientRooms PatientRooms { get; set; }
     }
 }

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7605267b8fcb465290a989a9e9965d84" Name="Diagram1">
+        <EntityTypeShape EntityType="PatientRecordDataModel.Diagnoses" Width="1.5" PointX="5.25" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.Doctors" Width="1.5" PointX="0.75" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.Dosages" Width="1.5" PointX="8.25" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.Medications" Width="1.5" PointX="8.25" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.Nurses" Width="1.5" PointX="1.5" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.PatientHistory" Width="1.5" PointX="5.25" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.PatientMedications" Width="1.5" PointX="13.5" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.PatientNurseAssignment" Width="1.5" PointX="5.25" PointY="14.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.PatientRooms" Width="1.5" PointX="0.75" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.Patients" Width="1.5" PointX="3" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.sysdiagrams" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.Treatment" Width="1.5" PointX="10.5" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.TreatmentDetails" Width="1.5" PointX="15.75" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.Users" Width="1.5" PointX="1.5" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PatientRecordDataModel.VitalFunctions" Width="1.5" PointX="8.25" PointY="5" IsExpanded="true" />
+        <AssociationConnector Association="PatientRecordDataModel.FK__Diagnoses__Patie__74AE54BC" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_Diagnoses_Doctor" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_Treatment_Diagnosis" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK__Doctors__UserID__25518C17" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_PatientHistory_Doctor" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_PatientMedications_Doctor" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_PatientNurseAssignment_Doctor" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_Patients_DoctorID" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_TreatmentDetails_DoctorID" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_Users_DoctorID" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK__Dosages__Medicat__6FE99F9F" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_Dosages_Patients" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_PatientMedications_Dosages" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_TreatmentDetails_Dosage" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK__PatientMe__Medic__787EE5A0" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_Treatment_Medication" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_TreatmentDetails_Medication" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK__Nurses__UserID__282DF8C2" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_PatientHistory_NurseID" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_PatientNurseAssignment_Nurse" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_Patients_NurseID" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_Users_NurseID" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_VitalFunctions_NurseID" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK__PatientHi__Patie__3F466844" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK__PatientMe__Patie__797309D9" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_PatientNurseAssignment_Patient" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_Patients_PatientRooms" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK__VitalFunc__Patie__398D8EEE" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_Treatment_Patient" ManuallyRouted="false" />
+        <AssociationConnector Association="PatientRecordDataModel.FK_TreatmentDetails_Treatment" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

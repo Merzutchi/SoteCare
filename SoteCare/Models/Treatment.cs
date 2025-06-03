@@ -30,10 +30,10 @@ namespace SoteCare.Models
         public Nullable<int> DiagnosisID { get; set; }
         public Nullable<int> DoctorID { get; set; }
     
+        public virtual Diagnoses Diagnoses { get; set; }
         public virtual Medications Medications { get; set; }
         public virtual Patients Patients { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TreatmentDetails> TreatmentDetails { get; set; }
-        public virtual Diagnoses Diagnoses { get; set; }
     }
 }

@@ -20,9 +20,9 @@ namespace SoteCare.Models
         public Nullable<int> DosageID { get; set; }
         public Nullable<int> DoctorID { get; set; }
     
+        public virtual Doctors Doctors { get; set; }
         public virtual Dosages Dosages { get; set; }
         public virtual Medications Medications { get; set; }
         public virtual Treatment Treatment { get; set; }
-        public virtual Doctors Doctors { get; set; }
     }
 }
